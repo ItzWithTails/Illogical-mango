@@ -5,7 +5,7 @@
 <h1 align="center">iNiR</h1>
 
 <p align="center">
-  <b>A complete desktop shell for Niri, built on Quickshell</b>
+  <b>A complete desktop shell for scrolling and tiling Wayland compositors, built on Quickshell</b>
 </p>
 
 <p align="center">
@@ -31,53 +31,58 @@
 
 ---
 
-<details>
-<summary><b>🤔 New here? Click if you have no idea what any of this is</b></summary>
+## What iNiR is
 
-### What is this?
+A Wayland compositor draws windows. It does not give you a bar, a dock, notifications,
+a launcher, a lock screen, or a settings app. iNiR is that entire layer, as one
+integrated program.
 
-iNiR is your entire desktop. The bar at the top, the dock, notifications, settings, wallpapers, all of it. Not a theme, not dotfiles you paste. A full shell that runs on Linux.
+It is not a theme and not a dotfiles bundle you copy into place. It is a shell: a single
+Quickshell process that owns every piece of desktop UI outside your application windows,
+plus a Bash/Python/Go toolchain that installs it, keeps it updated, and pushes its color
+palette out to the rest of your system.
 
-### What do I need to run it?
-
-A compositor. That's the thing that handles your windows and puts pixels on screen. iNiR is made for [Niri](https://github.com/YaLTeR/niri) (a tiling Wayland compositor). There's some old Hyprland code from when this was a fork of end-4's dots, but Niri is what I actually use and test.
-
-The shell runs on [Quickshell](https://quickshell.outfoxxed.me/), a framework for building shells in QML (Qt's UI language). You don't need to know any of that to use it though, everything is configurable through the GUI or a JSON file.
-
-### How it all connects
+**The stack:**
 
 ```
-your apps
+your applications
    ↓
-iNiR (shell: bar, sidebars, dock, notifications, settings...)
+iNiR              bar, dock, sidebars, overview, notifications, settings, lock screen
    ↓
-Quickshell (runs QML shells)
+Quickshell        QML runtime for Wayland shells
    ↓
-Niri (compositor: windows, rendering)
+compositor        niri · mango · Hyprland — windows and rendering
    ↓
 Wayland → GPU
 ```
 
-### Is it stable?
+**What distinguishes it from other Quickshell configs:**
 
-It's a personal project that got out of hand. I use it daily, lots of people in the Discord do too. But stuff breaks sometimes, code is messy in places, I'm learning as I go.
+- **Two complete panel families in one install.** Material ii (floating bar, sidebars,
+  dock) and Waffle (bottom taskbar, start menu, action center). They are not themes over
+  the same widgets — they are separate panel trees with their own token systems, swapped
+  at runtime with <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd>.
+- **System-wide theming, not just shell theming.** One wallpaper drives a Material You
+  palette that is written out to GTK3/4, Qt, ten terminal and TUI tools, Firefox,
+  Discord, Spicetify, Steam, and SDDM.
+- **Configurable without editing code.** Everything is a GUI setting backed by a single
+  `config.json`. You never have to touch QML to change how it looks or behaves.
+- **A real install and upgrade path.** `./setup` handles dependencies and system config;
+  `inir update` pulls, runs schema migrations, preserves your changes, and can roll back.
 
-If something doesn't work, `inir doctor` fixes most things. Discord is active if that doesn't help. Just don't expect polished software, this is one person's rice that others happen to like.
+iNiR began as a fork of [end-4's illogical-impulse](https://github.com/end-4/dots-hyprland)
+Hyprland dots and was rewritten around niri's scrolling workspace model.
 
-### Why does it exist?
+## Compositor support
 
-I wanted my desktop to look and work a certain way and nothing else did exactly that. Started as end-4's Hyprland dots, became a full rewrite for Niri with way more features.
+| Compositor | Status | Integration |
+|---|---|---|
+| [niri](https://github.com/YaLTeR/niri) | **Primary.** Developed and tested against. | Full IPC over `$NIRI_SOCKET`: workspaces, windows, outputs, keyboard layouts. iNiR manages niri's config as modular KDL files under `~/.config/niri/config.d/`, editing them surgically and never clobbering your overrides. |
+| [mango](https://github.com/DreamMaoMao/mango) | **Supported.** | Full IPC over `$MANGO_INSTANCE_SIGNATURE`. dwm-style tags are mapped onto the same workspace model the rest of the shell uses, so panels, dock and overview work unchanged. |
+| [Hyprland](https://hyprland.org/) | **Legacy.** Inherited from the fork, kept building, not actively tested. | Quickshell's built-in Hyprland module plus `hyprctl`. |
 
-### Words you'll see around
-
-- **Shell**: the UI layer (bar, panels, overlays)
-- **Compositor**: manages windows, draws to screen (Niri, Hyprland, Sway...)
-- **Wayland**: Linux display protocol (the new one, replaces X11)
-- **QML**: Qt's declarative UI language, what iNiR is written in
-- **Material You**: Google's color system that makes palettes from images (that's the auto-theming)
-- **ii / waffle**: the two panel styles. ii = Material Design vibes, waffle = Windows 11 vibes. `Super+Shift+W` switches between them
-
-</details>
+The running compositor is detected at startup from its environment variable; nothing
+needs to be configured by hand.
 
 ---
 
@@ -89,8 +94,8 @@ I wanted my desktop to look and work a certain way and nothing else did exactly 
 | | |
 |:---:|:---:|
 | ![](https://github.com/user-attachments/assets/1fe258bc-8aec-4fd9-8574-d9d7472c3cc8) | ![](https://github.com/user-attachments/assets/3ce2055b-648c-45a1-9d09-705c1b4a03b7) |
-| ![](https://github.com/user-attachments/assets/ea2311dc-769e-44dc-a46d-37cf8807d2cc) | ![](https://github.com/user-attachments/assets/da6beb4a-ccee-40ba-a372-5eea77b595f8) |
-| ![](https://github.com/user-attachments/assets/ba866063-b26a-47cb-83c8-d77bd033bf8b) | ![](https://github.com/user-attachments/assets/88e76566-061b-4f8c-a9a8-53c157950138) |
+| ![](https://github.com/user-attachments/assets/ea2311dc-769e-44dc-a46d-37cf8807d2cc) | ![](https://github.com/user-attachments/assets/ba866063-b26a-47cb-83c8-d77bd033bf8b) |
+| ![](https://github.com/user-attachments/assets/88e76566-061b-4f8c-a9a8-53c157950138) | |
 
 </details>
 
@@ -106,23 +111,21 @@ I wanted my desktop to look and work a certain way and nothing else did exactly 
 ---
 
 > [!WARNING]
-> Not for low-spec machines.
-> You can strip it down a lot though. Turn off effects, drop panels, flatten the design. Settings or `config.json`, whichever you prefer.
+> The default configuration targets reasonably modern hardware. On low-spec machines,
+> disable effects, drop panels you don't use, and flatten the visual style — all from
+> Settings or `config.json`.
 
 ## Features
 
-**Two panel families**, switchable on the fly with `Super+Shift+W`:
-- **Material ii**: floating bar, sidebars, dock, and 8 visual styles (Material, Cards, Aurora, iNiR, Angel, Regalia, ZZZ, Cookie Shapes)
-- **Waffle**: Windows 11-inspired taskbar, start menu, action center, notification center
+**Two panel families**, switchable on the fly with <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd>:
 
-**Automatic theming**. Pick a wallpaper and everything adapts:
-- Shell colors via Material You, propagated to GTK3/4, Qt, terminals, Firefox, Discord, SDDM
-- 10 theming targets covering terminals, editors, browsers, Spicetify, Steam, Cava and more
-- Theme presets: Regalia / Regalia Ivory, Gruvbox, Catppuccin, Rosé Pine, and custom
+- **Material ii** — floating bar, sidebars, dock, and 8 visual styles (Material, Cards,
+  Aurora, iNiR, Angel, Regalia, ZZZ, Cookie Shapes)
+- **Waffle** — Windows 11-inspired taskbar, start menu, action center, notification center
 
-**Built for Niri.** Hyprland code survives from the fork but is not tested.
-
-**Kira**, the mascot, lives on your desktop if you want her there. Off by default, art pack is a separate download.
+**Automatic theming.** Pick a wallpaper and the whole system follows: Material You colors
+for the shell, propagated to GTK3/4, Qt, terminals, Firefox, Discord, Spicetify, Steam and
+SDDM. Ships with Regalia, Gruvbox, Catppuccin and Rosé Pine presets, or build your own.
 
 <details>
 <summary><b>Full feature list</b></summary>
@@ -133,8 +136,8 @@ I wanted my desktop to look and work a certain way and nothing else did exactly 
 - **Dynamic wallpaper colors** via Material You, propagated system-wide
 - **10 terminal and TUI tools auto-themed**: foot, kitty, alacritty, ghostty, wezterm, starship, fuzzel, btop, lazygit, yazi
 - **App theming**: GTK3/4, Qt (via plasma-integration and darkly), Firefox (MaterialFox), Discord/Vesktop (System24), Zed, Spicetify, Steam, SDDM
-- **Theme presets**: Gruvbox, Catppuccin, Rosé Pine, and more, or create your own
-- **Video wallpapers**: mp4/webm/gif with optional blur, or frozen first frame for performance
+- **Theme presets**: Regalia, Regalia Ivory, Gruvbox, Catppuccin, Rosé Pine, and custom
+- **Video wallpapers**: mp4/webm/gif with optional blur, or a frozen first frame for performance
 - **Desktop widgets**: clock (multiple styles), weather, media controls on the wallpaper layer
 
 ### Bar
@@ -142,7 +145,7 @@ I wanted my desktop to look and work a certain way and nothing else did exactly 
 - **6 bar styles**: classic, islands, scenic, frame, Material 3 capsules, and pill
 - **Pill bar**: a morphing centre island that opens on hover into workspaces, launcher, mixer, media, calendar and a screen recorder
 - **Modular layout** with a drag editor in Settings, so any module can go anywhere
-- **Vertical bar** for the people who want the screen edge back
+- **Vertical bar** for screen-edge layouts
 
 ### Sidebars and widgets (Material ii)
 
@@ -165,13 +168,13 @@ Right sidebar:
 
 ### Tools
 
-- **Workspace overview**: adapted for Niri's scrolling model, with app search and calculator
+- **Workspace overview**: adapted for niri's scrolling model, with app search and calculator
 - **Dashboard hub**: configurable three-column overlay with agenda, notifications, todo, notes, media and weather
 - **Workspace edge strip**: hover rail with live workspace previews and drag-to-reorder
-- **Window switcher**: an animated Alt-Tab across all workspaces, opt-in since Niri ships its own now
+- **Window switcher**: animated Alt-Tab across all workspaces, opt-in since niri ships its own
 - **Clipboard manager**: history with search and image preview
 - **Region tools**: screenshots, screen recording, OCR, reverse image search
-- **Cheatsheet**: keybind viewer pulled from your Niri config
+- **Cheatsheet**: keybind viewer pulled from your compositor config
 - **Media controls**: full MPRIS player with multiple layout presets
 - **On-screen display**: volume, brightness, and media OSD
 - **Song recognition**: Shazam-style identification via SongRec
@@ -183,8 +186,8 @@ Right sidebar:
 - **GameMode**: auto-disables effects for fullscreen apps
 - **Auto-updates**: `inir update` with rollback, migrations, and user change preservation
 - **Lock screen** and **session screen** (logout/reboot/shutdown/suspend)
-- **Polkit agent**, **on-screen keyboard**, **autostart manager** backed by niri's own startup file
-- **Kira**: pixel-art cat girl who wanders the screen edges, reacts to what you do, and has a chaos mode. Opt-in, separate ~32 MiB art pack under `./setup` › Extras
+- **Polkit agent**, **on-screen keyboard**, **autostart manager** backed by the compositor's own startup file
+- **Kira**: opt-in pixel-art mascot who wanders the screen edges and reacts to what you do. Off by default; the ~32 MiB art pack is a separate download under `./setup` › Extras
 - **15 languages** with auto-detection
 - **Night light**: scheduled or manual
 - **Weather**: Open-Meteo, supports GPS, manual coordinates, or city name
@@ -205,7 +208,8 @@ cd inir
 ./setup install -y    # automatic, no questions asked
 ```
 
-The installer handles dependencies, system config and theming. After install, run `inir run` to start the shell, or log out and back in.
+The installer handles dependencies, system config and theming. After install, run
+`inir run` to start the shell, or log out and back in.
 
 ```bash
 inir run                        # launch the shell
@@ -215,7 +219,7 @@ inir doctor                     # auto-diagnose and fix
 inir update                     # pull + migrate + restart
 ```
 
-Other ways in, if `./setup install` isn't what you want:
+Other entry points:
 
 ```bash
 ./setup                 # TUI menu, pick what you want
@@ -223,7 +227,12 @@ sudo make install       # system-wide instead of your home
 ./setup rollback        # undo the last update
 ```
 
-**Distros:** Arch gets the automated installer. Everything else installs by hand, the [package list](https://github.com/snowarch/inir/wiki/PACKAGES) tells you what you need.
+**Distros.** Arch is the primary target and the best tested. Debian and Fedora have
+automated dependency installers; anything else falls back to a guided generic path that
+installs what it can and tells you the rest — the
+[package list](https://github.com/snowarch/inir/wiki/PACKAGES) covers every dependency.
+NixOS is supported experimentally through the flake in this repo, which exposes a package
+plus NixOS and Home Manager modules; see [NixOS](docs/NIXOS.md).
 
 ---
 
@@ -237,7 +246,7 @@ sudo make install       # system-wide instead of your home
 | <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> | OCR a region |
 | <kbd>Super</kbd> + <kbd>,</kbd> | Settings |
 | <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd> | Switch panel family |
-| <kbd>Super</kbd> + <kbd>/</kbd> | Cheatsheet, in case you forget the rest |
+| <kbd>Super</kbd> + <kbd>/</kbd> | Cheatsheet |
 
 Full list: [Keybinds](https://github.com/snowarch/inir/wiki/KEYBINDS)
 
@@ -245,7 +254,8 @@ Full list: [Keybinds](https://github.com/snowarch/inir/wiki/KEYBINDS)
 
 ## Wallpapers
 
-15 wallpapers ship bundled. For more, check [iNiR-Walls](https://github.com/snowarch/iNiR-Walls), a curated collection that works well with the Material You pipeline.
+15 wallpapers ship bundled. For more, see [iNiR-Walls](https://github.com/snowarch/iNiR-Walls),
+a curated collection chosen to work well with the Material You pipeline.
 
 ---
 
@@ -261,6 +271,7 @@ Everything user-facing lives in the [Wiki](https://github.com/snowarch/inir/wiki
 | [IPC](https://github.com/snowarch/inir/wiki/IPC) | Targets you can bind or script |
 | [Packages](https://github.com/snowarch/inir/wiki/PACKAGES) | Every dependency and why it's there |
 | [Limitations](https://github.com/snowarch/inir/wiki/LIMITATIONS) | What's known broken, and workarounds |
+| [Compositors](docs/COMPOSITORS.md) | How niri, mango and Hyprland are integrated |
 | [Architecture](ARCHITECTURE.md) | How the code is put together |
 
 ---
@@ -271,17 +282,19 @@ Everything user-facing lives in the [Wiki](https://github.com/snowarch/inir/wiki
 inir logs                       # check recent runtime logs
 inir restart                    # restart the active runtime
 inir repair                     # doctor + restart + filtered log check
-./setup doctor                  # auto-diagnose and fix common problems
+inir doctor                     # auto-diagnose and fix common problems
 ./setup rollback                # undo the last update
 ```
 
-Check [Limitations](https://github.com/snowarch/inir/wiki/LIMITATIONS) before opening an issue. If you'd rather just ask someone, Discord is faster.
+Check [Limitations](https://github.com/snowarch/inir/wiki/LIMITATIONS) before opening an
+issue. Discord is usually faster for questions.
 
 ---
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, code patterns, and pull request guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, code patterns, and pull
+request guidelines.
 
 ---
 
@@ -290,15 +303,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, code patterns, and
 - [**end-4**](https://github.com/end-4/dots-hyprland): illogical-impulse, the Hyprland dots iNiR forked from
 - [**Gakuseei**](https://github.com/Gakuseei): [Ricelin](https://github.com/Gakuseei/Ricelin), where the pill bar and the washi and flame look come from
 - [**Quickshell**](https://quickshell.outfoxxed.me/): the framework this runs on
-- [**Niri**](https://github.com/YaLTeR/niri): the compositor it's built for
+- [**niri**](https://github.com/YaLTeR/niri) and [**mango**](https://github.com/DreamMaoMao/mango): the compositors it targets
 
 GPL-3.0, same as end-4's dots. Copyright (C) 2025-2026 snowarch.
-
----
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/snowarch/inir-mascot/main/inir-mascot-hero-banner.png" alt="iNiR mascot leaning on the iNiR logotype" width="720">
-</p>
 
 ---
 
