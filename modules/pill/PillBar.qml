@@ -68,7 +68,7 @@ Scope {
     }
 
     function focusedScreenName() {
-        const focused = CompositorService.isNiri ? NiriService.currentOutput : (Hyprland.focusedMonitor?.name ?? "");
+        const focused = CompositorService.focusedMonitorName;
         if (focused.length > 0 && root.targetScreens.some(screen => screen.name === focused))
             return focused;
         return root.targetScreens.length > 0 ? root.targetScreens[0].name : "";

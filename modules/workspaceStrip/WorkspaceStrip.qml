@@ -276,6 +276,10 @@ Scope {
                 }
                 if (CompositorService.isHyprland)
                     return (Hyprland.workspaces.values ?? []).slice().sort((a, b) => (a?.id ?? 0) - (b?.id ?? 0))
+                if (CompositorService.isMango)
+                    return (HyprlandData.workspaces ?? [])
+                        .filter(w => screenName.length === 0 || w.monitor === screenName)
+                        .slice().sort((a, b) => (a?.id ?? 0) - (b?.id ?? 0))
                 return []
             }
 
@@ -339,8 +343,8 @@ Scope {
                     const id = ws?.id ?? 0
                     if (id > 0) NiriService.switchToWorkspaceById(id)
                     else NiriService.switchToWorkspace(ws?.idx ?? index + 1)
-                } else if (CompositorService.isHyprland) {
-                    Hyprland.dispatch(`workspace ${ws?.id ?? index + 1}`)
+                } else {
+                    CompositorService.switchToWorkspace(ws?.id ?? index + 1)
                 }
                 dismiss()
             }
@@ -384,8 +388,8 @@ Scope {
                             const id = ws?.id ?? 0
                             if (id > 0) NiriService.switchToWorkspaceById(id)
                             else NiriService.switchToWorkspace(ws?.idx ?? (wi + 1))
-                        } else if (CompositorService.isHyprland) {
-                            Hyprland.dispatch(`workspace ${ws?.id ?? (wi + 1)}`)
+                        } else {
+                            CompositorService.switchToWorkspace(ws?.id ?? (wi + 1))
                         }
                         break
                     }
@@ -396,8 +400,7 @@ Scope {
             function focusWindow(win): void {
                 if (win === null) return
                 if (CompositorService.isNiri) NiriService.focusWindow(win.id)
-                else if (CompositorService.isHyprland)
-                    Hyprland.dispatch(`focuswindow address:0x${(win.address ?? "").replace(/^0x/, "")}`)
+                else CompositorService.focusWindowByRef(win.address)
                 dismiss()
             }
 
@@ -406,8 +409,7 @@ Scope {
             function closeWindow(win): void {
                 if (win === null) return
                 if (CompositorService.isNiri) NiriService.closeWindow(win.id)
-                else if (CompositorService.isHyprland)
-                    Hyprland.dispatch(`closewindow address:0x${(win.address ?? "").replace(/^0x/, "")}`)
+                else CompositorService.closeWindowByRef(win.address)
             }
 
             // Move a window to another workspace without stealing focus, so the
@@ -421,9 +423,8 @@ Scope {
                     const id = ws?.id ?? 0
                     if (id > 0) NiriService.moveWindowToWorkspaceById(win.id, id, false)
                     else NiriService.moveWindowToWorkspace(win.id, ws?.idx ?? index + 1, false)
-                } else if (CompositorService.isHyprland) {
-                    const id = ws?.id ?? index + 1
-                    Hyprland.dispatch(`movetoworkspacesilent ${id},address:0x${(win.address ?? "").replace(/^0x/, "")}`)
+                } else {
+                    CompositorService.moveWindowToWorkspaceSilent(win.address, ws?.id ?? index + 1)
                 }
             }
 
@@ -441,8 +442,8 @@ Scope {
                     const lastId = last?.id ?? 0
                     if (lastId > 0) NiriService.moveWindowToWorkspaceById(win.id, lastId, false)
                     else NiriService.moveWindowToWorkspace(win.id, (last?.idx ?? 0) + 1, false)
-                } else if (CompositorService.isHyprland) {
-                    Hyprland.dispatch(`movetoworkspacesilent empty,address:0x${(win.address ?? "").replace(/^0x/, "")}`)
+                } else {
+                    CompositorService.moveWindowToEmptyWorkspaceSilent(win.address)
                 }
             }
 

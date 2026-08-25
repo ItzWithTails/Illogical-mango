@@ -153,6 +153,12 @@ PanelWindow {
         if (root.useNiri)
             return [];
 
+        // hyprlandMonitor is pinned to null above, and mango exposes no
+        // layer-shell introspection at all, so there is no monitor to key the
+        // layer map by. Dereferencing it threw on every non-niri compositor.
+        if (!root.hyprlandMonitor || !root.layers)
+            return [];
+
         const layersOfThisMonitor = root.layers[root.hyprlandMonitor.name]
         const topLayers = layersOfThisMonitor?.levels["2"]
         if (!topLayers) return [];

@@ -26,9 +26,9 @@ Scope {
             property bool _presentedOpen: false
             property string searchingText: ""
             readonly property HyprlandMonitor monitor: CompositorService.isHyprland ? Hyprland.monitorFor(root.screen) : null
-            property bool monitorIsFocused: CompositorService.isHyprland 
+            property bool monitorIsFocused: CompositorService.isHyprland
                 ? (Hyprland.focusedMonitor?.id == monitor?.id)
-                : (NiriService.currentOutput === root.screen?.name)
+                : (CompositorService.focusedMonitorName === root.screen?.name)
             readonly property bool activeScreenOnly: Config.options?.overview?.activeScreenOnly ?? true
             readonly property bool isTargetOutput:
                 GlobalStates.overviewPresentationOutput === (root.modelData?.name ?? "")
@@ -253,11 +253,10 @@ Scope {
                         workspace.output === screenName && workspace.idx === targetIdx)
                     if (targetWorkspace)
                         NiriService.switchToWorkspaceById(targetWorkspace.id)
-                } else if (CompositorService.isHyprland) {
+                } else {
                     if (!root.isTargetOutput)
                         return;
-                    const wsNumber = ov.switchWorkspaceIndex;
-                    Hyprland.dispatch(`workspace ${wsNumber}`);
+                    CompositorService.switchToWorkspace(ov.switchWorkspaceIndex);
                 }
             }
 
@@ -371,7 +370,7 @@ Scope {
                                 if (currentIndex > 0)
                                     NiriService.switchToWorkspaceById(workspaces[currentIndex - 1].id)
                             } else {
-                                Hyprland.dispatch("workspace r-1");
+                                CompositorService.switchWorkspaceRelative(-1);
                             }
                         }
                     } else if (event.key === Qt.Key_Right) {
@@ -385,7 +384,7 @@ Scope {
                                 if (currentIndex >= 0 && currentIndex < workspaces.length - 1)
                                     NiriService.switchToWorkspaceById(workspaces[currentIndex + 1].id)
                             } else {
-                                Hyprland.dispatch("workspace r+1");
+                                CompositorService.switchWorkspaceRelative(1);
                             }
                         }
                     }

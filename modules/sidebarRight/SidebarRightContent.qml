@@ -88,8 +88,8 @@ Item {
         root.reloadButtonEnabled = false;
         reloadButtonCooldown.restart();
 
-        if (CompositorService.isHyprland) {
-            Hyprland.dispatch("reload");
+        if (CompositorService.isHyprland || CompositorService.isMango) {
+            CompositorService.reloadCompositorConfig();
         } else if (CompositorService.isNiri) {
             Quickshell.execDetached(["/usr/bin/niri", "msg", "action", "load-config-file"]);
         }

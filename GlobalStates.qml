@@ -259,10 +259,7 @@ Singleton {
     // follows the compositor and only falls back when focus cannot be resolved.
     readonly property var focusedScreen: {
         let name = ""
-        if (CompositorService.isNiri)
-            name = NiriService.currentOutput ?? ""
-        else if (CompositorService.isHyprland)
-            name = Hyprland.focusedMonitor?.name ?? ""
+        name = CompositorService.focusedMonitorName
         return Quickshell.screens.find(screen => (screen?.name ?? "") === name)
             ?? root.primaryScreen
             ?? Quickshell.screens[0]

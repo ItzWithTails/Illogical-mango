@@ -15,9 +15,11 @@ WSettingsPage {
     settingsPageIndex: 9
     pageTitle: Translation.tr("Shortcuts")
     pageIcon: "keyboard"
-    pageDescription: Translation.tr("Keyboard shortcuts from Niri config")
+    pageDescription: Translation.tr("Keyboard shortcuts from your compositor config")
     
-    readonly property var keybinds: CompositorService.isNiri ? NiriKeybinds.keybinds : null
+    readonly property var keybinds: CompositorService.isNiri ? NiriKeybinds.keybinds
+        : (CompositorService.isMango ? MangoKeybinds.keybinds : null)
+    readonly property bool keybindsSupported: CompositorService.isNiri || CompositorService.isMango
     readonly property var categories: keybinds?.children ?? []
     
     property var keySubstitutions: ({
@@ -29,7 +31,7 @@ WSettingsPage {
     
     // Status card
     WSettingsCard {
-        visible: CompositorService.isNiri
+        visible: root.keybindsSupported
         
         RowLayout {
             Layout.fillWidth: true
@@ -65,9 +67,9 @@ WSettingsPage {
     }
     
     WSettingsInfoBar {
-        visible: !CompositorService.isNiri
+        visible: !root.keybindsSupported
         severity: WSettingsInfoBar.Severity.Warning
-        message: Translation.tr("Shortcuts are only available when running on Niri compositor.")
+        message: Translation.tr("Shortcuts are only available on the Niri and mango compositors.")
     }
     
     // Categories

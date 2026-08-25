@@ -161,6 +161,11 @@ Item {
     // Scroll behavior: "workspace" = switch workspaces, "column" = cycle windows left/right in same workspace
     readonly property bool columnMode: root.scrollBehavior === "column" && CompositorService.isNiri
 
+    // mango: this bar instance's output name, used to pick the right monitor's
+    // active tag (mango tags are per-monitor, so the global focused tag is wrong
+    // on a multi-head setup).
+    readonly property string mangoScreenName: root.QsWindow.window?.screen?.name ?? ""
+
     readonly property int currentWorkspaceNumber: {
         if (CompositorService.isNiri) {
             if (root.perMonitor) {
@@ -169,14 +174,28 @@ Item {
             }
             return NiriService.getCurrentWorkspaceNumber()
         }
+        if (CompositorService.isMango) {
+            const mon = MangoService.outputs?.[root.mangoScreenName]
+                ?? MangoService.outputs?.[MangoService.currentOutput]
+            const activeTags = mon?.active_tags ?? []
+            return activeTags.length > 0 ? activeTags[0] : 1
+        }
         return monitor?.activeWorkspace?.id || 1
     }
     
     // Dynamic workspace count: use actual workspaces from Niri, or fixed count
-    readonly property bool dynamicCount: root.configuredDynamicCount && CompositorService.isNiri === true
+    readonly property bool dynamicCount: root.configuredDynamicCount
+        && (CompositorService.isNiri === true || CompositorService.isMango === true)
     readonly property int actualWorkspaceCount: {
         if (!dynamicCount)
             return root.configuredWorkspaceCount
+        if (CompositorService.isMango) {
+            // mango has a fixed tag count per monitor (config.tag_num), reported
+            // on every monitor snapshot.
+            const mon = MangoService.outputs?.[root.mangoScreenName]
+                ?? MangoService.outputs?.[MangoService.currentOutput]
+            return Math.max(mon?.tag_num ?? root.configuredWorkspaceCount, 1)
+        }
         // Niri: count workspaces on this output
         return Math.max(root.outputWorkspaces.length, 1)
     }
@@ -271,6 +290,17 @@ Item {
                 if (!ws) return false
                 return occupiedWorkspaceIds.has(ws.id)
             })
+        } else if (CompositorService.isMango) {
+            // mango reports client_count per tag, per monitor — no need to walk
+            // the window list.
+            const mon = MangoService.outputs?.[root.mangoScreenName]
+                ?? MangoService.outputs?.[MangoService.currentOutput]
+            const tags = mon?.tags ?? []
+            const base = workspaceGroup * root.workspacesShown
+            workspaceOccupied = Array.from({ length: root.workspacesShown }, (_, i) => {
+                const tag = tags.find(t => t.index === base + i + 1)
+                return (tag?.client_count ?? 0) > 0
+            })
         } else {
             workspaceOccupied = Array.from({ length: root.workspacesShown }, (_, i) => {
                 return Hyprland.workspaces.values.some(ws => ws.id === workspaceGroup * root.workspacesShown + i + 1);
@@ -311,6 +341,16 @@ Item {
             updateWorkspaceOccupied();
         }
     }
+    Connections {
+        target: MangoService
+        enabled: CompositorService.isMango
+        function onOutputsChanged() {
+            updateWorkspaceOccupied();
+        }
+        function onWindowsChanged() {
+            updateWorkspaceOccupied();
+        }
+    }
     onWorkspaceGroupChanged: {
         updateWorkspaceOccupied();
     }
@@ -328,8 +368,8 @@ Item {
         readonly property int wheelStepsRequired: root.scrollSteps
         
         onPressed: (event) => {
-            if (event.button === Qt.BackButton && CompositorService.isHyprland) {
-                Hyprland.dispatch(`togglespecialworkspace`);
+            if (event.button === Qt.BackButton) {
+                CompositorService.toggleScratchpad();
             }
         }
         
@@ -393,8 +433,8 @@ Item {
                             root.switchToSlot(target)
                     }
                 }
-            } else if (CompositorService.isHyprland) {
-                Hyprland.dispatch(direction > 0 ? `workspace r+1` : `workspace r-1`)
+            } else {
+                CompositorService.switchWorkspaceRelative(direction)
             }
         }
     }
@@ -524,8 +564,8 @@ Item {
                 onPressed: {
                     if (CompositorService.isNiri) {
                         root.switchToSlot(workspaceValue)
-                    } else if (CompositorService.isHyprland) {
-                        Hyprland.dispatch(`workspace ${workspaceValue}`)
+                    } else {
+                        CompositorService.switchToWorkspace(workspaceValue)
                     }
                 }
                 width: vertical ? undefined : workspaceButtonWidth
@@ -535,7 +575,7 @@ Item {
                     id: workspaceButtonBackground
                     implicitWidth: workspaceButtonWidth
                     implicitHeight: workspaceButtonWidth
-                    readonly property var niriWorkspace: CompositorService.isNiri 
+                    readonly property var niriWorkspace: CompositorService.isNiri
                         ? root.workspaceForSlot(button.workspaceValue)
                         : null
                     property var biggestWindow: {
@@ -545,12 +585,13 @@ Item {
                             if (wins.length === 0) return null
                             return wins.find(w => w.is_focused) || wins[0]
                         } else {
+                            // Hyprland natively, mango via the HyprlandData compat shim.
                             return HyprlandData.biggestWindowForWorkspace(button.workspaceValue)
                         }
                     }
                     property var mainAppIconSource: {
-                        const appClass = CompositorService.isNiri 
-                            ? (biggestWindow?.app_id || biggestWindow?.appId) 
+                        const appClass = CompositorService.isNiri
+                            ? (biggestWindow?.app_id || biggestWindow?.appId)
                             : biggestWindow?.class
                         return AppSearch.getIconSource(appClass)
                     }

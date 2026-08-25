@@ -63,7 +63,6 @@ check_dependencies() {
     # installed to avoid user confusion when things silently don't work.
     local cmds=(
         "qs:Quickshell"
-        "niri:Niri"
         "nmcli:NetworkManager"
         "wpctl:WirePlumber"
         "jq:jq"
@@ -114,6 +113,17 @@ check_dependencies() {
     )
 
     # Check required commands
+    # The compositor is the one dependency with alternatives: iNiR runs on
+    # niri, mango or Hyprland. Requiring `niri` unconditionally made doctor
+    # report a healthy mango system as broken — and, because doctor feeds
+    # doctor_missing_deps straight into the installer, it would then try to
+    # install niri over a working mango setup.
+    if ! command -v niri &>/dev/null \
+        && ! command -v mango &>/dev/null \
+        && ! command -v Hyprland &>/dev/null; then
+        cmds+=("niri:Niri")
+    fi
+
     for item in "${cmds[@]}"; do
         local cmd="${item%%:*}"
         local name="${item##*:}"
@@ -748,10 +758,17 @@ _try_install_font_package() {
 }
 
 check_niri_running() {
+    # iNiR runs on more than niri now, so report whichever supported
+    # compositor owns this session rather than failing everything that
+    # is not niri.
     if [[ -n "$NIRI_SOCKET" && -S "$NIRI_SOCKET" ]]; then
         doctor_pass "Niri compositor running"
+    elif [[ -n "${MANGO_INSTANCE_SIGNATURE:-}" && -S "${MANGO_INSTANCE_SIGNATURE}" ]]; then
+        doctor_pass "mango compositor running"
+    elif [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
+        doctor_pass "Hyprland compositor running"
     else
-        doctor_fail "Niri not detected (run inside Niri session)"
+        doctor_fail "No supported compositor detected (niri, mango or Hyprland)"
     fi
 }
 

@@ -52,8 +52,8 @@ MouseArea {
             } else if (CompositorService.isNiri) {
                 // Last resort: capture focused monitor (may be stale if overlay already took focus)
                 _capturedMonitor = NiriService.currentOutput ?? ""
-            } else if (CompositorService.isHyprland) {
-                _capturedMonitor = Hyprland.focusedMonitor?.name ?? ""
+            } else {
+                _capturedMonitor = CompositorService.focusedMonitorName
             }
         }
         Qt.callLater(() => {

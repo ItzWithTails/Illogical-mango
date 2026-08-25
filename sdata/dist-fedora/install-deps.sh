@@ -24,6 +24,36 @@ FEDORA_VERSION=$(rpm -E %fedora)
 tui_info "Detected Fedora ${FEDORA_VERSION}"
 
 #####################################################################################
+# Compositor detection
+#####################################################################################
+# iNiR runs on niri, mango or Hyprland. Installing niri unconditionally would
+# push a second compositor onto a machine that already has a working one, so
+# every niri step below is gated on this. Same rule as sdata/lib/doctor.sh.
+#
+# mango ships no Fedora package (not in the repos, no COPR) — it needs wlroots
+# and scenefx built from source first — so it is never auto-installed here;
+# install_mango_from_source() is opt-in via INSTALL_MANGO=true.
+have_compositor() {
+  command -v niri &>/dev/null \
+    || command -v mango &>/dev/null \
+    || command -v Hyprland &>/dev/null
+}
+
+detected_compositor() {
+  if command -v niri &>/dev/null; then echo "niri"
+  elif command -v mango &>/dev/null; then echo "mango"
+  elif command -v Hyprland &>/dev/null; then echo "Hyprland"
+  else echo ""
+  fi
+}
+
+INSTALL_NIRI=true
+if have_compositor; then
+  INSTALL_NIRI=false
+  log_success "Compositor already installed: $(detected_compositor) — skipping niri"
+fi
+
+#####################################################################################
 # Optional: install only a specific list of missing deps
 #####################################################################################
 if [[ -n "${ONLY_MISSING_DEPS:-}" ]]; then
@@ -64,6 +94,17 @@ if [[ -n "${ONLY_MISSING_DEPS:-}" ]]; then
   _fed_miss_pkgs=()
   read -r -a _fed_miss_cmds <<<"$ONLY_MISSING_DEPS"
   for cmd in "${_fed_miss_cmds[@]}"; do
+    # mango and its IPC client have no Fedora package; asking dnf for them just
+    # fails the whole transaction. Point at the source build instead.
+    if [[ "$cmd" == "mango" || "$cmd" == "mmsg" ]]; then
+      log_warning "'${cmd}' has no Fedora package — build mango from source (INSTALL_MANGO=true) or install it manually"
+      continue
+    fi
+    # Don't drag in niri when another supported compositor is already present.
+    if [[ "$cmd" == "niri" ]] && ! $INSTALL_NIRI; then
+      log_info "Skipping niri — $(detected_compositor) already installed"
+      continue
+    fi
     _fed_pkg="${cmd_to_pkg[$cmd]:-$cmd}"
     [[ " ${_fed_miss_pkgs[*]} " == *" ${_fed_pkg} "* ]] || _fed_miss_pkgs+=("$_fed_pkg")
   done
@@ -74,12 +115,14 @@ if [[ -n "${ONLY_MISSING_DEPS:-}" ]]; then
       *) v sudo dnf upgrade -y --refresh ;;
     esac
 
-    # quickshell and niri come from COPR on Fedora; ensure repos are enabled
-    if [[ " ${_fed_miss_pkgs[*]} " == *" quickshell " ]]; then
+    # quickshell and niri come from COPR on Fedora; ensure repos are enabled.
+    # Note the trailing '*' in each pattern: without it the match only fires
+    # when the package happens to be the LAST element of the array.
+    if [[ " ${_fed_miss_pkgs[*]} " == *" quickshell "* ]]; then
       dnf copr list --enabled 2>/dev/null | grep -q "errornointernet/quickshell" || \
         v sudo dnf copr enable -y errornointernet/quickshell
     fi
-    if [[ " ${_fed_miss_pkgs[*]} " == *" niri " ]]; then
+    if [[ " ${_fed_miss_pkgs[*]} " == *" niri "* ]]; then
       dnf copr list --enabled 2>/dev/null | grep -q "yalter/niri" || \
         v sudo dnf copr enable -y yalter/niri
     fi
@@ -118,10 +161,12 @@ if ! dnf copr list --enabled 2>/dev/null | grep -q "errornointernet/quickshell";
   }
 fi
 
-# Niri compositor
-if ! dnf copr list --enabled 2>/dev/null | grep -q "yalter/niri"; then
-  log_info "Enabling Niri COPR..."
-  v sudo dnf copr enable -y yalter/niri
+# Niri compositor — only when no supported compositor is installed yet
+if $INSTALL_NIRI; then
+  if ! dnf copr list --enabled 2>/dev/null | grep -q "yalter/niri"; then
+    log_info "Enabling Niri COPR..."
+    v sudo dnf copr enable -y yalter/niri
+  fi
 fi
 
 #####################################################################################
@@ -148,10 +193,7 @@ tui_info "Installing packages from repositories..."
 FEDORA_CORE_PKGS=(
   # Quickshell (from COPR - no compilation needed!)
   quickshell
-  
-  # Niri compositor (from COPR)
-  niri
-  
+
   # Build tools (needed for Python packages like dbus-python, pycairo, pygobject)
   gcc
   gcc-c++
@@ -326,8 +368,14 @@ FEDORA_FONT_PKGS=(
 installflags=""
 $ask || installflags="-y --skip-unavailable"
 
-# Install core packages
-log_info "Installing core packages (Quickshell + Niri)..."
+# Niri is appended rather than hardcoded in the list so an existing
+# mango/Hyprland install is never overwritten with a second compositor.
+if $INSTALL_NIRI; then
+  FEDORA_CORE_PKGS+=(niri)
+  log_info "Installing core packages (Quickshell + Niri)..."
+else
+  log_info "Installing core packages (Quickshell; compositor: $(detected_compositor))..."
+fi
 v sudo dnf install $installflags "${FEDORA_CORE_PKGS[@]}"
 
 # Install Qt6 packages

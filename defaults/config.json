@@ -285,7 +285,7 @@
             }
         },
         "shellScale": 1.0,
-        "iconTheme": "WhiteSur-dark",
+        "iconTheme": "breeze-dark",
         "dockIconTheme": "",
         "desaturation": {
             "enable": false,

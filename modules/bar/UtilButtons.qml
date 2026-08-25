@@ -169,15 +169,18 @@ Item {
             }
         }
 
-        // Keyboard layout switch (Niri only)
+        // Keyboard layout switch. Offered on any compositor that exposes more
+        // than one layout, not just niri.
         Loader {
+            readonly property bool multipleLayouts: CompositorService.isNiri
+                ? NiriService.hasMultipleKeyboardLayouts
+                : (CompositorService.isMango ? MangoService.hasMultipleKeyboardLayouts : false)
             active: (Config.options?.bar?.utilButtons?.showKeyboardLayoutSwitch ?? false)
-                    && CompositorService.isNiri
-                    && NiriService.hasMultipleKeyboardLayouts
+                    && multipleLayouts
             visible: active
             sourceComponent: CircleUtilButton {
                 Layout.alignment: Qt.AlignVCenter
-                onClicked: NiriService.switchLayout()
+                onClicked: CompositorService.switchKeyboardLayout()
                 Item {
                     anchors.fill: parent
                     MaterialSymbol {

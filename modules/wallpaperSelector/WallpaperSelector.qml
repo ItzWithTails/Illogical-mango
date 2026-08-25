@@ -55,9 +55,11 @@ Scope {
                 return GlobalStates.focusedScreen ?? GlobalStates.primaryScreen
             }
             readonly property HyprlandMonitor monitor: CompositorService.isHyprland ? Hyprland.monitorFor(panelWindow.screen) : null
-            property bool monitorIsFocused: CompositorService.isHyprland 
+            property bool monitorIsFocused: CompositorService.isHyprland
                 ? (Hyprland.focusedMonitor?.id == monitor?.id)
-                : (CompositorService.isNiri ? (panelWindow.screen?.name === NiriService.currentOutput) : true)
+                : (CompositorService.focusedMonitorName.length > 0
+                    ? panelWindow.screen?.name === CompositorService.focusedMonitorName
+                    : true)
 
             exclusionMode: ExclusionMode.Ignore
             WlrLayershell.namespace: "quickshell:wallpaperSelector"

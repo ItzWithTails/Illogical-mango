@@ -34,10 +34,20 @@ DockButton {
         : null
     readonly property int niriFocusedWindowId:
         Number(root.niriFocusedWindow?.id ?? -1)
+    // Same idea for mango: ask the compositor which client is focused rather
+    // than falling through to the appId+title key below, which cannot tell two
+    // windows of one app apart when their titles happen to match.
+    readonly property int mangoFocusedWindowId: CompositorService.isMango
+        ? Number(MangoService.activeWindow?.id ?? -1)
+        : -1
     readonly property string activeWindowKey: {
         if (CompositorService.isNiri)
             return root.niriFocusedWindowId >= 0
                 ? "niri:" + root.niriFocusedWindowId
+                : ""
+        if (CompositorService.isMango)
+            return root.mangoFocusedWindowId >= 0
+                ? "mango:" + root.mangoFocusedWindowId
                 : ""
         const active = activeToplevel
         if (!active)
@@ -55,6 +65,8 @@ DockButton {
             return ""
         if (toplevel.niriWindowId !== undefined && toplevel.niriWindowId !== null)
             return "niri:" + toplevel.niriWindowId
+        if (toplevel.mangoWindowId !== undefined && toplevel.mangoWindowId !== null)
+            return "mango:" + toplevel.mangoWindowId
         if (toplevel.address !== undefined && toplevel.address !== null && String(toplevel.address).length > 0)
             return "addr:" + toplevel.address
         if (toplevel.wayland?.appId !== undefined && toplevel.wayland?.appId !== null)

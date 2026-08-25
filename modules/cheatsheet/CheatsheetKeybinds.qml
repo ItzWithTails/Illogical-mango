@@ -12,7 +12,9 @@ import QtQuick.Controls
 StyledFlickable {
     id: root
 
-    readonly property var keybinds: CompositorService.isNiri ? NiriKeybinds.keybinds : HyprlandKeybinds.keybinds
+    readonly property var keybinds: CompositorService.isNiri ? NiriKeybinds.keybinds
+        : CompositorService.isMango ? MangoKeybinds.keybinds
+        : HyprlandKeybinds.keybinds
     readonly property var categories: keybinds?.children ?? []
     property string searchText: ""
     

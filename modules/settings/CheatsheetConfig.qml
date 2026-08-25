@@ -13,7 +13,9 @@ ContentPage {
     settingsPageName: Translation.tr("Shortcuts")
 
     // ── Data sources ────────────────────────────────────────────────────────
-    readonly property var keybinds: CompositorService.isNiri ? NiriKeybinds.keybinds : HyprlandKeybinds.keybinds
+    readonly property var keybinds: CompositorService.isNiri ? NiriKeybinds.keybinds
+        : CompositorService.isMango ? MangoKeybinds.keybinds
+        : HyprlandKeybinds.keybinds
     readonly property var categories: keybinds?.children ?? []
     readonly property bool hasEnrichedData: CompositorService.isNiri && NiriKeybinds.enrichedCategories.length > 0
     readonly property bool canEdit: CompositorService.isNiri
@@ -125,19 +127,26 @@ ContentPage {
 
     // ── Load status section ──────────────────────────────────────────────────
     SettingsCardSection {
+        id: bindsStatusSection
+
+        readonly property bool bindsLoaded: CompositorService.isMango
+            ? MangoKeybinds.loaded : NiriKeybinds.loaded
+        readonly property string bindsPath: CompositorService.isMango
+            ? MangoKeybinds.configPath : NiriKeybinds.configPath
+
         expanded: true
-        icon: NiriKeybinds.loaded ? "check_circle" : "info"
-        title: NiriKeybinds.loaded
+        icon: bindsStatusSection.bindsLoaded ? "check_circle" : "info"
+        title: bindsStatusSection.bindsLoaded
             ? Translation.tr("Keybinds loaded from config")
             : Translation.tr("Using default keybinds")
-        visible: CompositorService.isNiri
+        visible: CompositorService.isNiri || CompositorService.isMango
 
         SettingsGroup {
             StyledText {
                 Layout.fillWidth: true
-                text: NiriKeybinds.loaded
-                    ? NiriKeybinds.configPath
-                    : Translation.tr("Could not parse niri config, showing defaults")
+                text: bindsStatusSection.bindsLoaded
+                    ? bindsStatusSection.bindsPath
+                    : Translation.tr("Could not parse compositor config, showing defaults")
                 color: Appearance.colors.colSubtext
                 font.pixelSize: Appearance.font.pixelSize.smaller
                 wrapMode: Text.WordWrap

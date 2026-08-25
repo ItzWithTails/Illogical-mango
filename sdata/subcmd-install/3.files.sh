@@ -211,8 +211,14 @@ case "${SKIP_QUICKSHELL}" in
         ln -sf "${XDG_CONFIG_HOME}/systemd/user/inir.service" "$_wants_dir/inir.service"
         systemctl --user daemon-reload >/dev/null 2>&1 || true
         log_success "User inir.service enabled (wired to ${_comp_target})"
+      elif command -v mango &>/dev/null; then
+        # mango is not a systemd unit — it is started from a TTY or a display
+        # manager session, so there is nothing to hang a .wants link on. Its
+        # autostart comes from the `exec-once` line in the mango config
+        # installed above, which is why this is a success and not a warning.
+        log_success "mango detected — autostart handled by exec-once, not systemd"
       else
-        log_warning "No supported compositor detected (niri or Hyprland)"
+        log_warning "No supported compositor detected (niri, Hyprland or mango)"
         log_warning "inir.service not enabled — run 'inir service enable' from your compositor session"
       fi
     fi
@@ -263,6 +269,53 @@ esac
 # Install config files from dots/
 #####################################################################################
 tui_info "Installing config files..."
+
+# mango config
+#
+# Unlike the Niri path below, this never installs a whole compositor config.
+# mango reads exactly one file (~/.config/mango/config.conf, falling back to
+# /etc/mango/config.conf) with no merging, so writing our own would throw away
+# whatever window management the user already has. Instead we drop the iNiR
+# keybinds and autostart into a separate file and pull it in with one
+# `source-optional=` line, which mango ignores if the file ever disappears.
+case "${SKIP_MANGO}" in
+  true) sleep 0;;
+  *)
+    if [[ -f "defaults/mango/config.conf" ]] && command -v mango &>/dev/null; then
+      MANGO_DIR="${XDG_CONFIG_HOME}/mango"
+      MANGO_INIR="${MANGO_DIR}/inir.conf"
+      MANGO_MAIN="${MANGO_DIR}/config.conf"
+
+      mkdir -p "$MANGO_DIR"
+      install_file "defaults/mango/config.conf" "$MANGO_INIR"
+      log_success "mango keybinds installed (${MANGO_INIR})"
+
+      # mango only reads the user config when it exists; otherwise it uses the
+      # system one. Seed the user config from the system copy the first time so
+      # the source line has somewhere to live that we may safely edit.
+      if [[ ! -f "$MANGO_MAIN" ]]; then
+        if [[ -f /etc/mango/config.conf ]]; then
+          cp /etc/mango/config.conf "$MANGO_MAIN"
+          log_success "mango config seeded from /etc/mango/config.conf"
+        else
+          : > "$MANGO_MAIN"
+        fi
+      fi
+
+      if grep -q "mango/inir.conf" "$MANGO_MAIN"; then
+        log_success "mango already sources the iNiR config"
+      else
+        printf '\n# Added by iNiR: shell keybinds and autostart.\nsource-optional=%s\n' \
+          "$MANGO_INIR" >> "$MANGO_MAIN"
+        log_success "mango config now sources ${MANGO_INIR}"
+      fi
+
+      if command -v mmsg &>/dev/null && [[ -n "${MANGO_INSTANCE_SIGNATURE:-}" ]]; then
+        mmsg dispatch reload_config >/dev/null 2>&1 || true
+      fi
+    fi
+    ;;
+esac
 
 # Niri config
 case "${SKIP_NIRI}" in

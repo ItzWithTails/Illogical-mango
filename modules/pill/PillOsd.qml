@@ -76,7 +76,9 @@ Item {
             const ws = (NiriService.allWorkspaces ?? []).find(w => w.is_focused && w.output === root.screenName);
             return ws ? String(ws.idx) : "";
         }
-        const mons = Hyprland.monitors?.values ?? [];
+        const mons = CompositorService.isMango
+            ? (HyprlandData.monitors ?? [])
+            : (Hyprland.monitors?.values ?? []);
         for (let i = 0; i < mons.length; i++)
             if (mons[i].name === root.screenName)
                 return mons[i].activeWorkspace ? mons[i].activeWorkspace.name : "";

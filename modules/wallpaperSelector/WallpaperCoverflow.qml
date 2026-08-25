@@ -82,10 +82,8 @@ Scope {
         _lockedTarget = ""
         if (CompositorService.isNiri)
             _capturedMonitor = NiriService.currentOutput ?? ""
-        else if (CompositorService.isHyprland)
-            _capturedMonitor = Hyprland.focusedMonitor?.name ?? ""
         else
-            _capturedMonitor = ""
+            _capturedMonitor = CompositorService.focusedMonitorName
     }
 
     // ─── Selection logic (mirrors WallpaperSelectorContent.selectWallpaperPath) ───

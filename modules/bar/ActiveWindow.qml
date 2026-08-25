@@ -28,6 +28,22 @@ Item {
         return null
     }
 
+    // mango: focused client, plus this output's active tag for the idle label.
+    readonly property string mangoScreenName: root.QsWindow.window?.screen?.name ?? ""
+    property var mangoFocusedWindow: {
+        if (!CompositorService.isMango)
+            return null
+        return MangoService.activeWindow ?? null
+    }
+    readonly property int mangoActiveTag: {
+        if (!CompositorService.isMango)
+            return 1
+        const mon = MangoService.outputs?.[root.mangoScreenName]
+            ?? MangoService.outputs?.[MangoService.currentOutput]
+        const activeTags = mon?.active_tags ?? []
+        return activeTags.length > 0 ? activeTags[0] : 1
+    }
+
     function shortenText(str, maxLen) {
         if (!str)
             return ""
@@ -47,6 +63,13 @@ Item {
             return Translation.tr("Desktop")
         }
 
+        if (CompositorService.isMango) {
+            const w = mangoFocusedWindow
+            if (w)
+                return shortenText(w.appid || w.app_id || Translation.tr("Desktop"), 40)
+            return Translation.tr("Desktop")
+        }
+
         if (root.focusingThisMonitor && root.activeWindow?.activated && root.biggestWindow) {
             return shortenText(root.activeWindow?.appId || "", 40)
         }
@@ -63,6 +86,13 @@ Item {
             }
             const wsNum = NiriService.getCurrentWorkspaceNumber()
             return shortenText(`${Translation.tr("Workspace")} ${wsNum}`, 80)
+        }
+
+        if (CompositorService.isMango) {
+            const w = mangoFocusedWindow
+            if (w && w.title)
+                return shortenText(w.title, 80)
+            return shortenText(`${Translation.tr("Workspace")} ${root.mangoActiveTag}`, 80)
         }
 
         if (root.focusingThisMonitor && root.activeWindow?.activated && root.biggestWindow) {

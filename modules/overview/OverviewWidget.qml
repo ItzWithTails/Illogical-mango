@@ -14,15 +14,30 @@ import Quickshell.Hyprland
 Item {
     id: root
     required property var panelWindow
-    readonly property HyprlandMonitor monitor: Hyprland.monitorFor(panelWindow.screen)
+    readonly property HyprlandMonitor monitor: CompositorService.isHyprland
+        ? Hyprland.monitorFor(panelWindow.screen)
+        : null
     readonly property var toplevels: ToplevelManager.toplevels
     readonly property int workspacesShown: (Config.options?.overview?.rows ?? 2) * (Config.options?.overview?.columns ?? 5)
-    readonly property int workspaceGroup: Math.floor((monitor.activeWorkspace?.id - 1) / workspacesShown)
-    property bool monitorIsFocused: (Hyprland.focusedMonitor?.name == monitor.name)
+    readonly property int workspaceGroup: Math.floor(((root.activeWorkspaceId ?? 1) - 1) / workspacesShown)
+    property bool monitorIsFocused: CompositorService.isHyprland
+        ? (Hyprland.focusedMonitor?.name == monitor?.name)
+        : !!root.monitorData?.focused
     property var windows: HyprlandData.windowList
     property var windowByAddress: HyprlandData.windowByAddress
     property var windowAddresses: HyprlandData.addresses
-    property var monitorData: HyprlandData.monitors.find(m => m.id === root.monitor?.id)
+
+    // Geometry source. On Hyprland the typed HyprlandMonitor resolves the
+    // screen; off it (mango) that type is always null, so match HyprlandData's
+    // own monitor list by output name instead. Everything downstream reads
+    // monitorData, which both paths populate identically.
+    property var monitorData: CompositorService.isHyprland
+        ? HyprlandData.monitors.find(m => m.id === root.monitor?.id)
+        : HyprlandData.monitors.find(m => m.name === panelWindow.screen?.name)
+    readonly property real monitorScale: root.monitorData?.scale ?? 1
+    readonly property real monitorWidth: root.monitorData?.width ?? 0
+    readonly property real monitorHeight: root.monitorData?.height ?? 0
+    readonly property var activeWorkspaceId: root.monitorData?.activeWorkspace?.id ?? 1
     property real scale: Config.options?.overview?.scale ?? 0.18
     property color activeBorderColor: Appearance.angelEverywhere ? Appearance.angel.colPrimary
         : Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colSecondary
@@ -35,11 +50,11 @@ Item {
     }
 
     property real baseWorkspaceWidth: (monitorData?.transform % 2 === 1) ?
-        ((monitor.height - monitorData?.reserved[0] - monitorData?.reserved[2]) * root.scale / monitor.scale) :
-        ((monitor.width - monitorData?.reserved[0] - monitorData?.reserved[2]) * root.scale / monitor.scale)
+        ((root.monitorHeight - monitorData?.reserved[0] - monitorData?.reserved[2]) * root.scale / root.monitorScale) :
+        ((root.monitorWidth - monitorData?.reserved[0] - monitorData?.reserved[2]) * root.scale / root.monitorScale)
     property real baseWorkspaceHeight: (monitorData?.transform % 2 === 1) ?
-        ((monitor.width - monitorData?.reserved[1] - monitorData?.reserved[3]) * root.scale / monitor.scale) :
-        ((monitor.height - monitorData?.reserved[1] - monitorData?.reserved[3]) * root.scale / monitor.scale)
+        ((root.monitorWidth - monitorData?.reserved[1] - monitorData?.reserved[3]) * root.scale / root.monitorScale) :
+        ((root.monitorHeight - monitorData?.reserved[1] - monitorData?.reserved[3]) * root.scale / root.monitorScale)
     property real workspaceImplicitWidth: {
         const cols = Config.options.overview.columns;
         const spacing = root.workspaceSpacing;
@@ -59,7 +74,7 @@ Item {
         : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.verysmall
 
     property real workspaceNumberMargin: 80
-    property real workspaceNumberSize: 250 * monitor.scale
+    property real workspaceNumberSize: 250 * root.monitorScale
     property bool showWorkspaceNumber: !Config.options.overview
                                        || Config.options.overview.showWorkspaceNumbers !== false
     property int workspaceZ: 0
@@ -82,7 +97,7 @@ Item {
     // Scroll del mouse para subir/bajar de workspace en Hyprland
     WheelHandler {
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-        enabled: CompositorService.isHyprland
+        enabled: CompositorService.isHyprland || CompositorService.isMango
         onWheel: (event) => {
             let deltaY = event.angleDelta.y
             if (deltaY === 0)
@@ -98,9 +113,9 @@ Item {
             root.wheelStepCounter = 0
 
             if (deltaY < 0)
-                Hyprland.dispatch(`workspace r+1`)
+                CompositorService.switchWorkspaceRelative(1)
             else if (deltaY > 0)
-                Hyprland.dispatch(`workspace r-1`)
+                CompositorService.switchWorkspaceRelative(-1)
         }
     }
 
@@ -210,8 +225,7 @@ Item {
                                 onPressed: {
                                     if (root.draggingTargetWorkspace === -1) {
                                         GlobalStates.overviewOpen = false
-                                        if (CompositorService.isHyprland)
-                                            Hyprland.dispatch(`workspace ${workspace.workspaceValue}`)
+                                        CompositorService.switchToWorkspace(workspace.workspaceValue)
                                     }
                                 }
                             }
@@ -247,10 +261,17 @@ Item {
                 values: {
                     // console.log(JSON.stringify(ToplevelManager.toplevels.values.map(t => t), null, 2))
                     return [...ToplevelManager.toplevels.values.filter((toplevel) => {
-                        const address = `0x${toplevel.HyprlandToplevel?.address}`
+                        const address = HyprlandData.addressForToplevel(toplevel)
                         var win = windowByAddress[address]
                         const inWorkspaceGroup = (root.workspaceGroup * root.workspacesShown < win?.workspace?.id && win?.workspace?.id <= (root.workspaceGroup + 1) * root.workspacesShown)
-                        return inWorkspaceGroup;
+                        if (!inWorkspaceGroup)
+                            return false
+                        // mango tag ids repeat per monitor, so the workspace id
+                        // alone cannot tell two outputs apart — match this
+                        // overview's own output too.
+                        if (CompositorService.isMango && root.monitorData !== undefined)
+                            return win?.monitor === root.monitorData?.id
+                        return true
                     })].reverse()
                 }
             }
@@ -259,11 +280,11 @@ Item {
                 required property var modelData
                 property int monitorId: windowData?.monitor
                 property var monitor: HyprlandData.monitors.find(m => m.id == monitorId)
-                property var address: `0x${modelData.HyprlandToplevel.address}`
+                property var address: HyprlandData.addressForToplevel(modelData)
                 toplevel: modelData
                 monitorData: this.monitor
                 scale: root.scale
-                widgetMonitor: HyprlandData.monitors.find(m => m.id == root.monitor.id)
+                widgetMonitor: root.monitorData
                 windowData: windowByAddress[address]
 
                 property bool atInitPosition: (initX == x && initY == y)
@@ -340,11 +361,19 @@ Item {
                         window.Drag.active = false
                         root.draggingFromWorkspace = -1
                         if (targetWorkspace !== -1 && targetWorkspace !== windowData?.workspace.id) {
-                            Hyprland.dispatch(`movetoworkspacesilent ${targetWorkspace}, address:${window.windowData?.address}`)
+                            CompositorService.moveWindowToWorkspaceSilent(window.windowData?.address, targetWorkspace)
                             updateWindowPosition.restart()
                         }
                         else {
                             if (!window.windowData.floating) {
+                                updateWindowPosition.restart()
+                                return
+                            }
+                            // Repositioning a floating window in place is Hyprland-only:
+                            // `movewindowpixel exact` takes an absolute target, while mango's
+                            // `movewin` only accepts relative deltas, so there is no faithful
+                            // equivalent. On mango the window simply snaps back.
+                            if (!CompositorService.isHyprland) {
                                 updateWindowPosition.restart()
                                 return
                             }
@@ -354,14 +383,14 @@ Item {
                         }
                     }
                     onClicked: (event) => {
-                        if (!windowData || !CompositorService.isHyprland) return;
+                        if (!windowData || CompositorService.isNiri) return;
 
                         if (event.button === Qt.LeftButton) {
                             GlobalStates.overviewOpen = false
-                            Hyprland.dispatch(`focuswindow address:${windowData.address}`)
+                            CompositorService.focusWindowByRef(windowData.address)
                             event.accepted = true
                         } else if (event.button === Qt.MiddleButton) {
-                            Hyprland.dispatch(`closewindow address:${windowData.address}`)
+                            CompositorService.closeWindowByRef(windowData.address)
                             event.accepted = true
                         }
                     }
@@ -375,7 +404,7 @@ Item {
 
                 Rectangle { // Focused workspace indicator
                     id: focusedWorkspaceIndicator
-                    property int activeWorkspaceInGroup: monitor.activeWorkspace?.id - (root.workspaceGroup * root.workspacesShown)
+                    property int activeWorkspaceInGroup: root.activeWorkspaceId - (root.workspaceGroup * root.workspacesShown)
                     property int rowIndex: Math.floor((activeWorkspaceInGroup - 1) / Config.options.overview.columns)
                     property int colIndex: (activeWorkspaceInGroup - 1) % Config.options.overview.columns
 

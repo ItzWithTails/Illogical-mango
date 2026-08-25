@@ -653,10 +653,10 @@ Singleton {
                 "wght": Math.max(100, Math.min(1000, Config.options?.appearance?.typography?.variableAxes?.wght ?? 300)),
             })
             property var numbers: ({
-                "wght": 400,
+                "wght": 450,
             })
-            property var title: ({
-                "wght": root.regaliaEverywhere ? 650 : 900,
+            property var title: ({ // Slightly bold weight for title
+                "wght": root.regaliaEverywhere ? 650 : 550,
             })
         }
         property QtObject pixelSize: QtObject {

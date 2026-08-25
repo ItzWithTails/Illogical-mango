@@ -392,8 +392,14 @@ Item {
         //     it's empty (means: no windows). Falling back to ToplevelManager
         //     would resurrect stale Wayland foreign-toplevel handles (ghosts) that
         //     don't release cleanly when an app closes (zen, electron, etc.).
-        //   • Off Niri (Hyprland / others): use sorted when populated, fall back
-        //     to ToplevelManager only as a last resort. There's no compositor-
+        //   • On mango: same deal — `watch all-clients` is the compositor's own
+        //     client list, so MangoService.sortToplevels() is authoritative and
+        //     already drops ghosts. It must NOT go through the cross-check
+        //     below: enriched mango items carry a `mango:<id>` _sourceKey that
+        //     can never match the raw ToplevelManager `appId::title` keys, so
+        //     cross-checking would drop every running window.
+        //   • Off Niri/mango (Hyprland / others): use sorted when populated, fall
+        //     back to ToplevelManager only as a last resort. There's no compositor-
         //     authoritative source to validate against on those.
         // Note: on Niri there is a sub-second startup gap where `isNiri` is
         // already true but `windows` (and therefore `sortedToplevels`) is
@@ -404,7 +410,7 @@ Item {
         const tmToplevels = ToplevelManager.toplevels.values;
         const sorted = CompositorService.sortedToplevels;
         const sortedHasItems = sorted && sorted.length > 0;
-        const niriAuthoritative = CompositorService.isNiri;
+        const niriAuthoritative = CompositorService.isNiri || CompositorService.isMango;
         const allToplevels = niriAuthoritative
             ? (sorted ?? [])
             : (sortedHasItems ? sorted : tmToplevels);

@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Hyprland
 
@@ -11,9 +12,11 @@ Singleton {
 
     property bool isHyprland: false
     property bool isNiri: false
+    property bool isMango: false
 
     readonly property string hyprlandSignature: Quickshell.env("HYPRLAND_INSTANCE_SIGNATURE")
     readonly property string niriSocket: Quickshell.env("NIRI_SOCKET")
+    readonly property string mangoSignature: Quickshell.env("MANGO_INSTANCE_SIGNATURE")
 
     property var sortedToplevels: []
 
@@ -135,6 +138,12 @@ Singleton {
         function onWindowOrderChanged() { root.scheduleSort() }
         function onActiveWindowChanged() { root.scheduleSort() }
     }
+    Connections {
+        target: MangoService
+        enabled: root.isMango && root.sortingActive
+        function onWindowOrderChanged() { root.scheduleSort() }
+        function onActiveWindowChanged() { root.scheduleSort() }
+    }
     Component.onCompleted: {
         detectCompositor()
     }
@@ -148,6 +157,9 @@ Singleton {
 
         if (isHyprland)
             return sortHyprlandToplevelsSafe()
+
+        if (isMango)
+            return MangoService.sortToplevels(ToplevelManager.toplevels.values)
 
         return Array.from(ToplevelManager.toplevels.values)
     }
@@ -319,6 +331,8 @@ Singleton {
             return NiriService.filterCurrentWorkspace(toplevels, screen)
         if (isHyprland)
             return filterHyprlandCurrentWorkspaceSafe(toplevels, screen)
+        if (isMango)
+            return MangoService.filterCurrentWorkspace(toplevels, screen)
         return toplevels
     }
 
@@ -384,6 +398,7 @@ Singleton {
         if (hyprlandSignature && hyprlandSignature.length > 0) {
             isHyprland = true
             isNiri = false
+            isMango = false
             console.info("CompositorService: Detected Hyprland")
             try {
                 Hyprland.refreshToplevels()
@@ -394,12 +409,22 @@ Singleton {
         if (niriSocket && niriSocket.length > 0) {
             isNiri = true
             isHyprland = false
+            isMango = false
             console.info("CompositorService: Detected Niri with socket:", niriSocket)
+            return
+        }
+
+        if (mangoSignature && mangoSignature.length > 0) {
+            isMango = true
+            isHyprland = false
+            isNiri = false
+            console.info("CompositorService: Detected mango with socket:", mangoSignature)
             return
         }
 
         isHyprland = false
         isNiri = false
+        isMango = false
     }
 
     function powerOffMonitors() {
@@ -407,6 +432,8 @@ Singleton {
             return NiriService.powerOffMonitors()
         if (isHyprland)
             return Hyprland.dispatch("dpms off")
+        if (isMango)
+            return MangoService.powerOffMonitors()
         console.warn("CompositorService: Cannot power off monitors, unknown compositor")
     }
 
@@ -415,6 +442,190 @@ Singleton {
             return NiriService.powerOnMonitors()
         if (isHyprland)
             return Hyprland.dispatch("dpms on")
+        if (isMango)
+            return MangoService.powerOnMonitors()
         console.warn("CompositorService: Cannot power on monitors, unknown compositor")
+    }
+
+    // ========== COMPOSITOR ACTIONS ==========
+    //
+    // Named actions instead of raw `Hyprland.dispatch("...")` strings at the
+    // call sites. Hyprland and mango disagree on more than spelling — mango
+    // addresses windows by numeric client id rather than by address, and has no
+    // equivalent for some Hyprland verbs — so a string translator would not be
+    // enough. Call sites state the intent; this maps it per compositor.
+    //
+    // `windowRef` is the address key used by HyprlandData.windowByAddress:
+    // "0x…" on Hyprland, "mango:<id>" on mango (see HyprlandData.addressForToplevel).
+
+    // Name of the output holding input focus, or "" when unknown. Most callers
+    // only ever wanted this one string out of Hyprland.focusedMonitor; reading
+    // that singleton directly yields nothing off Hyprland.
+    readonly property string focusedMonitorName: {
+        if (isNiri)
+            return NiriService.currentOutput ?? ""
+        if (isMango)
+            return MangoService.currentOutput ?? ""
+        if (isHyprland)
+            return Hyprland.focusedMonitor?.name ?? ""
+        return ""
+    }
+
+    function _mangoClientId(windowRef) {
+        if (typeof windowRef !== "string")
+            return null
+        if (!windowRef.startsWith("mango:"))
+            return null
+        const id = parseInt(windowRef.slice(6), 10)
+        return isNaN(id) ? null : id
+    }
+
+    // Hyprland addresses are hex and must carry the 0x prefix in a dispatch,
+    // but callers hold them in both forms. Normalise here so call sites can
+    // pass whatever they have instead of each doing its own string surgery
+    // (which used to mangle non-Hyprland refs into things like "0xmango:5").
+    function _hyprlandAddress(windowRef) {
+        const s = String(windowRef ?? "")
+        return s.startsWith("0x") ? s : `0x${s}`
+    }
+
+    function switchToWorkspace(workspaceNumber) {
+        if (isMango)
+            return MangoService.switchToWorkspace(workspaceNumber)
+        if (isHyprland)
+            return Hyprland.dispatch(`workspace ${workspaceNumber}`)
+        if (isNiri)
+            return NiriService.switchToWorkspace(workspaceNumber)
+    }
+
+    // delta > 0 moves right/next, delta < 0 moves left/previous.
+    function switchWorkspaceRelative(delta) {
+        if (isMango)
+            return delta > 0 ? MangoService.focusWorkspaceDown() : MangoService.focusWorkspaceUp()
+        if (isHyprland)
+            return Hyprland.dispatch(delta > 0 ? "workspace r+1" : "workspace r-1")
+        if (isNiri)
+            return delta > 0 ? NiriService.focusWorkspaceDown() : NiriService.focusWorkspaceUp()
+    }
+
+    function focusWindowByRef(windowRef) {
+        if (isMango) {
+            const id = _mangoClientId(windowRef)
+            return id === null ? false : MangoService.focusWindow(id)
+        }
+        if (isHyprland)
+            return Hyprland.dispatch(`focuswindow address:${_hyprlandAddress(windowRef)}`)
+    }
+
+    function closeWindowByRef(windowRef) {
+        if (isMango) {
+            const id = _mangoClientId(windowRef)
+            return id === null ? false : MangoService.closeWindow(id)
+        }
+        if (isHyprland)
+            return Hyprland.dispatch(`closewindow address:${_hyprlandAddress(windowRef)}`)
+    }
+
+    // Move a window to a workspace without following it there.
+    function moveWindowToWorkspaceSilent(windowRef, workspaceNumber) {
+        if (isMango) {
+            const id = _mangoClientId(windowRef)
+            if (id === null)
+                return false
+            return MangoService.dispatch("tagsilent," + workspaceNumber, id)
+        }
+        if (isHyprland)
+            return Hyprland.dispatch(`movetoworkspacesilent ${workspaceNumber},address:${_hyprlandAddress(windowRef)}`)
+    }
+
+    // Move a window to the first workspace that has no windows on it. Hyprland
+    // spells this "empty"; mango has no such keyword, so resolve it here.
+    function moveWindowToEmptyWorkspaceSilent(windowRef) {
+        if (isMango) {
+            const id = _mangoClientId(windowRef)
+            if (id === null)
+                return false
+            const mon = MangoService.outputs?.[MangoService.currentOutput]
+            const empty = (mon?.tags ?? []).find(t => (t.client_count ?? 0) === 0)
+            if (!empty)
+                return false
+            return MangoService.dispatch("tagsilent," + empty.index, id)
+        }
+        if (isHyprland)
+            return Hyprland.dispatch(`movetoworkspacesilent empty,address:${_hyprlandAddress(windowRef)}`)
+    }
+
+    function reloadCompositorConfig() {
+        if (isMango)
+            return MangoService.dispatch("reload_config")
+        if (isHyprland)
+            return Hyprland.dispatch("reload")
+    }
+
+    // Hyprland's special workspace is closest to mango's scratchpad: a hidden
+    // holding area toggled over the current view.
+    function toggleScratchpad() {
+        if (isMango)
+            return MangoService.dispatch("toggle_scratchpad")
+        if (isHyprland)
+            return Hyprland.dispatch("togglespecialworkspace")
+    }
+
+    // ========== KEYBOARD LAYOUT ==========
+    //
+    // This used to live in NiriService, which meant `inir keyboard
+    // getCurrentLayout` answered with an empty string on every other
+    // compositor. It belongs here, where each backend can be asked in turn.
+
+    function switchKeyboardLayout() {
+        if (isNiri)
+            return NiriService.switchLayout()
+        if (isMango)
+            return MangoService.switchLayout()
+        console.warn("CompositorService: keyboard layout switching unsupported on this compositor")
+    }
+
+    function switchKeyboardLayoutPrevious() {
+        if (isNiri)
+            return NiriService.switchLayoutPrevious()
+        if (isMango)
+            return MangoService.switchLayoutPrevious()
+        console.warn("CompositorService: keyboard layout switching unsupported on this compositor")
+    }
+
+    function currentKeyboardLayoutName(): string {
+        if (isNiri)
+            return NiriService.getCurrentKeyboardLayoutName()
+        if (isMango)
+            return MangoService.getCurrentKeyboardLayoutName()
+        return ""
+    }
+
+    function keyboardLayoutNames(): var {
+        if (isNiri)
+            return NiriService.keyboardLayoutNames
+        if (isMango)
+            return MangoService.keyboardLayoutNames
+        return []
+    }
+
+    IpcHandler {
+        target: "keyboard"
+
+        function switchLayout(): void {
+            CompositorService.switchKeyboardLayout()
+        }
+
+        function switchLayoutPrevious(): void {
+            CompositorService.switchKeyboardLayoutPrevious()
+        }
+
+        function getCurrentLayout(): string {
+            return CompositorService.currentKeyboardLayoutName()
+        }
+
+        function getLayouts(): string {
+            return JSON.stringify(CompositorService.keyboardLayoutNames())
+        }
     }
 }

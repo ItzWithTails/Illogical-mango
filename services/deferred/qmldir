@@ -12,6 +12,7 @@ singleton KeyringStorage 1.0 KeyringStorage.qml
 singleton LatexRenderer 1.0 LatexRenderer.qml
 singleton LauncherSearch 1.0 LauncherSearch.qml
 singleton NewsService 1.0 NewsService.qml
+singleton MangoKeybinds 1.0 MangoKeybinds.qml
 singleton NiriKeybinds 1.0 NiriKeybinds.qml
 singleton PackageSearch 1.0 PackageSearch.qml
 singleton SessionWarnings 1.0 SessionWarnings.qml

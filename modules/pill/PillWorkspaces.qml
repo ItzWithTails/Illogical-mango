@@ -53,10 +53,15 @@ Item {
 
         const out = [];
         const seen = ({});
-        const wss = Hyprland.workspaces?.values ?? [];
+        // HyprlandData mirrors mango's tags into this same shape, except its
+        // `monitor` is the output NAME while Hyprland's is a monitor object.
+        const wss = CompositorService.isMango
+            ? (HyprlandData.workspaces ?? [])
+            : (Hyprland.workspaces?.values ?? []);
         for (let i = 0; i < wss.length; i++) {
             const w = wss[i];
-            if (w.id >= 1 && w.monitor && w.monitor.name === workspaces.screenName && !seen[w.id]) {
+            const wsMonitorName = CompositorService.isMango ? w.monitor : w.monitor?.name;
+            if (w.id >= 1 && wsMonitorName === workspaces.screenName && !seen[w.id]) {
                 seen[w.id] = true;
                 out.push(w.id);
             }
@@ -72,7 +77,9 @@ Item {
     readonly property int hyprActiveId: {
         if (CompositorService.isNiri)
             return -1;
-        const mons = Hyprland.monitors?.values ?? [];
+        const mons = CompositorService.isMango
+            ? (HyprlandData.monitors ?? [])
+            : (Hyprland.monitors?.values ?? []);
         for (let i = 0; i < mons.length; i++)
             if (mons[i].name === workspaces.screenName)
                 return mons[i].activeWorkspace ? mons[i].activeWorkspace.id : -1;
@@ -82,10 +89,7 @@ Item {
     readonly property int activeIndex: slots.findIndex(sl => sl.active)
 
     function focusSlot(key) {
-        if (CompositorService.isNiri)
-            NiriService.switchToWorkspace(key);
-        else
-            Hyprland.dispatch("workspace " + key);
+        CompositorService.switchToWorkspace(key);
     }
 
     /**

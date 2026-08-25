@@ -1733,10 +1733,23 @@ apply_qt_runtime_env() {
     elif [[ -z "${QT_QPA_PLATFORMTHEME:-}" ]]; then
         # Session doesn't provide a platform theme — detect a sane default.
         # Without this, Qt can't resolve icon themes and all icons show as missing.
-        if command -v kwriteconfig6 &>/dev/null || [[ -f /usr/lib/qt6/plugins/platformthemes/KDEPlasmaPlatformTheme.so ]] || [[ -f /usr/lib64/qt6/plugins/platformthemes/KDEPlasmaPlatformTheme.so ]]; then
+        #
+        # Probe for the KDE platform theme PLUGIN, not for kwriteconfig6: that
+        # binary ships in kconfig, which is pulled in by plenty of things that
+        # have nothing to do with plasma-integration. Selecting "kde" without
+        # the plugin present makes Qt fall back silently.
+        #
+        # gtk3 is deliberately NOT a fallback here. It overrides the Qt palette
+        # with GTK's, which throws away the Material You colours this shell
+        # writes to kdeglobals — Dolphin and friends end up stock Breeze while
+        # the rest of the desktop follows the wallpaper. With no platform theme
+        # at all, KDE apps read kdeglobals themselves and theme correctly.
+        if [[ -f /usr/lib/qt6/plugins/platformthemes/KDEPlasmaPlatformTheme.so ]] \
+            || [[ -f /usr/lib64/qt6/plugins/platformthemes/KDEPlasmaPlatformTheme.so ]]; then
             export QT_QPA_PLATFORMTHEME=kde
-        elif command -v gsettings &>/dev/null && [[ -f /usr/lib/qt6/plugins/platformthemes/libqgtk3.so || -f /usr/lib64/qt6/plugins/platformthemes/libqgtk3.so ]]; then
-            export QT_QPA_PLATFORMTHEME=gtk3
+        elif [[ -f /usr/lib/qt6/plugins/platformthemes/libqt6ct.so ]] \
+            || [[ -f /usr/lib64/qt6/plugins/platformthemes/libqt6ct.so ]]; then
+            export QT_QPA_PLATFORMTHEME=qt6ct
         fi
     fi
 
@@ -2902,6 +2915,17 @@ enable_inir_service() {
     target="$(detect_compositor_service 2>/dev/null)" || true
 
     if [[ -z "$target" ]]; then
+        # mango is not managed by systemd at all — it is launched from a TTY or
+        # a display-manager session, so there is no unit to hang a .wants link
+        # on. Saying "no supported compositor" here would be wrong and would
+        # send the user hunting for a package they already have.
+        if [[ -n "${MANGO_INSTANCE_SIGNATURE:-}" ]] || command -v mango &>/dev/null; then
+            echo "mango does not run as a systemd unit, so there is no service to enable." >&2
+            echo "Autostart iNiR from the mango config instead:" >&2
+            echo "    exec-once=inir run --daemon" >&2
+            echo "(see defaults/mango/config.conf for the full keybind set)" >&2
+            return 1
+        fi
         echo "ERROR: No supported compositor detected (niri or Hyprland)." >&2
         echo "       Install a supported compositor first, then re-run 'inir service enable'." >&2
         return 1

@@ -25,11 +25,11 @@ Scope {
             if (matchNiri)
                 return matchNiri;
         }
-        if (Hyprland.focusedMonitor && Hyprland.focusedMonitor.name) {
-            const name = Hyprland.focusedMonitor.name;
-            const matchHypr = Quickshell.screens.find(s => s && s.name === name);
-            if (matchHypr)
-                return matchHypr;
+        const focusedName = CompositorService.focusedMonitorName;
+        if (focusedName.length > 0) {
+            const matchFocused = Quickshell.screens.find(s => s && s.name === focusedName);
+            if (matchFocused)
+                return matchFocused;
         }
         return GlobalStates.primaryScreen;
     }
