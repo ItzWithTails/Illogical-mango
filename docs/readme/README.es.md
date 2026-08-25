@@ -1,104 +1,122 @@
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/da6beb4a-ccee-40ba-a372-5eea77b595f8" alt="iNiR" width="800">
-</p>
-
-<h1 align="center">iNiR</h1>
+<h1 align="center">Illogical-mango</h1>
 
 <p align="center">
-  <b>Un shell de escritorio completo para Niri, hecho con Quickshell</b>
-</p>
-
-<p align="center">
-  <a href="https://github.com/snowarch/inir/releases"><img src="https://img.shields.io/badge/version-2.29.2-blue?style=flat-square" alt="Version"></a>
-  <a href="https://github.com/snowarch/inir/stargazers"><img src="https://img.shields.io/github/stars/snowarch/inir?style=flat-square" alt="Stars"></a>
-  <a href="https://discord.gg/pAPTfAhZUJ"><img src="https://img.shields.io/badge/Discord-join-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Discord"></a>
-</p>
-
-<p align="center">
-  <a href="../INSTALL.md">Instalar</a> &bull;
-  <a href="../KEYBINDS.md">Atajos</a> &bull;
-  <a href="../IPC.md">Referencia IPC</a> &bull;
-  <a href="https://discord.gg/pAPTfAhZUJ">Discord</a> &bull;
-  <a href="../../CONTRIBUTING.md">Contribuir</a>
+  <b>Un shell de escritorio completo para MangoWM, construido sobre Quickshell</b>
 </p>
 
 <p align="center">
   <sub>
-    <a href="../../README.md">English</a> · <a href="README.es.md">Español</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh.md">中文</a> · <a href="README.ja.md">日本語</a> · <a href="README.pt.md">Português</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.ko.md">한국어</a> · <a href="README.hi.md">हिन्दी</a> · <a href="README.ar.md">العربية</a> · <a href="README.it.md">Italiano</a>
+    <a href="../../README.md">English</a> · <a href="README.ru.md">Русский</a> · <a href="README.es.md">Español</a> · <a href="README.zh.md">中文</a> · <a href="README.ja.md">日本語</a> · <a href="README.pt.md">Português</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.ko.md">한국어</a> · <a href="README.hi.md">हिन्दी</a> · <a href="README.ar.md">العربية</a> · <a href="README.it.md">Italiano</a>
   </sub>
 </p>
 
 ---
 
-> **Sobre la traducción:** Traducción comunitaria. Si algo no se entiende, consultá la [versión en inglés](../../README.md).
+## Este port lo escribió una IA. Del todo. Este README también, un 90%
+
+El proyecto es una broma. Nadie se esforzó aquí.
+
+El port a MangoWM - `services/MangoService.qml`, `services/deferred/MangoKeybinds.qml`,
+la reescritura de la detección de compositor en `services/CompositorService.qml`, los
+cambios en el instalador y en doctor - fue escrito de principio a fin a través de Claude.
+No "con ayuda de". Escrito por ella.
+
+Esto se dice arriba del todo para que no te enteres después, en un diff o en un bug. No es
+un mérito ni se presenta como tal. En el fondo hice este port para mí y por diversión.
+Tenlo en cuenta.
+
+El shell que hay debajo de la capa del port es el iNiR de snowarch, escrito (espero) por
+un humano.
 
 ---
 
-<details>
-<summary><b>🤔 ¿Nuevo acá? Clickeá si no tenés idea de qué es esto</b></summary>
+## Qué es esto
 
-### ¿Qué es esto?
-
-iNiR es todo tu escritorio. La barra de arriba, el dock, notificaciones, configuración, wallpapers, todo. No es un theme, no son dotfiles que pegás. Es un shell completo que corre en Linux.
-
-### ¿Qué necesito para usarlo?
-
-Un compositor. Es lo que maneja tus ventanas y pone los pixeles en pantalla. iNiR está hecho para [Niri](https://github.com/YaLTeR/niri) (un compositor Wayland de tiling). Hay código viejo de Hyprland de cuando esto era un fork de los dots de end-4, pero Niri es lo que realmente uso y testeo.
-
-El shell corre sobre [Quickshell](https://quickshell.outfoxxed.me/), un framework para hacer shells en QML (el lenguaje de UI de Qt). No necesitás saber nada de eso para usarlo igual, todo se configura por la GUI o un JSON.
-
-### Cómo encaja todo
+La verdad, si alguna vez has instalado tú mismo un compositor Wayland pelado, no hace
+falta explicarte por qué necesita un shell. Pero estoy obligado a explicar cómo funciona.
 
 ```
-tus apps
+tus aplicaciones
    ↓
-iNiR (shell: barra, sidebars, dock, notificaciones, settings...)
+Illogical-mango   barra, dock, paneles laterales, vista general, notificaciones, ajustes, bloqueo
    ↓
-Quickshell (corre shells QML)
+Quickshell        entorno QML para shells de Wayland
    ↓
-Niri (compositor: ventanas, rendering)
+MangoWM           ventanas y renderizado
    ↓
 Wayland → GPU
 ```
 
-### ¿Es estable?
+**Qué lo diferencia de otras configuraciones de Quickshell:**
 
-Es un proyecto personal que se fue de las manos. Lo uso todos los días, mucha gente en el Discord también. Pero a veces se rompen cosas, el código está desprolijo en partes, voy aprendiendo sobre la marcha.
+- **Dos familias de paneles completas en una sola instalación.** Material ii (barra
+  flotante, paneles laterales, dock) y Waffle (barra de tareas inferior, menú de inicio,
+  centro de acciones). No son temas sobre los mismos widgets — son árboles de paneles
+  distintos con sus propios sistemas de tokens, y se cambian en caliente con
+  <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd>.
+- **Tematización de todo el sistema, no solo del shell.** Un fondo de pantalla genera una
+  paleta Material You que se escribe en GTK3/4, Qt, diez terminales y utilidades TUI,
+  Firefox, Discord, Spicetify, Steam y SDDM.
+- **Se configura sin tocar código.** Todo es un ajuste de la GUI sobre un único
+  `config.json`. Nunca hace falta tocar QML para cambiar su aspecto o comportamiento.
+- **Un camino de instalación y actualización de verdad.** `./setup` se encarga de las
+  dependencias y la configuración del sistema; `inir update` hace pull, ejecuta las
+  migraciones de esquema, conserva tus cambios y sabe revertir.
 
-Si algo no anda, `inir doctor` arregla la mayoría. El Discord está activo si eso no ayuda. No esperes software pulido, esto es el rice de una persona que a otros les gustó.
+**Origen.** [illogical-impulse de end-4](https://github.com/end-4/dots-hyprland) (dotfiles
+de Hyprland) → [iNiR de snowarch](https://github.com/snowarch/iNiR) (reescrito para niri)
+→ esto, portado a MangoWM. La CLI, las rutas de configuración y las tripas se siguen
+llamando `inir`: renombrarlas rompería todas las rutas de actualización, así que el nombre
+se quedó.
+¿Por qué no forkear directamente a end-4? La lógica es simple - un proyecto que ya se ha
+portado una vez es más fácil de portar otra.
+Como analogía, toma Void Linux. Instálale systemd y funcionará sin problemas.
+Toma Arch Linux y arráncale systemd, y tendrás que cambiar casi toda la base de paquetes.
 
-### ¿Por qué existe?
 
-Quería que mi escritorio se vea y funcione de cierta forma y nada lo hacía exactamente así. Empezó como los dots de Hyprland de end-4, terminó siendo un rewrite completo para Niri con muchas más features.
+## Compositor
 
-### Palabras que vas a ver
+Hecho para [MangoWM](https://github.com/DreamMaoMao/mango) y probado solo en él.
 
-- **Shell**: la capa de UI (barra, paneles, overlays)
-- **Compositor**: maneja ventanas, dibuja en pantalla (Niri, Hyprland, Sway...)
-- **Wayland**: protocolo de display de Linux (el nuevo, reemplaza X11)
-- **QML**: lenguaje declarativo de UI de Qt, en lo que está escrito iNiR
-- **Material You**: sistema de colores de Google que hace paletas de imágenes (así funciona el auto-theming)
-- **ii / waffle**: los dos estilos de panel. ii = onda Material Design, waffle = onda Windows 11. `Super+Shift+W` cambia entre ellos
+El shell habla con mango por su socket IPC en `$MANGO_INSTANCE_SIGNATURE`, que envía una
+instantánea completa de la sesión en cada cambio. mango es de estilo dwm — etiquetas, no
+una lista de escritorios —, así que `MangoService` mapea pares `(monitor, índice de
+etiqueta)` sobre el mismo modelo de escritorios que ya esperan la barra, el dock, la vista
+general y la tira de escritorios, y esos módulos funcionan sin cambios.
 
-</details>
+La configuración es deliberadamente no destructiva. mango lee exactamente un archivo
+(`~/.config/mango/config.conf`) y no fusiona nada, así que el instalador nunca sobrescribe
+tu configuración del compositor. Deja los atajos y el autoarranque del shell en
+`~/.config/mango/inir.conf` y añade una sola línea `source-optional=` que apunta ahí, sin
+tocar tu gestión de ventanas. El autoarranque es una línea `exec-once=inir run --daemon`
+en ese archivo, no una unidad de systemd.
+
+> [!NOTE]
+> **El código de niri y Hyprland sigue en el árbol.** `NiriService.qml`,
+> `HyprlandData.qml` y las ramas `isNiri` / `isHyprland` sobreviven de upstream y todavía
+> compilan. Son heredadas, no soportadas: aquí no se prueba nada contra esos compositores
+> ni se mantiene nada para ellos. Si quieres niri, coge
+> [el iNiR original](https://github.com/snowarch/iNiR).
 
 ---
 
 ## Capturas
 
+Ambas familias de paneles, traídas de upstream sin cambios.
+
 <details open>
-<summary><b>Material ii</b> — barra flotante, sidebars, estética Material Design</summary>
+<summary><b>Material ii</b>: barra flotante, paneles laterales, estética Material Design</summary>
 
 | | |
 |:---:|:---:|
 | ![](https://github.com/user-attachments/assets/1fe258bc-8aec-4fd9-8574-d9d7472c3cc8) | ![](https://github.com/user-attachments/assets/3ce2055b-648c-45a1-9d09-705c1b4a03b7) |
-| ![](https://github.com/user-attachments/assets/ea2311dc-769e-44dc-a46d-37cf8807d2cc) | ![](https://github.com/user-attachments/assets/da6beb4a-ccee-40ba-a372-5eea77b595f8) |
-| ![](https://github.com/user-attachments/assets/ba866063-b26a-47cb-83c8-d77bd033bf8b) | ![](https://github.com/user-attachments/assets/88e76566-061b-4f8c-a9a8-53c157950138) |
+| ![](https://github.com/user-attachments/assets/ea2311dc-769e-44dc-a46d-37cf8807d2cc) | ![](https://github.com/user-attachments/assets/ba866063-b26a-47cb-83c8-d77bd033bf8b) |
+| ![](https://github.com/user-attachments/assets/88e76566-061b-4f8c-a9a8-53c157950138) | |
 
 </details>
 
 <details>
-<summary><b>Waffle</b> — barra de tareas abajo, centro de acciones, onda Windows 11</summary>
+<summary><b>Waffle</b>: barra de tareas inferior, centro de acciones, rollo Windows 11</summary>
 
 | | |
 |:---:|:---:|
@@ -108,178 +126,213 @@ Quería que mi escritorio se vea y funcione de cierta forma y nada lo hacía exa
 
 ---
 
-## Features
+> [!WARNING]
+> La configuración por defecto apunta a hardware razonablemente moderno. En máquinas
+> flojas, desactiva los efectos, quita los paneles que no uses y aplana el estilo visual —
+> todo eso se hace desde los ajustes o mediante `config.json`.
 
-**Dos familias de paneles**, intercambiables al vuelo con `Super+Shift+W`:
-- **Material ii** — barra flotante, sidebars, dock, 6 estilos visuales (material, cards, aurora, inir, angel, zzz)
-- **Waffle** — barra de tareas estilo Windows 11, menú inicio, centro de acciones, centro de notificaciones
+## Características
 
-**Tematización automática** — elegís un wallpaper y todo se adapta:
-- Colores del shell vía Material You, propagados a GTK3/4, Qt, terminales, Firefox, Discord, SDDM
-- 10 herramientas de terminal auto-tematizadas (foot, kitty, alacritty, starship, fuzzel, btop, lazygit, yazi)
-- Presets de temas: Gruvbox, Catppuccin, Rosé Pine, y custom
+**Dos familias de paneles**, se cambian en caliente con <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd>:
 
-**Compositor** — hecho para Niri.
+- **Material ii** — barra flotante, paneles laterales, dock y 8 estilos visuales
+  (Material, Cards, Aurora, iNiR, Angel, Regalia, ZZZ, Cookie Shapes)
+- **Waffle** — barra de tareas al estilo Windows 11, menú de inicio, centro de acciones,
+  centro de notificaciones
+
+**Tematización automática.** Eliges un fondo y todo el sistema le sigue: los colores
+Material You del shell se propagan a GTK3/4, Qt, terminales, Firefox, Discord, Spicetify,
+Steam y SDDM. Incluye los presets Regalia, Gruvbox, Catppuccin y Rosé Pine, o crea el tuyo.
 
 <details>
-<summary><b>Lista completa de features</b></summary>
+<summary><b>Lista completa de características</b></summary>
 
-### Temas y apariencia
+### Tematización y aspecto
 
-Elegís un wallpaper y todo el sistema sigue — shell, apps GTK/Qt, terminales, Firefox, Discord, pantalla de login SDDM. Todo automático.
+- **8 estilos visuales**: Material (sólido), Cards, Aurora (desenfoque de cristal), iNiR (inspirado en TUI), Angel (neobrutalismo), Regalia (chasis negro de ingeniería, tinta marfil cálida, herrajes champán contenidos), ZZZ (planchas de cartel), Cookie Shapes (morfeo animado de formas)
+- **Colores dinámicos del fondo de pantalla** vía Material You, propagados a todo el sistema
+- **10 terminales y utilidades TUI tematizadas automáticamente**: foot, kitty, alacritty, ghostty, wezterm, starship, fuzzel, btop, lazygit, yazi
+- **Tematización de apps**: GTK3/4, Qt (vía plasma-integration y darkly), Firefox (MaterialFox), Discord/Vesktop (System24), Zed, Spicetify, Steam, SDDM
+- **Presets de temas**: Regalia, Regalia Ivory, Gruvbox, Catppuccin, Rosé Pine y personalizados
+- **Fondos de vídeo**: mp4/webm/gif con desenfoque opcional, o primer fotograma congelado por rendimiento
+- **Widgets de escritorio**: reloj (varios estilos), tiempo, controles multimedia sobre la capa del fondo
 
-- **6 estilos visuales** — Material (sólido), Cards, Aurora (blur de vidrio), iNiR (inspirado en TUI), Angel (neo-brutalismo), ZZZ
-- **Colores dinámicos del wallpaper** vía Material You — se propagan a todo el sistema
-- **10 herramientas de terminal auto-tematizadas** — foot, kitty, alacritty, starship, fuzzel, pywalfox, btop, lazygit, yazi
-- **Tematización de apps** — GTK3/4, Qt (vía plasma-integration + darkly), Firefox (MaterialFox), Discord/Vesktop (System24)
-- **Presets de temas** — Gruvbox, Catppuccin, Rosé Pine, y más — o creá el tuyo
-- **Wallpapers de video** — mp4/webm/gif con blur opcional, o primer frame congelado para rendimiento
-- **Tema SDDM de login** — colores Material You sincronizados con tu wallpaper
-- **Widgets de escritorio** — reloj (varios estilos), clima, controles de media en la capa de wallpaper
+### Barra
 
-### Sidebars y widgets (Material ii)
+- **6 estilos de barra**: classic, islands, scenic, frame, cápsulas Material 3 y pill
+- **Barra pill**: una isla central que muta y se abre al pasar el ratón en escritorios, lanzador, mezclador, multimedia, calendario y grabador de pantalla
+- **Diseño modular** con un editor de arrastrar en los ajustes: cualquier módulo va donde quieras
+- **Barra vertical** para quien prefiere el borde de la pantalla
 
-Sidebar izquierdo (cajón de apps):
-- **Chat IA** — Gemini, Mistral, OpenRouter, o modelos locales vía Ollama
-- **YT Music** — reproductor completo con búsqueda, cola y controles
-- **Browser de Wallhaven** — buscá y aplicá wallpapers directamente
-- **Anime tracker** — integración con AniList y vista de schedule
-- **Traductor** — vía Gemini o translate-shell
-- **Widgets arrastrables** — crypto, media player, notas rápidas, status rings, calendario semanal
+### Paneles laterales y widgets (Material ii)
 
-Sidebar derecho:
+Panel izquierdo (cajón de aplicaciones):
+- **AI Chat**: catálogos de modelos en vivo de Ollama, LM Studio, OpenRouter, Gemini, Groq, Mistral, Cerebras, Anthropic, OpenAI y OpenCode
+- **YT Music**: reproductor InnerTube sin cookies con búsqueda, cola, radio y letras sincronizadas
+- **Navegador de Wallhaven**: busca y aplica fondos directamente
+- **Seguimiento de anime**: integración con AniList y vista de calendario
+- **Traductor**: vía Gemini o translate-shell
+- **Widgets arrastrables**: cripto, reproductor, notas rápidas, anillos de estado, calendario semanal
+
+Panel derecho:
 - **Calendario** con integración de eventos
 - **Centro de notificaciones**
-- **Quick toggles** — WiFi, Bluetooth, luz nocturna, DND, perfiles de energía, WARP VPN, EasyEffects
-- **Mixer de volumen** — control por app
-- **Bluetooth y WiFi** — gestión de dispositivos
-- **Timer pomodoro**, **lista de tareas**, **calculadora**, **notepad**
-- **Monitor del sistema** — CPU, RAM, temperatura
+- **Interruptores rápidos**: WiFi, Bluetooth, luz nocturna, no molestar, perfiles de energía, WARP VPN, EasyEffects
+- **Mezclador de volumen** con control por aplicación
+- **Gestión de dispositivos** Bluetooth y WiFi
+- **Temporizador Pomodoro**, **lista de tareas**, **calculadora**, **bloc de notas**
+- **Monitor del sistema**: CPU, RAM, temperatura
 
 ### Herramientas
 
-- **Overview de workspaces** — adaptado al modelo scrolling de Niri, con búsqueda de apps y calculadora
-- **Selector de ventanas** — Alt+Tab entre todos los workspaces
-- **Gestor de portapapeles** — historial con búsqueda y preview de imágenes
-- **Herramientas de región** — capturas, grabación de pantalla, OCR, búsqueda inversa de imágenes
-- **Cheatsheet** — visor de atajos sacados de tu config de Niri
-- **Controles de media** — reproductor MPRIS completo con varios presets de layout
-- **On-screen display** — OSD de volumen, brillo y media
-- **Reconocimiento de canciones** — identificación tipo Shazam vía SongRec
-- **Búsqueda por voz** — grabá y buscá vía Gemini
+- **Vista general de escritorios**: búsqueda de apps y calculadora, apoyadas en el modelo de etiquetas de mango
+- **Panel de control**: superposición configurable a tres columnas con agenda, notificaciones, tareas, notas, multimedia y tiempo
+- **Tira de escritorios en el borde**: raíl al pasar el ratón con vistas previas en vivo y reordenado por arrastre
+- **Cambiador de ventanas**: Alt-Tab animado por todos los escritorios, opcional
+- **Gestor del portapapeles**: historial con búsqueda y vista previa de imágenes
+- **Herramientas de región**: capturas, grabación de pantalla, OCR, búsqueda inversa de imágenes
+- **Chuleta**: visor de atajos sacado de tu configuración de mango
+- **Controles multimedia**: reproductor MPRIS completo con varios diseños
+- **Indicadores en pantalla**: OSD de volumen, brillo y multimedia
+- **Reconocimiento de canciones**: al estilo Shazam, vía SongRec
+- **Entrada por voz**: whisper.cpp local si está instalado, o un backend conectado de Groq, Gemini u OpenAI
 
 ### Sistema
 
-- **Configuración GUI** — configurá todo sin tocar archivos
-- **GameMode** — desactiva efectos automáticamente con apps en pantalla completa
-- **Auto-updates** — `inir update` con rollback, migraciones y preservación de cambios del usuario
-- **Pantalla de bloqueo** y **pantalla de sesión** (logout/reboot/shutdown/suspend)
-- **Agente polkit**, **teclado en pantalla**, **gestor de autostart**
-- **9 idiomas** — detección automática, con generación de traducciones asistida por IA
-- **Luz nocturna** — programada o manual
-- **Clima** — Open-Meteo, soporta GPS, coordenadas manuales o nombre de ciudad
-- **Gestión de batería** — umbrales configurables, auto-suspend en crítico
-- **Checker de updates del shell** — avisa cuando hay versiones nuevas
+- **Ajustes con GUI**: se configura todo sin tocar archivos
+- **GameMode**: desactiva los efectos automáticamente en apps a pantalla completa
+- **Actualizaciones automáticas**: `inir update` con reversión, migraciones y conservación de tus cambios
+- **Pantalla de bloqueo** y **pantalla de sesión** (cerrar sesión/reiniciar/apagar/suspender)
+- **Agente polkit**, **teclado en pantalla**, **gestor de autoarranque** apoyado en la línea `exec-once` de la configuración de mango
+- **Kira**: mascota opcional en pixel art que deambula por los bordes de la pantalla y reacciona a lo que haces. Desactivada por defecto; el pack de arte de ~32 MiB se descarga aparte en `./setup` › Extras
+- **15 idiomas** con detección automática
+- **Luz nocturna**: programada o manual
+- **Tiempo**: Open-Meteo, admite GPS, coordenadas manuales o nombre de ciudad
+- **Gestión de batería**: umbrales configurables, suspensión automática en nivel crítico
+- **Sonidos de eventos propios** con volumen general y un archivo por evento
 
 </details>
 
 ---
 
-## Inicio rápido
+## Inicio rápido (el instalador será otro en el futuro)
 
 ```bash
-git clone https://github.com/snowarch/inir.git
-cd inir
-./setup install       # interactivo — pregunta antes de cada paso
-./setup install -y    # automático — instala todo sin preguntas
+git clone https://github.com/ItzWithTails/Illogical-mango.git
+cd Illogical-mango
+./setup install       # interactivo, pregunta antes de cada paso
+./setup install -y    # automático, sin preguntas
 ```
 
-El instalador maneja dependencias, config del sistema, tematización — todo. Después de instalar, ejecutá `inir run` para iniciar el shell, o cerrá sesión y volvé a entrar.
+El instalador se encarga de las dependencias, la configuración del sistema y la
+tematización. Escribe los atajos del shell en `~/.config/mango/inir.conf` y los engancha a
+tu configuración de mango existente sin tocar tu gestión de ventanas. Reinicia mango o
+ejecuta `mmsg dispatch reload_config`.
 
 ```bash
-inir run                        # iniciar el shell
-inir settings                   # abrir configuración GUI
-inir logs                       # ver logs del runtime
-inir doctor                     # auto-diagnosticar y arreglar
-inir update                     # pull + migrar + reiniciar
+inir run                        # arrancar el shell
+inir settings                   # abrir la GUI de ajustes
+inir logs                       # mirar los logs
+inir doctor                     # autodiagnóstico y arreglo
+inir update                     # pull + migraciones + reinicio
 ```
 
-**Distros soportadas:** Arch (instalador automatizado). Otras distros pueden instalar manualmente — ver [PACKAGES.md](../PACKAGES.md).
+Otros puntos de entrada:
 
-| Método | Comando |
-|--------|---------|
-| Instalación de sistema | `sudo make install && inir run` |
-| Menú TUI | `./setup` |
-| Rollback | `./setup rollback` |
+```bash
+./setup                 # menú TUI, eliges lo que quieras
+./setup install --skip-mango    # no tocar en absoluto la configuración de mango
+sudo make install       # instalación de sistema en vez de en tu home
+./setup rollback        # deshacer la última actualización
+```
+
+**Distribuciones.** Arch es el objetivo principal y el mejor probado. Para Debian y Fedora
+hay port, claro... bajo tu propia responsabilidad, no se ha probado en ellas.
 
 ---
 
 ## Atajos
 
+Se instalan desde `defaults/mango/config.conf`:
+
 | Tecla | Acción |
 |-----|--------|
-| `Super+Space` | Overview — buscar apps, navegar workspaces |
-| `Alt+Tab` | Selector de ventanas |
-| `Super+V` | Historial del portapapeles |
-| `Super+Shift+S` | Captura de región |
-| `Super+Shift+X` | OCR de región |
-| `Super+,` | Configuración |
-| `Super+Shift+W` | Cambiar familia de paneles |
+| <kbd>Super</kbd> + <kbd>Space</kbd> | Vista general: búsqueda de apps, navegación por etiquetas |
+| <kbd>Super</kbd> + <kbd>V</kbd> | Historial del portapapeles |
+| <kbd>Super</kbd> + <kbd>P</kbd> | Panel izquierdo |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> | Panel derecho |
+| <kbd>Super</kbd> + <kbd>D</kbd> | Panel de control |
+| <kbd>Super</kbd> + <kbd>,</kbd> | Ajustes |
+| <kbd>Super</kbd> + <kbd>/</kbd> | Chuleta |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd> | Cambiar familia de paneles |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> | Captura de una región |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> | OCR de una región |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd> | Grabar una región |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> | Búsqueda inversa de una región |
+| <kbd>Super</kbd> + <kbd>L</kbd> | Bloquear |
+| <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Delete</kbd> | Pantalla de sesión |
 
-Lista completa: [KEYBINDS.md](../KEYBINDS.md)
+Los atajos de gestión de ventanas son tuyos: el shell no los define. Referencia completa:
+[Atajos](../KEYBINDS.md).
 
 ---
 
-## Wallpapers
+## Fondos de pantalla
 
-15 wallpapers vienen incluidos. Para más, mirá [iNiR-Walls](https://github.com/snowarch/iNiR-Walls) — una colección curada que funciona bien con el pipeline de Material You.
+Vienen 15 fondos incluidos. Para más, mira [iNiR-Walls](https://github.com/snowarch/iNiR-Walls),
+una colección que funciona bien con el pipeline de Material You.
 
 ---
 
-## Documentación
+## Documentación (para niri, no para mango)
 
-| | |
+| Página | De qué va |
 |---|---|
-| [INSTALL.md](../INSTALL.md) | Guía de instalación |
-| [SETUP.md](../SETUP.md) | Comandos del setup — updates, migraciones, rollback |
-| [KEYBINDS.md](../KEYBINDS.md) | Todos los atajos de teclado |
-| [IPC.md](../IPC.md) | Targets IPC para scripting y atajos custom |
-| [PACKAGES.md](../PACKAGES.md) | Cada paquete y por qué está |
-| [LIMITATIONS.md](../LIMITATIONS.md) | Limitaciones conocidas y workarounds |
-| [ARCHITECTURE.md](../../ARCHITECTURE.md) | Arquitectura técnica del proyecto |
+| [Instalación](../INSTALL.md) | Cómo ponerlo en marcha |
+| [Setup](../SETUP.md) | Actualizaciones, migraciones, reversión |
+| [Atajos](../KEYBINDS.md) | Todas las combinaciones |
+| [IPC](../IPC.md) | Objetivos que puedes asignar a una tecla o llamar desde un script |
+| [Paquetes](../PACKAGES.md) | Cada dependencia y por qué está ahí |
+| [Limitaciones](../LIMITATIONS.md) | Qué está roto y cómo sortearlo |
+| [Compositores](../COMPOSITORS.md) | Cómo funciona la integración con el compositor |
+| [Arquitectura](../../ARCHITECTURE.md) | Cómo está montado el código |
+
+La mayor parte de `docs/` viene heredada de upstream y en algunos sitios todavía describe
+niri. Donde la documentación y este README no coincidan sobre qué compositor está
+soportado, manda este README.
 
 ---
 
 ## Solución de problemas
 
 ```bash
-inir logs                       # revisá los logs — la respuesta suele estar ahí
-inir restart                    # reiniciar el shell
-inir repair                     # doctor + restart + chequeo de logs filtrado
-./setup doctor                  # auto-diagnosticar y arreglar problemas comunes
+inir logs                       # logs recientes del runtime
+inir restart                    # reiniciar el runtime activo
+inir repair                     # doctor + reinicio + revisión filtrada de logs
+inir doctor                     # autodiagnóstico y arreglo de problemas típicos
 ./setup rollback                # deshacer la última actualización
+claude "ayúdame por favor"      # si no te apetece pelearte tú. venga, que se gane sus 20 $
 ```
 
-Revisá [LIMITATIONS.md](../LIMITATIONS.md) antes de abrir un issue.
+Échale un ojo a [Limitaciones](../LIMITATIONS.md) para reírte un rato.
 
 ---
 
 ## Contribuir
 
-Ver [CONTRIBUTING.md](../../CONTRIBUTING.md) para setup de desarrollo, patrones de código y lineamientos de PRs.
+Mira [CONTRIBUTING.md](../../CONTRIBUTING.md) — entorno de desarrollo, patrones de código
+y normas para los PR.
+
 
 ---
 
 ## Créditos
 
-- [**end-4**](https://github.com/end-4/dots-hyprland) — illogical-impulse original para Hyprland
-- [**Quickshell**](https://quickshell.outfoxxed.me/) — el framework que hace posible este shell
-- [**Niri**](https://github.com/YaLTeR/niri) — el compositor Wayland de tiling scrollable
+- [**snowarch**](https://github.com/snowarch/iNiR): iNiR, el shell que aquí se porta
+- [**end-4**](https://github.com/end-4/dots-hyprland): illogical-impulse, del que se forkeó iNiR
+- [**Gakuseei**](https://github.com/Gakuseei): [Ricelin](https://github.com/Gakuseei/Ricelin), de donde vienen la barra pill y el look washi y flame
+- [**Quickshell**](https://quickshell.outfoxxed.me/): el framework sobre el que corre esto
+- [**MangoWM**](https://github.com/DreamMaoMao/mango): el compositor para el que está hecho
+- **Claude** (Anthropic): escribió el port a MangoWM, como se dice arriba del todo
 
----
-
-<p align="center">
-  <a href="https://github.com/snowarch/inir/graphs/contributors">Contribuidores</a> &bull;
-  <a href="CHANGELOG.md">Changelog</a> &bull;
-  <a href="LICENSE">Licencia GPL-3.0</a>
-</p>
+GPL-3.0, igual que los dotfiles de end-4. Copyright upstream (C) 2025-2026 snowarch.

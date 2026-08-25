@@ -1,104 +1,120 @@
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/da6beb4a-ccee-40ba-a372-5eea77b595f8" alt="iNiR" width="800">
-</p>
-
-<h1 align="center">iNiR</h1>
+<h1 align="center">Illogical-mango</h1>
 
 <p align="center">
-  <b>Quickshell ベースの Niri 向け完全デスクトップシェル</b>
-</p>
-
-<p align="center">
-  <a href="https://github.com/snowarch/inir/releases"><img src="https://img.shields.io/badge/version-2.29.2-blue?style=flat-square" alt="Version"></a>
-  <a href="https://github.com/snowarch/inir/stargazers"><img src="https://img.shields.io/github/stars/snowarch/inir?style=flat-square" alt="Stars"></a>
-  <a href="https://discord.gg/pAPTfAhZUJ"><img src="https://img.shields.io/badge/Discord-join-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Discord"></a>
-</p>
-
-<p align="center">
-  <a href="../INSTALL.md">インストール</a> &bull;
-  <a href="../KEYBINDS.md">キーバインド</a> &bull;
-  <a href="../IPC.md">IPC リファレンス</a> &bull;
-  <a href="https://discord.gg/pAPTfAhZUJ">Discord</a> &bull;
-  <a href="../../CONTRIBUTING.md">コントリビュート</a>
+  <b>Quickshell の上に構築された、MangoWM 向けの完全なデスクトップシェル</b>
 </p>
 
 <p align="center">
   <sub>
-    <a href="../../README.md">English</a> · <a href="README.es.md">Español</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh.md">中文</a> · <a href="README.ja.md">日本語</a> · <a href="README.pt.md">Português</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.ko.md">한국어</a> · <a href="README.hi.md">हिन्दी</a> · <a href="README.ar.md">العربية</a> · <a href="README.it.md">Italiano</a>
+    <a href="../../README.md">English</a> · <a href="README.ru.md">Русский</a> · <a href="README.es.md">Español</a> · <a href="README.zh.md">中文</a> · <a href="README.ja.md">日本語</a> · <a href="README.pt.md">Português</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.ko.md">한국어</a> · <a href="README.hi.md">हिन्दी</a> · <a href="README.ar.md">العربية</a> · <a href="README.it.md">Italiano</a>
   </sub>
 </p>
 
 ---
 
-> **翻訳について：** コミュニティ翻訳です。不明な点があれば[英語版](../../README.md)をご参照ください。
+## この移植は AI が書きました。丸ごと全部。この README も 9 割方そう
+
+このプロジェクトはネタです。誰も本気で作っていません。
+
+MangoWM への移植 - `services/MangoService.qml`、
+`services/deferred/MangoKeybinds.qml`、`services/CompositorService.qml` におけるコンポジタ
+検出の作り直し、インストーラと doctor への変更 - は、最初から最後まで Claude を通して
+書かれました。
+「手伝ってもらった」ではありません。あれが書いたのです。
+
+これを一番上に書いてあるのは、後になって diff やバグから気づく、ということがないように
+するためです。手柄でもないし、手柄として出しているわけでもありません。要するにこの移植は
+自分のために、面白半分で作ったものです。そのつもりで見てください。
+
+移植レイヤーの下にあるシェルは snowarch の iNiR で、（たぶん）人間が書いたものです。
 
 ---
 
-<details>
-<summary><b>🤔 初めて？これが何か分からない人はここをクリック</b></summary>
+## これは何か
 
-### これは何？
-
-iNiR はデスクトップ全体です。上のバー、ドック、通知、設定、壁紙、全部。テーマじゃない、コピペする設定ファイルでもない。Linux で動く完全なシェルです。
-
-### 動かすのに何が必要？
-
-コンポジター。ウィンドウを管理して画面にピクセルを描く部分。iNiR は [Niri](https://github.com/YaLTeR/niri)（タイリング Wayland コンポジター）向けに作られています。end-4 の dots からフォークした時の古い Hyprland コードもあるけど、実際にテストして使ってるのは Niri。
-
-シェルは [Quickshell](https://quickshell.outfoxxed.me/) 上で動きます。QML（Qt の UI 言語）でシェルを作るフレームワーク。これを知らなくても使えます、設定は全部 GUI か JSON ファイルでできる。
-
-### どう繋がってるか
+正直なところ、素の Wayland コンポジタを自分で立てたことがある人になら、なぜシェルが要るのかを
+説明する必要はありません。とはいえ、仕組みの説明はしておく義務があります。
 
 ```
-あなたのアプリ
+あなたのアプリケーション
    ↓
-iNiR（シェル：バー、サイドバー、ドック、通知、設定...）
+Illogical-mango   バー、ドック、サイドバー、概要、通知、設定、ロック画面
    ↓
-Quickshell（QML シェルを動かす）
+Quickshell        Wayland シェル向けの QML ランタイム
    ↓
-Niri（コンポジター：ウィンドウ、レンダリング）
+MangoWM           ウィンドウと描画
    ↓
 Wayland → GPU
 ```
 
-### 安定してる？
+**ほかの Quickshell 設定との違い:**
 
-手に負えなくなった個人プロジェクトです。毎日使ってる、Discord の人たちも大勢使ってる。でも時々壊れる、コードは荒いところもある、やりながら学んでる。
+- **1 回のインストールに完全なパネルファミリーが 2 つ。** Material ii（フローティングバー、
+  サイドバー、ドック）と Waffle（下部タスクバー、スタートメニュー、アクションセンター）。
+  同じウィジェットに被せたテーマではなく、それぞれ独自のトークン体系を持つ別々のパネルツリー
+  で、<kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd> で実行中に切り替わります。
+- **シェルだけでなくシステム全体のテーマ化。** 壁紙 1 枚から Material You のパレットが作られ、
+  GTK3/4、Qt、10 個のターミナルおよび TUI ツール、Firefox、Discord、Spicetify、Steam、SDDM に
+  書き出されます。
+- **コードを編集せずに設定できる。** すべては単一の `config.json` の上に載った GUI の設定項目
+  です。見た目や挙動を変えるのに QML を触る必要は一度もありません。
+- **まともなインストールとアップグレードの導線。** `./setup` が依存関係とシステム設定を面倒
+  みて、`inir update` が pull し、スキーマのマイグレーションを走らせ、あなたの変更を保ったまま、
+  ロールバックもできます。
 
-何か動かなかったら `inir doctor` で大体直る。それでダメなら Discord が活発。洗練されたソフトを期待しないで、これは一人の rice で、たまたま他の人も気に入っただけ。
+**系譜。** [end-4 の illogical-impulse](https://github.com/end-4/dots-hyprland)（Hyprland の
+dotfiles）→ [snowarch の iNiR](https://github.com/snowarch/iNiR)（niri 向けに書き直し）→ これ、
+MangoWM に移植したもの。CLI も設定パスも内部も、いまだに `inir` という名前のままです。改名すると
+アップグレードの経路が軒並み壊れるので、名前はそのままにしました。
+なぜ end-4 を直接フォークしなかったのか？理屈は単純です - 一度移植された経験のあるプロジェクト
+は、もう一度移植するのが楽なのです。
+たとえるなら Void Linux です。あれに systemd を入れれば、問題なく動きます。
+Arch Linux から systemd をもぎ取ったら、パッケージ基盤をほぼ丸ごと入れ替えるはめになります。
 
-### なぜ存在する？
 
-デスクトップを特定の見た目と動作にしたくて、他に完全にそれをやるものがなかった。end-4 の Hyprland dots から始まって、Niri 向けの完全な書き直しになって機能もたくさん増えた。
+## コンポジタ
 
-### 見かける用語
+[MangoWM](https://github.com/DreamMaoMao/mango) 向けに作られ、テストもそれだけです。
 
-- **Shell**：UI レイヤー（バー、パネル、オーバーレイ）
-- **Compositor**：ウィンドウ管理、画面描画（Niri、Hyprland、Sway...）
-- **Wayland**：Linux のディスプレイプロトコル（X11 の後継）
-- **QML**：Qt の宣言的 UI 言語、iNiR はこれで書かれてる
-- **Material You**：Google の配色システム、画像からパレットを生成（自動テーマの仕組み）
-- **ii / waffle**：2つのパネルスタイル。ii = Material Design 風、waffle = Windows 11 風。`Super+Shift+W` で切り替え
+シェルは `$MANGO_INSTANCE_SIGNATURE` にある IPC ソケット経由で mango と話します。ここには変化の
+たびにセッションの完全なスナップショットが流れてきます。mango は dwm 系で、ワークスペースの一覧
+ではなくタグを使います。そこで `MangoService` が `(モニタ, タグ番号)` の組を、バー・ドック・概要・
+ワークスペースストリップがもともと想定しているワークスペースモデルへ写像するので、これらのモジュール
+は手を入れずにそのまま動きます。
 
-</details>
+設定はあえて非破壊的にしてあります。mango はファイルをちょうど 1 つ
+（`~/.config/mango/config.conf`）だけ読み、マージは一切しません。ですからインストーラがあなたの
+コンポジタ設定を上書きすることはありません。シェルのキーバインドと自動起動は
+`~/.config/mango/inir.conf` に置き、そこを指す `source-optional=` を 1 行追記するだけで、
+ウィンドウ管理には触れません。自動起動はそのファイル内の `exec-once=inir run --daemon` の行で
+あって、systemd ユニットではありません。
+
+> [!NOTE]
+> **niri と Hyprland のコードはまだツリーに残っています。** `NiriService.qml`、
+> `HyprlandData.qml`、`isNiri` / `isHyprland` の分岐は上流から残ったもので、今もコンパイルは
+> 通ります。ただし引き継いだだけで、サポート対象ではありません。ここでは、それらのコンポジタで
+> テストされているものは何もなく、それら向けに保守されているものもありません。niri が使いたい
+> なら [本家の iNiR](https://github.com/snowarch/iNiR) を使ってください。
 
 ---
 
 ## スクリーンショット
 
+パネルファミリーは両方とも、上流からそのまま持ってきたものです。
+
 <details open>
-<summary><b>Material ii</b> — フローティングバー、サイドバー、Material Design 美学</summary>
+<summary><b>Material ii</b>: フローティングバー、サイドバー、Material Design 的な佇まい</summary>
 
 | | |
 |:---:|:---:|
 | ![](https://github.com/user-attachments/assets/1fe258bc-8aec-4fd9-8574-d9d7472c3cc8) | ![](https://github.com/user-attachments/assets/3ce2055b-648c-45a1-9d09-705c1b4a03b7) |
-| ![](https://github.com/user-attachments/assets/ea2311dc-769e-44dc-a46d-37cf8807d2cc) | ![](https://github.com/user-attachments/assets/da6beb4a-ccee-40ba-a372-5eea77b595f8) |
-| ![](https://github.com/user-attachments/assets/ba866063-b26a-47cb-83c8-d77bd033bf8b) | ![](https://github.com/user-attachments/assets/88e76566-061b-4f8c-a9a8-53c157950138) |
+| ![](https://github.com/user-attachments/assets/ea2311dc-769e-44dc-a46d-37cf8807d2cc) | ![](https://github.com/user-attachments/assets/ba866063-b26a-47cb-83c8-d77bd033bf8b) |
+| ![](https://github.com/user-attachments/assets/88e76566-061b-4f8c-a9a8-53c157950138) | |
 
 </details>
 
 <details>
-<summary><b>Waffle</b> — 下部タスクバー、アクションセンター、Windows 11 テイスト</summary>
+<summary><b>Waffle</b>: 下部タスクバー、アクションセンター、Windows 11 な雰囲気</summary>
 
 | | |
 |:---:|:---:|
@@ -108,178 +124,211 @@ Wayland → GPU
 
 ---
 
+> [!WARNING]
+> 既定の設定はそこそこ新しいハードウェアを前提にしています。非力なマシンでは、エフェクトを切り、
+> 使わないパネルを外し、見た目のスタイルを平坦にしてください。どれも設定画面か `config.json`
+> からできます。
+
 ## 機能
 
-**2つのパネルファミリー**、`Super+Shift+W` でオンザフライ切り替え：
-- **Material ii** — フローティングバー、サイドバー、ドック、5つのビジュアルスタイル（material、cards、aurora、inir、angel）
-- **Waffle** — Windows 11 スタイルのタスクバー、スタートメニュー、アクションセンター、通知センター
+**パネルファミリーが 2 つ**、<kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd> で随時切り替え:
 
-**自動テーマ** — 壁紙を選ぶだけですべてが適応：
-- Material You によるシェルカラー、GTK3/4、Qt、ターミナル、Firefox、Discord、SDDM に伝播
-- 10のターミナルツールが自動テーマ化（foot、kitty、alacritty、starship、fuzzel、btop、lazygit、yazi）
-- テーマプリセット：Gruvbox、Catppuccin、Rosé Pine、カスタム
+- **Material ii** — フローティングバー、サイドバー、ドック、そして 8 種の視覚スタイル
+  （Material、Cards、Aurora、iNiR、Angel、Regalia、ZZZ、Cookie Shapes）
+- **Waffle** — Windows 11 風のタスクバー、スタートメニュー、アクションセンター、通知センター
 
-**コンポジター** — Niri 向けに構築。
+**自動テーマ化。** 壁紙を選べばシステム全体がそれに追従します。シェルの Material You カラーが
+GTK3/4、Qt、ターミナル、Firefox、Discord、Spicetify、Steam、SDDM へ伝わります。Regalia、Gruvbox、
+Catppuccin、Rosé Pine のプリセット同梱、自作もできます。
 
 <details>
-<summary><b>全機能リスト</b></summary>
+<summary><b>機能の一覧</b></summary>
 
 ### テーマと外観
 
-壁紙を選ぶとシステム全体が追従 — シェル、GTK/Qt アプリ、ターミナル、Firefox、Discord、SDDM ログイン画面。すべて自動。
+- **8 種の視覚スタイル**: Material（ベタ塗り）、Cards、Aurora（すりガラス）、iNiR（TUI 風）、Angel（ネオブルータリズム）、Regalia（黒い工学的シャーシ、温かみのあるアイボリーの文字、抑えたシャンパン色の金具）、ZZZ（ポスター調の板）、Cookie Shapes（形状がアニメーションで変形）
+- **壁紙からの動的な配色**を Material You 経由でシステム全体へ
+- **10 個のターミナル・TUI ツールを自動テーマ化**: foot、kitty、alacritty、ghostty、wezterm、starship、fuzzel、btop、lazygit、yazi
+- **アプリのテーマ化**: GTK3/4、Qt（plasma-integration と darkly 経由）、Firefox（MaterialFox）、Discord/Vesktop（System24）、Zed、Spicetify、Steam、SDDM
+- **テーマプリセット**: Regalia、Regalia Ivory、Gruvbox、Catppuccin、Rosé Pine、および自作
+- **動画壁紙**: mp4/webm/gif、任意でぼかし。性能重視なら最初のフレームで静止も可
+- **デスクトップウィジェット**: 時計（複数スタイル）、天気、壁紙レイヤー上のメディア操作
 
-- **5つのビジュアルスタイル** — Material（ソリッド）、Cards、Aurora（ガラスブラー）、iNiR（TUI 風）、Angel（ネオブルータリズム）
-- **壁紙からの動的カラー** — Material You でシステム全体に伝播
-- **10のターミナルツール自動テーマ化** — foot、kitty、alacritty、starship、fuzzel、pywalfox、btop、lazygit、yazi
-- **アプリテーマ化** — GTK3/4、Qt（plasma-integration + darkly）、Firefox（MaterialFox）、Discord/Vesktop（System24）
-- **テーマプリセット** — Gruvbox、Catppuccin、Rosé Pine など — または独自作成
-- **動画壁紙** — mp4/webm/gif、ブラー対応、またはパフォーマンス用にフレーム固定
-- **SDDM ログインテーマ** — 壁紙と同期した Material You カラー
-- **デスクトップウィジェット** — 時計（複数スタイル）、天気、壁紙レイヤー上のメディアコントロール
+### バー
+
+- **6 種のバースタイル**: classic、islands、scenic、frame、Material 3 のカプセル、そして pill
+- **pill バー**: 中央で形を変える島。ホバーするとワークスペース、ランチャー、ミキサー、メディア、カレンダー、画面録画へ展開
+- **モジュール式レイアウト**、設定内のドラッグエディタでどのモジュールもどこへでも
+- **縦置きバー**、画面端に寄せたい人向け
 
 ### サイドバーとウィジェット（Material ii）
 
-左サイドバー（アプリドロワー）：
-- **AI チャット** — Gemini、Mistral、OpenRouter、または Ollama 経由のローカルモデル
-- **YT Music** — 検索、キュー、コントロール付きフルプレーヤー
-- **Wallhaven ブラウザ** — 壁紙を直接検索・適用
-- **アニメトラッカー** — AniList 連携、放送スケジュール表示
-- **翻訳** — Gemini または translate-shell 経由
-- **ドラッグ可能ウィジェット** — 暗号通貨、メディアプレーヤー、クイックメモ、ステータスリング、週間カレンダー
+左サイドバー（アプリドロワー）:
+- **AI Chat**: Ollama、LM Studio、OpenRouter、Gemini、Groq、Mistral、Cerebras、Anthropic、OpenAI、OpenCode のモデル一覧をライブ取得
+- **YT Music**: cookie 不要の InnerTube プレイヤー。検索、キュー、ラジオ、同期歌詞つき
+- **Wallhaven ブラウザ**: 壁紙をその場で検索して適用
+- **アニメトラッカー**: AniList 連携、放送スケジュール表示つき
+- **翻訳**: Gemini または translate-shell 経由
+- **ドラッグできるウィジェット**: 暗号資産、メディアプレイヤー、クイックメモ、ステータスリング、週間カレンダー
 
-右サイドバー：
-- **カレンダー** — イベント連携
+右サイドバー:
+- **カレンダー**（予定連携つき）
 - **通知センター**
-- **クイックトグル** — WiFi、Bluetooth、ナイトライト、DND、電力プロファイル、WARP VPN、EasyEffects
-- **ボリュームミキサー** — アプリごとの制御
-- **Bluetooth・WiFi** デバイス管理
-- **ポモドーロタイマー**、**TODO リスト**、**電卓**、**メモ帳**
-- **システムモニター** — CPU、RAM、温度
+- **クイックトグル**: WiFi、Bluetooth、ナイトライト、通知オフ、電源プロファイル、WARP VPN、EasyEffects
+- **音量ミキサー**（アプリごとに調整）
+- **Bluetooth と WiFi** のデバイス管理
+- **ポモドーロタイマー**、**ToDo リスト**、**電卓**、**メモ帳**
+- **システムモニタ**: CPU、メモリ、温度
 
 ### ツール
 
-- **ワークスペース概要** — Niri のスクロールモデルに適応、アプリ検索と電卓付き
-- **ウィンドウスイッチャー** — 全ワークスペース横断の Alt+Tab
-- **クリップボードマネージャー** — 検索と画像プレビュー付き履歴
-- **リージョンツール** — スクリーンショット、画面録画、OCR、逆画像検索
-- **チートシート** — Niri 設定から抽出したキーバインドビューワー
-- **メディアコントロール** — 複数レイアウトプリセット付きフル MPRIS プレーヤー
-- **オンスクリーンディスプレイ** — 音量、輝度、メディア OSD
-- **楽曲認識** — SongRec 経由の Shazam スタイル識別
-- **音声検索** — 録音して Gemini で検索
+- **ワークスペース概要**: アプリ検索と電卓を、mango のタグモデルの上に載せたもの
+- **ダッシュボード**: 予定、通知、ToDo、メモ、メディア、天気を並べた 3 カラムのオーバーレイ（構成可変）
+- **画面端のワークスペースストリップ**: ホバーで出るレール。ライブプレビューとドラッグ並べ替えつき
+- **ウィンドウスイッチャー**: 全ワークスペースを横断するアニメーション付き Alt-Tab、任意で有効化
+- **クリップボードマネージャ**: 検索と画像プレビューつきの履歴
+- **範囲ツール**: スクリーンショット、画面録画、OCR、画像の逆検索
+- **チートシート**: あなたの mango 設定から読み取ったキーバインド一覧
+- **メディア操作**: 複数のレイアウトプリセットを備えた本格的な MPRIS プレイヤー
+- **オンスクリーン表示**: 音量、明るさ、メディアの OSD
+- **曲の識別**: Shazam 的な認識を SongRec 経由で
+- **音声入力**: インストール済みならローカルの whisper.cpp、または接続済みの Groq、Gemini、OpenAI バックエンド
 
 ### システム
 
-- **GUI 設定** — ファイルを触らずにすべて設定可能
-- **GameMode** — フルスクリーンアプリでエフェクト自動無効化
-- **自動アップデート** — `inir update`、ロールバック・マイグレーション・ユーザー変更保持付き
-- **ロック画面** と **セッション画面**（ログアウト/再起動/シャットダウン/サスペンド）
-- **Polkit エージェント**、**オンスクリーンキーボード**、**自動起動マネージャー**
-- **9言語** — 自動検出、AI 支援翻訳生成
-- **ナイトライト** — スケジュールまたは手動
-- **天気** — Open-Meteo、GPS・手動座標・都市名に対応
-- **バッテリー管理** — 設定可能なしきい値、クリティカル時の自動サスペンド
-- **シェル更新チェッカー** — 新バージョン通知
+- **GUI 設定**: ファイルを触らずに何でも設定できる
+- **GameMode**: 全画面アプリのときエフェクトを自動で無効化
+- **自動更新**: `inir update`。ロールバック、マイグレーション、ユーザ変更の保持つき
+- **ロック画面**と**セッション画面**（ログアウト／再起動／シャットダウン／サスペンド）
+- **polkit エージェント**、**スクリーンキーボード**、**自動起動マネージャ**（mango 設定の `exec-once` の行が土台）
+- **Kira**: 任意で有効にするドット絵のマスコット。画面の端をうろつき、あなたの操作に反応します。既定では無効。約 32 MiB の素材パックは `./setup` › Extras から別途ダウンロード
+- **15 言語**、自動判別つき
+- **ナイトライト**: スケジュールまたは手動
+- **天気**: Open-Meteo。GPS、手入力の座標、都市名に対応
+- **バッテリー管理**: しきい値を設定でき、危険域で自動サスペンド
+- **イベント音の差し替え**: マスター音量つき、イベントごとに音声ファイルを指定
 
 </details>
 
 ---
 
-## クイックスタート
+## クイックスタート（インストーラは将来別のものになります）
 
 ```bash
-git clone https://github.com/snowarch/inir.git
-cd inir
-./setup install       # 対話式 — 各ステップで確認
-./setup install -y    # 自動 — 確認なし
+git clone https://github.com/ItzWithTails/Illogical-mango.git
+cd Illogical-mango
+./setup install       # 対話式。各ステップの前に確認します
+./setup install -y    # 全自動。何も訊きません
 ```
 
-インストーラーが依存関係、システム設定、テーマ化 — すべて処理します。インストール後、`inir run` でシェルを起動するか、ログアウトして再ログインしてください。
+インストーラが依存関係、システム設定、テーマ化を引き受けます。シェルのキーバインドを
+`~/.config/mango/inir.conf` に書き、既存の mango 設定へ繋ぎ込みますが、ウィンドウ管理には
+触れません。あとは mango を再起動するか、`mmsg dispatch reload_config` を実行してください。
 
 ```bash
 inir run                        # シェルを起動
 inir settings                   # 設定 GUI を開く
-inir logs                       # ランタイムログを確認
+inir logs                       # ログを見る
 inir doctor                     # 自動診断と修復
 inir update                     # pull + マイグレーション + 再起動
 ```
 
-**対応ディストリビューション：** Arch（自動インストーラー）。他のディストリビューションは手動インストール可能 — [PACKAGES.md](../PACKAGES.md) を参照。
+ほかの入り口:
 
-| 方法 | コマンド |
-|--------|---------|
-| システムインストール | `sudo make install && inir run` |
-| TUI メニュー | `./setup` |
-| ロールバック | `./setup rollback` |
+```bash
+./setup                 # TUI メニュー。必要なものを選ぶ
+./setup install --skip-mango    # mango の設定には一切触らない
+sudo make install       # ホームではなくシステム全体へ
+./setup rollback        # 直前の更新を取り消す
+```
+
+**ディストリビューション。** Arch が主対象で、いちばんテストされています。Debian と Fedora にも
+もちろん移植はあります……自己責任で。あちらでのテストはしていません。
 
 ---
 
 ## キーバインド
 
-| キー | アクション |
-|-----|--------|
-| `Super+Space` | 概要 — アプリ検索、ワークスペースナビゲーション |
-| `Alt+Tab` | ウィンドウスイッチャー |
-| `Super+V` | クリップボード履歴 |
-| `Super+Shift+S` | リージョンスクリーンショット |
-| `Super+Shift+X` | リージョン OCR |
-| `Super+,` | 設定 |
-| `Super+Shift+W` | パネルファミリー切り替え |
+`defaults/mango/config.conf` からインストールされます:
 
-全リスト：[KEYBINDS.md](../KEYBINDS.md)
+| キー | 動作 |
+|-----|--------|
+| <kbd>Super</kbd> + <kbd>Space</kbd> | 概要: アプリ検索、タグ間の移動 |
+| <kbd>Super</kbd> + <kbd>V</kbd> | クリップボード履歴 |
+| <kbd>Super</kbd> + <kbd>P</kbd> | 左サイドバー |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> | 右サイドバー |
+| <kbd>Super</kbd> + <kbd>D</kbd> | ダッシュボード |
+| <kbd>Super</kbd> + <kbd>,</kbd> | 設定 |
+| <kbd>Super</kbd> + <kbd>/</kbd> | チートシート |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd> | パネルファミリーを切り替え |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> | 範囲をスクリーンショット |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> | 範囲を OCR |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd> | 範囲を録画 |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> | 範囲を逆画像検索 |
+| <kbd>Super</kbd> + <kbd>L</kbd> | ロック |
+| <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Delete</kbd> | セッション画面 |
+
+ウィンドウ管理のキーはあなたのものです。シェルは定義しません。完全な一覧:
+[キーバインド](../KEYBINDS.md)。
 
 ---
 
 ## 壁紙
 
-15枚の壁紙が同梱されています。さらに欲しい場合は [iNiR-Walls](https://github.com/snowarch/iNiR-Walls) をチェック — Material You パイプラインと相性の良いキュレーションコレクションです。
+壁紙が 15 枚同梱されています。もっと欲しければ [iNiR-Walls](https://github.com/snowarch/iNiR-Walls)
+を見てください。Material You のパイプラインと相性のよいコレクションです。
 
 ---
 
-## ドキュメント
+## ドキュメント（niri 向けで、mango 向けではありません）
 
-| | |
+| ページ | 内容 |
 |---|---|
-| [INSTALL.md](../INSTALL.md) | インストールガイド |
-| [SETUP.md](../SETUP.md) | Setup コマンド — アップデート、マイグレーション、ロールバック |
-| [KEYBINDS.md](../KEYBINDS.md) | すべてのキーボードショートカット |
-| [IPC.md](../IPC.md) | スクリプトとキーバインド用 IPC ターゲット |
-| [PACKAGES.md](../PACKAGES.md) | すべての依存関係とその理由 |
-| [LIMITATIONS.md](../LIMITATIONS.md) | 既知の制限と回避策 |
-| [ARCHITECTURE.md](../../ARCHITECTURE.md) | 技術アーキテクチャ概要 |
+| [インストール](../INSTALL.md) | 動かすまで |
+| [Setup](../SETUP.md) | 更新、マイグレーション、ロールバック |
+| [キーバインド](../KEYBINDS.md) | すべてのショートカット |
+| [IPC](../IPC.md) | キーに割り当てたりスクリプトから呼べるターゲット |
+| [パッケージ](../PACKAGES.md) | 依存関係と、それが必要な理由 |
+| [制限事項](../LIMITATIONS.md) | 壊れているとわかっているものと回避策 |
+| [コンポジタ](../COMPOSITORS.md) | コンポジタ連携の仕組み |
+| [アーキテクチャ](../../ARCHITECTURE.md) | コードの組み立て方 |
+
+`docs/` の大部分は上流から引き継いだもので、ところどころ今も niri の説明になっています。
+ドキュメントとこの README で「どのコンポジタに対応しているか」が食い違う場合は、この README が
+正しいです。
 
 ---
 
 ## トラブルシューティング
 
 ```bash
-inir logs                       # 最近のランタイムログを確認
-inir restart                    # アクティブなランタイムを再起動
-inir repair                     # doctor + 再起動 + フィルタ済みログチェック
-./setup doctor                  # 一般的な問題の自動診断と修復
-./setup rollback                # 最後のアップデートを取り消し
+inir logs                       # 直近のランタイムログ
+inir restart                    # 動作中のランタイムを再起動
+inir repair                     # doctor + 再起動 + ログの絞り込み確認
+inir doctor                     # よくある問題の自動診断と修復
+./setup rollback                # 直前の更新を取り消す
+claude "助けてください"          # 自分で調べる気がないとき。まあ、20 ドル分は働いてもらわないと
 ```
 
-issue を開く前に [LIMITATIONS.md](../LIMITATIONS.md) を確認してください。
+[制限事項](../LIMITATIONS.md) は笑うために覗いてみてください。
 
 ---
 
 ## コントリビュート
 
-[CONTRIBUTING.md](../../CONTRIBUTING.md) を参照 — 開発環境のセットアップ、コードパターン、PR ガイドライン。
+[CONTRIBUTING.md](../../CONTRIBUTING.md) を参照 — 開発環境の準備、コードの書き方、プルリクエスト
+の規約。
+
 
 ---
 
 ## クレジット
 
-- [**end-4**](https://github.com/end-4/dots-hyprland) — Hyprland 向けオリジナル illogical-impulse
-- [**Quickshell**](https://quickshell.outfoxxed.me/) — このシェルを動かすフレームワーク
-- [**Niri**](https://github.com/YaLTeR/niri) — スクロール式タイリング Wayland コンポジター
+- [**snowarch**](https://github.com/snowarch/iNiR): iNiR。ここで移植されているシェル
+- [**end-4**](https://github.com/end-4/dots-hyprland): illogical-impulse。iNiR のフォーク元
+- [**Gakuseei**](https://github.com/Gakuseei): [Ricelin](https://github.com/Gakuseei/Ricelin)。pill バーと washi・flame の見た目の出どころ
+- [**Quickshell**](https://quickshell.outfoxxed.me/): これが動いているフレームワーク
+- [**MangoWM**](https://github.com/DreamMaoMao/mango): 対象としているコンポジタ
+- **Claude**（Anthropic）: MangoWM 移植を書いた張本人。一番上に書いたとおり
 
----
-
-<p align="center">
-  <a href="https://github.com/snowarch/inir/graphs/contributors">コントリビューター</a> &bull;
-  <a href="CHANGELOG.md">変更履歴</a> &bull;
-  <a href="LICENSE">GPL-3.0 ライセンス</a>
-</p>
+GPL-3.0、end-4 の dotfiles と同じです。上流の著作権 (C) 2025-2026 snowarch。

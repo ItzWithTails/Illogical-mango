@@ -1,104 +1,121 @@
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/da6beb4a-ccee-40ba-a372-5eea77b595f8" alt="iNiR" width="800">
-</p>
-
-<h1 align="center">iNiR</h1>
+<h1 align="center">Illogical-mango</h1>
 
 <p align="center">
-  <b>Niri के लिए Quickshell पर बना एक पूर्ण डेस्कटॉप शेल</b>
-</p>
-
-<p align="center">
-  <a href="https://github.com/snowarch/inir/releases"><img src="https://img.shields.io/badge/version-2.29.2-blue?style=flat-square" alt="Version"></a>
-  <a href="https://github.com/snowarch/inir/stargazers"><img src="https://img.shields.io/github/stars/snowarch/inir?style=flat-square" alt="Stars"></a>
-  <a href="https://discord.gg/pAPTfAhZUJ"><img src="https://img.shields.io/badge/Discord-join-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Discord"></a>
-</p>
-
-<p align="center">
-  <a href="../INSTALL.md">इंस्टॉल</a> &bull;
-  <a href="../KEYBINDS.md">कीबाइंड</a> &bull;
-  <a href="../IPC.md">IPC संदर्भ</a> &bull;
-  <a href="https://discord.gg/pAPTfAhZUJ">Discord</a> &bull;
-  <a href="../../CONTRIBUTING.md">योगदान</a>
+  <b>MangoWM के लिए एक पूरा डेस्कटॉप शेल, Quickshell पर बना</b>
 </p>
 
 <p align="center">
   <sub>
-    <a href="../../README.md">English</a> · <a href="README.es.md">Español</a> · <a href="README.ru.md">Русский</a> · <a href="README.zh.md">中文</a> · <a href="README.ja.md">日本語</a> · <a href="README.pt.md">Português</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.ko.md">한국어</a> · <a href="README.hi.md">हिन्दी</a> · <a href="README.ar.md">العربية</a> · <a href="README.it.md">Italiano</a>
+    <a href="../../README.md">English</a> · <a href="README.ru.md">Русский</a> · <a href="README.es.md">Español</a> · <a href="README.zh.md">中文</a> · <a href="README.ja.md">日本語</a> · <a href="README.pt.md">Português</a> · <a href="README.fr.md">Français</a> · <a href="README.de.md">Deutsch</a> · <a href="README.ko.md">한국어</a> · <a href="README.hi.md">हिन्दी</a> · <a href="README.ar.md">العربية</a> · <a href="README.it.md">Italiano</a>
   </sub>
 </p>
 
 ---
 
-> **अनुवाद के बारे में:** सामुदायिक अनुवाद। अगर कुछ स्पष्ट न हो, तो [अंग्रेज़ी संस्करण](../../README.md) देखें।
+## यह पोर्ट एक AI ने लिखा है। पूरा का पूरा। यह README भी, करीब 90%
+
+यह प्रोजेक्ट मज़ाक है। इस पर किसी ने मेहनत नहीं की।
+
+MangoWM पर पोर्ट - `services/MangoService.qml`,
+`services/deferred/MangoKeybinds.qml`, `services/CompositorService.qml` में कंपोज़िटर पहचान
+का दोबारा लिखा जाना, इंस्टॉलर और doctor में हुए बदलाव - शुरू से आख़िर तक Claude के ज़रिये
+लिखा गया है।
+"मदद से" नहीं। उसी ने लिखा है।
+
+यह बात सबसे ऊपर इसलिए लिखी है ताकि आपको बाद में पता न चले — किसी diff से या किसी बग से। यह
+कोई उपलब्धि नहीं है और इसे उपलब्धि की तरह पेश भी नहीं किया जा रहा। असल में यह पोर्ट मैंने
+अपने लिए, मज़े के लिए बनाया था। इसे ध्यान में रखिए।
+
+पोर्ट की परत के नीचे जो शेल है, वह snowarch का iNiR है, जिसे (उम्मीद है) किसी इंसान ने लिखा है।
 
 ---
 
-<details>
-<summary><b>🤔 पहली बार आए हैं? अगर समझ नहीं आ रहा तो यहाँ क्लिक करें</b></summary>
+## यह है क्या
 
-### ये क्या है?
-
-iNiR आपका पूरा डेस्कटॉप है। ऊपर की बार, डॉक, नोटिफिकेशन, सेटिंग्स, वॉलपेपर, सब कुछ। ये थीम नहीं है, कॉपी-पेस्ट करने वाली dotfiles नहीं है। Linux पर चलने वाला एक पूरा शेल है।
-
-### चलाने के लिए क्या चाहिए?
-
-एक compositor। ये वो चीज़ है जो विंडोज़ को मैनेज करती है और स्क्रीन पर पिक्सल्स डालती है। iNiR [Niri](https://github.com/YaLTeR/niri) (एक tiling Wayland compositor) के लिए बना है। end-4 के dots से फोर्क होने के समय का पुराना Hyprland कोड है, लेकिन असल में टेस्ट और इस्तेमाल Niri होता है।
-
-शेल [Quickshell](https://quickshell.outfoxxed.me/) पर चलता है, QML (Qt की UI भाषा) में शेल बनाने का फ्रेमवर्क। इसे जानने की ज़रूरत नहीं, सब कुछ GUI या JSON फाइल से configure होता है।
-
-### सब कैसे जुड़ा है
+सच कहूँ तो अगर आपने कभी ख़ुद कोई नंगा Wayland कंपोज़िटर चढ़ाया है, तो आपको यह समझाने की ज़रूरत
+नहीं कि उसे शेल क्यों चाहिए। फिर भी यह समझाना मेरा फ़र्ज़ है कि काम कैसे होता है।
 
 ```
-आपकी apps
+आपके ऐप्लिकेशन
    ↓
-iNiR (शेल: बार, साइडबार, डॉक, नोटिफिकेशन, सेटिंग्स...)
+Illogical-mango   बार, डॉक, साइडबार, ओवरव्यू, सूचनाएँ, सेटिंग्स, लॉक स्क्रीन
    ↓
-Quickshell (QML शेल चलाता है)
+Quickshell        Wayland शेल के लिए QML रनटाइम
    ↓
-Niri (compositor: विंडोज़, रेंडरिंग)
+MangoWM           विंडो और रेंडरिंग
    ↓
 Wayland → GPU
 ```
 
-### stable है?
+**बाक़ी Quickshell कॉन्फ़िगरेशनों से यह किस बात में अलग है:**
 
-ये एक personal project है जो हाथ से निकल गया। मैं रोज़ इस्तेमाल करता हूँ, Discord पर बहुत लोग भी। लेकिन कभी-कभी टूटता है, कोड जगह-जगह गंदा है, करते-करते सीख रहा हूँ।
+- **एक ही इंस्टॉल में दो पूरे पैनल परिवार।** Material ii (तैरता बार, साइडबार, डॉक) और
+  Waffle (नीचे टास्कबार, स्टार्ट मेन्यू, ऐक्शन सेंटर)। ये एक ही विजेट्स पर चढ़ाई गई थीम नहीं
+  हैं — ये अलग-अलग पैनल ट्री हैं, अपने-अपने टोकन सिस्टम के साथ, और
+  <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd> से चलते-चलते बदल जाते हैं।
+- **सिर्फ़ शेल नहीं, पूरे सिस्टम की थीमिंग।** एक वॉलपेपर से Material You पैलेट बनता है जो
+  GTK3/4, Qt, दस टर्मिनल और TUI औज़ारों, Firefox, Discord, Spicetify, Steam और SDDM में लिखा
+  जाता है।
+- **कोड छुए बिना कॉन्फ़िगर होता है।** सब कुछ एक ही `config.json` के ऊपर बैठी GUI सेटिंग है।
+  दिखावट या व्यवहार बदलने के लिए QML को कभी छूना नहीं पड़ता।
+- **असली इंस्टॉल और अपग्रेड का रास्ता।** `./setup` निर्भरताएँ और सिस्टम कॉन्फ़िग सँभालता है;
+  `inir update` pull करता है, स्कीमा माइग्रेशन चलाता है, आपके बदलाव बचाए रखता है और रोलबैक भी
+  कर सकता है।
 
-कुछ काम नहीं करे तो `inir doctor` ज़्यादातर ठीक कर देता है। वो भी नहीं हुआ तो Discord active है। polished software की उम्मीद मत रखो, ये एक आदमी का rice है जो दूसरों को पसंद आ गया।
+**वंशावली।** [end-4 का illogical-impulse](https://github.com/end-4/dots-hyprland) (Hyprland
+डॉटफ़ाइलें) → [snowarch का iNiR](https://github.com/snowarch/iNiR) (niri के लिए दोबारा लिखा
+गया) → यह, MangoWM पर पोर्ट किया हुआ। CLI, कॉन्फ़िग पथ और अंदरूनी हिस्से अब भी `inir` ही
+कहलाते हैं: नाम बदलने से हर अपग्रेड रास्ता टूट जाता, इसलिए नाम वैसा ही रहने दिया।
+सीधे end-4 को फ़ोर्क क्यों नहीं किया? तर्क सीधा है - जो प्रोजेक्ट एक बार पोर्ट हो चुका है, उसे
+दोबारा पोर्ट करना आसान होता है।
+मिसाल के तौर पर Void Linux को लीजिए। उस पर systemd डाल दीजिए, वह आराम से चलेगा।
+Arch Linux से systemd उखाड़ दीजिए, तो लगभग पूरा पैकेज आधार बदलना पड़ेगा।
 
-### ये क्यों exist करता है?
 
-मैं चाहता था कि मेरा डेस्कटॉप एक खास तरीके से दिखे और काम करे, और कोई और चीज़ बिल्कुल वैसा नहीं करती थी। end-4 के Hyprland dots से शुरू हुआ, Niri के लिए पूरा rewrite बन गया बहुत सारे features के साथ।
+## कंपोज़िटर
 
-### दिखने वाले शब्द
+[MangoWM](https://github.com/DreamMaoMao/mango) के लिए बनाया गया है और परखा भी सिर्फ़ उसी पर
+गया है।
 
-- **Shell**: UI layer (बार, पैनल, overlays)
-- **Compositor**: विंडोज़ मैनेज करता है, स्क्रीन पर ड्रॉ करता है (Niri, Hyprland, Sway...)
-- **Wayland**: Linux का display protocol (नया वाला, X11 की जगह)
-- **QML**: Qt की declarative UI भाषा, iNiR इसमें लिखा है
-- **Material You**: Google का color system जो इमेज से palette बनाता है (auto-theming ऐसे काम करता है)
-- **ii / waffle**: दो panel styles। ii = Material Design वाइब, waffle = Windows 11 वाइब। `Super+Shift+W` से switch करो
+शेल mango से उसके IPC सॉकेट के ज़रिये बात करता है, जो `$MANGO_INSTANCE_SIGNATURE` पर होता है
+और हर बदलाव पर सत्र का पूरा स्नैपशॉट भेजता है। mango dwm शैली का है — वर्कस्पेस की सूची नहीं,
+टैग — इसलिए `MangoService` `(मॉनिटर, टैग क्रमांक)` जोड़ों को उसी वर्कस्पेस मॉडल पर मैप करता है
+जिसकी उम्मीद बार, डॉक, ओवरव्यू और वर्कस्पेस पट्टी पहले से करते हैं, और वे मॉड्यूल बिना किसी
+बदलाव के चलते हैं।
 
-</details>
+कॉन्फ़िगरेशन जान-बूझकर विनाशकारी नहीं है। mango ठीक एक फ़ाइल
+(`~/.config/mango/config.conf`) पढ़ता है और कुछ भी मर्ज नहीं करता, इसलिए इंस्टॉलर आपका
+कंपोज़िटर कॉन्फ़िग कभी ऊपर से नहीं लिखता। वह शेल के कीबाइंड और ऑटोस्टार्ट
+`~/.config/mango/inir.conf` में रखता है और उसी की ओर इशारा करती एक `source-optional=` पंक्ति
+जोड़ देता है, आपकी विंडो व्यवस्था को छुए बिना। ऑटोस्टार्ट उसी फ़ाइल में
+`exec-once=inir run --daemon` पंक्ति है, कोई systemd यूनिट नहीं।
+
+> [!NOTE]
+> **niri और Hyprland का कोड अब भी ट्री में पड़ा है।** `NiriService.qml`,
+> `HyprlandData.qml` और `isNiri` / `isHyprland` शाखाएँ अपस्ट्रीम से बची हुई हैं और आज भी
+> कंपाइल होती हैं। वे विरासत में मिली हैं, समर्थित नहीं: यहाँ उन कंपोज़िटरों पर कुछ भी परखा
+> नहीं जाता और उनके लिए कुछ भी सँभाला नहीं जाता। niri चाहिए तो
+> [असली iNiR](https://github.com/snowarch/iNiR) लीजिए।
 
 ---
 
 ## स्क्रीनशॉट
 
+दोनों पैनल परिवार, अपस्ट्रीम से ज्यों के त्यों लिए गए हैं।
+
 <details open>
-<summary><b>Material ii</b> — फ़्लोटिंग बार, साइडबार, Material Design सौंदर्य</summary>
+<summary><b>Material ii</b>: तैरता बार, साइडबार, Material Design वाली शक्ल</summary>
 
 | | |
 |:---:|:---:|
 | ![](https://github.com/user-attachments/assets/1fe258bc-8aec-4fd9-8574-d9d7472c3cc8) | ![](https://github.com/user-attachments/assets/3ce2055b-648c-45a1-9d09-705c1b4a03b7) |
-| ![](https://github.com/user-attachments/assets/ea2311dc-769e-44dc-a46d-37cf8807d2cc) | ![](https://github.com/user-attachments/assets/da6beb4a-ccee-40ba-a372-5eea77b595f8) |
-| ![](https://github.com/user-attachments/assets/ba866063-b26a-47cb-83c8-d77bd033bf8b) | ![](https://github.com/user-attachments/assets/88e76566-061b-4f8c-a9a8-53c157950138) |
+| ![](https://github.com/user-attachments/assets/ea2311dc-769e-44dc-a46d-37cf8807d2cc) | ![](https://github.com/user-attachments/assets/ba866063-b26a-47cb-83c8-d77bd033bf8b) |
+| ![](https://github.com/user-attachments/assets/88e76566-061b-4f8c-a9a8-53c157950138) | |
 
 </details>
 
 <details>
-<summary><b>Waffle</b> — नीचे टास्कबार, एक्शन सेंटर, Windows 11 शैली</summary>
+<summary><b>Waffle</b>: नीचे टास्कबार, ऐक्शन सेंटर, Windows 11 वाला मिज़ाज</summary>
 
 | | |
 |:---:|:---:|
@@ -108,178 +125,212 @@ Wayland → GPU
 
 ---
 
+> [!WARNING]
+> डिफ़ॉल्ट कॉन्फ़िगरेशन ठीक-ठाक आधुनिक हार्डवेयर को ध्यान में रखकर है। कमज़ोर मशीनों पर इफ़ेक्ट
+> बंद कीजिए, जो पैनल काम के नहीं उन्हें हटाइए और दिखावट को सपाट कर दीजिए — यह सब सेटिंग्स से या
+> `config.json` के ज़रिये हो जाता है।
+
 ## विशेषताएँ
 
-**दो पैनल फ़ैमिली**, `Super+Shift+W` से तुरंत स्विच:
-- **Material ii** — फ़्लोटिंग बार, साइडबार, डॉक, 6 विज़ुअल स्टाइल (material, cards, aurora, inir, angel, zzz)
-- **Waffle** — Windows 11 शैली टास्कबार, स्टार्ट मेन्यू, एक्शन सेंटर, नोटिफ़िकेशन सेंटर
+**दो पैनल परिवार**, <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd> से चलते-चलते बदल जाते हैं:
 
-**ऑटोमैटिक थीमिंग** — वॉलपेपर चुनें और सब कुछ अनुकूलित हो जाता है:
-- Material You के माध्यम से शेल रंग, GTK3/4, Qt, टर्मिनल, Firefox, Discord, SDDM तक प्रसारित
-- 10 टर्मिनल टूल्स ऑटो-थीम (foot, kitty, alacritty, starship, fuzzel, btop, lazygit, yazi)
-- थीम प्रीसेट: Gruvbox, Catppuccin, Rosé Pine, और कस्टम
+- **Material ii** — तैरता बार, साइडबार, डॉक और 8 दृश्य शैलियाँ (Material, Cards, Aurora,
+  iNiR, Angel, Regalia, ZZZ, Cookie Shapes)
+- **Waffle** — Windows 11 अंदाज़ का टास्कबार, स्टार्ट मेन्यू, ऐक्शन सेंटर, सूचना केंद्र
 
-**कंपोज़िटर** — Niri के लिए बनाया गया।
+**अपने आप थीमिंग।** वॉलपेपर चुनिए और पूरा सिस्टम उसके पीछे चल पड़ता है: शेल के Material You रंग
+GTK3/4, Qt, टर्मिनलों, Firefox, Discord, Spicetify, Steam और SDDM तक पहुँच जाते हैं। साथ में
+Regalia, Gruvbox, Catppuccin और Rosé Pine प्रीसेट हैं, या अपना बना लीजिए।
 
 <details>
-<summary><b>पूर्ण सुविधा सूची</b></summary>
+<summary><b>पूरी सूची</b></summary>
 
-### थीम और दिखावट
+### थीमिंग और दिखावट
 
-वॉलपेपर चुनें और पूरा सिस्टम अनुसरण करता है — शेल, GTK/Qt ऐप्स, टर्मिनल, Firefox, Discord, SDDM लॉगिन स्क्रीन। सब स्वचालित।
+- **8 दृश्य शैलियाँ**: Material (ठोस), Cards, Aurora (काँच जैसा धुँधलापन), iNiR (TUI अंदाज़), Angel (नियो-ब्रूटलिज़्म), Regalia (काला इंजीनियरिंग ढाँचा, गर्म हाथीदाँत रंग की स्याही, संयत शैम्पेन धातु), ZZZ (पोस्टर जैसी पट्टियाँ), Cookie Shapes (आकृतियों का सजीव रूपांतरण)
+- **वॉलपेपर से गतिशील रंग** Material You के ज़रिये, पूरे सिस्टम में
+- **10 टर्मिनल और TUI औज़ार अपने आप थीम होते हैं**: foot, kitty, alacritty, ghostty, wezterm, starship, fuzzel, btop, lazygit, yazi
+- **ऐप थीमिंग**: GTK3/4, Qt (plasma-integration और darkly के ज़रिये), Firefox (MaterialFox), Discord/Vesktop (System24), Zed, Spicetify, Steam, SDDM
+- **थीम प्रीसेट**: Regalia, Regalia Ivory, Gruvbox, Catppuccin, Rosé Pine और अपने बनाए हुए
+- **वीडियो वॉलपेपर**: mp4/webm/gif, चाहें तो धुँधलापन, या रफ़्तार के लिए पहला फ़्रेम जमा हुआ
+- **डेस्कटॉप विजेट**: घड़ी (कई शैलियाँ), मौसम, वॉलपेपर परत पर मीडिया नियंत्रण
 
-- **6 विज़ुअल स्टाइल** — Material (ठोस), Cards, Aurora (ग्लास ब्लर), iNiR (TUI-प्रेरित), Angel (नव-ब्रूटलिज़्म), ZZZ
-- **वॉलपेपर से डायनामिक रंग** — Material You के ज़रिए पूरे सिस्टम में प्रसारित
-- **10 टर्मिनल टूल्स ऑटो-थीम** — foot, kitty, alacritty, starship, fuzzel, pywalfox, btop, lazygit, yazi
-- **ऐप थीमिंग** — GTK3/4, Qt (plasma-integration + darkly), Firefox (MaterialFox), Discord/Vesktop (System24)
-- **थीम प्रीसेट** — Gruvbox, Catppuccin, Rosé Pine, और अन्य — या अपना बनाएँ
-- **वीडियो वॉलपेपर** — mp4/webm/gif, वैकल्पिक ब्लर, या प्रदर्शन के लिए फ़्रोज़न पहला फ़्रेम
-- **SDDM लॉगिन थीम** — वॉलपेपर के साथ सिंक्रनाइज़ Material You रंग
-- **डेस्कटॉप विजेट** — घड़ी (कई शैलियाँ), मौसम, वॉलपेपर लेयर पर मीडिया नियंत्रण
+### बार
+
+- **6 बार शैलियाँ**: classic, islands, scenic, frame, Material 3 कैप्सूल और pill
+- **pill बार**: बीच में आकार बदलता एक टापू, जो माउस ले जाते ही वर्कस्पेस, लॉन्चर, मिक्सर, मीडिया, कैलेंडर और स्क्रीन रिकॉर्डर में खुल जाता है
+- **मॉड्यूलर लेआउट**, सेटिंग्स में खींचकर सजाने वाला संपादक — कोई भी मॉड्यूल कहीं भी
+- **खड़ा बार**, उनके लिए जिन्हें स्क्रीन का किनारा चाहिए
 
 ### साइडबार और विजेट (Material ii)
 
-बायाँ साइडबार (ऐप ड्रॉअर):
-- **AI चैट** — Gemini, Mistral, OpenRouter, या Ollama के माध्यम से लोकल मॉडल
-- **YT Music** — खोज, कतार और नियंत्रण के साथ पूर्ण प्लेयर
-- **Wallhaven ब्राउज़र** — सीधे वॉलपेपर खोजें और लागू करें
-- **एनीमे ट्रैकर** — AniList एकीकरण और शेड्यूल दृश्य
-- **अनुवादक** — Gemini या translate-shell के माध्यम से
-- **ड्रैग करने योग्य विजेट** — क्रिप्टो, मीडिया प्लेयर, त्वरित नोट्स, स्टेटस रिंग, साप्ताहिक कैलेंडर
+बायाँ साइडबार (ऐप दराज़):
+- **AI Chat**: Ollama, LM Studio, OpenRouter, Gemini, Groq, Mistral, Cerebras, Anthropic, OpenAI और OpenCode के मॉडल सूचीपत्र, सीधे लाइव
+- **YT Music**: बिना कुकी वाला InnerTube प्लेयर — खोज, क़तार, रेडियो और सधे हुए बोल
+- **Wallhaven ब्राउज़र**: वॉलपेपर सीधे खोजिए और लगाइए
+- **ऐनिमे ट्रैकर**: AniList से जुड़ाव और प्रसारण तालिका
+- **अनुवादक**: Gemini या translate-shell के ज़रिये
+- **खींचकर रखे जाने वाले विजेट**: क्रिप्टो, मीडिया प्लेयर, झटपट नोट, स्थिति के छल्ले, साप्ताहिक कैलेंडर
 
 दायाँ साइडबार:
-- **कैलेंडर** — इवेंट एकीकरण के साथ
-- **नोटिफ़िकेशन सेंटर**
-- **क्विक टॉगल** — WiFi, Bluetooth, नाइट लाइट, DND, पावर प्रोफ़ाइल, WARP VPN, EasyEffects
-- **वॉल्यूम मिक्सर** — प्रति-ऐप नियंत्रण
-- **Bluetooth और WiFi** डिवाइस प्रबंधन
-- **पोमोडोरो टाइमर**, **कार्य सूची**, **कैलकुलेटर**, **नोटपैड**
-- **सिस्टम मॉनिटर** — CPU, RAM, तापमान
+- **कैलेंडर**, कार्यक्रमों के जुड़ाव के साथ
+- **सूचना केंद्र**
+- **झटपट स्विच**: WiFi, ब्लूटूथ, रात्रि प्रकाश, परेशान न करें, पावर प्रोफ़ाइल, WARP VPN, EasyEffects
+- **वॉल्यूम मिक्सर**, हर ऐप के लिए अलग नियंत्रण
+- **ब्लूटूथ और WiFi** उपकरण प्रबंधन
+- **पोमोडोरो टाइमर**, **कामों की सूची**, **कैलकुलेटर**, **नोटपैड**
+- **सिस्टम मॉनिटर**: CPU, RAM, तापमान
 
-### टूल्स
+### औज़ार
 
-- **वर्कस्पेस ओवरव्यू** — Niri के स्क्रॉलिंग मॉडल के अनुकूल, ऐप खोज और कैलकुलेटर के साथ
-- **विंडो स्विचर** — सभी वर्कस्पेस में Alt+Tab
-- **क्लिपबोर्ड मैनेजर** — खोज और इमेज प्रीव्यू के साथ इतिहास
-- **रीजन टूल्स** — स्क्रीनशॉट, स्क्रीन रिकॉर्डिंग, OCR, रिवर्स इमेज सर्च
-- **चीटशीट** — आपकी Niri कॉन्फ़िग से निकाला गया कीबाइंड व्यूअर
-- **मीडिया नियंत्रण** — कई लेआउट प्रीसेट के साथ पूर्ण MPRIS प्लेयर
-- **ऑन-स्क्रीन डिस्प्ले** — वॉल्यूम, ब्राइटनेस, और मीडिया OSD
-- **गाना पहचान** — SongRec के माध्यम से Shazam शैली पहचान
-- **वॉइस सर्च** — रिकॉर्ड करें और Gemini से खोजें
+- **वर्कस्पेस ओवरव्यू**: ऐप खोज और कैलकुलेटर, mango के टैग मॉडल पर बैठाए हुए
+- **डैशबोर्ड**: तीन स्तंभों वाला सजाने योग्य ओवरले — कार्यक्रम, सूचनाएँ, काम, नोट, मीडिया और मौसम
+- **किनारे की वर्कस्पेस पट्टी**: माउस ले जाने पर आती रेल, सजीव झलक और खींचकर क्रम बदलने के साथ
+- **विंडो स्विचर**: सभी वर्कस्पेस में चलने वाला सजीव Alt-Tab, चाहें तो चालू कीजिए
+- **क्लिपबोर्ड प्रबंधक**: खोज और तस्वीर की झलक वाला इतिहास
+- **क्षेत्र औज़ार**: स्क्रीनशॉट, स्क्रीन रिकॉर्डिंग, OCR, उलटी तस्वीर खोज
+- **चीटशीट**: आपके mango कॉन्फ़िग से निकाले गए कीबाइंड
+- **मीडिया नियंत्रण**: कई लेआउट प्रीसेट वाला पूरा MPRIS प्लेयर
+- **स्क्रीन पर संकेत**: आवाज़, चमक और मीडिया का OSD
+- **गाने की पहचान**: Shazam की तरह, SongRec के ज़रिये
+- **आवाज़ से इनपुट**: लगा हो तो स्थानीय whisper.cpp, या जुड़ा हुआ Groq, Gemini या OpenAI बैकएंड
 
 ### सिस्टम
 
-- **GUI सेटिंग्स** — फ़ाइलें संपादित किए बिना सब कुछ कॉन्फ़िगर करें
-- **GameMode** — फ़ुलस्क्रीन ऐप्स के लिए इफ़ेक्ट्स स्वचालित रूप से अक्षम
-- **ऑटो-अपडेट** — `inir update`, रोलबैक, माइग्रेशन, और उपयोगकर्ता परिवर्तन संरक्षण के साथ
-- **लॉक स्क्रीन** और **सेशन स्क्रीन** (लॉगआउट/रीस्टार्ट/शटडाउन/सस्पेंड)
-- **Polkit एजेंट**, **ऑन-स्क्रीन कीबोर्ड**, **ऑटोस्टार्ट मैनेजर**
-- **9 भाषाएँ** — ऑटो-डिटेक्शन, AI-सहायित अनुवाद जनरेशन के साथ
-- **नाइट लाइट** — शेड्यूल या मैनुअल
-- **मौसम** — Open-Meteo, GPS, मैनुअल निर्देशांक, या शहर का नाम सपोर्ट
-- **बैटरी प्रबंधन** — कॉन्फ़िगर करने योग्य थ्रेशोल्ड, क्रिटिकल पर ऑटो-सस्पेंड
-- **शेल अपडेट चेकर** — नए वर्शन आने पर सूचित करता है
+- **GUI सेटिंग्स**: फ़ाइलें छुए बिना सब कुछ सेट कीजिए
+- **GameMode**: पूरी स्क्रीन वाले ऐप्स के लिए इफ़ेक्ट अपने आप बंद
+- **अपने आप अपडेट**: `inir update`, रोलबैक, माइग्रेशन और आपके बदलावों की हिफ़ाज़त के साथ
+- **लॉक स्क्रीन** और **सत्र स्क्रीन** (लॉगआउट/रीबूट/शटडाउन/सस्पेंड)
+- **polkit एजेंट**, **स्क्रीन कीबोर्ड**, **ऑटोस्टार्ट प्रबंधक**, जिसकी नींव mango कॉन्फ़िग की `exec-once` पंक्ति है
+- **Kira**: चाहें तो चालू कीजिए — पिक्सेल आर्ट शुभंकर, जो स्क्रीन के किनारों पर घूमती है और आपकी हरकतों पर प्रतिक्रिया देती है। डिफ़ॉल्ट रूप से बंद; करीब 32 MiB का आर्ट पैक `./setup` › Extras से अलग से उतरता है
+- **15 भाषाएँ**, अपने आप पहचान के साथ
+- **रात्रि प्रकाश**: समय तय करके या हाथ से
+- **मौसम**: Open-Meteo, GPS, हाथ से डाले निर्देशांक या शहर का नाम
+- **बैटरी प्रबंधन**: तय की जा सकने वाली सीमाएँ, नाज़ुक स्तर पर अपने आप सस्पेंड
+- **अपने चुने हुए घटना ध्वनियाँ**, मुख्य आवाज़ और हर घटना के लिए अलग ऑडियो फ़ाइल के साथ
 
 </details>
 
 ---
 
-## त्वरित शुरुआत
+## झटपट शुरुआत (इंस्टॉलर आगे चलकर दूसरा होगा)
 
 ```bash
-git clone https://github.com/snowarch/inir.git
-cd inir
-./setup install       # इंटरैक्टिव — हर चरण पर पूछता है
-./setup install -y    # स्वचालित — बिना पूछे इंस्टॉल
+git clone https://github.com/ItzWithTails/Illogical-mango.git
+cd Illogical-mango
+./setup install       # संवादात्मक, हर क़दम से पहले पूछता है
+./setup install -y    # अपने आप, कुछ नहीं पूछता
 ```
 
-इंस्टॉलर डिपेंडेंसी, सिस्टम कॉन्फ़िग, थीमिंग — सब संभालता है। इंस्टॉल के बाद `inir run` चलाएँ, या लॉगआउट करके वापस लॉगिन करें।
+इंस्टॉलर निर्भरताएँ, सिस्टम कॉन्फ़िग और थीमिंग सँभालता है। वह शेल के कीबाइंड
+`~/.config/mango/inir.conf` में लिखता है और आपके मौजूदा mango कॉन्फ़िग से जोड़ देता है, आपकी
+विंडो व्यवस्था को छुए बिना। इसके बाद mango दोबारा चालू कीजिए या
+`mmsg dispatch reload_config` चलाइए।
 
 ```bash
-inir run                        # शेल शुरू करें
-inir settings                   # सेटिंग्स GUI खोलें
-inir logs                       # रनटाइम लॉग देखें
-inir doctor                     # ऑटो-डायग्नोस और ठीक करें
-inir update                     # pull + माइग्रेशन + रीस्टार्ट
+inir run                        # शेल चालू कीजिए
+inir settings                   # सेटिंग्स GUI खोलिए
+inir logs                       # लॉग देखिए
+inir doctor                     # अपने आप जाँच और मरम्मत
+inir update                     # pull + माइग्रेशन + दोबारा चालू
 ```
 
-**समर्थित डिस्ट्रो:** Arch (स्वचालित इंस्टॉलर)। अन्य डिस्ट्रो मैन्युअल रूप से इंस्टॉल कर सकते हैं — देखें [PACKAGES.md](../PACKAGES.md)।
+और रास्ते:
 
-| तरीक़ा | कमांड |
-|--------|---------|
-| सिस्टम इंस्टॉल | `sudo make install && inir run` |
-| TUI मेन्यू | `./setup` |
-| रोलबैक | `./setup rollback` |
+```bash
+./setup                 # TUI मेन्यू, जो चाहिए वह चुनिए
+./setup install --skip-mango    # mango कॉन्फ़िग को बिल्कुल न छुएँ
+sudo make install       # घर की जगह पूरे सिस्टम में
+./setup rollback        # पिछला अपडेट पलट दीजिए
+```
+
+**डिस्ट्रो।** Arch मुख्य निशाना है और सबसे ज़्यादा परखा हुआ। Debian और Fedora के लिए पोर्ट है
+ज़रूर… ख़तरा आपका अपना, उन पर कोई परीक्षण नहीं हुआ है।
 
 ---
 
 ## कीबाइंड
 
-| कुंजी | कार्य |
-|-----|--------|
-| `Super+Space` | ओवरव्यू — ऐप खोजें, वर्कस्पेस नेविगेट करें |
-| `Alt+Tab` | विंडो स्विचर |
-| `Super+V` | क्लिपबोर्ड इतिहास |
-| `Super+Shift+S` | रीजन स्क्रीनशॉट |
-| `Super+Shift+X` | रीजन OCR |
-| `Super+,` | सेटिंग्स |
-| `Super+Shift+W` | पैनल फ़ैमिली बदलें |
+`defaults/mango/config.conf` से लगते हैं:
 
-पूर्ण सूची: [KEYBINDS.md](../KEYBINDS.md)
+| कुंजी | काम |
+|-----|--------|
+| <kbd>Super</kbd> + <kbd>Space</kbd> | ओवरव्यू: ऐप खोज, टैग में आवाजाही |
+| <kbd>Super</kbd> + <kbd>V</kbd> | क्लिपबोर्ड इतिहास |
+| <kbd>Super</kbd> + <kbd>P</kbd> | बायाँ साइडबार |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd> | दायाँ साइडबार |
+| <kbd>Super</kbd> + <kbd>D</kbd> | डैशबोर्ड |
+| <kbd>Super</kbd> + <kbd>,</kbd> | सेटिंग्स |
+| <kbd>Super</kbd> + <kbd>/</kbd> | चीटशीट |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd> | पैनल परिवार बदलिए |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> | क्षेत्र का स्क्रीनशॉट |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> | क्षेत्र का OCR |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd> | क्षेत्र रिकॉर्ड कीजिए |
+| <kbd>Super</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> | क्षेत्र की उलटी खोज |
+| <kbd>Super</kbd> + <kbd>L</kbd> | लॉक |
+| <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Delete</kbd> | सत्र स्क्रीन |
+
+विंडो व्यवस्था के कीबाइंड आपके अपने हैं — शेल उन्हें तय नहीं करता। पूरी सूची:
+[कीबाइंड](../KEYBINDS.md)।
 
 ---
 
 ## वॉलपेपर
 
-15 वॉलपेपर शामिल हैं। और चाहिए तो [iNiR-Walls](https://github.com/snowarch/iNiR-Walls) देखें — Material You पाइपलाइन के साथ अच्छा काम करने वाला एक क्यूरेटेड कलेक्शन।
+15 वॉलपेपर साथ आते हैं। और चाहिए तो [iNiR-Walls](https://github.com/snowarch/iNiR-Walls)
+देखिए — यह संग्रह Material You की प्रक्रिया के साथ अच्छा बैठता है।
 
 ---
 
-## दस्तावेज़ीकरण
+## दस्तावेज़ (niri के लिए, mango के लिए नहीं)
 
-| | |
+| पन्ना | उसमें क्या है |
 |---|---|
-| [INSTALL.md](../INSTALL.md) | इंस्टॉलेशन गाइड |
-| [SETUP.md](../SETUP.md) | Setup कमांड — अपडेट, माइग्रेशन, रोलबैक |
-| [KEYBINDS.md](../KEYBINDS.md) | सभी कीबोर्ड शॉर्टकट |
-| [IPC.md](../IPC.md) | स्क्रिप्टिंग और कीबाइंड के लिए IPC टारगेट |
-| [PACKAGES.md](../PACKAGES.md) | हर डिपेंडेंसी और उसका कारण |
-| [LIMITATIONS.md](../LIMITATIONS.md) | ज्ञात सीमाएँ और समाधान |
-| [ARCHITECTURE.md](../../ARCHITECTURE.md) | तकनीकी आर्किटेक्चर ओवरव्यू |
+| [इंस्टॉल](../INSTALL.md) | इसे चलाने तक |
+| [Setup](../SETUP.md) | अपडेट, माइग्रेशन, रोलबैक |
+| [कीबाइंड](../KEYBINDS.md) | हर संयोजन |
+| [IPC](../IPC.md) | वे लक्ष्य जिन्हें कुंजी से बाँधा या स्क्रिप्ट से बुलाया जा सकता है |
+| [पैकेज](../PACKAGES.md) | हर निर्भरता और वह क्यों है |
+| [सीमाएँ](../LIMITATIONS.md) | क्या टूटा हुआ माना जाता है और उसका जुगाड़ |
+| [कंपोज़िटर](../COMPOSITORS.md) | कंपोज़िटर से जुड़ाव कैसे काम करता है |
+| [आर्किटेक्चर](../../ARCHITECTURE.md) | कोड किस तरह जुड़ा है |
+
+`docs/` का ज़्यादातर हिस्सा अपस्ट्रीम से विरासत में मिला है और कहीं-कहीं आज भी niri की बात
+करता है। जहाँ दस्तावेज़ और यह README इस बात पर अलग हों कि कौन-सा कंपोज़िटर समर्थित है, वहाँ यह
+README सही है।
 
 ---
 
-## समस्या निवारण
+## दिक़्क़तें सुलझाना
 
 ```bash
-inir logs                       # हाल के रनटाइम लॉग देखें
-inir restart                    # सक्रिय रनटाइम रीस्टार्ट करें
-inir repair                     # doctor + रीस्टार्ट + फ़िल्टर्ड लॉग जाँच
-./setup doctor                  # सामान्य समस्याओं का ऑटो-डायग्नोस और ठीक
-./setup rollback                # आख़िरी अपडेट पूर्ववत करें
+inir logs                       # हाल के रनटाइम लॉग
+inir restart                    # चालू रनटाइम दोबारा शुरू कीजिए
+inir repair                     # doctor + दोबारा शुरू + छाने हुए लॉग की जाँच
+inir doctor                     # आम दिक़्क़तों की अपने आप जाँच और मरम्मत
+./setup rollback                # पिछला अपडेट पलट दीजिए
+claude "मेरी मदद करो"            # अगर ख़ुद माथापच्ची नहीं करनी। चलिए, अपने 20 डॉलर तो कमाने ही होंगे
 ```
 
-इश्यू खोलने से पहले [LIMITATIONS.md](../LIMITATIONS.md) देखें।
+[सीमाएँ](../LIMITATIONS.md) पर नज़र डालिए, हँसने के लिए।
 
 ---
 
 ## योगदान
 
-[CONTRIBUTING.md](../../CONTRIBUTING.md) देखें — विकास सेटअप, कोड पैटर्न, और PR दिशानिर्देश।
+[CONTRIBUTING.md](../../CONTRIBUTING.md) देखिए — विकास का माहौल, कोड के ढर्रे और पुल रिक्वेस्ट
+के नियम।
+
 
 ---
 
-## श्रेय
+## आभार
 
-- [**end-4**](https://github.com/end-4/dots-hyprland) — Hyprland के लिए मूल illogical-impulse
-- [**Quickshell**](https://quickshell.outfoxxed.me/) — इस शेल को चलाने वाला फ़्रेमवर्क
-- [**Niri**](https://github.com/YaLTeR/niri) — स्क्रॉलिंग टाइलिंग Wayland कंपोज़िटर
+- [**snowarch**](https://github.com/snowarch/iNiR): iNiR, वही शेल जिसे यहाँ पोर्ट किया गया है
+- [**end-4**](https://github.com/end-4/dots-hyprland): illogical-impulse, जिससे iNiR फ़ोर्क हुआ
+- [**Gakuseei**](https://github.com/Gakuseei): [Ricelin](https://github.com/Gakuseei/Ricelin), जहाँ से pill बार और washi तथा flame वाली शक्ल आई है
+- [**Quickshell**](https://quickshell.outfoxxed.me/): वह फ़्रेमवर्क जिस पर यह चलता है
+- [**MangoWM**](https://github.com/DreamMaoMao/mango): वह कंपोज़िटर जिसके लिए यह बना है
+- **Claude** (Anthropic): MangoWM पोर्ट लिखा, जैसा सबसे ऊपर कहा गया है
 
----
-
-<p align="center">
-  <a href="https://github.com/snowarch/inir/graphs/contributors">योगदानकर्ता</a> &bull;
-  <a href="CHANGELOG.md">चेंजलॉग</a> &bull;
-  <a href="LICENSE">GPL-3.0 लाइसेंस</a>
-</p>
+GPL-3.0, end-4 की डॉटफ़ाइलों जैसा ही। अपस्ट्रीम कॉपीराइट (C) 2025-2026 snowarch।
