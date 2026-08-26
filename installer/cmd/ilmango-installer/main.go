@@ -26,6 +26,7 @@ import (
 	"ilmango/internal/fsx"
 	"ilmango/internal/installer"
 	"ilmango/internal/installer/steps"
+	"ilmango/internal/pkg"
 	"ilmango/internal/run"
 	"ilmango/internal/system"
 	"ilmango/internal/ui"
@@ -50,8 +51,13 @@ type options struct {
 	disable   string
 	root      string
 	uninstall bool
+	update    bool
+	rollback  bool
+	changes   bool
+	without   settingList
 	settings  settingList
 	list      bool
+	listPkgs  bool
 	showHelp  bool
 }
 
@@ -74,6 +80,10 @@ func start() int {
 		listOptions(os.Stdout)
 		return exitOK
 	}
+	if opts.listPkgs {
+		listPackages(os.Stdout)
+		return exitOK
+	}
 
 	repo, err := system.FindRepo(opts.repo)
 	if err != nil {
@@ -90,8 +100,17 @@ func start() int {
 	}
 
 	operation := installer.OpInstall
-	if opts.uninstall {
+	switch {
+	case opts.uninstall:
 		operation = installer.OpUninstall
+	case opts.update:
+		operation = installer.OpUpdate
+	case opts.rollback:
+		operation = installer.OpRollback
+	case opts.changes:
+		operation = installer.OpChanges
+		// A report offers nothing to configure, so it never opens the picker.
+		opts.yes = true
 	}
 
 	session := &ui.Session{
@@ -222,9 +241,11 @@ func buildEnv(session *ui.Session, opts options) (*installer.Env, error) {
 		Backup: backup,
 	}
 
-	if session.Operation == installer.OpUninstall {
-		// Removal reads the record an install left behind; without it there
-		// is nothing to remove and guessing would be worse than refusing.
+	switch session.Operation {
+	case installer.OpUninstall, installer.OpChanges:
+		// Both read the record an install left behind: removal to know what it
+		// owns, the change report to know what it wrote. Without it there is
+		// nothing to work from, and guessing would be worse than refusing.
 		// --root redirects writes, so the record of a redirected install
 		// lives under that root too.
 		manifest, err := steps.FindManifestUnder(opts.root)
@@ -232,6 +253,10 @@ func buildEnv(session *ui.Session, opts options) (*installer.Env, error) {
 			return nil, err
 		}
 		env.Manifest = manifest
+		return env, nil
+
+	case installer.OpRollback:
+		// Restoring predates any record: it puts back what was there before.
 		return env, nil
 	}
 
@@ -269,6 +294,11 @@ func parseFlags(args []string) (options, error) {
 	fs.StringVar(&opts.root, "root", "", "write every file under this directory instead of / (for testing)")
 	fs.Var(&opts.settings, "set", "select a value, as name=value; repeatable")
 	fs.BoolVar(&opts.uninstall, "uninstall", false, "remove a previous installation")
+	fs.BoolVar(&opts.update, "update", false, "pull the checkout forward, then reinstall from it")
+	fs.BoolVar(&opts.rollback, "rollback", false, "restore the files the last run replaced")
+	fs.BoolVar(&opts.changes, "changes", false, "list installed files you have edited")
+	fs.Var(&opts.without, "without", "packages to leave out, comma-separated; repeatable")
+	fs.BoolVar(&opts.listPkgs, "list-packages", false, "list the packages an install would install")
 	fs.BoolVar(&opts.list, "list-options", false, "list the available options and exit")
 	fs.BoolVar(&opts.showHelp, "help", false, "show this help")
 	fs.BoolVar(&opts.showHelp, "h", false, "shorthand for --help")
@@ -306,7 +336,32 @@ func applyOptionOverrides(cfg *installer.Config, opts options) error {
 			return err
 		}
 	}
+
+	known := knownPackages()
+	for _, list := range opts.without {
+		for _, name := range splitList(list) {
+			// A typo here would silently install the package the user meant
+			// to leave out, so an unknown name is refused rather than ignored.
+			if !known[name] {
+				return fmt.Errorf("--without: %q is not a package this installer offers (see --list-packages)", name)
+			}
+			cfg.SkipPackage(name, true)
+		}
+	}
 	return nil
+}
+
+// knownPackages is every package the installer might install, on any
+// distribution: --without is checked against all of them so that a name valid
+// on another machine is not rejected here.
+func knownPackages() map[string]bool {
+	known := map[string]bool{}
+	for _, family := range pkg.Families() {
+		for _, name := range pkg.Packages(family, pkg.AllGroups()...) {
+			known[name] = true
+		}
+	}
+	return known
 }
 
 // settingList collects repeated --set flags.
@@ -360,12 +415,17 @@ Flags:
   -y, --yes          Run without the interactive interface
   --verbose          Stream all phase output; implies --yes
   --uninstall        Remove a previous installation, keeping files you edited
+  --update           Pull the checkout forward, then reinstall from it
+  --rollback         Restore the files the last run replaced
+  --changes          List installed files you have edited since
   --dry-run          Log every command and write nothing
   --root DIR         Write files under DIR instead of the real home (testing)
   --set NAME=VALUE   Select a value, e.g. --set aur-helper=paru; repeatable
   --enable LIST      Comma-separated options to switch on
   --disable LIST     Comma-separated options to switch off
+  --without LIST     Packages to leave out, e.g. --without cava,mpv; repeatable
   --list-options     List the available options and exit
+  --list-packages    List the packages an install would install, and exit
   -h, --help         Show this help
 
 Examples:
@@ -374,9 +434,39 @@ Examples:
   ilmango-installer -y --disable deps,fonts      Unattended, skip packages and fonts
   ilmango-installer -y --set aur-helper=paru     Unattended, require paru for AUR packages
   ilmango-installer --dry-run                    Inspect the plan, change nothing
+  ilmango-installer --update                     Pull and reinstall
+  ilmango-installer --changes                    What have I edited?
   ilmango-installer --uninstall                  Remove what a previous run installed
 
 Exit status:
   0 success   1 a step failed   2 bad usage   3 preflight failed   130 cancelled
 `)
+}
+
+// listPackages prints what an install would install, grouped the way the
+// options are, so that --without has something to name.
+func listPackages(w io.Writer) {
+	family := string(system.DetectDistro().Family)
+	if !pkg.KnownFamily(family) {
+		fmt.Fprintf(w, "No package list for %s; dependencies are installed by hand on this distribution.\n", family)
+		return
+	}
+
+	fmt.Fprintf(w, "Packages for %s (leave one out with --without NAME):\n\n", family)
+	for _, group := range pkg.AllGroups() {
+		names := pkg.Packages(family, group)
+		if len(names) == 0 {
+			continue
+		}
+		fmt.Fprintf(w, "  %s\n", group)
+		for _, name := range names {
+			marker := " "
+			if pkg.IsCritical(name) {
+				marker = "*"
+			}
+			fmt.Fprintf(w, "    %s %s\n", marker, name)
+		}
+		fmt.Fprintln(w)
+	}
+	fmt.Fprintln(w, "  * the shell visibly breaks without it")
 }

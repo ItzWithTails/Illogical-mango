@@ -34,17 +34,24 @@ func TestDesktopSettingsPublishesTheCursorToTheCompositor(t *testing.T) {
 	}
 }
 
-func TestMangoTemplateSetsTheCursorEnvironment(t *testing.T) {
-	// The compositor reads XCURSOR_THEME before anything else can correct it,
-	// so the shipped config has to carry it.
+func TestMangoTemplateSetsTheCursorWithKeysMangoUnderstands(t *testing.T) {
+	// mango has first-class cursor_theme/cursor_size keys. It has no env= key
+	// at all — a config that used one got "Unknown keyword" and the pointer
+	// stayed on the system default.
 	config, err := os.ReadFile(filepath.Join("..", "..", "..", "..", "src", "defaults", "mango", "config.conf"))
 	if err != nil {
 		t.Skipf("template not readable from here: %v", err)
 	}
+	body := string(config)
 
-	for _, want := range []string{"env=XCURSOR_THEME," + cursorTheme, "env=XCURSOR_SIZE," + cursorSize} {
-		if !strings.Contains(string(config), want) {
+	for _, want := range []string{"cursor_theme=" + cursorTheme, "cursor_size=" + cursorSize} {
+		if !strings.Contains(body, want) {
 			t.Errorf("the mango template does not carry %q", want)
+		}
+	}
+	for _, line := range strings.Split(body, "\n") {
+		if strings.HasPrefix(strings.TrimSpace(line), "env=") {
+			t.Errorf("the template uses %q, which mango does not parse", strings.TrimSpace(line))
 		}
 	}
 }

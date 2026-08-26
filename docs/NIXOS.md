@@ -10,7 +10,7 @@ Illogical-mango provides a flake with:
 | `nixosModules.ilmango` | NixOS module for system package + user service |
 | `homeModules.ilmango` | Home Manager module for user package + user service |
 
-The module does not run `./setup install` or `./setup update`. Nix owns the installed files, and Illogical-mango runs from the package store path.
+The module does not run `./install`. Nix owns the installed files, and Illogical-mango runs from the package store path.
 
 The package and modules are ordinary Nix expressions under `nix/`. Flakes are only one entrypoint, so traditional Nix configurations can import them directly. Both entrypoints use the same `package.nix`, NixOS module, and Home Manager module rather than maintaining separate implementations.
 

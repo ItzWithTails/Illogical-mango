@@ -59,6 +59,21 @@ var ErrTimedOut = errors.New("command timed out")
 // forever because makepkg gives it no timeout.
 const DefaultStall = 15 * time.Minute
 
+// hintAfter is how long a command may be silent before the runner suggests a
+// proxy.
+//
+// It is far below the stall limit on purpose. A download that has produced
+// nothing for a minute is usually not broken, just throttled or blocked
+// somewhere on the way, and the person watching wants to know that now rather
+// than in a quarter of an hour. The suggestion costs one line and is the
+// difference between waiting and understanding.
+const hintAfter = time.Minute
+
+// slowHint is what to try when a download is going nowhere.
+const slowHint = "! %s has produced nothing for %s. If a download is unexpectedly slow, " +
+	"a proxy usually fixes it: stop this, export ALL_PROXY (or https_proxy), and run the installer again — " +
+	"the commands it starts inherit it."
+
 // Command is one external invocation.
 type Command struct {
 	// Name is the executable, resolved through PATH.
@@ -71,6 +86,10 @@ type Command struct {
 	Env []string
 	// Privileged routes the command through sudo, doas or run0.
 	Privileged bool
+	// OnLine receives every line of output as it arrives, in addition to the
+	// runner's log. It is for callers that need to follow a command's
+	// progress rather than merely record it.
+	OnLine func(string)
 	// Timeout caps the command's total wall time. Zero means no cap.
 	//
 	// It exists alongside the runner's stall watchdog because the two catch
@@ -107,6 +126,10 @@ type Runner struct {
 	// forgetting to set it; a negative value disables the watchdog for callers
 	// that genuinely expect an unbounded quiet command.
 	Stall time.Duration
+
+	// Hint is how long a command may be silent before the runner suggests a
+	// proxy. Zero means hintAfter; a negative value silences the suggestion.
+	Hint time.Duration
 
 	// privilegeOnce caches the escalation tool lookup.
 	privilegeOnce sync.Once
@@ -169,7 +192,7 @@ func (r *Runner) Run(ctx context.Context, cmd Command) error {
 	streamed.Add(1)
 	go func() {
 		defer streamed.Done()
-		r.stream(activity.wrap(pipeReader))
+		r.stream(activity.wrap(pipeReader), cmd.OnLine)
 	}()
 
 	stopWatch, stalled := r.watch(proc, cmd, activity)
@@ -203,6 +226,14 @@ func (r *Runner) Run(ctx context.Context, cmd Command) error {
 	return nil
 }
 
+// hintLimit resolves how long silence goes unremarked.
+func (r *Runner) hintLimit() time.Duration {
+	if r.Hint == 0 {
+		return hintAfter
+	}
+	return r.Hint
+}
+
 // stallLimit resolves the configured watchdog window.
 func (r *Runner) stallLimit() time.Duration {
 	if r.Stall == 0 {
@@ -229,9 +260,12 @@ func (r *Runner) watch(proc *exec.Cmd, cmd Command, activity *heartbeat) (stop f
 		defer close(finished)
 		// Polling at a fraction of the limit keeps the check cheap while
 		// bounding how long past the limit a stall can go unnoticed.
-		tick := time.NewTicker(limit / 4)
+		// Ticking well below the hint threshold rather than at a fraction of
+		// the limit: the earliest thing worth saying happens a minute in.
+		hint := r.hintLimit()
+		tick := time.NewTicker(max(min(hint/4, limit/4), 50*time.Millisecond))
 		defer tick.Stop()
-		warned := false
+		hinted, warned := false, false
 		for {
 			select {
 			case <-done:
@@ -239,14 +273,18 @@ func (r *Runner) watch(proc *exec.Cmd, cmd Command, activity *heartbeat) (stop f
 			case <-tick.C:
 				silence := time.Since(activity.last())
 				if silence < limit {
-					// Say something before the kill, so a long quiet stretch
-					// reads as a diagnosis in progress rather than a freeze.
+					// Three things worth saying, in the order they become
+					// true: this is slow, this is nearly out of time, this is
+					// being killed. Each is said once per quiet stretch.
 					switch {
-					case silence < limit/2:
-						warned = false
-					case !warned:
+					case hint <= 0 || silence < hint:
+						hinted, warned = false, false
+					case silence >= limit/2 && !warned:
 						warned = true
 						r.log(fmt.Sprintf("! %s has been silent for %s; giving it until %s", cmd.Name, silence.Round(time.Second), limit))
+					case !hinted:
+						hinted = true
+						r.log(fmt.Sprintf(slowHint, cmd.Name, silence.Round(time.Second)))
 					}
 					continue
 				}
@@ -483,13 +521,18 @@ func (r *Runner) privilegeTool() string {
 }
 
 // stream forwards output line by line so the UI updates as work happens.
-func (r *Runner) stream(out io.Reader) {
+func (r *Runner) stream(out io.Reader, onLine func(string)) {
 	scanner := bufio.NewScanner(out)
 	// Package managers print long dependency lists on one line.
 	scanner.Buffer(make([]byte, 0, 64*1024), 1024*1024)
 	for scanner.Scan() {
-		if line := strings.TrimRight(scanner.Text(), " \t\r"); strings.TrimSpace(line) != "" {
-			r.log(line)
+		line := strings.TrimRight(scanner.Text(), " \t\r")
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
+		r.log(line)
+		if onLine != nil {
+			onLine(line)
 		}
 	}
 }

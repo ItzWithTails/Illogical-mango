@@ -28,6 +28,37 @@ var catalog = []Option{
 	},
 
 	{
+		ID:          OptWallpapers,
+		Group:       GroupExtras,
+		Title:       "Wallpaper pack",
+		Description: "About 148 wallpapers, roughly 630 MiB. Existing files of the same name are kept.",
+		Default:     false,
+	},
+	{
+		ID:          OptIconTheme,
+		Group:       GroupExtras,
+		Title:       "Monochrome icon theme",
+		Description: "YAMIS by dirn-typo, about 23 MiB. Installed alongside your icons; nothing is switched over.",
+		Default:     false,
+	},
+	{
+		ID:          OptMascot,
+		Group:       GroupExtras,
+		Title:       "Mascot art pack",
+		Description: "354 poses and animations for Kira, about 32 MiB. The mascot itself stays off until you enable it.",
+		Default:     false,
+		Requires:    OptConfigFiles,
+	},
+	{
+		ID:          OptSDDMTheme,
+		Group:       GroupExtras,
+		Title:       "Login screen theme",
+		Description: "Applies the ii-pixel theme to SDDM. Needs root and edits the display manager's configuration.",
+		Default:     false,
+		Risky:       true,
+	},
+
+	{
 		ID:          OptAudio,
 		Group:       GroupDependencies,
 		Title:       "Audio stack",
@@ -67,6 +98,14 @@ var catalog = []Option{
 		Description: "Add one source line for the shell's keybinds. Never rewrites your own config.",
 		Default:     true,
 		Requires:    OptConfigFiles,
+	},
+	{
+		ID:          OptPathEntry,
+		Group:       GroupBehaviour,
+		Title:       "Put ilmango on your PATH",
+		Description: "Adds one line to your shell profile if the launcher's directory is missing from PATH. Without it the command installs but cannot be run.",
+		Default:     true,
+		Risky:       true,
 	},
 	{
 		ID:          OptBackup,

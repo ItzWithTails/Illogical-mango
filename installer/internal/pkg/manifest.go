@@ -108,3 +108,11 @@ func Families() []string {
 	sort.Strings(out)
 	return out
 }
+
+// AllGroups lists every package group, in catalogue order.
+func AllGroups() []Group {
+	return []Group{
+		GroupCore, GroupQuickshell, GroupAudio,
+		GroupToolkit, GroupScreenCapture, GroupFonts,
+	}
+}

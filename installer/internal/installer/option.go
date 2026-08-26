@@ -20,6 +20,15 @@ const (
 	OptDefaultShell  OptionID = "default-shell"
 	OptMango         OptionID = "mango"
 	OptStartNow      OptionID = "start"
+	OptPathEntry     OptionID = "path"
+
+	// Extras are optional downloads. They are off by default because each one
+	// fetches something substantial from the network, and none of them is
+	// needed for the shell to work.
+	OptWallpapers OptionID = "wallpapers"
+	OptIconTheme  OptionID = "icons"
+	OptMascot     OptionID = "mascot"
+	OptSDDMTheme  OptionID = "sddm"
 )
 
 // OptionGroup labels a related run of options in the picker.
@@ -29,6 +38,7 @@ const (
 	GroupStages       OptionGroup = "Installation stages"
 	GroupDependencies OptionGroup = "Dependency groups"
 	GroupBehaviour    OptionGroup = "Behaviour"
+	GroupExtras       OptionGroup = "Extras"
 )
 
 // Option describes a single installation choice: how it is presented, how it

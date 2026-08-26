@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 )
@@ -206,5 +207,62 @@ func TestCancellationIsNotReportedAsATimeout(t *testing.T) {
 	}
 	if errors.Is(err, ErrTimedOut) {
 		t.Fatal("cancellation was reported as a timeout")
+	}
+}
+
+func TestSlowCommandGetsAProxyHintLongBeforeItIsKilled(t *testing.T) {
+	// A minute of silence is not a stall, but it is worth saying something
+	// about — the hint has to arrive while waiting is still the plan.
+	var mu sync.Mutex
+	var logged []string
+	r := Runner{
+		Mode:  ModeApply,
+		Hint:  200 * time.Millisecond,
+		Stall: 3 * time.Second,
+		Log:   func(line string) { mu.Lock(); logged = append(logged, line); mu.Unlock() },
+	}
+
+	err := r.Run(context.Background(), Command{Name: "sleep", Args: []string{"30"}})
+	if !errors.Is(err, ErrStalled) {
+		t.Fatalf("Run() error = %v, want ErrStalled", err)
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+	hintAt, killAt := -1, -1
+	for i, line := range logged {
+		if strings.Contains(line, "a proxy usually fixes it") && hintAt < 0 {
+			hintAt = i
+		}
+		if strings.Contains(line, "killing it") && killAt < 0 {
+			killAt = i
+		}
+	}
+	if hintAt < 0 {
+		t.Fatalf("no proxy hint was logged; log was %v", logged)
+	}
+	if killAt < 0 || hintAt > killAt {
+		t.Fatalf("the hint arrived at %d and the kill at %d; the hint must come first", hintAt, killAt)
+	}
+}
+
+func TestProxyHintCanBeSilenced(t *testing.T) {
+	var mu sync.Mutex
+	var logged []string
+	r := Runner{
+		Mode:  ModeApply,
+		Hint:  -1,
+		Stall: time.Second,
+		Log:   func(line string) { mu.Lock(); logged = append(logged, line); mu.Unlock() },
+	}
+
+	_ = r.Run(context.Background(), Command{Name: "sleep", Args: []string{"30"}})
+
+	mu.Lock()
+	defer mu.Unlock()
+	for _, line := range logged {
+		if strings.Contains(line, "a proxy usually fixes it") {
+			t.Fatalf("the hint was logged despite being silenced: %q", line)
+		}
 	}
 }

@@ -10,7 +10,7 @@ import (
 	"ilmango/internal/installer"
 )
 
-// versionRecord is the contract ./setup update, the doctor and the shell's own
+// versionRecord is the contract the update operation and the shell's own
 // version panel read. The duplicated snake_case and camelCase keys are part of
 // that contract, not an oversight: both spellings are in use across the tree.
 type versionRecord struct {

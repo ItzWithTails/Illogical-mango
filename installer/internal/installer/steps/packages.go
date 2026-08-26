@@ -61,7 +61,25 @@ func (s packagesStep) Run(ctx context.Context, env *installer.Env) error {
 	}
 
 	packages := pkg.Packages(family, groupsFor(env.Config)...)
-	env.Detail(fmt.Sprintf("%d packages", len(packages)))
+	if skipped := env.Config.SkippedPackages(); len(skipped) > 0 {
+		before := len(packages)
+		packages = env.Config.KeepPackages(packages)
+		env.Detail(fmt.Sprintf("%d packages, %d excluded", len(packages), before-len(packages)))
+
+		// Dependencies of a package are not ours to exclude, so saying which
+		// of the shell's own were dropped is the whole of the report.
+		if critical, _ := pkg.SplitCritical(skipped); len(critical) > 0 {
+			env.Note(fmt.Sprintf(
+				"You excluded packages the shell needs: %s. It will not start correctly without them.",
+				strings.Join(critical, ", ")))
+		}
+	} else {
+		env.Detail(fmt.Sprintf("%d packages", len(packages)))
+	}
+	if len(packages) == 0 {
+		env.Note("Every package was excluded, so nothing was installed.")
+		return nil
+	}
 
 	upgrade := env.Config.Choice(installer.OptSystemUpgrade) == installer.UpgradeFull
 	switch {
@@ -81,7 +99,12 @@ func (s packagesStep) Run(ctx context.Context, env *installer.Env) error {
 	}
 
 	env.Detail(fmt.Sprintf("installing %d packages", len(packages)))
-	skipped, err := manager.Install(ctx, env.Runner, packages)
+	// A hundred-odd packages is several minutes of scrolling output. Naming
+	// the one being worked on, with a count, turns that into something a
+	// person can watch.
+	skipped, err := manager.Install(ctx, env.Runner, packages, func(p pkg.Progress) {
+		env.Detail(fmt.Sprintf("%d/%d  %s %s", p.Done, p.Total, p.Action, p.Name))
+	})
 	if err != nil {
 		return err
 	}

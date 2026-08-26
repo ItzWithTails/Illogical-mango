@@ -59,7 +59,7 @@ Wayland → GPU
   Firefox, Discord, Spicetify, Steam y SDDM.
 - **Se configura sin tocar código.** Todo es un ajuste de la GUI sobre un único
   `config.json`. Nunca hace falta tocar QML para cambiar su aspecto o comportamiento.
-- **Un camino de instalación y actualización de verdad.** `./setup` se encarga de las
+- **Un camino de instalación y actualización de verdad.** `./install` se encarga de las
   dependencias y la configuración del sistema; `ilmango update` hace pull, ejecuta las
   migraciones de esquema, conserva tus cambios y sabe revertir.
 
@@ -206,7 +206,7 @@ Panel derecho:
 - **Actualizaciones automáticas**: `ilmango update` con reversión, migraciones y conservación de tus cambios
 - **Pantalla de bloqueo** y **pantalla de sesión** (cerrar sesión/reiniciar/apagar/suspender)
 - **Agente polkit**, **teclado en pantalla**, **gestor de autoarranque** apoyado en la línea `exec-once` de la configuración de mango
-- **Kira**: mascota opcional en pixel art que deambula por los bordes de la pantalla y reacciona a lo que haces. Desactivada por defecto; el pack de arte de ~32 MiB se descarga aparte en `./setup` › Extras
+- **Kira**: mascota opcional en pixel art que deambula por los bordes de la pantalla y reacciona a lo que haces. Desactivada por defecto; el pack de arte de ~32 MiB se descarga aparte en `./install` › Extras
 - **15 idiomas** con detección automática
 - **Luz nocturna**: programada o manual
 - **Tiempo**: Open-Meteo, admite GPS, coordenadas manuales o nombre de ciudad
@@ -222,8 +222,8 @@ Panel derecho:
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
-./setup install       # interactivo, pregunta antes de cada paso
-./setup install -y    # automático, sin preguntas
+./install       # interactivo, pregunta antes de cada paso
+./install -y    # automático, sin preguntas
 ```
 
 El instalador se encarga de las dependencias, la configuración del sistema y la
@@ -242,10 +242,10 @@ ilmango update                     # pull + migraciones + reinicio
 Otros puntos de entrada:
 
 ```bash
-./setup                 # menú TUI, eliges lo que quieras
-./setup install --skip-mango    # no tocar en absoluto la configuración de mango
+./install                 # menú TUI, eliges lo que quieras
+./install --disable mango    # no tocar en absoluto la configuración de mango
 sudo make install       # instalación de sistema en vez de en tu home
-./setup rollback        # deshacer la última actualización
+./install --rollback        # deshacer la última actualización
 ```
 
 **Distribuciones.** Arch es el objetivo principal y el mejor probado. Para Debian y Fedora
@@ -312,7 +312,7 @@ ilmango logs                       # logs recientes del runtime
 ilmango restart                    # reiniciar el runtime activo
 ilmango repair                     # doctor + reinicio + revisión filtrada de logs
 ilmango doctor                     # autodiagnóstico y arreglo de problemas típicos
-./setup rollback                # deshacer la última actualización
+./install --rollback                # deshacer la última actualización
 claude "ayúdame por favor"      # si no te apetece pelearte tú. venga, que se gane sus 20 $
 ```
 

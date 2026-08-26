@@ -62,7 +62,7 @@ Wayland → GPU
 - **Configurable sans toucher au code.** Tout est un réglage de l'interface au-dessus d'un
   unique `config.json`. Jamais besoin de toucher au QML pour changer l'apparence ou le
   comportement.
-- **Un vrai chemin d'installation et de mise à jour.** `./setup` s'occupe des dépendances
+- **Un vrai chemin d'installation et de mise à jour.** `./install` s'occupe des dépendances
   et de la configuration système ; `ilmango update` fait un pull, exécute les migrations de
   schéma, préserve tes modifications et sait revenir en arrière.
 
@@ -211,7 +211,7 @@ Panneau droit :
 - **Mises à jour automatiques** : `ilmango update` avec retour arrière, migrations et préservation de tes modifications
 - **Écran de verrouillage** et **écran de session** (déconnexion/redémarrage/extinction/veille)
 - **Agent polkit**, **clavier virtuel**, **gestionnaire de démarrage automatique** adossé à la ligne `exec-once` de la configuration mango
-- **Kira** : mascotte pixel art optionnelle qui erre sur les bords de l'écran et réagit à ce que tu fais. Désactivée par défaut ; le pack d'illustrations d'environ 32 Mio se télécharge à part dans `./setup` › Extras
+- **Kira** : mascotte pixel art optionnelle qui erre sur les bords de l'écran et réagit à ce que tu fais. Désactivée par défaut ; le pack d'illustrations d'environ 32 Mio se télécharge à part dans `./install` › Extras
 - **15 langues** avec détection automatique
 - **Lumière nocturne** : programmée ou manuelle
 - **Météo** : Open-Meteo, gère le GPS, des coordonnées manuelles ou un nom de ville
@@ -227,8 +227,8 @@ Panneau droit :
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
-./setup install       # interactif, demande avant chaque étape
-./setup install -y    # automatique, sans questions
+./install       # interactif, demande avant chaque étape
+./install -y    # automatique, sans questions
 ```
 
 L'installeur s'occupe des dépendances, de la configuration système et de la thématisation.
@@ -247,10 +247,10 @@ ilmango update                     # pull + migrations + redémarrage
 Autres points d'entrée :
 
 ```bash
-./setup                 # menu TUI, tu choisis ce que tu veux
-./setup install --skip-mango    # ne pas toucher du tout à la configuration mango
+./install                 # menu TUI, tu choisis ce que tu veux
+./install --disable mango    # ne pas toucher du tout à la configuration mango
 sudo make install       # installation système au lieu du home
-./setup rollback        # annuler la dernière mise à jour
+./install --rollback        # annuler la dernière mise à jour
 ```
 
 **Distributions.** Arch est la cible principale et la mieux testée. Pour Debian et Fedora
@@ -317,7 +317,7 @@ ilmango logs                       # logs récents du runtime
 ilmango restart                    # redémarrer le runtime actif
 ilmango repair                     # doctor + redémarrage + vérification filtrée des logs
 ilmango doctor                     # autodiagnostic et réparation des problèmes courants
-./setup rollback                # annuler la dernière mise à jour
+./install --rollback                # annuler la dernière mise à jour
 claude "aide-moi s'il te plaît" # si tu n'as pas envie de chercher toi-même. allez, il faut bien qu'il gagne ses 20 $
 ```
 

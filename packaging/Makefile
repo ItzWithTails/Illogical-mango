@@ -32,12 +32,12 @@ installer-test:
 
 build:
 	@chmod +x $(SRC)/scripts/ilmango
-	@chmod +x $(SRC)/scripts/test-local-distribution.sh
-	@chmod +x $(TOP)/setup
 	@find $(SRC)/scripts -type f \( -name "*.sh" -o -name "*.fish" -o -name "*.py" \) -exec chmod +x {} +
 
 test-local: build
-	@bash $(SRC)/scripts/test-local-distribution.sh
+	@echo "test-local tested the old shell installer, which has been removed."
+	@echo "Use: ./install --dry-run --root /tmp/ilmango-test"
+	@false
 
 install-bin:
 	@install -Dm755 $(SRC)/scripts/ilmango $(BINDIR)/ilmango
@@ -48,11 +48,7 @@ install-shell:
 	@install -Dm644 $(TOP)/docs/CHANGELOG.md $(SHELL_INSTALL_DIR)/CHANGELOG.md
 	@while IFS= read -r file; do \
 		[ -n "$$file" ] || continue; \
-		if [ "$$file" = "setup" ]; then \
-			install -Dm755 "$(SRC)/$$file" "$(SHELL_INSTALL_DIR)/$$file"; \
-		else \
-			install -Dm644 "$(SRC)/$$file" "$(SHELL_INSTALL_DIR)/$$file"; \
-		fi; \
+		install -Dm644 "$(SRC)/$$file" "$(SHELL_INSTALL_DIR)/$$file"; \
 	done < $(SRC)/sdata/runtime-root-files.txt
 	@while IFS= read -r dir; do \
 		[ -n "$$dir" ] || continue; \
@@ -67,7 +63,7 @@ install-shell:
 	@rm -rf $(SHELL_INSTALL_DIR)/assets/images/mascot/frames
 	@# Strip maintainer and development tooling — useless on a user's machine
 	@rm -rf $(SHELL_INSTALL_DIR)/scripts/agents $(SHELL_INSTALL_DIR)/translations/tools $(SHELL_INSTALL_DIR)/translations/l10n
-	@rm -f $(SHELL_INSTALL_DIR)/scripts/release.sh $(SHELL_INSTALL_DIR)/scripts/wiki-sync.sh $(SHELL_INSTALL_DIR)/scripts/verify-docs.sh $(SHELL_INSTALL_DIR)/scripts/qml-check.fish $(SHELL_INSTALL_DIR)/scripts/test-local-distribution.sh $(SHELL_INSTALL_DIR)/scripts/test-mascot-pack-flow.sh
+	@rm -f $(SHELL_INSTALL_DIR)/scripts/release.sh $(SHELL_INSTALL_DIR)/scripts/wiki-sync.sh $(SHELL_INSTALL_DIR)/scripts/verify-docs.sh $(SHELL_INSTALL_DIR)/scripts/qml-check.fish
 	@find $(SHELL_INSTALL_DIR)/scripts -type f \( -name "*.sh" -o -name "*.fish" -o -name "*.py" \) -exec chmod +x {} +
 	@printf '{\n  "version": "%s",\n  "commit": "manual",\n  "installed_at": "%s",\n  "installedAt": "%s",\n  "source": "make-install",\n  "repo_path": "",\n  "repoPath": "",\n  "install_mode": "package-managed",\n  "installMode": "package-managed",\n  "update_strategy": "package-manager",\n  "updateStrategy": "package-manager",\n  "package_manager": "manual",\n  "packageManager": "manual",\n  "package_name": "source-install",\n  "packageName": "source-install",\n  "package_update_hint": "sudo make install",\n  "packageUpdateHint": "sudo make install"\n}\n' "$$(cat $(SRC)/VERSION)" "$$(date -Iseconds)" "$$(date -Iseconds)" > $(SHELL_INSTALL_DIR)/version.json
 

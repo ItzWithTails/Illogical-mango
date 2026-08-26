@@ -56,7 +56,7 @@ Wayland → GPU
   GTK3/4, Qt, 터미널·TUI 도구 열 개, Firefox, Discord, Spicetify, Steam, SDDM에 기록됩니다.
 - **코드를 고치지 않고 설정.** 모든 것이 단일 `config.json` 위에 얹힌 GUI 설정 항목입니다.
   겉모습이나 동작을 바꾸려고 QML을 건드릴 일은 없습니다.
-- **제대로 된 설치·업그레이드 경로.** `./setup`이 의존성과 시스템 설정을 맡고,
+- **제대로 된 설치·업그레이드 경로.** `./install`이 의존성과 시스템 설정을 맡고,
   `ilmango update`가 pull하고 스키마 마이그레이션을 돌리고 당신의 변경을 보존하며 롤백도 됩니다.
 
 **계보.** [end-4의 illogical-impulse](https://github.com/end-4/dots-hyprland)(Hyprland
@@ -201,7 +201,7 @@ Catppuccin, Rosé Pine 프리셋이 들어 있고, 직접 만들 수도 있습�
 - **자동 업데이트**: `ilmango update`. 롤백, 마이그레이션, 사용자 변경 보존 포함
 - **잠금 화면**과 **세션 화면**(로그아웃/재부팅/종료/절전)
 - **polkit 에이전트**, **화면 키보드**, **자동 시작 관리자**(mango 설정의 `exec-once` 줄이 바탕)
-- **Kira**: 선택 사항인 픽셀 아트 마스코트. 화면 가장자리를 돌아다니며 당신의 행동에 반응합니다. 기본은 꺼짐이고, 약 32 MiB짜리 아트 팩은 `./setup` › Extras에서 따로 내려받습니다
+- **Kira**: 선택 사항인 픽셀 아트 마스코트. 화면 가장자리를 돌아다니며 당신의 행동에 반응합니다. 기본은 꺼짐이고, 약 32 MiB짜리 아트 팩은 `./install` › Extras에서 따로 내려받습니다
 - **15개 언어**, 자동 감지
 - **야간 조명**: 예약 또는 수동
 - **날씨**: Open-Meteo. GPS, 직접 입력한 좌표, 도시 이름 지원
@@ -217,8 +217,8 @@ Catppuccin, Rosé Pine 프리셋이 들어 있고, 직접 만들 수도 있습�
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
-./setup install       # 대화식. 각 단계 전에 물어봅니다
-./setup install -y    # 자동. 아무것도 묻지 않습니다
+./install       # 대화식. 각 단계 전에 물어봅니다
+./install -y    # 자동. 아무것도 묻지 않습니다
 ```
 
 설치 스크립트가 의존성, 시스템 설정, 테마화를 맡습니다. 셸의 단축키를
@@ -236,10 +236,10 @@ ilmango update                     # pull + 마이그레이션 + 재시작
 다른 진입점:
 
 ```bash
-./setup                 # TUI 메뉴. 원하는 것을 고르기
-./setup install --skip-mango    # mango 설정은 아예 건드리지 않기
+./install                 # TUI 메뉴. 원하는 것을 고르기
+./install --disable mango    # mango 설정은 아예 건드리지 않기
 sudo make install       # 홈이 아니라 시스템 전역에 설치
-./setup rollback        # 마지막 업데이트 되돌리기
+./install --rollback        # 마지막 업데이트 되돌리기
 ```
 
 **배포판.** Arch가 주 대상이고 가장 잘 테스트돼 있습니다. Debian과 Fedora에도 물론 포팅이
@@ -305,7 +305,7 @@ ilmango logs                       # 최근 런타임 로그
 ilmango restart                    # 실행 중인 런타임 재시작
 ilmango repair                     # doctor + 재시작 + 걸러낸 로그 확인
 ilmango doctor                     # 흔한 문제 자동 진단과 수리
-./setup rollback                # 마지막 업데이트 되돌리기
+./install --rollback                # 마지막 업데이트 되돌리기
 claude "도와줘"                  # 직접 파헤치기 싫을 때. 20달러 값은 해야지
 ```
 

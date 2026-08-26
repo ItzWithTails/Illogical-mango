@@ -20,6 +20,11 @@ type Config struct {
 
 	values  map[OptionID]bool
 	choices map[OptionID]string
+	// skipped names individual packages the user does not want. It holds
+	// exclusions rather than inclusions so that a package added to the
+	// catalogue later is installed by default, the way every other new
+	// dependency has always been.
+	skipped map[string]bool
 }
 
 // NewConfig returns a configuration with every option at its catalog default.
@@ -32,7 +37,46 @@ func NewConfig() Config {
 	for _, c := range choiceCatalog {
 		choices[c.ID] = c.Default
 	}
-	return Config{values: values, choices: choices}
+	return Config{values: values, choices: choices, skipped: map[string]bool{}}
+}
+
+// SkipPackage excludes a package from the install, or puts it back.
+func (c *Config) SkipPackage(name string, skip bool) {
+	if c.skipped == nil {
+		c.skipped = map[string]bool{}
+	}
+	if skip {
+		c.skipped[name] = true
+		return
+	}
+	delete(c.skipped, name)
+}
+
+// PackageSkipped reports whether a package has been excluded.
+func (c Config) PackageSkipped(name string) bool { return c.skipped[name] }
+
+// SkippedPackages lists the exclusions, sorted.
+func (c Config) SkippedPackages() []string {
+	out := make([]string, 0, len(c.skipped))
+	for name := range c.skipped {
+		out = append(out, name)
+	}
+	sort.Strings(out)
+	return out
+}
+
+// KeepPackages returns names with the excluded ones removed.
+func (c Config) KeepPackages(names []string) []string {
+	if len(c.skipped) == 0 {
+		return names
+	}
+	out := make([]string, 0, len(names))
+	for _, name := range names {
+		if !c.skipped[name] {
+			out = append(out, name)
+		}
+	}
+	return out
 }
 
 // Choice returns the selected value of a choice.
@@ -123,6 +167,9 @@ func (c Config) CommandLine() string {
 		if value := c.choices[choice.ID]; value != choice.Default {
 			args = append(args, "--set", string(choice.ID)+"="+value)
 		}
+	}
+	if skipped := c.SkippedPackages(); len(skipped) > 0 {
+		args = append(args, "--without", strings.Join(skipped, ","))
 	}
 	if c.DryRun {
 		args = append(args, "--dry-run")

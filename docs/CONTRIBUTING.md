@@ -4,7 +4,7 @@
 
 | Branch | Role |
 |--------|------|
-| `main` | Stable. What users install and what `./setup update` ships. |
+| `main` | Stable. What users install and what `./install --update` ships. |
 | `prerelease` | Development. All changes land here first. |
 
 Every pull request targets `prerelease`. The maintainer tests `prerelease`
@@ -25,7 +25,7 @@ without that pass.
 ```bash
 git clone https://github.com/YOUR_USERNAME/illogical-mango.git
 cd ilmango
-./setup install
+./install
 ilmango run
 ```
 

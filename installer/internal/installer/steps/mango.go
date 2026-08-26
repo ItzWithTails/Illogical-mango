@@ -53,7 +53,7 @@ func (s mangoStep) Run(ctx context.Context, env *installer.Env) error {
 	if err := env.Home.EnsureDir(dir, 0o755); err != nil {
 		return err
 	}
-	if err := env.Home.CopyFile(source, ourConfig); err != nil {
+	if err := s.writeKeybinds(env, source, ourConfig); err != nil {
 		return err
 	}
 	env.Detail("keybinds → " + ourConfig)
@@ -123,4 +123,32 @@ func (s mangoStep) reload(ctx context.Context, env *installer.Env) {
 	if err := env.Runner.Run(ctx, run.Command{Name: "mmsg", Args: []string{"dispatch", "reload_config"}}); err != nil {
 		env.Log("could not reload mango: " + err.Error())
 	}
+}
+
+// writeKeybinds assembles the file mango sources.
+//
+// The shell's own bindings are always written: without them the panels have no
+// keys and the install is decorative. The conventional desktop set is appended
+// only on request, because that half defines window management and can only do
+// so by overriding whatever the user bound first.
+func (s mangoStep) writeKeybinds(env *installer.Env, source, dest string) error {
+	body, err := os.ReadFile(source)
+	if err != nil {
+		return fmt.Errorf("reading %s: %w", source, err)
+	}
+
+	if env.Config.Choice(installer.OptKeybinds) != installer.KeybindsFull {
+		return env.Home.WriteFile(dest, body, 0o644)
+	}
+
+	extra := filepath.Join(filepath.Dir(source), "keybinds-full.conf")
+	more, err := os.ReadFile(extra)
+	if err != nil {
+		env.Note("The conventional keybinds were requested but " + extra + " is missing from this checkout, so only the shell's own keys were written.")
+		return env.Home.WriteFile(dest, body, 0o644)
+	}
+
+	env.Detail("including the conventional desktop keybinds")
+	combined := append(append(body, '\n'), more...)
+	return env.Home.WriteFile(dest, combined, 0o644)
 }

@@ -82,9 +82,9 @@ func checkRepo(_ context.Context, repo Repo) CheckResult {
 		res.Detail = PayloadDir + "/shell.qml missing — this is not an Illogical-mango checkout"
 		return res
 	}
-	if _, err := os.Stat(filepath.Join(repo.Root, "dots")); err != nil {
+	if _, err := os.Stat(filepath.Join(repo.Payload, "dots")); err != nil {
 		res.Status = CheckWarn
-		res.Detail = "no dots/ directory — dotfiles will not be installed"
+		res.Detail = "no " + PayloadDir + "/dots directory — dotfiles will not be installed"
 		return res
 	}
 

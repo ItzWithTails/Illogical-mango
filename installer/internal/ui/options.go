@@ -86,6 +86,9 @@ func (s *optionsScreen) Update(msg tea.Msg) (Screen, tea.Cmd) {
 		s.setAll(false)
 	case "r":
 		s.session.Config = installer.NewConfig()
+	case "p":
+		// The group toggles above cover almost everyone; this is for the rest.
+		return s, navigate(StagePackages)
 	case "enter":
 		return s, navigate(StageReview)
 	}
@@ -140,6 +143,7 @@ func (s *optionsScreen) Chrome() Chrome {
 			{Keys: "space", Help: "change"},
 			{Keys: "←→", Help: "cycle"},
 			{Keys: "a/n", Help: "all/none"},
+			{Keys: "p", Help: "packages"},
 			{Keys: "enter", Help: "review"},
 		},
 	}

@@ -10,6 +10,7 @@ import (
 	"charm.land/lipgloss/v2"
 
 	"ilmango/internal/installer"
+	"ilmango/internal/pkg"
 	"ilmango/internal/run"
 	"ilmango/internal/system"
 	"ilmango/internal/ui/theme"
@@ -215,6 +216,16 @@ func (s *reviewScreen) warnings() []string {
 		}
 		if note := c.Warning(s.session.Config.Choice(c.ID)); note != "" {
 			out = append(out, note)
+		}
+	}
+
+	if skipped := s.session.Config.SkippedPackages(); len(skipped) > 0 {
+		if critical, _ := pkg.SplitCritical(skipped); len(critical) > 0 {
+			out = append(out, fmt.Sprintf(
+				"You excluded packages the shell needs: %s. It will not start correctly without them.",
+				strings.Join(critical, ", ")))
+		} else {
+			out = append(out, fmt.Sprintf("%d packages are excluded; each one costs a feature, not the shell.", len(skipped)))
 		}
 	}
 

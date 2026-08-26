@@ -40,6 +40,13 @@ const (
 	OptAURHelper OptionID = "aur-helper"
 )
 
+// Keybind choice values.
+const (
+	KeybindsFull           = "full"
+	KeybindsShell          = "shell"
+	OptKeybinds   OptionID = "keybinds"
+)
+
 // System upgrade choice values.
 const (
 	UpgradeFull               = "full"
@@ -62,6 +69,23 @@ var choiceCatalog = []Choice{
 			{Value: AURParu, Label: "paru", Detail: "require paru"},
 			{Value: AURYay, Label: "yay", Detail: "require yay"},
 			{Value: AURNone, Label: "none", Detail: "pacman only; AUR packages will be reported as missing"},
+		},
+	},
+	{
+		ID:          OptKeybinds,
+		Group:       GroupBehaviour,
+		Title:       "Keybinds",
+		Description: "The shell's own panels are always bound. This decides whether the conventional desktop keys come with them — a terminal on Super+T, files on Super+E, workspaces on Super+scroll, and the window management to go with them.",
+		Default:     KeybindsFull,
+		Requires:    OptMango,
+		Values: []ChoiceValue{
+			{
+				Value:   KeybindsFull,
+				Label:   "full",
+				Detail:  "the conventional set, window management included",
+				Warning: "The conventional keybinds define window management, so where they collide with bindings you already have, they win. Choose keybinds=shell to keep only the shell's own panel keys.",
+			},
+			{Value: KeybindsShell, Label: "shell", Detail: "only the shell's panels, media and capture keys"},
 		},
 	},
 	{

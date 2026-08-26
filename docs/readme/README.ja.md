@@ -58,7 +58,7 @@ Wayland → GPU
   書き出されます。
 - **コードを編集せずに設定できる。** すべては単一の `config.json` の上に載った GUI の設定項目
   です。見た目や挙動を変えるのに QML を触る必要は一度もありません。
-- **まともなインストールとアップグレードの導線。** `./setup` が依存関係とシステム設定を面倒
+- **まともなインストールとアップグレードの導線。** `./install` が依存関係とシステム設定を面倒
   みて、`ilmango update` が pull し、スキーマのマイグレーションを走らせ、あなたの変更を保ったまま、
   ロールバックもできます。
 
@@ -203,7 +203,7 @@ Catppuccin、Rosé Pine のプリセット同梱、自作もできます。
 - **自動更新**: `ilmango update`。ロールバック、マイグレーション、ユーザ変更の保持つき
 - **ロック画面**と**セッション画面**（ログアウト／再起動／シャットダウン／サスペンド）
 - **polkit エージェント**、**スクリーンキーボード**、**自動起動マネージャ**（mango 設定の `exec-once` の行が土台）
-- **Kira**: 任意で有効にするドット絵のマスコット。画面の端をうろつき、あなたの操作に反応します。既定では無効。約 32 MiB の素材パックは `./setup` › Extras から別途ダウンロード
+- **Kira**: 任意で有効にするドット絵のマスコット。画面の端をうろつき、あなたの操作に反応します。既定では無効。約 32 MiB の素材パックは `./install` › Extras から別途ダウンロード
 - **15 言語**、自動判別つき
 - **ナイトライト**: スケジュールまたは手動
 - **天気**: Open-Meteo。GPS、手入力の座標、都市名に対応
@@ -219,8 +219,8 @@ Catppuccin、Rosé Pine のプリセット同梱、自作もできます。
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
-./setup install       # 対話式。各ステップの前に確認します
-./setup install -y    # 全自動。何も訊きません
+./install       # 対話式。各ステップの前に確認します
+./install -y    # 全自動。何も訊きません
 ```
 
 インストーラが依存関係、システム設定、テーマ化を引き受けます。シェルのキーバインドを
@@ -238,10 +238,10 @@ ilmango update                     # pull + マイグレーション + 再起動
 ほかの入り口:
 
 ```bash
-./setup                 # TUI メニュー。必要なものを選ぶ
-./setup install --skip-mango    # mango の設定には一切触らない
+./install                 # TUI メニュー。必要なものを選ぶ
+./install --disable mango    # mango の設定には一切触らない
 sudo make install       # ホームではなくシステム全体へ
-./setup rollback        # 直前の更新を取り消す
+./install --rollback        # 直前の更新を取り消す
 ```
 
 **ディストリビューション。** Arch が主対象で、いちばんテストされています。Debian と Fedora にも
@@ -308,7 +308,7 @@ ilmango logs                       # 直近のランタイムログ
 ilmango restart                    # 動作中のランタイムを再起動
 ilmango repair                     # doctor + 再起動 + ログの絞り込み確認
 ilmango doctor                     # よくある問題の自動診断と修復
-./setup rollback                # 直前の更新を取り消す
+./install --rollback                # 直前の更新を取り消す
 claude "助けてください"          # 自分で調べる気がないとき。まあ、20 ドル分は働いてもらわないと
 ```
 

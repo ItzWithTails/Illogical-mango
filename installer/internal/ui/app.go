@@ -126,7 +126,8 @@ func quit(aborted bool) tea.Cmd {
 
 // stageMeta renders the "step N of M" indicator shown in the header.
 func stageMeta(session *Session, stage Stage) string {
-	labels := []string{"System", "Options", "Review", "Install", "Done"}
+	// One label per Stage, in Stage order: the index is the stage.
+	labels := []string{"System", "Options", "Packages", "Review", "Install", "Done"}
 	if int(stage) >= len(labels) {
 		return ""
 	}

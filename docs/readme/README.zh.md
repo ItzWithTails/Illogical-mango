@@ -54,7 +54,7 @@ Wayland → GPU
   终端与 TUI 工具、Firefox、Discord、Spicetify、Steam 和 SDDM。
 - **不改代码就能配置。** 所有东西都是图形界面里的设置项，底下只有一个 `config.json`。想改外观
   或行为，永远不需要碰 QML。
-- **一条像样的安装与升级路径。** `./setup` 负责依赖和系统配置；`ilmango update` 拉取更新、执行
+- **一条像样的安装与升级路径。** `./install` 负责依赖和系统配置；`ilmango update` 拉取更新、执行
   schema 迁移、保留你的修改，并且能回滚。
 
 **来历。** [end-4 的 illogical-impulse](https://github.com/end-4/dots-hyprland)（Hyprland
@@ -190,7 +190,7 @@ Firefox、Discord、Spicetify、Steam 和 SDDM。自带 Regalia、Gruvbox、Catp
 - **自动更新**：`ilmango update`，带回滚、迁移，并保留你的修改
 - **锁屏**与**会话界面**（注销/重启/关机/挂起）
 - **polkit 代理**、**屏幕键盘**、**自启动管理器**，底层是 mango 配置里的 `exec-once` 那行
-- **Kira**：可选的像素画吉祥物，在屏幕边缘游荡，会对你的操作有反应。默认关闭；约 32 MiB 的素材包在 `./setup` › Extras 里单独下载
+- **Kira**：可选的像素画吉祥物，在屏幕边缘游荡，会对你的操作有反应。默认关闭；约 32 MiB 的素材包在 `./install` › Extras 里单独下载
 - **15 种语言**，自动识别
 - **夜灯**：定时或手动
 - **天气**：Open-Meteo，支持 GPS、手动坐标或城市名
@@ -206,8 +206,8 @@ Firefox、Discord、Spicetify、Steam 和 SDDM。自带 Regalia、Gruvbox、Catp
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
-./setup install       # 交互式，每一步都会问
-./setup install -y    # 全自动，不问任何问题
+./install       # 交互式，每一步都会问
+./install -y    # 全自动，不问任何问题
 ```
 
 安装器负责依赖、系统配置和配色。它把外壳的快捷键写进 `~/.config/mango/ilmango.conf`，并挂到你现有的
@@ -224,10 +224,10 @@ ilmango update                     # 拉取 + 迁移 + 重启
 其他入口：
 
 ```bash
-./setup                 # TUI 菜单，想装什么自己挑
-./setup install --skip-mango    # 完全不碰 mango 配置
+./install                 # TUI 菜单，想装什么自己挑
+./install --disable mango    # 完全不碰 mango 配置
 sudo make install       # 装到系统里，而不是你的家目录
-./setup rollback        # 撤销上一次更新
+./install --rollback        # 撤销上一次更新
 ```
 
 **发行版。** Arch 是主要目标，测试得也最充分。Debian 和 Fedora 当然也有移植……后果自负，那上面
@@ -292,7 +292,7 @@ ilmango logs                       # 最近的运行时日志
 ilmango restart                    # 重启当前运行时
 ilmango repair                     # doctor + 重启 + 过滤后的日志检查
 ilmango doctor                     # 自动诊断并修复常见问题
-./setup rollback                # 撤销上一次更新
+./install --rollback                # 撤销上一次更新
 claude "帮帮我"                 # 如果你不想自己折腾。来吧，那 20 刀总得让它挣回来
 ```
 

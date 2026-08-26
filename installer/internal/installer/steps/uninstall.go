@@ -327,3 +327,124 @@ func FindManifestUnder(root string) (*installer.Manifest, error) {
 	}
 	return manifest, nil
 }
+
+// reportExtrasStep names the optional downloads that uninstalling leaves in
+// place.
+//
+// Two of the extras are deliberately not removed. The wallpapers became the
+// user's own picture library the moment they landed, and the icon theme may be
+// the theme they are currently using — deleting either because they removed a
+// shell would be presumptuous. Saying where they are is the honest middle
+// ground between silently orphaning several hundred megabytes and deciding on
+// someone's behalf that they are rubbish.
+type reportExtrasStep struct{ base }
+
+func newReportExtrasStep() installer.Step {
+	return reportExtrasStep{base{
+		id:     "report-extras",
+		title:  "Report optional extras",
+		detail: "Name the downloads left in place, and where they are.",
+	}}
+}
+
+// ReadOnly marks this step as an inspection.
+func (reportExtrasStep) ReadOnly() bool { return true }
+
+func (s reportExtrasStep) Run(_ context.Context, env *installer.Env) error {
+	leftovers := []struct{ what, where string }{
+		{"The wallpaper pack", filepath.Join(pictureHome(), "Wallpapers")},
+		{"The monochrome icon theme", filepath.Join(dataHome(), "icons", iconThemeName)},
+	}
+
+	for _, item := range leftovers {
+		if !dirExists(item.where) {
+			continue
+		}
+		size, err := directorySize(item.where)
+		if err != nil {
+			env.Note(fmt.Sprintf("%s is still at %s; delete it yourself if you want the space back.", item.what, item.where))
+			continue
+		}
+		env.Note(fmt.Sprintf("%s is still at %s (%s); delete it yourself if you want the space back.",
+			item.what, item.where, humanSize(size)))
+	}
+	return nil
+}
+
+// directorySize adds up the regular files under dir.
+func directorySize(dir string) (int64, error) {
+	var total int64
+	err := filepath.WalkDir(dir, func(_ string, d os.DirEntry, err error) error {
+		if err != nil || d.IsDir() {
+			return err
+		}
+		info, err := d.Info()
+		if err != nil {
+			return nil // a file that vanished mid-walk is not worth failing over
+		}
+		total += info.Size()
+		return nil
+	})
+	return total, err
+}
+
+// humanSize renders a byte count the way a person would say it.
+func humanSize(n int64) string {
+	const unit = 1024
+	if n < unit {
+		return fmt.Sprintf("%d B", n)
+	}
+	div, exp := int64(unit), 0
+	for size := n / unit; size >= unit; size /= unit {
+		div *= unit
+		exp++
+	}
+	return fmt.Sprintf("%.0f %ciB", float64(n)/float64(div), "KMGT"[exp])
+}
+
+// unhookPathStep takes the PATH line back out of the shell profile.
+//
+// The fish snippet needs no help: it is a file the installer owns outright, so
+// the manifest removes it. A profile belongs to the user, and only the one
+// line this installer wrote may be taken out of it.
+type unhookPathStep struct{ base }
+
+func newUnhookPathStep() installer.Step {
+	return unhookPathStep{base{
+		id:     "unhook-path",
+		title:  "Remove the PATH entry",
+		detail: "Take our line back out of the shell profile, leaving the rest.",
+	}}
+}
+
+func (s unhookPathStep) Run(_ context.Context, env *installer.Env) error {
+	// Both are checked rather than only the current shell's: the shell may
+	// have changed since the install, and a line left behind would point at a
+	// directory that no longer exists.
+	for _, profile := range []string{
+		filepath.Join(home(), ".profile"),
+		filepath.Join(home(), ".zprofile"),
+	} {
+		if !env.Home.Exists(profile) {
+			continue
+		}
+		current, err := env.Home.ReadFile(profile)
+		if err != nil {
+			return fmt.Errorf("reading %s: %w", profile, err)
+		}
+		if !strings.Contains(string(current), pathMarker) {
+			continue
+		}
+
+		cleaned, removed := stripPathEntry(string(current))
+		if removed == 0 {
+			continue
+		}
+		if err := env.Home.Unrecorded().WriteFile(profile, []byte(cleaned), 0o644); err != nil {
+			return err
+		}
+		env.Log(fmt.Sprintf("removed %d lines from %s", removed, profile))
+		env.Detail(profile)
+	}
+	return nil
+}

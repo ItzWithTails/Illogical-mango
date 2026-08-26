@@ -207,7 +207,7 @@ func (m Manager) CanUpgrade() bool { return len(m.UpgradeArgs) > 0 }
 // the user every other dependency. The names that still fail are returned
 // rather than treated as fatal: most are optional tools, and abandoning the
 // install over one of them helps nobody.
-func (m Manager) Install(ctx context.Context, r *run.Runner, names []string) (failed []string, err error) {
+func (m Manager) Install(ctx context.Context, r *run.Runner, names []string, report func(Progress)) (failed []string, err error) {
 	present, err := m.InstalledSet(ctx, r)
 	if err != nil {
 		// Without the set we simply try everything; the manager skips what is
@@ -225,7 +225,8 @@ func (m Manager) Install(ctx context.Context, r *run.Runner, names []string) (fa
 		return nil, nil
 	}
 
-	if err := m.install(ctx, r, wanted, BatchBudget(len(wanted))); err == nil {
+	watch := newProgressWatcher(wanted, report)
+	if err := m.install(ctx, r, wanted, BatchBudget(len(wanted)), watch); err == nil {
 		return nil, nil
 	}
 
@@ -243,7 +244,7 @@ func (m Manager) Install(ctx context.Context, r *run.Runner, names []string) (fa
 		if present[name] {
 			continue
 		}
-		if err := m.install(ctx, r, []string{name}, PackageBudget); err != nil {
+		if err := m.install(ctx, r, []string{name}, PackageBudget, watch); err != nil {
 			failed = append(failed, name)
 		}
 	}
@@ -257,9 +258,62 @@ func (m Manager) Install(ctx context.Context, r *run.Runner, names []string) (fa
 }
 
 // install runs one install transaction under a time budget.
-func (m Manager) install(ctx context.Context, r *run.Runner, names []string, budget time.Duration) error {
+func (m Manager) install(ctx context.Context, r *run.Runner, names []string, budget time.Duration, watch func(string)) error {
 	args := append(append([]string{}, m.InstallArgs...), names...)
-	return r.Run(ctx, run.Command{Name: m.Name, Args: args, Privileged: m.Privileged, Timeout: budget})
+	return r.Run(ctx, run.Command{
+		Name: m.Name, Args: args, Privileged: m.Privileged, Timeout: budget, OnLine: watch,
+	})
+}
+
+// Progress reports one package finishing during a transaction.
+type Progress struct {
+	Done, Total int
+	Name        string
+	// Action is the word the package manager used: installing, upgrading and
+	// so on. It is worth showing, because "upgrading" on a first run tells the
+	// user something they may want to know.
+	Action string
+}
+
+// progressVerbs are the words pacman prints when it starts on a package. The
+// post-transaction hooks it numbers "(1/2)" are not packages, which is why
+// this matches the verb and the name rather than the counter.
+var progressVerbs = []string{"installing", "reinstalling", "upgrading", "downgrading"}
+
+// newProgressWatcher returns a line handler that counts packages as the
+// manager reports them.
+//
+// It counts only names the caller asked for. That makes the total honest —
+// dependencies pulled in along the way are not in it — and it is what keeps a
+// hook or a stray log line from being mistaken for a package.
+func newProgressWatcher(wanted []string, report func(Progress)) func(string) {
+	if report == nil {
+		return nil
+	}
+	remaining := make(map[string]bool, len(wanted))
+	for _, name := range wanted {
+		remaining[name] = true
+	}
+
+	total := len(wanted)
+	done := 0
+	return func(line string) {
+		line = strings.TrimSpace(line)
+		for _, verb := range progressVerbs {
+			rest, found := strings.CutPrefix(line, verb+" ")
+			if !found {
+				continue
+			}
+			name := strings.TrimSuffix(strings.TrimSpace(rest), "...")
+			if !remaining[name] {
+				return
+			}
+			delete(remaining, name)
+			done++
+			report(Progress{Done: done, Total: total, Name: name, Action: verb})
+			return
+		}
+	}
 }
 
 // InstalledSet lists everything installed, in one call.

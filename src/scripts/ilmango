@@ -104,9 +104,8 @@ EOF
 Runtime:
   start, stop, run, restart, kill, terminal, browser, close-window, colorpicker
 
-Maintenance (delegates to setup):
-  install, reinstall, update, doctor, status, migrate, rollback, my-changes, uninstall
-  config, info, backup, logs, setup
+Installation and maintenance (hands over to ./install):
+  install, reinstall, uninstall, update, rollback, my-changes
 
 Other:
   version [--json]
@@ -199,7 +198,7 @@ service_link_summary() {
 }
 
 print_cli_context() {
-    local version_file version install_mode update_strategy runtime_path setup_dir launcher_path branch service_state
+    local version_file version install_mode update_strategy runtime_path checkout_dir launcher_path branch service_state
     version_file="$(ilmango_version_file 2>/dev/null || true)"
     version="$(read_version_field "$version_file" '.version' '"version"[[:space:]]*:[[:space:]]*"\([^"]*\)"')"
     install_mode="$(read_version_field "$version_file" '.installMode // .install_mode' '"installMode"[[:space:]]*:[[:space:]]*"\([^"]*\)"')"
@@ -209,7 +208,7 @@ print_cli_context() {
 
     resolve_config_dir
     runtime_path="$(detect_runtime_path_for_help || true)"
-    setup_dir="$(resolve_setup_dir 2>/dev/null || true)"
+    checkout_dir="$(resolve_checkout_dir 2>/dev/null || true)"
     launcher_path="$(resolve_launcher_path)"
     service_state="$(service_link_summary)"
 
@@ -225,12 +224,12 @@ print_cli_context() {
     [[ -n "$install_mode" ]] && printf '  install mode: %s\n' "$install_mode"
     [[ -n "$update_strategy" ]] && printf '  update strategy: %s\n' "$update_strategy"
     [[ -n "$runtime_path" ]] && printf '  runtime: %s\n' "$runtime_path"
-    [[ -n "$setup_dir" ]] && printf '  setup: %s\n' "$setup_dir"
+    [[ -n "$checkout_dir" ]] && printf '  checkout: %s\n' "$checkout_dir"
     printf '  launcher: %s\n' "$launcher_path"
     printf '  service: %s\n' "$service_state"
 
-    if [[ -n "$setup_dir" && -d "$setup_dir/.git" ]]; then
-        branch="$(git -C "$setup_dir" rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
+    if [[ -n "$checkout_dir" && -d "$checkout_dir/.git" ]]; then
+        branch="$(git -C "$checkout_dir" rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
         if [[ -n "$branch" ]]; then
             printf '  branch: %s\n' "$branch"
             [[ "$branch" != "main" && "$branch" != "master" ]] && printf '  note: non-release branch\n'
@@ -270,7 +269,7 @@ repair_usage() {
 Usage: ilmango repair [-c PATH]
 
 What it does:
-  1. runs setup doctor inline
+  1. rebuilds quickshell if its ABI drifted
   2. restarts the shell if a graphical session is available
   3. prints recent logs plus filtered errors
 
@@ -2413,8 +2412,8 @@ open_detached_qml_window() {
     exec "$qs_bin" -n -p "$qml_path"
 }
 
-resolve_setup_dir() {
-    if [[ -x "$launcher_root/setup" && -f "$launcher_root/src/shell.qml" ]]; then
+resolve_checkout_dir() {
+    if [[ -x "$launcher_root/install" && -f "$launcher_root/src/shell.qml" ]]; then
         printf '%s' "$launcher_root"
         return
     fi
@@ -2432,7 +2431,10 @@ resolve_setup_dir() {
     fi
 
     stored_repo="${stored_repo/#\~/$HOME}"
-    if [[ -n "$stored_repo" && -d "${stored_repo}/.git" && -x "${stored_repo}/setup" && -f "${stored_repo}/src/shell.qml" ]]; then
+    # A checkout is recognised by what it contains, not by .git: tarball
+    # installs are legitimate, and the installer degrades honestly when there
+    # is nothing to pull.
+    if [[ -n "$stored_repo" && -x "${stored_repo}/install" && -f "${stored_repo}/src/shell.qml" ]]; then
         printf '%s' "$stored_repo"
         return
     fi
@@ -2441,35 +2443,55 @@ resolve_setup_dir() {
     printf '%s' "$config_dir"
 }
 
-run_setup_command() {
-    local dir="$1"
-    shift
-    local setup_script="$dir/setup"
-
-    if [[ ! -x "$setup_script" ]]; then
-        echo "setup not found in $dir" >&2
-        exit 1
+# Hand over to the Go installer. It lives in the checkout as ./install, which
+# builds it on demand; a system-wide ilmango-installer is used if there is one
+# and no checkout can be found.
+resolve_payload_dir() {
+    local checkout
+    checkout="$(resolve_checkout_dir 2>/dev/null || true)"
+    if [[ -n "$checkout" && -f "$checkout/src/shell.qml" ]]; then
+        printf '%s' "$checkout/src"
+        return
     fi
-
-    cd "$dir"
-    exec ./setup "$@"
+    resolve_config_dir
+    printf '%s' "$config_dir"
 }
 
-run_setup_inline() {
+run_installer() {
     local dir="$1"
     shift
-    local setup_script="$dir/setup"
 
-    if [[ ! -x "$setup_script" ]]; then
-        echo "setup not found in $dir" >&2
-        exit 1
-    fi
-
-    (
+    if [[ -n "$dir" && -x "$dir/install" ]]; then
         cd "$dir"
-        ./setup "$@"
-    )
+        exec ./install "$@"
+    fi
+
+    if command -v ilmango-installer >/dev/null 2>&1; then
+        exec ilmango-installer "$@"
+    fi
+
+    echo "ilmango: no Illogical-mango checkout found, and ilmango-installer is not on PATH." >&2
+    echo "         Clone the repository and run ./install from it." >&2
+    exit 1
 }
+
+# retired_command explains where a command went.
+#
+# The maintenance commands lived in a 111 KB bash script that was retired along
+# with the old installer. Some of them have a direct replacement and some do
+# not; saying which is more use than a command that silently does nothing.
+retired_command() {
+    local name="$1" replacement="$2"
+
+    printf 'ilmango: `%s` was removed along with the old setup script.\n' "$name" >&2
+    if [[ -n "$replacement" ]]; then
+        printf '         Instead: %s\n' "$replacement" >&2
+    else
+        printf '         It has no replacement yet.\n' >&2
+    fi
+    exit 2
+}
+
 
 resolve_launcher_path() {
     local candidate="${ILMANGO_LAUNCHER_PATH:-}"
@@ -2522,8 +2544,8 @@ show_logs() {
 run_repair() {
     local dir="$1"
 
-    printf '\n== running doctor ==\n'
-    run_setup_inline "$dir" doctor
+    printf '\n== rebuilding quickshell if its ABI drifted ==\n'
+    _ilmango_run_quickshell_rebuild noninteractive || true
 
     if [[ -z "${WAYLAND_DISPLAY:-}" && -z "${DISPLAY:-}" && -z "${NIRI_SOCKET:-}" ]]; then
         printf '\n== no graphical session ==\n'
@@ -2834,18 +2856,18 @@ restart_ilmango_service_or_fail() {
 }
 
 install_user_service() {
-    local setup_dir
+    local payload_dir
     local asset_path
     local launcher_path
     local tmp_file
 
     require_command systemctl
-    setup_dir="$(resolve_setup_dir)"
-    asset_path="$setup_dir/assets/systemd/ilmango.service"
+    payload_dir="$(resolve_payload_dir)"
+    asset_path="$payload_dir/assets/systemd/ilmango.service"
     launcher_path="$(resolve_launcher_path)"
 
     if [[ ! -f "$asset_path" ]]; then
-        echo "service asset not found in $setup_dir" >&2
+        echo "service asset not found in $payload_dir" >&2
         exit 1
     fi
 
@@ -3164,24 +3186,24 @@ show_version() {
         fi
     fi
 
-    local setup_dir
-    setup_dir="$(resolve_setup_dir)"
+    local payload_dir
+    payload_dir="$(resolve_payload_dir)"
     if [[ "$json" == true ]]; then
-        printf '{\n  "version": "%s",\n  "runtime": "%s"\n}\n' "$(tr -d '[:space:]' < "$setup_dir/VERSION")" "${runtime_path:-$setup_dir}"
+        printf '{\n  "version": "%s",\n  "runtime": "%s"\n}\n' "$(tr -d '[:space:]' < "$payload_dir/VERSION")" "${runtime_path:-$payload_dir}"
         return
     fi
 
-    printf 'Illogical-mango %s\n' "$(tr -d '[:space:]' < "$setup_dir/VERSION")"
-    printf 'runtime: %s\n' "${runtime_path:-$setup_dir}"
+    printf 'Illogical-mango %s\n' "$(tr -d '[:space:]' < "$payload_dir/VERSION")"
+    printf 'runtime: %s\n' "${runtime_path:-$payload_dir}"
 }
 
 run_theme_command() {
     local action="${1:-}"
     shift || true
 
-    local setup_dir
-    setup_dir="$(resolve_setup_dir)"
-    local colors_dir="$setup_dir/scripts/colors"
+    local payload_dir
+    payload_dir="$(resolve_payload_dir)"
+    local colors_dir="$payload_dir/scripts/colors"
 
     case "$action" in
         list-targets)
@@ -3544,8 +3566,7 @@ shift || true
 
 case "$command_name" in
     install)
-        setup_dir="$(resolve_setup_dir)"
-        run_setup_command "$setup_dir" install "$@"
+        run_installer "$(resolve_checkout_dir)" "$@"
         ;;
     start)
         require_qs
@@ -4013,8 +4034,7 @@ case "$command_name" in
                     ;;
             esac
         done
-        setup_dir="$(resolve_setup_dir)"
-        run_local_test "$setup_dir" "$@"
+        run_local_test "$(resolve_payload_dir)" "$@"
         ;;
     setup)
         while [[ $# -gt 0 ]]; do
@@ -4028,8 +4048,7 @@ case "$command_name" in
                     ;;
             esac
         done
-        setup_dir="$(resolve_setup_dir)"
-        run_setup_command "$setup_dir" "$@"
+        retired_command setup "run ./install from the checkout"
         ;;
     service)
         run_service_command "$@"
@@ -4078,10 +4097,30 @@ case "$command_name" in
             _ilmango_run_quickshell_rebuild "$fix_abi_mode"
             exit $?
         fi
-        setup_dir="$(resolve_setup_dir)"
-        run_setup_command "$setup_dir" "$command_name" "$@"
+        retired_command doctor "ilmango doctor --fix-abi rebuilds quickshell; ilmango repair restarts the runtime"
         ;;
-    migrate|status|update|reinstall|rollback|my-changes|uninstall|config|info|backup|logs)
+    reinstall)
+        run_installer "$(resolve_checkout_dir)" -y "$@"
+        ;;
+    uninstall)
+        run_installer "$(resolve_checkout_dir)" --uninstall "$@"
+        ;;
+    update)
+        run_installer "$(resolve_checkout_dir)" --update "$@"
+        ;;
+    rollback)
+        run_installer "$(resolve_checkout_dir)" --rollback "$@"
+        ;;
+    my-changes)
+        run_installer "$(resolve_checkout_dir)" --changes "$@"
+        ;;
+    status|info)
+        retired_command "$command_name" "ilmango version, and ./install --dry-run to see what a run would change"
+        ;;
+    logs)
+        retired_command logs "ilmango logs is gone; the installer writes a transcript under ~/.local/state/ilmango/"
+        ;;
+    migrate|config|backup)
         while [[ $# -gt 0 ]]; do
             case "$1" in
                 -c|--config)
@@ -4093,8 +4132,7 @@ case "$command_name" in
                     ;;
             esac
         done
-        setup_dir="$(resolve_setup_dir)"
-        run_setup_command "$setup_dir" "$command_name" "$@"
+        retired_command "$command_name" ""
         ;;
     version)
         show_version "$@"

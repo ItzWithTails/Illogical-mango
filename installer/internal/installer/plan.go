@@ -126,6 +126,15 @@ type Operation string
 const (
 	OpInstall   Operation = "install"
 	OpUninstall Operation = "uninstall"
+	// OpUpdate pulls the checkout forward and reinstalls from it. It is a
+	// separate operation rather than a flag because it starts with a step that
+	// install must never take: changing the source it installs from.
+	OpUpdate Operation = "update"
+	// OpRollback restores the files a previous run replaced, from the backup
+	// that run took.
+	OpRollback Operation = "rollback"
+	// OpChanges reports which installed files the user has since edited.
+	OpChanges Operation = "changes"
 )
 
 // registry holds the process-wide step catalogues. Steps register themselves

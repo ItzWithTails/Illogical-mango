@@ -11,13 +11,13 @@
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd ilmango
-./setup install
+./install
 ```
 
 Add `-y` if you don't want to answer questions:
 
 ```bash
-./setup install -y
+./install -y
 ```
 
 When it's done:
@@ -62,7 +62,7 @@ For everything else, check [PACKAGES.md](PACKAGES.md). It's organized by categor
 > - `socat` for YTMusic IPC fallback control
 > - `fprintd` for fingerprint lockscreen support
 >
-> **Optional content packs** (`./setup` → Extras): the iNiR-Walls wallpaper
+> **Optional content packs** (`./install --enable wallpapers,icons,mascot`): the iNiR-Walls wallpaper
 > pack, the ii-pixel-sddm login theme, YAMIS icons, and the Kira mascot art
 > pack (354 poses and animations, about 32 MiB). The mascot feature ships
 > disabled and does nothing until you install the pack and enable her in
@@ -75,7 +75,7 @@ For everything else, check [PACKAGES.md](PACKAGES.md). It's organized by categor
 > shell manifest; normal Illogical-mango install/update paths provide it. Extras stages and
 > verifies the complete archive before touching live assets, records the release
 > tag plus an installed-tree hash, and repairs missing or corrupt files during a
-> later `./setup update` without auto-installing the optional pack for new users.
+> later `./install --update` without auto-installing the optional pack for new users.
 >
 > **Important for minimal installs (Arch base / netinstall):**
 > If shell startup fails with `module "org.kde.syntaxhighlighting" is not installed`, install:
@@ -142,5 +142,4 @@ If something's broken, the logs will probably tell you which package is missing.
 
 - [KEYBINDS.md](KEYBINDS.md) - Learn the shortcuts
 - [IPC.md](IPC.md) - Make your own keybindings
-- [SETUP.md](SETUP.md) - Updating, uninstalling, how configs are handled
 - [PACKAGES.md](PACKAGES.md) - Full package list if something's missing

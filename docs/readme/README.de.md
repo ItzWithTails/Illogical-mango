@@ -61,7 +61,7 @@ Wayland → GPU
   Discord, Spicetify, Steam und SDDM geschrieben wird.
 - **Konfigurierbar ohne Code zu bearbeiten.** Alles ist eine GUI-Einstellung über einer
   einzigen `config.json`. QML musst du nie anfassen, um Aussehen oder Verhalten zu ändern.
-- **Ein echter Installations- und Update-Pfad.** `./setup` kümmert sich um Abhängigkeiten
+- **Ein echter Installations- und Update-Pfad.** `./install` kümmert sich um Abhängigkeiten
   und Systemkonfiguration; `ilmango update` holt, führt Schema-Migrationen aus, bewahrt deine
   Änderungen und kann zurückrollen.
 
@@ -208,7 +208,7 @@ Rechte Sidebar:
 - **Automatische Updates**: `ilmango update` mit Rollback, Migrationen und Erhalt deiner Änderungen
 - **Sperrbildschirm** und **Sitzungsbildschirm** (Abmelden/Neustart/Herunterfahren/Standby)
 - **Polkit-Agent**, **Bildschirmtastatur**, **Autostart-Verwaltung** gestützt auf die `exec-once`-Zeile in der mango-Konfiguration
-- **Kira**: optionales Pixelart-Maskottchen, das an den Bildschirmrändern umherläuft und auf dein Tun reagiert. Standardmäßig aus; das ~32 MiB große Art-Paket wird separat unter `./setup` › Extras geladen
+- **Kira**: optionales Pixelart-Maskottchen, das an den Bildschirmrändern umherläuft und auf dein Tun reagiert. Standardmäßig aus; das ~32 MiB große Art-Paket wird separat unter `./install` › Extras geladen
 - **15 Sprachen** mit automatischer Erkennung
 - **Nachtlicht**: nach Zeitplan oder manuell
 - **Wetter**: Open-Meteo, unterstützt GPS, manuelle Koordinaten oder Städtenamen
@@ -224,8 +224,8 @@ Rechte Sidebar:
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
-./setup install       # interaktiv, fragt vor jedem Schritt
-./setup install -y    # automatisch, ohne Rückfragen
+./install       # interaktiv, fragt vor jedem Schritt
+./install -y    # automatisch, ohne Rückfragen
 ```
 
 Der Installer kümmert sich um Abhängigkeiten, Systemkonfiguration und Theming. Er schreibt
@@ -244,10 +244,10 @@ ilmango update                     # pull + Migrationen + Neustart
 Weitere Einstiegspunkte:
 
 ```bash
-./setup                 # TUI-Menü, du wählst aus
-./setup install --skip-mango    # die mango-Konfiguration gar nicht anfassen
+./install                 # TUI-Menü, du wählst aus
+./install --disable mango    # die mango-Konfiguration gar nicht anfassen
 sudo make install       # systemweit statt im Home
-./setup rollback        # letztes Update rückgängig machen
+./install --rollback        # letztes Update rückgängig machen
 ```
 
 **Distributionen.** Arch ist das Hauptziel und am besten getestet. Für Debian und Fedora
@@ -314,7 +314,7 @@ ilmango logs                       # aktuelle Laufzeit-Logs
 ilmango restart                    # aktive Laufzeit neu starten
 ilmango repair                     # doctor + Neustart + gefilterte Log-Prüfung
 ilmango doctor                     # Selbstdiagnose und Reparatur typischer Probleme
-./setup rollback                # letztes Update rückgängig machen
+./install --rollback                # letztes Update rückgängig machen
 claude "hilf mir bitte"         # falls du keine Lust hast, selbst zu suchen. na komm, die 20 $ muss er ja irgendwie abarbeiten
 ```
 

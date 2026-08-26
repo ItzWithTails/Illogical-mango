@@ -60,7 +60,7 @@ Wayland → GPU
 - **Si configura senza toccare il codice.** Tutto è un'impostazione della GUI sopra un
   unico `config.json`. Non serve mai mettere mano al QML per cambiare aspetto o
   comportamento.
-- **Un vero percorso di installazione e aggiornamento.** `./setup` si occupa delle
+- **Un vero percorso di installazione e aggiornamento.** `./install` si occupa delle
   dipendenze e della configurazione di sistema; `ilmango update` fa pull, esegue le
   migrazioni dello schema, conserva le tue modifiche e sa tornare indietro.
 
@@ -208,7 +208,7 @@ Barra destra:
 - **Aggiornamenti automatici**: `ilmango update` con ripristino, migrazioni e conservazione delle tue modifiche
 - **Schermata di blocco** e **schermata di sessione** (disconnessione/riavvio/spegnimento/sospensione)
 - **Agente polkit**, **tastiera a schermo**, **gestore dell'avvio automatico** basato sulla riga `exec-once` nella configurazione di mango
-- **Kira**: mascotte opzionale in pixel art che gironzola sui bordi dello schermo e reagisce a quello che fai. Disattivata di default; il pacchetto di illustrazioni da ~32 MiB si scarica a parte da `./setup` › Extras
+- **Kira**: mascotte opzionale in pixel art che gironzola sui bordi dello schermo e reagisce a quello che fai. Disattivata di default; il pacchetto di illustrazioni da ~32 MiB si scarica a parte da `./install` › Extras
 - **15 lingue** con rilevamento automatico
 - **Luce notturna**: programmata o manuale
 - **Meteo**: Open-Meteo, supporta GPS, coordinate manuali o nome della città
@@ -224,8 +224,8 @@ Barra destra:
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
-./setup install       # interattivo, chiede prima di ogni passo
-./setup install -y    # automatico, senza domande
+./install       # interattivo, chiede prima di ogni passo
+./install -y    # automatico, senza domande
 ```
 
 L'installer si occupa di dipendenze, configurazione di sistema e tematizzazione. Scrive le
@@ -244,10 +244,10 @@ ilmango update                     # pull + migrazioni + riavvio
 Altri punti di ingresso:
 
 ```bash
-./setup                 # menu TUI, scegli tu cosa vuoi
-./setup install --skip-mango    # non toccare affatto la configurazione di mango
+./install                 # menu TUI, scegli tu cosa vuoi
+./install --disable mango    # non toccare affatto la configurazione di mango
 sudo make install       # installazione di sistema invece che nella home
-./setup rollback        # annullare l'ultimo aggiornamento
+./install --rollback        # annullare l'ultimo aggiornamento
 ```
 
 **Distribuzioni.** Arch è l'obiettivo principale e il più testato. Per Debian e Fedora il
@@ -314,7 +314,7 @@ ilmango logs                       # log recenti del runtime
 ilmango restart                    # riavviare il runtime attivo
 ilmango repair                     # doctor + riavvio + controllo filtrato dei log
 ilmango doctor                     # autodiagnosi e riparazione dei problemi tipici
-./setup rollback                # annullare l'ultimo aggiornamento
+./install --rollback                # annullare l'ultimo aggiornamento
 claude "aiutami per favore"     # se non hai voglia di scervellarti. dai, i suoi 20 $ deve pur guadagnarseli
 ```
 

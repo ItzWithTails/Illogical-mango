@@ -54,6 +54,12 @@ func (h Headless) Run(ctx context.Context, session *Session) error {
 		completion = "Dry run complete — nothing was changed."
 	case session.Removing():
 		completion = "Uninstall complete."
+	case session.Operation == installer.OpUpdate:
+		completion = "Update complete."
+	case session.Operation == installer.OpRollback:
+		completion = "Rollback complete."
+	case session.Operation == installer.OpChanges:
+		completion = "Nothing was changed; this was a report."
 	}
 	h.printf("\n%s %s\n", h.Theme.Success.Render(theme.GlyphDone), completion)
 	for _, note := range session.Env.Notes {
@@ -71,6 +77,14 @@ func (h Headless) report(j *journal, event installer.Event) {
 
 	case installer.StepSkipped:
 		h.printf("%s %s\n", h.Theme.Faint.Render(theme.GlyphSkip), h.Theme.Faint.Render(e.Step.Title()))
+
+	case installer.StepDetail:
+		// A step's inline status is where progress lives — which package of
+		// how many, which directory is being copied. In the interface it
+		// overwrites one line; here each is worth its own, because a headless
+		// run is read afterwards as much as watched.
+		j.line(e.Text)
+		h.printf("  %s\n", h.Theme.Faint.Render(e.Text))
 
 	case installer.StepOutput:
 		j.line(e.Line)

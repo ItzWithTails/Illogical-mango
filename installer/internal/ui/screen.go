@@ -22,6 +22,7 @@ type Stage int
 const (
 	StageWelcome Stage = iota
 	StageOptions
+	StagePackages
 	StageReview
 	StageProgress
 	StageSummary
@@ -92,6 +93,19 @@ func (s *Session) ContentWidth() int {
 	return w
 }
 
+// ContentHeight is the number of body lines a screen may render.
+//
+// The frame spends a fixed number of rows on the heading, the explanation and
+// the key hints; what is left is the screen's. A screen with more to show than
+// this has to scroll, because the frame will not.
+func (s *Session) ContentHeight() int {
+	h := s.Height - 12
+	if h < 6 {
+		return 6
+	}
+	return h
+}
+
 // navigateMsg asks the root model to switch screens.
 type navigateMsg struct{ to Stage }
 
@@ -121,6 +135,8 @@ func newScreen(stage Stage, session *Session) Screen {
 			return newReviewScreen(session)
 		}
 		return newOptionsScreen(session)
+	case StagePackages:
+		return newPackagesScreen(session)
 	case StageReview:
 		return newReviewScreen(session)
 	case StageProgress:

@@ -121,16 +121,16 @@ Illogical-mango ships as a git repo with an interactive installer:
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd ilmango
-./setup install
+./install
 ```
 
 Two install modes:
 
-- **Repo-sync**: `./setup install` syncs the repo to `~/.config/quickshell/ilmango/`
+- **Repo-sync**: `./install` syncs the repo to `~/.config/quickshell/ilmango/`
 - **Package-managed**: `make install` copies to `/usr/share/quickshell/ilmango/`
 
-Updates: `./setup update` or `ilmango update` (git pull + sync + migrate + restart).
+Updates: `./install --update` or `ilmango update` (git pull, then reinstall).
 
 The systemd service wires to the compositor via wants links, not `graphical-session.target` (which would also start on KDE/GNOME).
 
-More details: [Installation](INSTALL.md), [Setup & Update](SETUP.md)
+More details: [Installation](INSTALL.md)

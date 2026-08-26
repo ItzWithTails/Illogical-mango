@@ -59,7 +59,7 @@ Wayland → GPU
   Discord, Spicetify, Steam e SDDM.
 - **Configurável sem mexer no código.** Tudo é um ajuste da interface por cima de um único
   `config.json`. Nunca é preciso tocar em QML para mudar a aparência ou o comportamento.
-- **Um caminho de instalação e atualização de verdade.** O `./setup` cuida das dependências
+- **Um caminho de instalação e atualização de verdade.** O `./install` cuida das dependências
   e da configuração do sistema; o `ilmango update` faz pull, roda as migrações de esquema,
   preserva suas mudanças e sabe reverter.
 
@@ -206,7 +206,7 @@ Barra direita:
 - **Atualizações automáticas**: `ilmango update` com reversão, migrações e preservação das suas mudanças
 - **Tela de bloqueio** e **tela de sessão** (sair/reiniciar/desligar/suspender)
 - **Agente polkit**, **teclado na tela**, **gerenciador de inicialização automática** apoiado na linha `exec-once` da configuração do mango
-- **Kira**: mascote opcional em pixel art que perambula pelas bordas da tela e reage ao que você faz. Desligada por padrão; o pacote de arte de ~32 MiB é baixado à parte em `./setup` › Extras
+- **Kira**: mascote opcional em pixel art que perambula pelas bordas da tela e reage ao que você faz. Desligada por padrão; o pacote de arte de ~32 MiB é baixado à parte em `./install` › Extras
 - **15 idiomas** com detecção automática
 - **Luz noturna**: agendada ou manual
 - **Clima**: Open-Meteo, aceita GPS, coordenadas manuais ou nome da cidade
@@ -222,8 +222,8 @@ Barra direita:
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
-./setup install       # interativo, pergunta antes de cada passo
-./setup install -y    # automático, sem perguntas
+./install       # interativo, pergunta antes de cada passo
+./install -y    # automático, sem perguntas
 ```
 
 O instalador cuida das dependências, da configuração do sistema e da tematização. Ele
@@ -242,10 +242,10 @@ ilmango update                     # pull + migrações + reinício
 Outros pontos de entrada:
 
 ```bash
-./setup                 # menu TUI, você escolhe o que quer
-./setup install --skip-mango    # não tocar em nada na configuração do mango
+./install                 # menu TUI, você escolhe o que quer
+./install --disable mango    # não tocar em nada na configuração do mango
 sudo make install       # instalação de sistema em vez da sua home
-./setup rollback        # desfazer a última atualização
+./install --rollback        # desfazer a última atualização
 ```
 
 **Distribuições.** O Arch é o alvo principal e o mais testado. Para Debian e Fedora existe
@@ -312,7 +312,7 @@ ilmango logs                       # logs recentes do runtime
 ilmango restart                    # reiniciar o runtime ativo
 ilmango repair                     # doctor + reinício + checagem filtrada dos logs
 ilmango doctor                     # autodiagnóstico e conserto de problemas comuns
-./setup rollback                # desfazer a última atualização
+./install --rollback                # desfazer a última atualização
 claude "me ajuda por favor"     # se você não quiser se virar sozinho. vai, ele tem que trabalhar pelos 20 US$ dele
 ```
 

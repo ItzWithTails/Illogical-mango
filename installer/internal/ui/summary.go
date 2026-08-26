@@ -83,7 +83,7 @@ func (s *summaryScreen) View() string {
 			"",
 			t.Muted.Render("Next"),
 			"  "+t.Faint.Render(theme.GlyphBullet)+" "+t.Body.Render("Read the transcript, fix the cause, then run the installer again — it is safe to repeat."),
-			"  "+t.Faint.Render(theme.GlyphBullet)+" "+t.Body.Render("Or run ./setup doctor for a diagnostic pass."),
+			"  "+t.Faint.Render(theme.GlyphBullet)+" "+t.Body.Render("Or run ./install --changes to see what differs from the install."),
 		)
 	}
 

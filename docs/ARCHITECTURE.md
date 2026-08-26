@@ -217,15 +217,15 @@ Theme generation orchestrated by `scripts/colors/applycolor.sh`, which runs per-
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd ilmango
-./setup                  # Interactive TUI installer
-./setup install -y       # Fully automated
-./setup update           # Pull + sync + migrate + restart
-./setup doctor           # Diagnose + auto-fix
-./setup rollback         # Restore previous snapshot
+./install                # Interactive TUI installer
+./install -y             # Fully automated
+./install --update       # Pull, then reinstall from the checkout
+./install --changes      # What have I edited since installing?
+./install --rollback     # Put back what the last run replaced
 ```
 
 Two install modes tracked in `version.json`:
-- **Repo-sync**: `./setup install` → syncs to `~/.config/quickshell/ilmango/`
+- **Repo-sync**: `./install` → syncs to `~/.config/quickshell/ilmango/`
 - **Package-managed**: `make install` → copies to `/usr/share/quickshell/ilmango/`
 
 User config for the running QML shell lives at `~/.config/illogical-impulse/config.json` (legacy namespace, persistent across updates). NOTE: the shell scripts/CLI default to `~/.config/ilmango/` with a legacy fallback — the two sides are not yet unified.

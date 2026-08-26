@@ -57,7 +57,7 @@ Wayland → GPU
   Discord, Spicetify, Steam and SDDM.
 - **Configurable without editing code.** Everything is a GUI setting on top of a single
   `config.json`. You never need to touch QML to change how it looks or behaves.
-- **A real install and upgrade path.** `./setup` takes care of dependencies and system
+- **A real install and upgrade path.** `./install` takes care of dependencies and system
   config; `ilmango update` pulls, runs schema migrations, preserves your changes and can
   roll back.
 
@@ -200,7 +200,7 @@ Right sidebar:
 - **Auto-updates**: `ilmango update` with rollback, migrations, and user change preservation
 - **Lock screen** and **session screen** (logout/reboot/shutdown/suspend)
 - **Polkit agent**, **on-screen keyboard**, **autostart manager** backed by the `exec-once` line in the mango config
-- **Kira**: opt-in pixel-art mascot who wanders the screen edges and reacts to what you do. Off by default; the ~32 MiB art pack is a separate download under `./setup` › Extras
+- **Kira**: opt-in pixel-art mascot who wanders the screen edges and reacts to what you do. Off by default; the ~32 MiB art pack is a separate download, `./install --enable mascot`
 - **15 languages** with auto-detection
 - **Night light**: scheduled or manual
 - **Weather**: Open-Meteo, supports GPS, manual coordinates, or city name
@@ -211,13 +211,14 @@ Right sidebar:
 
 ---
 
-## Quick Start (the installer will be different in the future)
+## Quick Start
 
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
-cd Illogical-mango
-./setup install       # interactive, asks before each step
-./setup install -y    # automatic, no questions asked
+cd illogical-mango
+./install             # guided, shows the plan before touching anything
+./install -y          # automatic, no questions asked
+./install --dry-run   # print every command and file, change nothing
 ```
 
 The installer takes care of dependencies, system config and theming. It writes the shell's
@@ -236,10 +237,12 @@ ilmango update                     # pull + migrate + restart
 Other entry points:
 
 ```bash
-./setup                 # TUI menu, pick what you want
-./setup install --skip-mango    # don't touch the mango config at all
-sudo make install       # system-wide instead of your home
-./setup rollback        # undo the last update
+./install --list-options            # everything you can turn on or off
+./install --disable mango           # don't touch the mango config at all
+./install --set system-upgrade=skip # install without upgrading the system first
+./install --enable wallpapers,icons,mascot  # optional downloads, all off by default
+./install --uninstall               # remove it, keeping files you edited
+sudo make -f packaging/Makefile install   # system-wide instead of your home
 ```
 
 **Distros.** Arch is the primary target and the best tested. Debian and Fedora do have a
@@ -285,13 +288,12 @@ a collection that works well with the Material You pipeline.
 | Page | What's in it |
 |---|---|
 | [Install](docs/INSTALL.md) | Getting it running |
-| [Setup](docs/SETUP.md) | Updates, migrations, rollback |
 | [Keybinds](docs/KEYBINDS.md) | Every shortcut |
 | [IPC](docs/IPC.md) | Targets you can bind to a key or call from a script |
 | [Packages](docs/PACKAGES.md) | Every dependency and why it's there |
 | [Limitations](docs/LIMITATIONS.md) | What's known broken, and workarounds |
 | [Compositors](docs/COMPOSITORS.md) | How the compositor integration works |
-| [Architecture](ARCHITECTURE.md) | How the code is put together |
+| [Architecture](docs/ARCHITECTURE.md) | How the code is put together |
 
 Most of `docs/` was inherited from upstream and still describes niri in places. Where the
 docs and this README disagree about which compositor is supported, this README is correct.
@@ -305,7 +307,6 @@ ilmango logs                       # recent runtime logs
 ilmango restart                    # restart the active runtime
 ilmango repair                     # doctor + restart + filtered log check
 ilmango doctor                     # auto-diagnose and fix common problems
-./setup rollback                # undo the last update
 claude "help me please"         # if you'd rather not work it out yourself. come on, it has to earn its $20 somehow
 ```
 
@@ -315,7 +316,7 @@ Have a look at [Limitations](docs/LIMITATIONS.md) for a laugh.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) — development setup, code patterns, and pull
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md) — development setup, code patterns, and pull
 request guidelines.
 
 

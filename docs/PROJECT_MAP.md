@@ -696,7 +696,6 @@ Use this section as a routing index.
 
 ### User-facing docs
 
-- `docs/SETUP.md`
 - `docs/IPC.md`
 - `docs/PACKAGES.md`
 - `docs/LIMITATIONS.md`
@@ -767,7 +766,6 @@ For persistence and theming:
 For setup and distribution:
 
 - `setup`
-- `docs/SETUP.md`
 - `docs/PACKAGES.md`
 
 For user automation and scripting:

@@ -59,7 +59,11 @@ func (s launcherStep) Run(_ context.Context, env *installer.Env) error {
 	}
 
 	env.Detail(target)
-	s.warnIfOffPath(env, target)
+	// The PATH step handles this when it is on; warning here as well would
+	// contradict the note it is about to write.
+	if !env.Config.Effective(installer.OptPathEntry) {
+		s.warnIfOffPath(env, target)
+	}
 	return nil
 }
 
