@@ -8,14 +8,14 @@ MIGRATION_REQUIRED=true
 
 _steam_migration_config_file() {
   local xdg_config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
-  if [[ -L "$xdg_config_home/illogical-impulse" && -f "$xdg_config_home/inir/config.json" ]]; then
-    printf '%s\n' "$xdg_config_home/inir/config.json"
+  if [[ -L "$xdg_config_home/illogical-impulse" && -f "$xdg_config_home/ilmango/config.json" ]]; then
+    printf '%s\n' "$xdg_config_home/ilmango/config.json"
   elif [[ -d "$xdg_config_home/illogical-impulse" || -f "$xdg_config_home/illogical-impulse/config.json" ]]; then
     printf '%s\n' "$xdg_config_home/illogical-impulse/config.json"
-  elif [[ -f "$xdg_config_home/inir/config.json" ]]; then
-    printf '%s\n' "$xdg_config_home/inir/config.json"
+  elif [[ -f "$xdg_config_home/ilmango/config.json" ]]; then
+    printf '%s\n' "$xdg_config_home/ilmango/config.json"
   else
-    printf '%s\n' "$xdg_config_home/inir/config.json"
+    printf '%s\n' "$xdg_config_home/ilmango/config.json"
   fi
 }
 
@@ -211,7 +211,7 @@ os.replace(tmp, path)
 PY
 
   if _steam_migration_runtime_available && _steam_migration_has_steam_dir && [[ -x "$repo_root/scripts/colors/modules/70-steam.sh" ]]; then
-    INIR_STEAM_THEME_FORCE=1 bash "$repo_root/scripts/colors/modules/70-steam.sh" >/dev/null 2>&1 || true
+    ILMANGO_STEAM_THEME_FORCE=1 bash "$repo_root/scripts/colors/modules/70-steam.sh" >/dev/null 2>&1 || true
   fi
 
   _steam_migration_needs_config && return 1

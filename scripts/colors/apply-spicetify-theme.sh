@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # apply-spicetify-theme.sh - Generate and apply Spicetify color scheme
-# from iNiR Material colors using custom theme with live updates.
+# from Illogical-mango Material colors using custom theme with live updates.
 #
 # Design:
 # - Always regenerate theme files (color.ini, user.css bridge) from the
@@ -15,8 +15,8 @@
 # - This script never starts/opens Spotify itself.
 #
 # Reads: app-palette.json first, then palette.json/colors.json fallback
-# Writes: ~/.config/spicetify/Themes/Inir/color.ini
-#         ~/.config/spicetify/Themes/Inir/user.css  (bridge block only)
+# Writes: ~/.config/spicetify/Themes/Ilmango/color.ini
+#         ~/.config/spicetify/Themes/Ilmango/user.css  (bridge block only)
 
 set -euo pipefail
 
@@ -30,7 +30,7 @@ APP_PALETTE_JSON="$STATE_DIR/user/generated/app-palette.json"
 COLORS_JSON="$STATE_DIR/user/generated/colors.json"
 LOG_FILE="$STATE_DIR/user/generated/spicetify_theme.log"
 
-THEME_NAME="Inir"
+THEME_NAME="Ilmango"
 SCHEME_NAME="matugen"
 SLEEK_CSS_URL="https://raw.githubusercontent.com/spicetify/spicetify-themes/master/Sleek/user.css"
 
@@ -261,7 +261,7 @@ regenerate_user_css_bridge() {
 
   # ── Build the bridge block ────────────────────────────────────────────────
   local bridge_block
-  bridge_block="/* === iNiR CSS variable bridge - auto-generated, do not edit === */
+  bridge_block="/* === Illogical-mango CSS variable bridge - auto-generated, do not edit === */
 :root {
   --spice-text:                #$(strip_hash "${COLORS[on_surface]}");
   --spice-subtext:             #$(strip_hash "${COLORS[on_surface_variant]}");
@@ -312,7 +312,7 @@ regenerate_user_css_bridge() {
   --spice-rgb-misc:            $(hex_to_rgb "${COLORS[outline]}");
   --spice-rgb-main-secondary:  $(hex_to_rgb "$main_secondary");
 }
-/* === end iNiR CSS variable bridge === */"
+/* === end Illogical-mango CSS variable bridge === */"
 
   # ── Replace only the bridge block in user.css (keep everything else) ──────
   # Use python3 for reliable multi-line regex replace without temp file races.
@@ -325,7 +325,7 @@ css_path = pathlib.Path(sys.argv[1])
 new_block = sys.argv[2]
 content = css_path.read_text()
 pattern = re.compile(
-    r'/\* === iNiR CSS variable bridge - auto-generated, do not edit === \*/.*?/\* === end iNiR CSS variable bridge === \*/\n?',
+    r'/\* === Illogical-mango CSS variable bridge - auto-generated, do not edit === \*/.*?/\* === end Illogical-mango CSS variable bridge === \*/\n?',
     re.DOTALL
 )
 # Strip ALL existing bridge blocks (including duplicates from prior bad runs)
@@ -349,7 +349,7 @@ regenerate_playback_controls_fix() {
   playback_rgb="$(hex_to_rgb "${COLORS[on_surface_variant]}")"
 
   local playback_block
-  playback_block="/* === iNiR playback controls fix - auto-generated === */
+  playback_block="/* === Illogical-mango playback controls fix - auto-generated === */
 .main-playbackBar__slider,
 .playback-bar__progress-time-elapsed,
 .main-playbackBar__slider::before {
@@ -373,7 +373,7 @@ regenerate_playback_controls_fix() {
 .progress-bar__bg {
   background-color: rgba($playback_rgb, 0.3) !important;
 }
-/* === end iNiR playback controls fix === */"
+/* === end Illogical-mango playback controls fix === */"
 
   python3 - "$css_file" "$playback_block" <<'PYEOF'
 import sys, re, pathlib
@@ -381,11 +381,11 @@ css_path = pathlib.Path(sys.argv[1])
 new_block = sys.argv[2]
 content = css_path.read_text()
 pattern = re.compile(
-    r'/\* === iNiR playback controls fix - auto-generated === \*/.*?(?=(/\* === end iNiR playback controls fix === \*/|/\* === iNiR playback controls fix - auto-generated === \*/|\Z))',
+    r'/\* === Illogical-mango playback controls fix - auto-generated === \*/.*?(?=(/\* === end Illogical-mango playback controls fix === \*/|/\* === Illogical-mango playback controls fix - auto-generated === \*/|\Z))',
     re.DOTALL
 )
 content = pattern.sub('', content)
-content = re.sub(r'/\* === end iNiR playback controls fix === \*/\n?', '', content)
+content = re.sub(r'/\* === end Illogical-mango playback controls fix === \*/\n?', '', content)
 content = content.lstrip('\n')
 content = new_block + '\n' + content
 css_path.write_text(content)

@@ -10,11 +10,11 @@ GroupButton {
     toggled: activated
     baseWidth: height
     colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
         : Appearance.zzzEverywhere ? Appearance.colors.colLayer1Hover : Appearance.colors.colSecondaryContainerHover
     colBackgroundActive: Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
         : Appearance.zzzEverywhere ? Appearance.colors.colLayer1Active : Appearance.colors.colSecondaryContainerActive
 
@@ -22,9 +22,9 @@ GroupButton {
         horizontalAlignment: Text.AlignHCenter
         iconSize: Appearance.font.pixelSize.larger
         text: buttonIcon
-        color: button.activated ? (Appearance.inirEverywhere ? Appearance.inir.colOnPrimary : Appearance.colors.colOnPrimary) :
-            button.enabled ? (Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurface) :
-            (Appearance.inirEverywhere ? Appearance.inir.colTextDisabled : Appearance.colors.colOnLayer1Inactive)
+        color: button.activated ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary : Appearance.colors.colOnPrimary) :
+            button.enabled ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurface) :
+            (Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextDisabled : Appearance.colors.colOnLayer1Inactive)
 
         Behavior on color {
             enabled: Appearance.animationsEnabled

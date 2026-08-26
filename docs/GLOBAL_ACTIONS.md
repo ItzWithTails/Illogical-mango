@@ -53,7 +53,7 @@ Type `/setup` in the launcher to see every available installer. Each entry runs 
 |--------|-------------|
 | `/setup-spotify` | Installs Spotify (AUR on Arch, Flatpak elsewhere) and configures Spicetify with the Marketplace plugin |
 
-Recipes live under `scripts/setup/` and are **auto-discovered**. Adding one is a pure filesystem operation, no QML edits and no shell reload required. The full maintainer guide is in [`scripts/setup/README.md`](https://github.com/snowarch/inir/blob/main/scripts/setup/README.md). The short version:
+Recipes live under `scripts/setup/` and are **auto-discovered**. Adding one is a pure filesystem operation, no QML edits and no shell reload required. The full maintainer guide is in [`scripts/setup/README.md`](https://github.com/ItzWithTails/illogical-mango/blob/main/scripts/setup/README.md). The short version:
 
 1. `cp scripts/setup/_template.sh.example scripts/setup/<slug>.sh` and fill in the `@meta` header + body.
 2. `chmod +x scripts/setup/<slug>.sh`.
@@ -85,8 +85,8 @@ The action "deploy" will now appear when you search for it in Overview.
 ## IPC
 
 ```bash
-inir globalActions list              # list all available actions
-inir globalActions search "screen"   # search actions by name
-inir globalActions run <id>          # execute an action by ID
-inir globalActions runWithArgs <id> <args>  # execute with extra arguments
+ilmango globalActions list              # list all available actions
+ilmango globalActions search "screen"   # search actions by name
+ilmango globalActions run <id>          # execute an action by ID
+ilmango globalActions runWithArgs <id> <args>  # execute with extra arguments
 ```

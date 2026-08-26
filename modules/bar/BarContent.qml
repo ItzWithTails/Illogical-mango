@@ -84,7 +84,7 @@ Item { // Bar content region
                 monochromeIcon: true,
                 text: Translation.tr("Settings"),
                 action: () => {
-                    Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "settings"])
+                    Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "settings"])
                 },
             },
         ]
@@ -152,7 +152,7 @@ Item { // Bar content region
     readonly property QtObject blendedColors: root._useGlobalQuantizer
         ? Appearance.wallpaperBlendedColors : _localBlendedColors
 
-    readonly property bool inirEverywhere: root.surfaceDialect === "inir"
+    readonly property bool ilmangoEverywhere: root.surfaceDialect === "ilmango"
     readonly property bool angelEverywhere: root.surfaceDialect === "angel"
     readonly property bool regaliaEverywhere: root.surfaceDialect === "regalia"
     readonly property bool auroraEverywhere: root.surfaceDialect === "aurora" || root.angelEverywhere
@@ -230,7 +230,7 @@ Item { // Bar content region
     readonly property string barSpectrumFrequencyProfile: Config.options?.bar?.visualizer?.frequencyProfile ?? "flat"
     readonly property real barSpectrumAccentStrength: Math.max(0,
         Math.min(1, (Config.options?.bar?.visualizer?.accentStrength ?? 70) / 100))
-    readonly property color barSpectrumColor: root.inirEverywhere ? Appearance.inir.colPrimary
+    readonly property color barSpectrumColor: root.ilmangoEverywhere ? Appearance.ilmango.colPrimary
         : root.zzzEverywhere ? Appearance.zzz.accent
         : root.regaliaEverywhere ? Appearance.regalia.hardwarePrimary
         : (root.blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
@@ -370,7 +370,7 @@ Item { // Bar content region
         Layout.fillHeight: true
         implicitWidth: root.zzzEverywhere ? 1 : 1
         color: root.zzzEverywhere ? Appearance.zzz.hairlineStrong
-            : root.inirEverywhere ? Appearance.inir.colBorderSubtle : root.separatorColor
+            : root.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle : root.separatorColor
         Behavior on implicitWidth {
             enabled: Appearance.animationsEnabled
             NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -608,7 +608,7 @@ Item { // Bar content region
     // Background shadow
     Loader {
         active: root.barAppearance === "classic"
-            && !root.inirEverywhere
+            && !root.ilmangoEverywhere
             && (root.angelEverywhere || root.surfaceDialect !== "aurora")
             && !Appearance.gameModeMinimal
             && (Config.options?.bar?.showBackground ?? true)
@@ -671,12 +671,12 @@ Item { // Bar content region
             GradientStop {
                 position: 0
                 color: barBackground.isBottom ? "transparent"
-                    : ColorUtils.transparentize(root.inirEverywhere ? Appearance.inir.colLayer0 : Appearance.colors.colLayer0, 0.15)
+                    : ColorUtils.transparentize(root.ilmangoEverywhere ? Appearance.ilmango.colLayer0 : Appearance.colors.colLayer0, 0.15)
             }
             GradientStop {
                 position: 1
                 color: barBackground.isBottom
-                    ? ColorUtils.transparentize(root.inirEverywhere ? Appearance.inir.colLayer0 : Appearance.colors.colLayer0, 0.15)
+                    ? ColorUtils.transparentize(root.ilmangoEverywhere ? Appearance.ilmango.colLayer0 : Appearance.colors.colLayer0, 0.15)
                     : "transparent"
             }
         }
@@ -704,8 +704,8 @@ Item { // Bar content region
                     return ColorUtils.transparentize(base, Appearance.angel.compositorPanelTransparentize)
                 return ColorUtils.applyAlpha(base, 1)
             }
-            if (root.inirEverywhere) {
-                return Appearance.inir.colLayer0
+            if (root.ilmangoEverywhere) {
+                return Appearance.ilmango.colLayer0
             }
             if (auroraEverywhere) {
                 const base = blendedColors?.colLayer0 ?? Appearance.colors.colLayer0
@@ -754,7 +754,7 @@ Item { // Bar content region
             }
             if (root.isFrame) {
                 return root.angelEverywhere ? Appearance.angel.roundingNormal
-                    : root.inirEverywhere ? Appearance.inir.roundingNormal
+                    : root.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
                     : Appearance.rounding.windowRounding
             }
             if (root.regaliaEverywhere) {
@@ -763,10 +763,10 @@ Item { // Bar content region
             if (root.angelEverywhere) {
                 return (cornerStyle === 1 || cornerStyle === 3) ? Appearance.angel.roundingNormal : 0
             }
-            if (root.inirEverywhere) {
-                // Inir: use inir rounding for Float/Card, 0 for Hug/Rect
+            if (root.ilmangoEverywhere) {
+                // Ilmango: use ilmango rounding for Float/Card, 0 for Hug/Rect
                 if (cornerStyle === 1 || cornerStyle === 3) {
-                    return Appearance.inir.roundingNormal
+                    return Appearance.ilmango.roundingNormal
                 }
                 return 0
             }
@@ -816,7 +816,7 @@ Item { // Bar content region
             if (root.regaliaEverywhere) return 0
             if (root.isFrame) return root.angelEverywhere ? Appearance.angel.panelBorderWidth : 1
             if (root.angelEverywhere) return Appearance.angel.panelBorderWidth
-            if (root.inirEverywhere) {
+            if (root.ilmangoEverywhere) {
                 return (cornerStyle === 1 || cornerStyle === 3) ? 1 : 0
             }
             if (auroraEverywhere) {
@@ -836,12 +836,12 @@ Item { // Bar content region
             if (root.zzzEverywhere) return Appearance.zzz.hairline
             if (root.regaliaEverywhere) return "transparent"
             // Frame is defined by its outline — use the visible outline token
-            if (root.isFrame && !root.angelEverywhere && !root.inirEverywhere) {
+            if (root.isFrame && !root.angelEverywhere && !root.ilmangoEverywhere) {
                 return Appearance.colors.colOutlineVariant
             }
             if (root.angelEverywhere) return Appearance.angel.colPanelBorder
-            if (root.inirEverywhere) {
-                return Appearance.inir.colBorder
+            if (root.ilmangoEverywhere) {
+                return Appearance.ilmango.colBorder
             }
             if (auroraEverywhere) {
                 return Appearance.aurora.colTooltipBorder
@@ -877,7 +877,7 @@ Item { // Bar content region
             z: -1
         }
 
-        layer.enabled: auroraEverywhere && !root.inirEverywhere && !root.zzzEverywhere && !gameModeMinimal && root.barAppearance === "classic"
+        layer.enabled: auroraEverywhere && !root.ilmangoEverywhere && !root.zzzEverywhere && !gameModeMinimal && root.barAppearance === "classic"
         layer.effect: GE.OpacityMask {
             maskSource: Rectangle {
                 width: barBackground.width
@@ -892,7 +892,7 @@ Item { // Bar content region
             y: barBackground.isBottom ? -(root.screen?.height ?? 1080) + barBackground.height + barBackground.barMargin : -barBackground.barMargin
             width: root.screen?.width ?? 1920
             height: root.screen?.height ?? 1080
-            visible: barBackground.auroraEverywhere && !root.inirEverywhere && !root.zzzEverywhere && !barBackground.gameModeMinimal && !root.nativeBlurActive && root.barAppearance === "classic"
+            visible: barBackground.auroraEverywhere && !root.ilmangoEverywhere && !root.zzzEverywhere && !barBackground.gameModeMinimal && !root.nativeBlurActive && root.barAppearance === "classic"
             // An invisible Image still downloads and decodes its source, so gating
             // only `visible` on the style left a screen-sized wallpaper bitmap
             // resident for every user NOT on aurora. Gate the source too.
@@ -905,7 +905,7 @@ Item { // Bar content region
 
             // Skip QML blur when the compositor is already blurring this layer
             // (avoids double-blur and the FBO cost). See #159.
-            layer.enabled: Appearance.effectsEnabled && barBackground.auroraEverywhere && !root.inirEverywhere && !root.nativeBlurActive
+            layer.enabled: Appearance.effectsEnabled && barBackground.auroraEverywhere && !root.ilmangoEverywhere && !root.nativeBlurActive
             layer.effect: MultiEffect {
                 source: blurredWallpaper
                 anchors.fill: source

@@ -67,7 +67,7 @@ ContentPage {
                 label: (Ai.getModel() ?? null) !== null
                     ? Translation.tr("Active model: %1").arg(Ai.getModel().name)
                     : Translation.tr("No model selected")
-                detail: Translation.tr("iNiR keeps the selected model and can add live models from connected providers automatically")
+                detail: Translation.tr("Illogical-mango keeps the selected model and can add live models from connected providers automatically")
             }
 
             StatusRow {
@@ -203,7 +203,7 @@ ContentPage {
             StyledText {
                 Layout.fillWidth: true
                 Layout.leftMargin: 4
-                text: Translation.tr("Choose a provider. iNiR discovers its current models and the correct API protocol automatically.")
+                text: Translation.tr("Choose a provider. Illogical-mango discovers its current models and the correct API protocol automatically.")
                 font.pixelSize: Appearance.font.pixelSize.smaller
                 color: Appearance.colors.colSubtext
                 wrapMode: Text.WordWrap
@@ -591,7 +591,7 @@ ContentPage {
                         icon: providerForm._preset?.local ? "computer" : "cloud_sync"
                         text: providerForm._preset
                             ? Translation.tr(providerForm._preset.description)
-                                + "\n\n" + Translation.tr("iNiR will discover the available model IDs and capabilities automatically.")
+                                + "\n\n" + Translation.tr("Illogical-mango will discover the available model IDs and capabilities automatically.")
                             : ""
                     }
 

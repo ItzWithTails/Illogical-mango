@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
-// Quick Glance — example widget showing how to use iNiR's services and components.
-// Copy this to ~/.config/inir/widgets/example-widget/ to use it.
+// Quick Glance — example widget showing how to use Illogical-mango's services and components.
+// Copy this to ~/.config/ilmango/widgets/example-widget/ to use it.
 // Full SDK docs: defaults/widgets/WIDGET-SDK.md
 
 import QtQuick

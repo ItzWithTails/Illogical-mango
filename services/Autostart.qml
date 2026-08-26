@@ -13,18 +13,18 @@ import Quickshell.Io
  * Source of truth is the niri startup file
  *   ~/.config/niri/config.d/50-startup.kdl
  * which uses `spawn-at-startup` / `spawn-sh-at-startup` directives run by the
- * compositor at login. iNiR does NOT spawn these itself — niri owns startup.
+ * compositor at login. Illogical-mango does NOT spawn these itself — niri owns startup.
  *
- * To stay safe for every user (the file ships base iNiR lines for polkit,
+ * To stay safe for every user (the file ships base Illogical-mango lines for polkit,
  * cliphist, XDG_MENU_PREFIX, etc.), this service only ever touches a
  * marker-delimited section:
  *
- *   // >>> inir-managed-autostart >>>
+ *   // >>> ilmango-managed-autostart >>>
  *   ...managed entries...
- *   // <<< inir-managed-autostart <<<
+ *   // <<< ilmango-managed-autostart <<<
  *
  * Everything outside the markers is read-only as far as this service is
- * concerned — base iNiR lines and any hand-written user lines are preserved
+ * concerned — base Illogical-mango lines and any hand-written user lines are preserved
  * verbatim across every write. If the markers are absent (first run), they are
  * appended at the end of the file.
  *
@@ -58,16 +58,16 @@ Singleton {
         }
     }
 
-    readonly property string beginMarker: "// >>> inir-managed-autostart >>>"
-    readonly property string endMarker: "// <<< inir-managed-autostart <<<"
-    readonly property string sectionHeader: "// Managed by iNiR Settings — add or remove entries via Settings › Autostart."
+    readonly property string beginMarker: "// >>> ilmango-managed-autostart >>>"
+    readonly property string endMarker: "// <<< ilmango-managed-autostart <<<"
+    readonly property string sectionHeader: "// Managed by Illogical-mango Settings — add or remove entries via Settings › Autostart."
 
     // ── Model ────────────────────────────────────────────────────────────
 
     // Each entry: { type: "app"|"command", desktopId?: string, command?: string, enabled: bool }
     property var entries: []
     // spawn-at-startup / spawn-sh-at-startup lines found OUTSIDE the managed
-    // markers (base iNiR lines + hand-written user lines). Each:
+    // markers (base Illogical-mango lines + hand-written user lines). Each:
     //   { tokens: [string], enabled: bool, raw: string }
     // Read-only — we never rewrite these, only reflect them in the UI so the
     // user sees what niri is already launching.
@@ -212,7 +212,7 @@ Singleton {
         }
 
         // Scan lines OUTSIDE the markers for spawn directives the user (or
-        // iNiR defaults) already has — reflected read-only in the UI.
+        // Illogical-mango defaults) already has — reflected read-only in the UI.
         const external = []
         const outside = (head + "\n" + tail).split("\n")
         for (let i = 0; i < outside.length; i++) {
@@ -266,7 +266,7 @@ Singleton {
             return
         }
         const text = _serialize()
-        // Ensure the directory exists (defensive — the file ships with iNiR).
+        // Ensure the directory exists (defensive — the file ships with Illogical-mango).
         Quickshell.execDetached(["/usr/bin/mkdir", "-p",
             (Directories.homePath ?? "") + "/.config/niri/config.d"])
         startupFileView.path = Qt.resolvedUrl(startupFilePath)

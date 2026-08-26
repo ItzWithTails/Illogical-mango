@@ -13,7 +13,7 @@ Singleton {
     // Discovered custom widgets: [{ id, name, icon, qmlPath, dirPath, ... }]
     property list<var> widgets: []
     readonly property bool ready: _scanDone
-    readonly property string widgetsDir: `${Directories.configPath}/inir/widgets`
+    readonly property string widgetsDir: `${Directories.configPath}/ilmango/widgets`
 
     property bool _scanDone: false
 
@@ -229,13 +229,13 @@ Singleton {
         }
 
         function create(name: string): string {
-            if (!name || name.length === 0) return "Usage: inir customWidgets create <name>";
+            if (!name || name.length === 0) return "Usage: ilmango customWidgets create <name>";
             root.create(name);
             return `Creating widget "${name}" in ${root.widgetsDir}/${name}/...`;
         }
 
         function remove(widgetId: string): string {
-            if (!widgetId || widgetId.length === 0) return "Usage: inir customWidgets remove <id>";
+            if (!widgetId || widgetId.length === 0) return "Usage: ilmango customWidgets remove <id>";
             root.remove(widgetId);
             return `Removing widget "${widgetId}"...`;
         }
@@ -277,7 +277,7 @@ Singleton {
 }
 MANIFEST
             cat > "$dir/${_createProcess._pascalName}.qml" << 'QML'
-// ${_createProcess._pascalName} — custom iNiR desktop widget
+// ${_createProcess._pascalName} — custom Illogical-mango desktop widget
 // Full SDK reference: defaults/widgets/WIDGET-SDK.md
 // Example widget: defaults/widgets/example-widget/
 

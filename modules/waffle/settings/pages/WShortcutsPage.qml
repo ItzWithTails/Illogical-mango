@@ -112,7 +112,7 @@ WSettingsPage {
 
     function displayCategoryName(name: string): string {
         if (name === "ii Shell")
-            return Translation.tr("iNiR Shell")
+            return Translation.tr("Illogical-mango Shell")
         return name
     }
     

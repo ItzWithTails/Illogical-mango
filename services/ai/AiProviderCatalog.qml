@@ -137,7 +137,7 @@ Singleton {
         const key = provider.requiresKey
             ? (KeyringStorage.keyringData?.apiKeys?.[provider.keyId] ?? "")
             : ""
-        catalogProcess.environment = ({ "INIR_AI_PROVIDER_KEY": key })
+        catalogProcess.environment = ({ "ILMANGO_AI_PROVIDER_KEY": key })
 
         const chatEndpoint = provider.catalogChatEndpoint ?? provider.endpoint
         const apiFormat = provider.catalogApiFormat ?? provider.api_format ?? "openai"

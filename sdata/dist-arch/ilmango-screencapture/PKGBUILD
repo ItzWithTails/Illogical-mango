@@ -1,0 +1,19 @@
+pkgname=ilmango-screencapture
+pkgver=1.0
+pkgrel=1
+pkgdesc='Illogical-mango - screenshot and recording dependency bundle'
+arch=(any)
+license=('GPL-3.0-only')
+provides=('inir-screencapture')
+replaces=('inir-screencapture')
+conflicts=('inir-screencapture')
+depends=(
+  grim
+  slurp
+  swappy
+  tesseract
+  tesseract-data-eng
+  wf-recorder
+  imagemagick
+  ffmpeg
+)

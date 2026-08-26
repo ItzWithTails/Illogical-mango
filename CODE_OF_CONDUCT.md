@@ -22,7 +22,7 @@ We as members, contributors, and leaders pledge to make participation in our com
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported through [GitHub Issues](https://github.com/snowarch/inir/issues) or the [Discord server](https://discord.gg/pAPTfAhZUJ).
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported through [GitHub Issues](https://github.com/ItzWithTails/illogical-mango/issues) or the [Discord server](https://discord.gg/pAPTfAhZUJ).
 
 All complaints will be reviewed and investigated promptly and fairly. Community leaders are obligated to respect the privacy and security of the reporter of any incident.
 

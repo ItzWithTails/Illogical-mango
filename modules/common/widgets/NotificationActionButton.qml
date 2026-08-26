@@ -21,7 +21,7 @@ RippleButton {
     buttonRadius: Appearance.regaliaEverywhere ? Appearance.regalia.controlRadius
         : Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
     colBackground: Appearance.regaliaEverywhere
         ? (button.critical ? Appearance.regalia.signalPlate : Appearance.regalia.controlPlate)
         : Appearance.zzzEverywhere
@@ -29,7 +29,7 @@ RippleButton {
         : button.critical
         ? Appearance.colors.colSecondaryContainer
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer3
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer3
         : Appearance.auroraEverywhere ? "transparent"
         : Appearance.colors.colLayer4
     colBackgroundHover: Appearance.regaliaEverywhere
@@ -41,7 +41,7 @@ RippleButton {
         : button.critical
         ? Appearance.colors.colSecondaryContainerHover
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer3Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer3Hover
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colLayer4Hover
     colRipple: Appearance.regaliaEverywhere
@@ -53,7 +53,7 @@ RippleButton {
         : button.critical
         ? Appearance.colors.colSecondaryContainerActive
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer3Active
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer3Active
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
         : Appearance.colors.colLayer4Active
 

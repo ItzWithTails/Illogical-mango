@@ -63,7 +63,7 @@ ContentPage {
                 mainText: Translation.tr("Pick main wallpaper")
                 onClicked: {
                     Config.setNestedValue("wallpaperSelector.selectionTarget", "main")
-                    Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "wallpaperSelector", "toggle"]);
+                    Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "wallpaperSelector", "toggle"]);
                 }
             }
 
@@ -75,7 +75,7 @@ ContentPage {
                 mainText: Translation.tr("Pick Waffle wallpaper")
                 onClicked: {
                     Config.setNestedValue("wallpaperSelector.selectionTarget", "waffle")
-                    Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "wallpaperSelector", "toggle"]);
+                    Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "wallpaperSelector", "toggle"]);
                 }
             }
 
@@ -212,7 +212,7 @@ ContentPage {
                 mainText: Translation.tr("Pick backdrop wallpaper")
                 onClicked: {
                     Config.setNestedValue("wallpaperSelector.selectionTarget", "waffle-backdrop")
-                    Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "wallpaperSelector", "toggle"]);
+                    Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "wallpaperSelector", "toggle"]);
                 }
             }
 

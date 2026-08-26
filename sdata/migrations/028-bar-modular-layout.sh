@@ -15,12 +15,12 @@
 MIGRATION_ID="028-bar-modular-layout"
 MIGRATION_TITLE="Modular bar layout"
 MIGRATION_DESCRIPTION="Disabled. The bar now falls back to the classic layout at runtime, so no config change is needed; this migration no longer runs."
-MIGRATION_TARGET_FILE="~/.config/inir/config.json"
+MIGRATION_TARGET_FILE="~/.config/ilmango/config.json"
 MIGRATION_REQUIRED=false
 
 _config_path() {
   local xdg_config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
-  local config_new="${xdg_config_home}/inir/config.json"
+  local config_new="${xdg_config_home}/ilmango/config.json"
   local config_legacy="${xdg_config_home}/illogical-impulse/config.json"
   if [[ -f "$config_legacy" ]]; then
     echo "$config_legacy"

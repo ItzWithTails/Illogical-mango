@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-InnerTube browsing helper for iNiR — wraps `ytmusicapi` (the InnerTube API client).
+InnerTube browsing helper for Illogical-mango — wraps `ytmusicapi` (the InnerTube API client).
 Replaces the flaky yt-dlp + browser-cookie path for search/browse/radio/lyrics.
 Public browsing needs NO cookies; auth (oauth file) only enables personalized results.
 
@@ -35,7 +35,7 @@ except (AttributeError, ValueError):
 
 _CFG_DIR = os.path.join(
     os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config")), "illogical-impulse")
-# iNiR's existing YouTube Data API OAuth (reused if present).
+# Illogical-mango's existing YouTube Data API OAuth (reused if present).
 OAUTH_PATH = os.path.join(_CFG_DIR, "ytmusic_oauth.json")
 # Native ytmusicapi OAuth token written by our own one-tap device flow.
 ITUBE_OAUTH_PATH = os.path.join(_CFG_DIR, "innertube_oauth.json")
@@ -175,7 +175,7 @@ def _authenticated_client():
             return YTMusic(ITUBE_OAUTH_PATH, oauth_credentials=_tv_creds())
         except Exception:
             pass
-    # 3) Reuse iNiR's OAuth (its own TV/limited-input client).
+    # 3) Reuse Illogical-mango's OAuth (its own TV/limited-input client).
     if os.path.exists(OAUTH_PATH):
         try:
             with open(OAUTH_PATH) as f:
@@ -329,7 +329,7 @@ def _artists(item):
 
 
 def _track(item):
-    """Normalize a song/video into iNiR's track shape."""
+    """Normalize a song/video into Illogical-mango's track shape."""
     vid = item.get("videoId") or ""
     album = item.get("album") or {}
     return {
@@ -689,7 +689,7 @@ def _lrclib_synced(title, artist, duration):
     import urllib.request, urllib.parse
     q = urllib.parse.urlencode({"track_name": title, "artist_name": artist})
     req = urllib.request.Request("https://lrclib.net/api/search?" + q,
-                                 headers={"User-Agent": "iNiR (https://github.com/snowarch/inir)"})
+                                 headers={"User-Agent": "Illogical-mango (https://github.com/ItzWithTails/illogical-mango)"})
     try:
         with urllib.request.urlopen(req, timeout=10) as resp:
             tracks = json.loads(resp.read())

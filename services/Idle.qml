@@ -28,7 +28,7 @@ Singleton {
     readonly property int suspendTimeout: batteryProfileActive
         ? (Config.options?.idle?.onBattery?.suspendTimeout ?? 600)
         : (Config.options?.idle?.suspendTimeout ?? 0)
-    readonly property string launcherPath: Quickshell.shellPath("scripts/inir")
+    readonly property string launcherPath: Quickshell.shellPath("scripts/ilmango")
 
     onScreenOffTimeoutChanged: _restartSwayidle()
     onLockTimeoutChanged: _restartSwayidle()
@@ -68,9 +68,9 @@ Singleton {
         const lockBeforeSleep = Config.options?.idle?.lockBeforeSleep !== false
 
         if (screenOffTimeout > 0 && CompositorService.isNiri) {
-            const inir = StringUtils.shellSingleQuoteEscape(root.launcherPath);
-            const offCmd = `'${inir}' brightness sleepBegin; /usr/bin/niri msg action power-off-monitors`;
-            const resumeCmd = `/usr/bin/niri msg action power-on-monitors && /usr/bin/sleep 0.5 && '${inir}' brightness restoreAfterWake`;
+            const ilmango = StringUtils.shellSingleQuoteEscape(root.launcherPath);
+            const offCmd = `'${ilmango}' brightness sleepBegin; /usr/bin/niri msg action power-off-monitors`;
+            const resumeCmd = `/usr/bin/niri msg action power-on-monitors && /usr/bin/sleep 0.5 && '${ilmango}' brightness restoreAfterWake`;
             cmd.push("timeout", screenOffTimeout.toString(), offCmd, "resume", resumeCmd)
         }
 

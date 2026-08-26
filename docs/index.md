@@ -1,4 +1,4 @@
-# iNiR
+# Illogical-mango
 
 A complete desktop shell for Niri, built with Quickshell and QML.
 
@@ -18,12 +18,12 @@ It provides the bar, dock, sidebars, notifications, settings, wallpapers, overvi
 ## Common commands
 
 ```bash
-inir run
-inir restart
-inir settings
-inir logs
-inir doctor
-inir update
+ilmango run
+ilmango restart
+ilmango settings
+ilmango logs
+ilmango doctor
+ilmango update
 ```
 
 ## Branches

@@ -3,7 +3,7 @@
 A recreation of Windoes. It's WIP!
 
 - If you install illogical-impulse fully, you can press Super+Alt+W to switch to this style.
-- If you're just copying the Quickshell config, run the shell as usual (`inir start`) then run `inir panelFamily cycle`
+- If you're just copying the Quickshell config, run the shell as usual (`ilmango start`) then run `ilmango panelFamily cycle`
 
 ## From EWW version to Quickshell
 

@@ -210,14 +210,14 @@ Scope {
                     screenY: screenPos.y
 
                     fallbackColor: Appearance.zzzEverywhere ? Appearance.zzz.bg1 : Appearance.colors.colLayer2
-                    inirColor: Appearance.inir.colLayer1
+                    ilmangoColor: Appearance.ilmango.colLayer1
                     auroraTransparency: Appearance.aurora.popupTransparentize
 
                     radius: Appearance.zzzEverywhere ? Appearance.zzz.panelRadius : Appearance.rounding.large
                     border.width: Appearance.zzzEverywhere ? 1 : (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : 1)
                     border.color: Appearance.zzzEverywhere ? Appearance.zzz.borderColor
                                 : Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                                : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                                 : Appearance.colors.colOutlineVariant
                     Behavior on radius { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementResize.duration; easing.type: Appearance.animation.elementResize.type; easing.bezierCurve: Appearance.animation.elementResize.bezierCurve } }
                     Behavior on color { enabled: Appearance.animationsEnabled; ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }

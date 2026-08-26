@@ -15,24 +15,24 @@ RippleButton {
     required property var anime
     property bool compact: false
     
-    readonly property real cardRadius: Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
-    readonly property real imageRadius: Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.small
+    readonly property real cardRadius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
+    readonly property real imageRadius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.small
     
     implicitHeight: compact ? 80 : 120
     Layout.fillWidth: true
     buttonRadius: cardRadius
     
-    // Theming - aurora/inir/material
+    // Theming - aurora/ilmango/material
     colBackground: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
         : Appearance.auroraEverywhere ? "transparent"
         : Appearance.colors.colLayer1
     colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colLayer1Hover
     colRipple: Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
         : Appearance.colors.colLayer1Active
     colBackgroundToggled: colBackgroundHover
@@ -113,7 +113,7 @@ RippleButton {
             Rectangle {
                 anchors.fill: parent
                 radius: root.imageRadius
-                color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                     : Appearance.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colLayer2, 0.5)
                     : Appearance.colors.colLayer2
                 visible: coverImage.status !== Image.Ready
@@ -132,7 +132,7 @@ RippleButton {
                 color: "transparent"
                 radius: root.imageRadius
                 border.width: Appearance.auroraEverywhere ? 0 : 1
-                border.color: Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+                border.color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
                     : ColorUtils.transparentize(Appearance.colors.colOnLayer0, 0.85)
             }
         }
@@ -211,7 +211,7 @@ RippleButton {
                     implicitWidth: typeText.implicitWidth + 8
                     implicitHeight: typeText.implicitHeight + 4
                     radius: Appearance.rounding.verysmall
-                    color: Appearance.inirEverywhere ? Appearance.inir.colPrimaryContainer
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryContainer
                         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                         : Appearance.colors.colSecondaryContainer
                     
@@ -220,7 +220,7 @@ RippleButton {
                         anchors.centerIn: parent
                         text: root.anime?.type ?? ""
                         font.pixelSize: Appearance.font.pixelSize.smallest
-                        color: Appearance.inirEverywhere ? Appearance.inir.colOnPrimaryContainer
+                        color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimaryContainer
                             : Appearance.colors.colOnSecondaryContainer
                     }
                 }
@@ -235,7 +235,7 @@ RippleButton {
                 MaterialSymbol {
                     text: "schedule"
                     iconSize: Appearance.font.pixelSize.smaller
-                    color: Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary
                 }
                 StyledText {
                     Layout.fillWidth: true
@@ -259,7 +259,7 @@ RippleButton {
                         implicitWidth: genreText.implicitWidth + 6
                         implicitHeight: genreText.implicitHeight + 2
                         radius: Appearance.rounding.verysmall
-                        color: Appearance.inirEverywhere ? Appearance.inir.colSecondaryContainer
+                        color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colSecondaryContainer
                             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                             : Appearance.colors.colSurfaceContainer
                         
@@ -268,7 +268,7 @@ RippleButton {
                             anchors.centerIn: parent
                             text: modelData
                             font.pixelSize: Appearance.font.pixelSize.smallest
-                            color: Appearance.inirEverywhere ? Appearance.inir.colOnSecondaryContainer
+                            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnSecondaryContainer
                                 : Appearance.colors.colOnSurfaceVariant
                         }
                     }

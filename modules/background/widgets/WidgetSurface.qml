@@ -7,7 +7,7 @@ import qs.modules.common.widgets
 import qs.services
 
 // Style-aware widget background surface.
-// Adapts to the active ii style: blur for aurora/angel, border-only for inir, solid for material.
+// Adapts to the active ii style: blur for aurora/angel, border-only for ilmango, solid for material.
 // Parent widget must set screenX/screenY for correct blur alignment.
 Rectangle {
     id: root
@@ -50,15 +50,15 @@ Rectangle {
     readonly property real _blurScale: 0.5
 
     readonly property bool _angel: Appearance.angelEverywhere
-    readonly property bool _aurora: Appearance.auroraEverywhere && !Appearance.inirEverywhere
-    readonly property bool _inir: Appearance.inirEverywhere
+    readonly property bool _aurora: Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
+    readonly property bool _ilmango: Appearance.ilmangoEverywhere
     readonly property bool _zzz: Appearance.zzzEverywhere
     readonly property bool _cookie: Appearance.cookieEverywhere
     readonly property bool _regalia: Appearance.regaliaEverywhere
     // Ricelin island dialect is an optional widget skin, but it must not
     // override a selected global style with its own surface worldview.
     readonly property bool _island: !root._zzz && !root._cookie && !root._regalia && !root._angel
-        && !root._aurora && !root._inir
+        && !root._aurora && !root._ilmango
         && (Config.options?.background?.widgets?.style ?? "panel") === "island"
     readonly property real _surfaceStrength: Math.max(0, Math.min(1, Number(root.surfaceOpacity) || 0))
     readonly property bool _backgroundVisible: root._surfaceStrength > 0.001
@@ -117,7 +117,7 @@ Rectangle {
             : root._island ? "island"
             : root._angel ? "angel"
             : root._aurora ? "aurora"
-            : root._inir ? "inir" : "material",
+            : root._ilmango ? "ilmango" : "material",
         cookie: root._cookie,
         island: root._island,
         glass: root._glass,
@@ -136,7 +136,7 @@ Rectangle {
         : _zzz ? "transparent"
         : _cookie ? "transparent"
         : _regalia ? "transparent"
-        : _inir ? "transparent"
+        : _ilmango ? "transparent"
         : root._backgroundVisible ? _flatFill : "transparent"
     border.width: 0
     border.color: "transparent"
@@ -204,8 +204,8 @@ Rectangle {
         visible: !root._zzz && !root._cookie && !root._regalia && !root._island && !root._angel
             && root.surfaceBorderWidth > 0 && root.surfaceBorderOpacity > 0
         border.width: root.surfaceBorderWidth
-        border.color: root._inir
-            ? ColorUtils.applyAlpha(Appearance.inir.colBorder, root.surfaceBorderOpacity * 3)
+        border.color: root._ilmango
+            ? ColorUtils.applyAlpha(Appearance.ilmango.colBorder, root.surfaceBorderOpacity * 3)
             : root._aurora
                 ? ColorUtils.applyAlpha(Appearance.aurora.colTooltipBorder,
                     root.surfaceBorderOpacity)
@@ -347,10 +347,10 @@ Rectangle {
         elevated: true
     }
 
-    // Inir subtle fill
+    // Ilmango subtle fill
     Rectangle {
         anchors.fill: parent
-        visible: root._inir && root._backgroundVisible
+        visible: root._ilmango && root._backgroundVisible
         radius: root.radius
         color: ColorUtils.applyAlpha(root._plate, Math.min(0.96, 0.72 + root.surfaceOpacity * 0.24))
     }

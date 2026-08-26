@@ -21,7 +21,7 @@ Item {
     property bool hasWindows:       false
     property string surfaceDialect: Appearance.surfaceDialectFor("")
     readonly property bool angelStyle: surfaceDialect === "angel"
-    readonly property bool inirStyle: surfaceDialect === "inir"
+    readonly property bool ilmangoStyle: surfaceDialect === "ilmango"
     property bool buttonHovered:    false
     property bool previewVisible:   false  // Keep hover active while preview is shown
     property bool vertical:         false
@@ -146,11 +146,11 @@ Item {
                 implicitHeight: root.angelStyle ? 2 : 4
                 color: isFocused
                     ? (root.angelStyle ? Appearance.angel.colPrimary
-                     : root.inirStyle ? Appearance.inir.colPrimary
+                     : root.ilmangoStyle ? Appearance.ilmango.colPrimary
                      : Appearance.colors.colPrimary)
                     : ColorUtils.transparentize(
                         root.angelStyle ? Appearance.angel.colTextSecondary
-                      : root.inirStyle ? Appearance.inir.colText
+                      : root.ilmangoStyle ? Appearance.ilmango.colText
                       : Appearance.colors.colOnLayer0, 0.5)
 
                 Behavior on implicitWidth {
@@ -173,7 +173,7 @@ Item {
             radius: root.angelStyle ? 0 : Math.min(width, height) / 2
             color: ColorUtils.transparentize(
                 root.angelStyle ? Appearance.angel.colTextSecondary
-              : root.inirStyle ? Appearance.inir.colText
+              : root.ilmangoStyle ? Appearance.ilmango.colText
               : Appearance.colors.colOnLayer0, 0.5)
 
             Behavior on opacity {

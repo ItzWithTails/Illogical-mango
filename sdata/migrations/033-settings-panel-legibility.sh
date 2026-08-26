@@ -17,12 +17,12 @@ MIGRATION_TITLE="Repair Settings panel background options"
 MIGRATION_DESCRIPTION="Drops the orphan settingsUi.overlayAppearance.enableBlur key, which never
   had a consumer, and lifts a stored panel opacity below 60% to the new floor.
   Below that the Settings panel stopped being readable over a wallpaper."
-MIGRATION_TARGET_FILE="~/.config/inir/config.json"
+MIGRATION_TARGET_FILE="~/.config/ilmango/config.json"
 MIGRATION_REQUIRED=true
 
 _config_path() {
   local xdg_config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
-  local config_new="${xdg_config_home}/inir/config.json"
+  local config_new="${xdg_config_home}/ilmango/config.json"
   local config_legacy="${xdg_config_home}/illogical-impulse/config.json"
 
   if [[ -f "$config_legacy" ]]; then

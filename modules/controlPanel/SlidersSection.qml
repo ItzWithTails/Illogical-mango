@@ -17,14 +17,14 @@ PanelSurface {
     implicitHeight: slidersRow.implicitHeight + 12
     readonly property bool compactMode: Config.options?.controlPanel?.compactMode ?? true
 
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
 
     property var screen: root.QsWindow.window?.screen ?? null
     property var brightnessMonitor: screen ? Brightness.getMonitorForScreen(screen) : null
 
     elevation: 1
-    radiusOverride: inirEverywhere ? Appearance.inir.roundingNormal
+    radiusOverride: ilmangoEverywhere ? Appearance.ilmango.roundingNormal
         : Appearance.zzzEverywhere ? Appearance.zzz.panelRadius
         : Appearance.rounding.normal
 

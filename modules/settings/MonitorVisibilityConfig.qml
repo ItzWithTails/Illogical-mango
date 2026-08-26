@@ -317,7 +317,7 @@ ContentPage {
         implicitHeight: surfaceLayout.implicitHeight + Appearance.sizes.spacingLarge * 2
         radius: Appearance.rounding.small
         color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-            : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
             : Appearance.colors.colLayer1
         border.width: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : 1
@@ -445,7 +445,7 @@ ContentPage {
         implicitHeight: outputColumn.implicitHeight + Appearance.sizes.spacingLarge * 2
         radius: Appearance.rounding.small
         color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-            : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
             : Appearance.colors.colLayer1
         border.width: 1
@@ -556,7 +556,7 @@ ContentPage {
             NoticeBox {
                 Layout.fillWidth: true
                 materialIcon: "info"
-                text: Translation.tr("This page controls where iNiR shell surfaces appear. It does not change monitor resolution, scale, rotation, or physical output layout.")
+                text: Translation.tr("This page controls where Illogical-mango shell surfaces appear. It does not change monitor resolution, scale, rotation, or physical output layout.")
             }
 
             ContentSubsection {

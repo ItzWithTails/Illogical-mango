@@ -4,7 +4,7 @@ import QtQuick
 
 // The original component is Hyprland-only: it reads `Hyprland.workspaces`,
 // `wsModel.specialWorkspaceActive` and dispatches through `hl.dsp.focus`, none
-// of which exist under Niri. iNiR's Workspaces already renders the same widget
+// of which exist under Niri. Illogical-mango's Workspaces already renders the same widget
 // for both compositors, so the M3 bar borrows it and only feeds it the M3
 // layout's own workspace options. The M3 pill around it still comes from
 // this folder's BarGroup, so the M3 grouping remains intact.

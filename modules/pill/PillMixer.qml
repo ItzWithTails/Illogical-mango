@@ -7,11 +7,11 @@ import qs.modules.common
 /**
  * Mixer surface: header with a night-light chip and a row of vertical ink-faders
  * wired to real hardware — external monitor and backlight brightness through
- * iNiR's Brightness service, volume and mic through Pipewire. Fills the lower
+ * Illogical-mango's Brightness service, volume and mic through Pipewire. Fills the lower
  * body of the pill.
  *
  * Upstream also carried a digital-vibrance fader; that needs nvibrant (nvidia
- * only), which iNiR does not depend on, so the fader is gone rather than dead.
+ * only), which Illogical-mango does not depend on, so the fader is gone rather than dead.
  */
 PillSurface {
     id: root

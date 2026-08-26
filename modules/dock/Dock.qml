@@ -311,7 +311,7 @@ Scope {
                                     readonly property bool regaliaEverywhere: !root.isM3Style && root.surfaceDialect === "regalia"
                                     readonly property bool angelEverywhere: !root.isM3Style && root.surfaceDialect === "angel"
                                     readonly property bool auroraEverywhere: !root.isM3Style && (root.surfaceDialect === "aurora" || angelEverywhere)
-                                    readonly property bool inirEverywhere: !root.isM3Style && root.surfaceDialect === "inir"
+                                    readonly property bool ilmangoEverywhere: !root.isM3Style && root.surfaceDialect === "ilmango"
                                     readonly property bool gameModeMinimal: Appearance.gameModeMinimal
                                     readonly property string wallpaperUrl: {
                                         const _dep1 = WallpaperListener.multiMonitorEnabled
@@ -350,7 +350,7 @@ Scope {
                                     : auroraEverywhere ? ColorUtils.applyAlpha(
                                         (blendedColors?.colLayer0 ?? Appearance.colors.colLayer0),
                                         dockRoot.nativeBlurActive ? 0.46 : 1)
-                                    : inirEverywhere ? Appearance.inir.colLayer1
+                                    : ilmangoEverywhere ? Appearance.ilmango.colLayer1
                                     : (cardStyle ? Appearance.colors.colLayer1 : Appearance.colors.colLayer0)
                                 border.width: root.isM3Style ? 1
                                     : root.zzzEverywhere || regaliaEverywhere ? 0
@@ -358,14 +358,14 @@ Scope {
                                 border.color: root.isM3Style ? Appearance.colors.colLayer0Border
                                     : root.zzzEverywhere || regaliaEverywhere ? "transparent"
                                     : angelEverywhere ? Appearance.angel.colPanelBorder
-                                    : inirEverywhere ? Appearance.inir.colBorder
+                                    : ilmangoEverywhere ? Appearance.ilmango.colBorder
                                     : Appearance.colors.colLayer0Border
                                 radius: root.isM3Style ? Appearance.rounding.normal + 6
                                     : root.zzzEverywhere ? Appearance.zzz.panelRadius
                                     : regaliaEverywhere && root.isPanelStyle ? Appearance.regalia.roundLarge
                                     : regaliaEverywhere ? Appearance.regalia.panelRadius
                                     : angelEverywhere ? Appearance.angel.roundingNormal
-                                    : inirEverywhere ? Appearance.inir.roundingNormal
+                                    : ilmangoEverywhere ? Appearance.ilmango.roundingNormal
                                     : cardStyle ? Appearance.rounding.normal : Appearance.rounding.large
                                 // Radius is a direct style binding. Adding a Behavior here
                                 // installs a second interceptor when the dock Rectangle is
@@ -423,7 +423,7 @@ Scope {
                                 }
 
                                 clip: true
-                                layer.enabled: auroraEverywhere && !inirEverywhere && !root.zzzEverywhere
+                                layer.enabled: auroraEverywhere && !ilmangoEverywhere && !root.zzzEverywhere
                                     && !gameModeMinimal && !dockRoot.nativeBlurActive
                                 layer.effect: GE.OpacityMask {
                                     maskSource: Rectangle {
@@ -444,7 +444,7 @@ Scope {
                                     width: dockRoot.screen?.width ?? 1920
                                     height: dockRoot.screen?.height ?? 1080
                                     visible: dockVisualBackground.auroraEverywhere
-                                        && !dockVisualBackground.inirEverywhere
+                                        && !dockVisualBackground.ilmangoEverywhere
                                         && !root.zzzEverywhere
                                         && !dockVisualBackground.gameModeMinimal
                                         && !dockRoot.nativeBlurActive
@@ -458,7 +458,7 @@ Scope {
                                     asynchronous: true
 
                                     // See #159 — skip QML blur when compositor blur covers this layer
-                                    layer.enabled: Appearance.effectsEnabled && dockVisualBackground.auroraEverywhere && !dockVisualBackground.inirEverywhere && !dockVisualBackground.gameModeMinimal && !dockRoot.nativeBlurActive
+                                    layer.enabled: Appearance.effectsEnabled && dockVisualBackground.auroraEverywhere && !dockVisualBackground.ilmangoEverywhere && !dockVisualBackground.gameModeMinimal && !dockRoot.nativeBlurActive
                                     layer.effect: MultiEffect {
                                         source: dockBlurredWallpaper
                                         anchors.fill: source

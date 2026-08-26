@@ -7,7 +7,7 @@ import qs.modules.common
 
 /**
  * Recorder surface: start/stop screen recording from the pill. Upstream's
- * recorder carried its own 1400-line wf-recorder pipeline; iNiR already owns
+ * recorder carried its own 1400-line wf-recorder pipeline; Illogical-mango already owns
  * one (scripts/videos/record.sh + RecorderStatus), so this surface is a thin
  * Ricelin-dialect face over that — two capture actions, the configured audio
  * profile, and a live elapsed counter while a recording runs.

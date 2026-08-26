@@ -78,12 +78,12 @@ QtObject {
         Appearance.colors.colPrimaryContainer, 0.7
     )
     
-    // Style tokens (Inir fixed colors)
-    readonly property color inirText: ColorUtils.boostInkSaturation(Appearance.inir.colText, Appearance.m3colors.m3primary)
-    readonly property color inirTextSecondary: ColorUtils.boostInkSaturation(Appearance.inir.colTextSecondary, Appearance.m3colors.m3primary)
-    readonly property color inirPrimary: Appearance.inir.colPrimary
-    readonly property color inirLayer1: Appearance.inir.colLayer1
-    readonly property color inirLayer2: Appearance.inir.colLayer2
+    // Style tokens (Ilmango fixed colors)
+    readonly property color ilmangoText: ColorUtils.boostInkSaturation(Appearance.ilmango.colText, Appearance.m3colors.m3primary)
+    readonly property color ilmangoTextSecondary: ColorUtils.boostInkSaturation(Appearance.ilmango.colTextSecondary, Appearance.m3colors.m3primary)
+    readonly property color ilmangoPrimary: Appearance.ilmango.colPrimary
+    readonly property color ilmangoLayer1: Appearance.ilmango.colLayer1
+    readonly property color ilmangoLayer2: Appearance.ilmango.colLayer2
     
     // Player actions
     function togglePlaying(): void {

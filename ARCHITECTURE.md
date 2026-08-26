@@ -1,4 +1,4 @@
-# iNiR Architecture
+# Illogical-mango Architecture
 
 > A complete desktop shell built on [Quickshell](https://quickshell.org/) for the [Niri](https://github.com/YaLTeR/niri) Wayland compositor.
 
@@ -27,7 +27,7 @@ Two mutually exclusive UI families, switchable at runtime (`Super+Shift+W`):
 |---|---|---|
 | Active when | `panelFamily !== "waffle"` | `panelFamily === "waffle"` |
 | Visual tokens | `Appearance.*` | `Looks.*` |
-| Styles | material, cards, aurora, inir, angel, zzz, cookie | Single fluent style |
+| Styles | material, cards, aurora, ilmango, angel, zzz, cookie | Single fluent style |
 | Bar | Top (or vertical; bar.appearanceStyle selects classic/islands/scenic/frame, pill, or m3) | Bottom (Win11 taskbar) |
 | App launcher | Overview | StartMenu with search |
 | Right panel | SidebarRight | ActionCenter + NotificationCenter |
@@ -43,7 +43,7 @@ PanelLoader {
 ```
 Loads when ALL conditions are true: `Config.ready` + identifier in `enabledPanels` array + `extraCondition`.
 
-Style dispatch priority: **cookie > zzz > angel > inir > aurora > material** (`Appearance.qml`: `cookieEverywhere`/`zzzEverywhere`/`angelEverywhere`/`inirEverywhere`/`auroraEverywhere` are `globalStyle` checks; `auroraEverywhere` is also true when `globalStyle === "angel"`, so angel must be checked before aurora wherever both matter). Cards is a material variant (no separate dispatch).
+Style dispatch priority: **cookie > zzz > angel > ilmango > aurora > material** (`Appearance.qml`: `cookieEverywhere`/`zzzEverywhere`/`angelEverywhere`/`ilmangoEverywhere`/`auroraEverywhere` are `globalStyle` checks; `auroraEverywhere` is also true when `globalStyle === "angel"`, so angel must be checked before aurora wherever both matter). Cards is a material variant (no separate dispatch).
 
 ## Directory Structure
 
@@ -94,7 +94,7 @@ services/                     # Runtime singletons (+ services/deferred/)
 └── [more services]
 
 scripts/                      # Shell/fish/python helpers
-├── inir                      # CLI launcher (bash, IPC + lifecycle commands)
+├── ilmango                      # CLI launcher (bash, IPC + lifecycle commands)
 ├── colors/                   # Color generation pipeline
 │   ├── applycolor.sh         # Orchestrator
 │   ├── generate_colors_material.py  # Material You color generation + template rendering
@@ -182,7 +182,7 @@ These are **stability boundaries** — prefer add-only changes, verify all depen
 
 Handlers registered via `IpcHandler { target: "name" }` in QML.
 
-Called externally: `inir <target> <function> [args]`
+Called externally: `ilmango <target> <function> [args]`
 
 The always-instantiated `dev` target provides session-only semantic navigation
 for lazy UI. Its functions are:
@@ -212,8 +212,8 @@ Theme generation orchestrated by `scripts/colors/applycolor.sh`, which runs per-
 ## Distribution
 
 ```bash
-git clone https://github.com/snowarch/inir.git
-cd inir
+git clone https://github.com/ItzWithTails/illogical-mango.git
+cd ilmango
 ./setup                  # Interactive TUI installer
 ./setup install -y       # Fully automated
 ./setup update           # Pull + sync + migrate + restart
@@ -222,10 +222,10 @@ cd inir
 ```
 
 Two install modes tracked in `version.json`:
-- **Repo-sync**: `./setup install` → syncs to `~/.config/quickshell/inir/`
-- **Package-managed**: `make install` → copies to `/usr/share/quickshell/inir/`
+- **Repo-sync**: `./setup install` → syncs to `~/.config/quickshell/ilmango/`
+- **Package-managed**: `make install` → copies to `/usr/share/quickshell/ilmango/`
 
-User config for the running QML shell lives at `~/.config/illogical-impulse/config.json` (legacy namespace, persistent across updates). NOTE: the shell scripts/CLI default to `~/.config/inir/` with a legacy fallback — the two sides are not yet unified.
+User config for the running QML shell lives at `~/.config/illogical-impulse/config.json` (legacy namespace, persistent across updates). NOTE: the shell scripts/CLI default to `~/.config/ilmango/` with a legacy fallback — the two sides are not yet unified.
 
 ### Multi-Distro Support
 
@@ -247,22 +247,22 @@ for the current maximum).
 ## Daily Development
 
 ```bash
-inir run                    # Launch the shell
-inir restart                # Graceful restart
-inir logs | tail -50        # Check for errors
-inir status                 # Installation/repository diagnostic summary
-inir doctor                 # Auto-diagnose + fix
-inir settings               # Open settings GUI
+ilmango run                    # Launch the shell
+ilmango restart                # Graceful restart
+ilmango logs | tail -50        # Check for errors
+ilmango status                 # Installation/repository diagnostic summary
+ilmango doctor                 # Auto-diagnose + fix
+ilmango settings               # Open settings GUI
 
 # IPC calls
-inir <target> <function> [args...]
-inir overview toggle
-inir audio volumeUp
+ilmango <target> <function> [args...]
+ilmango overview toggle
+ilmango audio volumeUp
 ```
 
-Never run raw `qs kill -c inir` / `qs -c inir` by hand — iNiR runs under
-`inir.service` (systemd --user); a bare `qs` invocation kills or duplicates
-the live session outside systemd's supervision. `inir restart` is the only
+Never run raw `qs kill -c ilmango` / `qs -c ilmango` by hand — Illogical-mango runs under
+`ilmango.service` (systemd --user); a bare `qs` invocation kills or duplicates
+the live session outside systemd's supervision. `ilmango restart` is the only
 correct way to force a restart.
 
 ## Known Harmless Warnings

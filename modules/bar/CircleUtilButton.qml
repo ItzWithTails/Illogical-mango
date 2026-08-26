@@ -20,13 +20,13 @@ RippleButton {
     colBackgroundHover: Appearance.regaliaEverywhere ? Appearance.regalia.controlPlateHover
         : Appearance.zzzEverywhere ? "transparent"
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
         : Appearance.colors.colLayer1Hover
     colRipple: Appearance.regaliaEverywhere ? Appearance.regalia.controlPlateActive
         : Appearance.zzzEverywhere ? ColorUtils.applyAlpha(Appearance.zzz.accent, 0.20)
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1Active
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Active
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
         : Appearance.colors.colLayer1Active
 

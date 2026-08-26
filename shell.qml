@@ -1,5 +1,5 @@
 //@ pragma UseQApplication
-//@ pragma ShellId inir
+//@ pragma ShellId ilmango
 // DISABLED: webapps — requires quickshell-webengine rebuild, re-enable when ready
 //-@ pragma EnableQtWebEngineQuick
 //@ pragma Env QS_NO_RELOAD_POPUP=1
@@ -23,8 +23,8 @@ import qs.services
 ShellRoot {
     id: root
 
-    readonly property bool disableHotReload: Quickshell.env("INIR_DISABLE_HOT_RELOAD") === "1"
-        || Quickshell.env("INIR_DISABLE_HOT_RELOAD") === "true"
+    readonly property bool disableHotReload: Quickshell.env("ILMANGO_DISABLE_HOT_RELOAD") === "1"
+        || Quickshell.env("ILMANGO_DISABLE_HOT_RELOAD") === "true"
 
     function _log(msg: string): void {
         if (Quickshell.env("QS_DEBUG") === "1") console.log(msg);
@@ -64,8 +64,8 @@ ShellRoot {
     property var _todoService
     property var _notepadService
 
-    // Boot phase timing (ms since epoch). Written to ~/.cache/inir/last-boot.json
-    // when the deferred phase finishes. `inir status` reads this back to show users
+    // Boot phase timing (ms since epoch). Written to ~/.cache/ilmango/last-boot.json
+    // when the deferred phase finishes. `ilmango status` reads this back to show users
     // exactly where their startup time goes — systemd → qs launch → QML completed →
     // Config ready → shell entry → deferred services. Useful for triaging "15-20s startup"
     // reports without asking the user to run journalctl.
@@ -73,7 +73,7 @@ ShellRoot {
     property real _bootConfigReadyAt: 0
     property real _bootShellEntryAt: 0
     property real _bootDeferredAt: 0
-    readonly property string _bootCachePath: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache")) + "/inir/last-boot.json"
+    readonly property string _bootCachePath: (Quickshell.env("XDG_CACHE_HOME") || (Quickshell.env("HOME") + "/.cache")) + "/ilmango/last-boot.json"
 
     Component.onCompleted: {
         root._bootCompletedAt = Date.now();
@@ -181,7 +181,7 @@ ShellRoot {
         }
     }
 
-    // Persist boot phase timestamps so `inir status` can report startup breakdown
+    // Persist boot phase timestamps so `ilmango status` can report startup breakdown
     // without asking the user to run journalctl. Only written once per boot — hot-reloads
     // overwrite (which is intentional, latest run is what matters for diagnostics).
     function _writeBootPhase(): void {
@@ -443,14 +443,14 @@ ShellRoot {
 
             if (isWaffle) {
                 // Waffle always opens its own Win11-style settings window
-                Quickshell.execDetached([Quickshell.shellPath("scripts/inir"),
+                Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"),
                     "waffle-settings-window"])
             } else if (Config.options?.settingsUi?.overlayMode ?? false) {
                 // ii overlay mode — toggle inline panel
                 GlobalStates.settingsOverlayOpen = !GlobalStates.settingsOverlayOpen
             } else {
                 // ii window mode (default) — launch separate process
-                Quickshell.execDetached([Quickshell.shellPath("scripts/inir"),
+                Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"),
                     "settings-window"])
             }
         }

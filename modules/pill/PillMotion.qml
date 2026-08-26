@@ -7,7 +7,7 @@ import qs.modules.common
 /**
  * Motion tokens for the pill family. Durations collapse to zero when the shell
  * has animations off, so the pill honours the same global gate every other
- * iNiR surface does instead of running its own reduce-motion flag.
+ * Illogical-mango surface does instead of running its own reduce-motion flag.
  */
 Singleton {
     readonly property real mult: Appearance.animationsEnabled

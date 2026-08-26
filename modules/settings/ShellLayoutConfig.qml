@@ -19,14 +19,14 @@ ContentPage {
     property string confirmationSlot: ""
     readonly property string activeFamily: ShellLayoutController.activeFamily
     readonly property bool standaloneSettings:
-        Quickshell.env("INIR_STANDALONE_WINDOW") === "1"
+        Quickshell.env("ILMANGO_STANDALONE_WINDOW") === "1"
     readonly property var surfaces: ShellLayoutController.surfacesForFamily(
         root.activeFamily)
 
     function toggleLiveEditor(): void {
         if (root.standaloneSettings) {
             Quickshell.execDetached([
-                Quickshell.shellPath("scripts/inir"),
+                Quickshell.shellPath("scripts/ilmango"),
                 "shellLayout",
                 "open"
             ])

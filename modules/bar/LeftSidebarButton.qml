@@ -18,36 +18,36 @@ RippleButton {
     buttonRadius: Appearance.regaliaEverywhere ? Appearance.regalia.controlRadius
         : Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
     // zzz stays transparent here — the ZzzPlate below is the only hover
     // surface; it renders a real chamfer, while this Control's own
     // background is a plain rounded Rectangle that would otherwise poke
     // out past the chamfered cut (matches CircleUtilButton.qml).
     colBackgroundHover: Appearance.zzzEverywhere ? "transparent"
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colLayer1Hover
     colRipple: Appearance.zzzEverywhere ? Appearance.colors.colLayer1Active
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1Active
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Active
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
         : Appearance.colors.colLayer1Active
     colBackgroundToggled: Appearance.regaliaEverywhere ? Appearance.regalia.primaryPlate
         : Appearance.zzzEverywhere ? Appearance.zzz.sticker
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimaryContainer
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryContainer
         : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
         : Appearance.colors.colSecondaryContainer
     colBackgroundToggledHover: Appearance.regaliaEverywhere ? Appearance.regalia.primaryPlateHover
         : Appearance.zzzEverywhere ? "transparent"
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colSelectionHover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colSelectionHover
         : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurfaceHover
         : Appearance.colors.colSecondaryContainerHover
     colRippleToggled: Appearance.zzzEverywhere ? Appearance.colors.colPrimaryActive
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimaryActive
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryActive
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
         : Appearance.colors.colSecondaryContainerActive
     // Spatial control: addresses whatever sidebar role occupies the left slot.

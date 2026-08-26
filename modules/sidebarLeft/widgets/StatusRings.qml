@@ -98,7 +98,7 @@ Item {
             border.width: 3
             border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairline
                         : Appearance.angelEverywhere ? Appearance.angel.colBorderSubtle
-                        : Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
                         : Appearance.auroraEverywhere ? "transparent"
                         : Appearance.colors.colLayer2
 

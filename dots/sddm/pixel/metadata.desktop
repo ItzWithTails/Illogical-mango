@@ -1,7 +1,7 @@
 [SddmGreeterTheme]
 Name=ii-pixel
-Description=iNiR SDDM login screen — Material You dynamic colors
-Author=iNiR Project
+Description=Illogical-mango SDDM login screen — Material You dynamic colors
+Author=Illogical-mango Project
 Type=sddm-theme
 Version=1.0
 Website=https://github.com/snowarch/iNiR

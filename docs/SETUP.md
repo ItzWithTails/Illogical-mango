@@ -23,7 +23,7 @@ There are now three complementary entry points:
 - `./setup`
   - authoritative installer and maintenance entry point
   - owns install, update, doctor, status, migrate, rollback, my-changes, uninstall
-- `inir`
+- `ilmango`
   - daily launcher and operator CLI
   - owns runtime actions like `run`, `start`, `restart`, `settings`, `logs`, `repair`, `terminal`, and IPC calls
   - forwards maintenance commands like `install`, `update`, `doctor`, `status`, `migrate`, `rollback`, `my-changes`, and `uninstall` back to `setup`
@@ -35,26 +35,26 @@ Use them like this:
 - install once:
   - `./setup install`
 - maintenance via launcher wrapper:
-  - `inir update`
-  - `inir doctor`
-  - `inir status`
+  - `ilmango update`
+  - `ilmango doctor`
+  - `ilmango status`
 - runtime operation:
-  - `inir run`
-  - `inir settings`
-  - `inir logs`
-  - `inir repair`
+  - `ilmango run`
+  - `ilmango settings`
+  - `ilmango logs`
+  - `ilmango repair`
 - local distribution validation:
   - `make test-local`
-  - `inir test-local`
-  - `inir test-local --with-runtime`
+  - `ilmango test-local`
+  - `ilmango test-local --with-runtime`
 
 ## Install
 
 ```bash
-git clone https://github.com/snowarch/inir.git
-cd inir
+git clone https://github.com/ItzWithTails/illogical-mango.git
+cd ilmango
 ./setup install
-inir run
+ilmango run
 ```
 
 Add `-y` for non-interactive mode.
@@ -67,8 +67,8 @@ sudo make install
 
 That installs:
 
-- `inir` launcher into your install prefix `bin/`
-- shell payload into `/usr/local/share/quickshell/inir` by default
+- `ilmango` launcher into your install prefix `bin/`
+- shell payload into `/usr/local/share/quickshell/ilmango` by default
 - user service asset
 - desktop entry
 - runtime metadata so `status` / `doctor` can detect package-managed style installs
@@ -76,10 +76,10 @@ That installs:
 ## Update
 
 ```bash
-inir update
+ilmango update
 ```
 
-`inir update` and `./setup update` run the same update engine. `inir update` is the convenient launcher-facing entry point; `./setup update` is the underlying maintenance command and the better choice when you also want the interactive TUI nearby.
+`ilmango update` and `./setup update` run the same update engine. `ilmango update` is the convenient launcher-facing entry point; `./setup update` is the underlying maintenance command and the better choice when you also want the interactive TUI nearby.
 
 What happens:
 
@@ -98,7 +98,7 @@ The runtime sync does not overwrite your user configs directly. If a release nee
 
 For legacy monolithic Niri configs, required migrations can now convert `~/.config/niri/config.kdl` into the modular `config.d/` layout automatically during update. The current config is preserved section-by-section, unknown top-level blocks are kept in `config.d/90-user-extra.kdl`, and the normal migration backup/rollback flow still applies.
 
-If `setup` detects that the active iNiR installation is externally managed, `inir update` does **not** pull or sync repo files into the runtime. In that case it:
+If `setup` detects that the active Illogical-mango installation is externally managed, `ilmango update` does **not** pull or sync repo files into the runtime. In that case it:
 
 - Shows the detected install mode
 - Shows the package update command when metadata provides one
@@ -108,10 +108,10 @@ If `setup` detects that the active iNiR installation is externally managed, `ini
 ## Doctor
 
 ```bash
-inir doctor
+ilmango doctor
 ```
 
-`inir doctor` is a wrapper around `./setup doctor`.
+`ilmango doctor` is a wrapper around `./setup doctor`.
 
 Diagnoses and **automatically fixes** common issues:
 
@@ -121,12 +121,12 @@ Diagnoses and **automatically fixes** common issues:
 - Version tracking
 - File manifest
 
-For externally managed installs, `doctor` can rebuild `~/.config/illogical-impulse/version.json` from the runtime metadata already present under `~/.config/quickshell/inir/version.json`. It also skips the repo-sync manifest requirement when the install is package-managed.
+For externally managed installs, `doctor` can rebuild `~/.config/illogical-impulse/version.json` from the runtime metadata already present under `~/.config/quickshell/ilmango/version.json`. It also skips the repo-sync manifest requirement when the install is package-managed.
 
 If you want the same repair flow plus restart and filtered logs:
 
 ```bash
-inir repair
+ilmango repair
 ```
 
 ## Rollback
@@ -185,12 +185,12 @@ For new installs and migrated setups, `~/.config/niri/config.kdl` becomes a smal
 - `90-user-extra.kdl`
   - preserved custom blocks that do not map to the standard split
 
-If you want to change which apps iNiR launches, edit `~/.config/illogical-impulse/config.json` instead of hardcoding new executables into the distributed binds:
+If you want to change which apps Illogical-mango launches, edit `~/.config/illogical-impulse/config.json` instead of hardcoding new executables into the distributed binds:
 
 - `apps.terminal`
-  - used by `inir terminal`
+  - used by `ilmango terminal`
 - `apps.browser`
-  - used by `inir browser` and the default `Super+W` bind
+  - used by `ilmango browser` and the default `Super+W` bind
 - `sidebar.quickLaunch`
   - custom quick-launch entries shown by the shell UI
 
@@ -217,26 +217,26 @@ Useful when you want to see what you've changed or restore defaults after custom
 | -------------------- | ----------------------------------------------------------- |
 | `./setup`            | Interactive menu                                            |
 | `./setup install`    | Full installation                                           |
-| `inir update`        | Wrapper around `./setup update`                             |
+| `ilmango update`        | Wrapper around `./setup update`                             |
 | `./setup status`     | Show install mode, update strategy, and health              |
 | `./setup migrate`    | Review and apply config migrations                          |
 | `./setup doctor`     | Diagnose and auto-fix                                       |
 | `./setup rollback`   | Restore previous snapshot                                   |
 | `./setup my-changes` | View and restore user modifications                         |
-| `./setup uninstall`  | Remove iNiR from system                                     |
-| `inir install`       | Wrapper around `./setup install` from the repo/runtime root |
-| `inir start`         | Start iNiR (uses inir.service when enabled)                 |
-| `inir stop`          | Stop the active runtime                                     |
-| `inir run`           | Launch iNiR from the active runtime                         |
-| `inir restart`       | Restart the active runtime                                  |
-| `inir settings`      | Open settings via IPC                                       |
-| `inir terminal`      | Launch the configured terminal from `apps.terminal`         |
-| `inir browser`       | Launch the configured browser from `apps.browser`           |
-| `inir doctor`        | Wrapper around `./setup doctor`                             |
-| `inir logs`          | Show recent runtime logs                                    |
-| `inir repair`        | Doctor + restart + filtered log check                       |
-| `inir status`        | Wrapper around `./setup status`                             |
-| `inir test-local`    | Run local distribution checks                               |
+| `./setup uninstall`  | Remove Illogical-mango from system                                     |
+| `ilmango install`       | Wrapper around `./setup install` from the repo/runtime root |
+| `ilmango start`         | Start Illogical-mango (uses ilmango.service when enabled)                 |
+| `ilmango stop`          | Stop the active runtime                                     |
+| `ilmango run`           | Launch Illogical-mango from the active runtime                         |
+| `ilmango restart`       | Restart the active runtime                                  |
+| `ilmango settings`      | Open settings via IPC                                       |
+| `ilmango terminal`      | Launch the configured terminal from `apps.terminal`         |
+| `ilmango browser`       | Launch the configured browser from `apps.browser`           |
+| `ilmango doctor`        | Wrapper around `./setup doctor`                             |
+| `ilmango logs`          | Show recent runtime logs                                    |
+| `ilmango repair`        | Doctor + restart + filtered log check                       |
+| `ilmango status`        | Wrapper around `./setup status`                             |
+| `ilmango test-local`    | Run local distribution checks                               |
 
 Options: `-y` (skip prompts), `-q` (quiet), `-h` (help)
 
@@ -265,10 +265,10 @@ It also reports:
 You can reach the same status through:
 
 ```bash
-inir status
+ilmango status
 ```
 
-`inir status` is a wrapper around `./setup status`.
+`ilmango status` is a wrapper around `./setup status`.
 
 ## Local validation
 
@@ -276,13 +276,13 @@ For distribution, launcher, or install-flow changes, test locally with:
 
 ```bash
 make test-local
-inir test-local
-inir test-local --with-runtime
+ilmango test-local
+ilmango test-local --with-runtime
 ```
 
 These checks cover:
 
-- shell syntax for `setup`, `doctor`, `versioning`, `package-installers`, and `scripts/inir`
+- shell syntax for `setup`, `doctor`, `versioning`, `package-installers`, and `scripts/ilmango`
 - PKGBUILD syntax for the new Arch package roots
 - local `make install` dry-run
 - launcher path and status resolution
@@ -294,14 +294,14 @@ These checks cover:
 
 | Source                                    | Destination                                                          |
 | ----------------------------------------- | -------------------------------------------------------------------- |
-| QML code (`./setup install`)              | `~/.config/quickshell/inir/`                                         |
-| QML code (`make install` / package style) | `/usr/share/quickshell/inir/` or `/usr/local/share/quickshell/inir/` |
+| QML code (`./setup install`)              | `~/.config/quickshell/ilmango/`                                         |
+| QML code (`make install` / package style) | `/usr/share/quickshell/ilmango/` or `/usr/local/share/quickshell/ilmango/` |
 | User config                               | `~/.config/illogical-impulse/config.json`                            |
 | State files                               | `~/.local/state/quickshell/user/`                                    |
-| Cache                                     | `~/.cache/inir/`                                                     |
-| Launcher                                  | `inir` in the install prefix                                         |
-| Super daemon                              | `~/.local/bin/inir_super_overview_daemon.py`                         |
-| Daemon service                            | `~/.config/systemd/user/inir-super-overview.service`                 |
+| Cache                                     | `~/.cache/ilmango/`                                                     |
+| Launcher                                  | `ilmango` in the install prefix                                         |
+| Super daemon                              | `~/.local/bin/ilmango_super_overview_daemon.py`                         |
+| Daemon service                            | `~/.config/systemd/user/ilmango-super-overview.service`                 |
 
 ### Compositor & Themes
 
@@ -317,10 +317,10 @@ These checks cover:
 
 ### Behavior
 
-- First install: Existing configs are backed up to `~/inir-backup/`
+- First install: Existing configs are backed up to `~/ilmango-backup/`
 - Updates: Your configs are never touched, only QML code is synced
-- Shell ownership: `inir.service` is the canonical startup path; do not also add `spawn-at-startup "inir" "start"` in Niri
-- Package-managed installs: `inir update` defers shell payload updates to the package manager instead of syncing from the current repo checkout
+- Shell ownership: `ilmango.service` is the canonical startup path; do not also add `spawn-at-startup "ilmango" "start"` in Niri
+- Package-managed installs: `ilmango update` defers shell payload updates to the package manager instead of syncing from the current repo checkout
 - Shared configs: Only installed if they don't exist or you approve overwrite
 
 ## Migrations
@@ -333,7 +333,7 @@ Current example: `028-bar-modular-layout` exists but never runs. The modular bar
 
 ## Backups
 
-- Install backups: `~/inir-backup/`
+- Install backups: `~/ilmango-backup/`
 - Update backups: `~/.local/state/quickshell/backups/`
 
 ## Uninstall
@@ -344,12 +344,12 @@ Current example: `028-bar-modular-layout` exists but never runs. The modular bar
 ./setup uninstall
 ```
 
-The uninstall script intelligently removes iNiR while preserving shared resources and user data:
+The uninstall script intelligently removes Illogical-mango while preserving shared resources and user data:
 
 **What it does:**
 
 - Creates automatic backup before removal
-- Removes iNiR-exclusive files and directories
+- Removes Illogical-mango-exclusive files and directories
 - Asks before removing shared configs (Niri, GTK, themes)
 - Detects if you're in a Niri session (preserves compositor config)
 - Detects other Quickshell configs (preserves shared resources)
@@ -371,21 +371,21 @@ Asks before removing each shared config. Recommended for most users.
 ./setup uninstall -y
 ```
 
-Removes only iNiR-exclusive files, keeps all shared configs and packages.
+Removes only Illogical-mango-exclusive files, keeps all shared configs and packages.
 
-If the shell payload is externally managed, `uninstall` removes the user-side iNiR config/data it owns but does **not** remove the package-managed payload itself. The command warns about that explicitly.
+If the shell payload is externally managed, `uninstall` removes the user-side Illogical-mango config/data it owns but does **not** remove the package-managed payload itself. The command warns about that explicitly.
 
 ### Files Removed Automatically
 
-The following are removed without prompting (iNiR-exclusive):
+The following are removed without prompting (Illogical-mango-exclusive):
 
 ```
-~/.config/quickshell/inir/                       # Shell configuration
+~/.config/quickshell/ilmango/                       # Shell configuration
 ~/.config/illogical-impulse/                     # User preferences
 ~/.local/state/quickshell/user/                  # Notifications, todo
-~/.cache/inir/                                   # Cache
-~/.local/bin/inir_super_overview_daemon.py       # Super daemon
-~/.config/systemd/user/inir-super-overview.service # Daemon service
+~/.cache/ilmango/                                   # Cache
+~/.local/bin/ilmango_super_overview_daemon.py       # Super daemon
+~/.config/systemd/user/ilmango-super-overview.service # Daemon service
 ~/.config/vesktop/themes/system24.theme.css      # Vesktop theme
 ~/.config/vesktop/themes/ii-colors.css           # Vesktop colors
 ```
@@ -397,7 +397,7 @@ These may be used by other applications. The script asks before removing:
 | Path                                                           | Type         | Default Action                                                                                          |
 | -------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------- |
 | `~/.config/niri/config.kdl`                                    | Essential    | Keep (especially if in Niri session)                                                                    |
-| `~/.config/matugen/`                                           | Optional     | Ask (remove if you do not want to keep iNiR color templates; legacy path, matugen binary not required) |
+| `~/.config/matugen/`                                           | Optional     | Ask (remove if you do not want to keep Illogical-mango color templates; legacy path, matugen binary not required) |
 | `~/.config/fuzzel/`                                            | Optional     | Ask (remove if fuzzel not installed)                                                                    |
 | `~/.config/Kvantum/`                                           | Optional     | Ask (remove if Kvantum not installed)                                                                   |
 | `~/.config/kdeglobals`                                         | Optional     | Ask                                                                                                     |
@@ -405,11 +405,11 @@ These may be used by other applications. The script asks before removing:
 | `~/.config/gtk-3.0/gtk.css`                                    | Optional     | Ask                                                                                                     |
 | `~/.config/gtk-4.0/gtk.css`                                    | Optional     | Ask                                                                                                     |
 | `~/.config/fontconfig/`                                        | Essential    | Keep                                                                                                    |
-| `${XDG_DATA_HOME:-~/.local/share}/color-schemes/Darkly.colors` | iNiR default | Remove                                                                                                  |
+| `${XDG_DATA_HOME:-~/.local/share}/color-schemes/Darkly.colors` | Illogical-mango default | Remove                                                                                                  |
 
 ### Installed Packages
 
-The script lists packages installed by iNiR but does not remove them automatically. Review the output and remove manually if not needed by other applications.
+The script lists packages installed by Illogical-mango but does not remove them automatically. Review the output and remove manually if not needed by other applications.
 
 **Core packages:**
 
@@ -440,14 +440,14 @@ The following system changes are not automatically reverted. The script shows co
 Backups are saved to:
 
 ```
-~/.local/share/inir-uninstall-backup-YYYYMMDD-HHMMSS/
+~/.local/share/ilmango-uninstall-backup-YYYYMMDD-HHMMSS/
 ```
 
 To restore from backup:
 
 ```bash
-cp -r ~/.local/share/inir-uninstall-backup-*/quickshell-inir ~/.config/quickshell/inir
-cp -r ~/.local/share/inir-uninstall-backup-*/illogical-impulse ~/.config/illogical-impulse
+cp -r ~/.local/share/ilmango-uninstall-backup-*/quickshell-ilmango ~/.config/quickshell/ilmango
+cp -r ~/.local/share/ilmango-uninstall-backup-*/illogical-impulse ~/.config/illogical-impulse
 ```
 
 ### Manual Uninstall (Fallback)
@@ -456,16 +456,16 @@ If the automated script fails or is unavailable:
 
 ```bash
 # Stop services
-qs kill -c inir
-systemctl --user disable --now inir-super-overview.service 2>/dev/null
+qs kill -c ilmango
+systemctl --user disable --now ilmango-super-overview.service 2>/dev/null
 
-# Remove iNiR-exclusive files
-rm -rf ~/.config/quickshell/inir
+# Remove Illogical-mango-exclusive files
+rm -rf ~/.config/quickshell/ilmango
 rm -rf ~/.config/illogical-impulse
 rm -rf ~/.local/state/quickshell/user
-rm -rf ~/.cache/inir
-rm -f ~/.local/bin/inir_super_overview_daemon.py
-rm -f ~/.config/systemd/user/inir-super-overview.service
+rm -rf ~/.cache/ilmango
+rm -f ~/.local/bin/ilmango_super_overview_daemon.py
+rm -f ~/.config/systemd/user/ilmango-super-overview.service
 rm -f ~/.config/vesktop/themes/system24.theme.css
 rm -f ~/.config/vesktop/themes/ii-colors.css
 rm -f ~/.config/Vesktop/themes/system24.theme.css
@@ -473,7 +473,7 @@ rm -f ~/.config/Vesktop/themes/ii-colors.css
 
 # Remove shared configs (review before running)
 # rm -rf ~/.config/niri/config.kdl  # Only if not using Niri
-# rm -rf ~/.config/matugen          # Optional: iNiR color templates (legacy path, matugen binary not required)
+# rm -rf ~/.config/matugen          # Optional: Illogical-mango color templates (legacy path, matugen binary not required)
 # rm -rf ~/.config/fuzzel
 # rm -rf ~/.config/Kvantum
 # rm -f ~/.config/kdeglobals
@@ -487,16 +487,16 @@ rm -f ~/.config/Vesktop/themes/ii-colors.css
 # rm -rf ~/.local/state/quickshell/themes
 
 # Comment out spawn-at-startup in ~/.config/niri/config.kdl:
-# spawn-at-startup "inir" "start"
+# spawn-at-startup "ilmango" "start"
 ```
 
 ### Reinstalling
 
-To reinstall iNiR after uninstalling:
+To reinstall Illogical-mango after uninstalling:
 
 ```bash
-git clone https://github.com/snowarch/inir.git
-cd inir
+git clone https://github.com/ItzWithTails/illogical-mango.git
+cd ilmango
 ./setup install
-inir run
+ilmango run
 ```

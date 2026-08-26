@@ -8,15 +8,15 @@ trap 'rm -rf "$tmp"' EXIT
 export HOME="$tmp/home"
 export XDG_CONFIG_HOME="$tmp/config"
 export XDG_STATE_HOME="$tmp/state"
-export INIR_MASCOT_RELEASE_TAG="v-test"
-export INIR_MASCOT_RELEASE_BASE_URL="file://${tmp}/release"
+export ILMANGO_MASCOT_RELEASE_TAG="v-test"
+export ILMANGO_MASCOT_RELEASE_BASE_URL="file://${tmp}/release"
 
-shell_dir="${XDG_CONFIG_HOME}/quickshell/inir"
+shell_dir="${XDG_CONFIG_HOME}/quickshell/ilmango"
 asset_dir="${shell_dir}/assets/images/mascot"
 helper_dir="${shell_dir}/scripts/lib"
 mkdir -p "$asset_dir" "$helper_dir" "$tmp/release" "$tmp/source"
 cp "$repo_root/scripts/lib/mascot-pack.py" "$helper_dir/mascot-pack.py"
-printf '{"owner":"inir"}\n' > "$asset_dir/manifest.json"
+printf '{"owner":"ilmango"}\n' > "$asset_dir/manifest.json"
 
 for index in $(seq 1 11); do
   printf 'asset-%s\n' "$index" > "$tmp/source/inir-mascot-test-${index}.png"
@@ -57,8 +57,8 @@ source "$repo_root/sdata/lib/extras.sh"
 
 extras_install_mascot_pack
 [[ "$(find "$asset_dir" -maxdepth 1 -type f \( -name 'inir-mascot-*.png' -o -name 'inir-mascot-*.gif' \) | wc -l)" -eq 12 ]]
-grep -Fq '"owner":"inir"' "$asset_dir/manifest.json"
-state_file="${XDG_STATE_HOME}/inir/mascot-pack-state.json"
+grep -Fq '"owner":"ilmango"' "$asset_dir/manifest.json"
+state_file="${XDG_STATE_HOME}/ilmango/mascot-pack-state.json"
 [[ -f "$state_file" ]]
 python3 - "$state_file" <<'PY'
 import json, sys
@@ -85,12 +85,12 @@ with tarfile.open(sys.argv[1], "w:gz") as archive:
     info.size = len(payload)
     archive.addfile(info, io.BytesIO(payload))
 PY
-export INIR_MASCOT_RELEASE_TAG="v-bad"
-export INIR_MASCOT_RELEASE_BASE_URL="file://${tmp}/bad-release"
+export ILMANGO_MASCOT_RELEASE_TAG="v-bad"
+export ILMANGO_MASCOT_RELEASE_BASE_URL="file://${tmp}/bad-release"
 extras_install_mascot_pack
 
 after="$(python3 "$helper_dir/mascot-pack.py" tree "$asset_dir")"
 [[ "$before" == "$after" ]]
-grep -Fq '"owner":"inir"' "$asset_dir/manifest.json"
+grep -Fq '"owner":"ilmango"' "$asset_dir/manifest.json"
 
 printf 'mascot pack flow checks passed\n'

@@ -9,7 +9,7 @@
 //   1 = Notifications
 //   2+ = Widgets  (calendar / events / todo / notepad / calc / sysmon / timer)
 //
-// Fully compatible with all global styles: material, aurora, inir, angel, zzz.
+// Fully compatible with all global styles: material, aurora, ilmango, angel, zzz.
 
 import qs
 import qs.services
@@ -247,13 +247,13 @@ Item {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
-                    readonly property color _colText: bg.inirEverywhere ? Appearance.inir.colText
+                    readonly property color _colText: bg.ilmangoEverywhere ? Appearance.ilmango.colText
                         : bg.angelEverywhere ? Appearance.angel.colText
                         : Appearance.colors.colOnLayer1
-                    readonly property color _colSub: bg.inirEverywhere ? Appearance.inir.colTextSecondary
+                    readonly property color _colSub: bg.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                         : bg.angelEverywhere ? Appearance.angel.colTextSecondary
                         : Appearance.colors.colSubtext
-                    readonly property color _colPrimary: bg.inirEverywhere ? Appearance.inir.colPrimary
+                    readonly property color _colPrimary: bg.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                         : bg.angelEverywhere ? Appearance.angel.colPrimary
                         : Appearance.colors.colPrimary
 
@@ -573,13 +573,13 @@ Item {
         implicitHeight: 48
 
         // Style helpers
-        readonly property color _colPrimary: bg.inirEverywhere ? Appearance.inir.colPrimary
+        readonly property color _colPrimary: bg.ilmangoEverywhere ? Appearance.ilmango.colPrimary
             : bg.angelEverywhere ? Appearance.angel.colPrimary
             : Appearance.colors.colPrimary
-        readonly property color _colText: bg.inirEverywhere ? Appearance.inir.colText
+        readonly property color _colText: bg.ilmangoEverywhere ? Appearance.ilmango.colText
             : bg.angelEverywhere ? Appearance.angel.colText
             : Appearance.colors.colOnLayer1
-        readonly property color _colSub: bg.inirEverywhere ? Appearance.inir.colTextSecondary
+        readonly property color _colSub: bg.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
             : bg.angelEverywhere ? Appearance.angel.colTextSecondary
             : Appearance.colors.colSubtext
 
@@ -587,15 +587,15 @@ Item {
             id: chipBg
             anchors.fill: parent
             radius: bg.angelEverywhere ? Appearance.angel.roundingSmall
-                : bg.inirEverywhere ? Appearance.inir.roundingSmall
+                : bg.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
                 : Appearance.rounding.small
             color: {
                 if (chipMA.containsPress)
-                    return bg.inirEverywhere ? Appearance.inir.colLayer2Active
+                    return bg.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
                         : bg.angelEverywhere ? Appearance.angel.colGlassCardActive
                         : bg.colDarkSurfaceActive
                 if (chipMA.containsMouse)
-                    return bg.inirEverywhere ? Appearance.inir.colLayer2Hover
+                    return bg.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                         : bg.angelEverywhere ? Appearance.angel.colGlassCardHover
                         : bg.colDarkSurfaceHover
                 return "transparent"
@@ -769,7 +769,7 @@ Item {
         readonly property bool zzzEverywhere: surfaceDialect === "zzz"
         readonly property bool angelEverywhere: surfaceDialect === "angel"
         readonly property bool auroraEverywhere: surfaceDialect === "aurora" || angelEverywhere
-        readonly property bool inirEverywhere: surfaceDialect === "inir"
+        readonly property bool ilmangoEverywhere: surfaceDialect === "ilmango"
         readonly property bool gameModeMinimal: Appearance.gameModeMinimal
 
         readonly property string wallpaperUrl: {
@@ -780,7 +780,7 @@ Item {
         }
         readonly property bool useWallpaperBackdrop: root.panelVisible
             && auroraEverywhere
-            && !inirEverywhere
+            && !ilmangoEverywhere
             && !gameModeMinimal
             && wallpaperUrl.length > 0
 
@@ -798,7 +798,7 @@ Item {
         readonly property color colDarkSurface: angelEverywhere
             ? ColorUtils.transparentize(Appearance.angel.colGlassCard, 0.76)
             : zzzEverywhere ? Appearance.zzz.tile
-            : inirEverywhere ? ColorUtils.transparentize(Appearance.inir.colLayer1, 0.22)
+            : ilmangoEverywhere ? ColorUtils.transparentize(Appearance.ilmango.colLayer1, 0.22)
             : auroraEverywhere ? ColorUtils.transparentize(
                 (blendedColors?.colLayer0 ?? Appearance.colors.colLayer0Base),
                 Math.max(0.10, Appearance.aurora.subSurfaceTransparentize - 0.16)
@@ -807,7 +807,7 @@ Item {
         readonly property color colDarkSurfaceHover: angelEverywhere
             ? Appearance.angel.colGlassCardHover
             : zzzEverywhere ? Appearance.zzz.paperAlt
-            : inirEverywhere ? Appearance.inir.colLayer2Hover
+            : ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
             : auroraEverywhere ? ColorUtils.transparentize(
                 (blendedColors?.colLayer1 ?? Appearance.colors.colLayer1),
                 Math.max(0.16, Appearance.aurora.subSurfaceTransparentize - 0.10)
@@ -816,7 +816,7 @@ Item {
         readonly property color colDarkSurfaceActive: angelEverywhere
             ? Appearance.angel.colGlassCardActive
             : zzzEverywhere ? Appearance.zzz.bg3
-            : inirEverywhere ? Appearance.inir.colLayer2Active
+            : ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
             : auroraEverywhere ? ColorUtils.transparentize(
                 (blendedColors?.colLayer1 ?? Appearance.colors.colLayer1),
                 Math.max(0.12, Appearance.aurora.subSurfaceTransparentize - 0.14)
@@ -825,7 +825,7 @@ Item {
 
         color: (gameModeMinimal || islandStyle) ? "transparent"
              : zzzEverywhere ? "transparent"
-             : inirEverywhere   ? (cardStyle ? Appearance.inir.colLayer1 : Appearance.inir.colLayer0)
+             : ilmangoEverywhere   ? (cardStyle ? Appearance.ilmango.colLayer1 : Appearance.ilmango.colLayer0)
              : auroraEverywhere ? ColorUtils.applyAlpha((blendedColors?.colLayer0 ?? Appearance.colors.colLayer0), 1)
              : (cardStyle ? Appearance.colors.colLayer1 : Appearance.colors.colLayer0)
 
@@ -836,7 +836,7 @@ Item {
         }
         border.color: zzzEverywhere ? Appearance.zzz.hairline
                     : angelEverywhere  ? Appearance.angel.colPanelBorder
-                    : inirEverywhere   ? Appearance.inir.colBorder
+                    : ilmangoEverywhere   ? Appearance.ilmango.colBorder
                     : Appearance.colors.colLayer0Border
         Behavior on border.color {
             enabled: Appearance.animationsEnabled
@@ -845,7 +845,7 @@ Item {
 
         radius: zzzEverywhere ? Appearance.zzz.panelRadius
               : angelEverywhere  ? Appearance.angel.roundingNormal
-              : inirEverywhere   ? (cardStyle ? Appearance.inir.roundingLarge : Appearance.inir.roundingNormal)
+              : ilmangoEverywhere   ? (cardStyle ? Appearance.ilmango.roundingLarge : Appearance.ilmango.roundingNormal)
               : cardStyle        ? Appearance.rounding.normal
               : (Appearance.rounding.screenRounding - Appearance.sizes.hyprlandGapsOut + 1)
         Behavior on radius {
@@ -945,9 +945,9 @@ Item {
             anchors.fill: parent
             anchors.margins: root.compactPanelPadding
             anchors.topMargin: bg.angelEverywhere ? root.compactPanelPadding + 4
-                : bg.inirEverywhere ? root.compactPanelPadding + 6 : root.compactPanelPadding
+                : bg.ilmangoEverywhere ? root.compactPanelPadding + 6 : root.compactPanelPadding
             spacing: bg.angelEverywhere ? root.compactPanelPadding + 2
-                : bg.inirEverywhere ? root.compactPanelPadding + 4 : root.compactPanelPadding
+                : bg.ilmangoEverywhere ? root.compactPanelPadding + 4 : root.compactPanelPadding
 
             Rectangle {
                 id: compactSurface
@@ -955,7 +955,7 @@ Item {
                 Layout.fillHeight: true
                 radius: bg.zzzEverywhere ? Appearance.zzz.controlRadius
                     : bg.angelEverywhere ? Appearance.angel.roundingNormal
-                    : bg.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+                    : bg.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
                 Behavior on radius {
                     enabled: Appearance.animationsEnabled
                     NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -1008,7 +1008,7 @@ Item {
                     width: 0
                     visible: false
                     color: bg.angelEverywhere  ? ColorUtils.transparentize(Appearance.angel.colCardBorder,  0.62)
-                         : bg.inirEverywhere   ? ColorUtils.transparentize(Appearance.inir.colBorder, 0.45)
+                         : bg.ilmangoEverywhere   ? ColorUtils.transparentize(Appearance.ilmango.colBorder, 0.45)
                          : bg.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colOutlineVariant, 0.78)
                          : ColorUtils.transparentize(Appearance.colors.colOutlineVariant, 0.72)
                 }
@@ -1031,7 +1031,7 @@ Item {
                     width: leftRail.width - colLeft - colRight - navBgLeft
                     height: navBgH
                     radius: bg.angelEverywhere ? Appearance.angel.roundingSmall
-                          : bg.inirEverywhere  ? Appearance.inir.roundingSmall
+                          : bg.ilmangoEverywhere  ? Appearance.ilmango.roundingSmall
                           : Appearance.rounding.small
                     // Bgless doctrine: the selected category is signalled by the colored
                     // material symbol + left accent pill (navPill), not a tenuous plate.
@@ -1057,7 +1057,7 @@ Item {
                     width: 3
                     height: 26
                     color: bg.zzzEverywhere   ? Appearance.zzz.accent
-                         : bg.inirEverywhere  ? Appearance.inir.colPrimary
+                         : bg.ilmangoEverywhere  ? Appearance.ilmango.colPrimary
                          : bg.angelEverywhere ? Appearance.angel.colPrimary
                          : Appearance.colors.colPrimary
                     radius: bg.zzzEverywhere ? 0 : 2
@@ -1116,7 +1116,7 @@ Item {
                                 }
                                 height: root.compactNavBgHeight
                                 radius: bg.angelEverywhere ? Appearance.angel.roundingSmall
-                                      : bg.inirEverywhere  ? Appearance.inir.roundingSmall
+                                      : bg.ilmangoEverywhere  ? Appearance.ilmango.roundingSmall
                                       : Appearance.rounding.small
 
                                 // Bgless doctrine: no plate at rest, hover or press.
@@ -1134,16 +1134,16 @@ Item {
                                     // Bgless: active icon carries the accent itself (no plate behind)
                                     color: navItem.isActive
                                         ? (bg.zzzEverywhere   ? Appearance.zzz.accent
-                                         : bg.inirEverywhere  ? Appearance.inir.colPrimary
+                                         : bg.ilmangoEverywhere  ? Appearance.ilmango.colPrimary
                                          : bg.angelEverywhere ? Appearance.angel.colPrimary
                                          : Appearance.colors.colPrimary)
                                         : (navMA.containsMouse
                                          ? (bg.zzzEverywhere  ? Appearance.zzz.ink
-                                          : bg.inirEverywhere ? Appearance.inir.colText
+                                          : bg.ilmangoEverywhere ? Appearance.ilmango.colText
                                           : bg.angelEverywhere ? Appearance.angel.colText
                                           : Appearance.colors.colOnLayer1)
                                          : (bg.zzzEverywhere  ? Appearance.zzz.inkMuted
-                                          : bg.inirEverywhere ? Appearance.inir.colTextSecondary
+                                          : bg.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                                           : bg.angelEverywhere ? Appearance.angel.colTextSecondary
                                           : Appearance.colors.colOnLayer1))
                                     Behavior on color { enabled: Appearance.animationsEnabled; ColorAnimation { duration: Appearance.animation.elementMoveFast.duration } }
@@ -1167,7 +1167,7 @@ Item {
                                     width: Math.max(16, badgeLabel.implicitWidth + 8)
                                     height: 16
                                     radius: 8
-                                    color: bg.inirEverywhere  ? Appearance.inir.colPrimary
+                                    color: bg.ilmangoEverywhere  ? Appearance.ilmango.colPrimary
                                          : bg.angelEverywhere ? Appearance.angel.colPrimary
                                          : Appearance.colors.colPrimary
 
@@ -1178,7 +1178,7 @@ Item {
                                         font.pixelSize: 9
                                         font.weight: Font.Bold
                                         font.family: Appearance.font.family.numbers
-                                        color: bg.inirEverywhere  ? Appearance.inir.colOnPrimary
+                                        color: bg.ilmangoEverywhere  ? Appearance.ilmango.colOnPrimary
                                              : bg.angelEverywhere ? Appearance.angel.colOnPrimary
                                              : Appearance.colors.colOnPrimary
                                     }
@@ -1223,7 +1223,7 @@ Item {
                         height: 1
                         visible: false
                         color: bg.angelEverywhere  ? ColorUtils.transparentize(Appearance.angel.colCardBorder, 0.68)
-                             : bg.inirEverywhere   ? ColorUtils.transparentize(Appearance.inir.colBorder, 0.5)
+                             : bg.ilmangoEverywhere   ? ColorUtils.transparentize(Appearance.ilmango.colBorder, 0.5)
                              : bg.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colOutlineVariant, 0.80)
                              : ColorUtils.transparentize(Appearance.colors.colOutlineVariant, 0.76)
                     }
@@ -1253,7 +1253,7 @@ Item {
                                 }
                                 height: root.compactActionBgHeight
                                 radius: bg.angelEverywhere ? Appearance.angel.roundingSmall
-                                      : bg.inirEverywhere  ? Appearance.inir.roundingSmall
+                                      : bg.ilmangoEverywhere  ? Appearance.ilmango.roundingSmall
                                       : Appearance.rounding.small
                                 color: {
                                     if (sysMA.containsPress)
@@ -1264,7 +1264,7 @@ Item {
                                 }
                                 border.width: 0
                                 border.color: bg.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colCardBorder, 0.46)
-                                    : bg.inirEverywhere ? ColorUtils.transparentize(Appearance.inir.colBorder, 0.36)
+                                    : bg.ilmangoEverywhere ? ColorUtils.transparentize(Appearance.ilmango.colBorder, 0.36)
                                     : bg.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colOutlineVariant, 0.75)
                                     : ColorUtils.transparentize(Appearance.colors.colOutlineVariant, 0.70)
                                 Behavior on color { enabled: Appearance.animationsEnabled; ColorAnimation { duration: Appearance.animation.elementMoveFast.duration } }
@@ -1273,7 +1273,7 @@ Item {
                                     anchors.centerIn: parent
                                     iconSize: 20
                                     text: sysItem.modelData.icon
-                                    color: bg.inirEverywhere  ? Appearance.inir.colTextSecondary
+                                    color: bg.ilmangoEverywhere  ? Appearance.ilmango.colTextSecondary
                                          : bg.angelEverywhere ? Appearance.angel.colTextSecondary
                                          : Appearance.colors.colOnLayer1
                                 }
@@ -1304,7 +1304,7 @@ Item {
                             }
                             height: root.compactActionBgHeight
                             radius: bg.angelEverywhere ? Appearance.angel.roundingSmall
-                                  : bg.inirEverywhere  ? Appearance.inir.roundingSmall
+                                  : bg.ilmangoEverywhere  ? Appearance.ilmango.roundingSmall
                                   : Appearance.rounding.small
                             color: {
                                 if (layoutMA.containsPress)
@@ -1315,7 +1315,7 @@ Item {
                             }
                             border.width: 0
                             border.color: bg.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colCardBorder, 0.46)
-                                : bg.inirEverywhere ? ColorUtils.transparentize(Appearance.inir.colBorder, 0.36)
+                                : bg.ilmangoEverywhere ? ColorUtils.transparentize(Appearance.ilmango.colBorder, 0.36)
                                 : bg.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colOutlineVariant, 0.75)
                                 : ColorUtils.transparentize(Appearance.colors.colOutlineVariant, 0.70)
                             Behavior on color { enabled: Appearance.animationsEnabled; ColorAnimation { duration: Appearance.animation.elementMoveFast.duration } }
@@ -1324,7 +1324,7 @@ Item {
                                 anchors.centerIn: parent
                                 iconSize: 18
                                 text: "view_agenda"
-                                color: bg.inirEverywhere  ? Appearance.inir.colPrimary
+                                color: bg.ilmangoEverywhere  ? Appearance.ilmango.colPrimary
                                      : bg.angelEverywhere ? Appearance.angel.colPrimary
                                      : Appearance.colors.colPrimary
                             }
@@ -1506,7 +1506,7 @@ Item {
                                     }
                                     font.pixelSize: Appearance.font.pixelSize.small
                                     font.weight: Font.Medium
-                                    color: bg.inirEverywhere ? Appearance.inir.colPrimary
+                                    color: bg.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                                         : bg.angelEverywhere ? Appearance.angel.colPrimary
                                         : Appearance.colors.colPrimary
                                 }
@@ -1517,11 +1517,11 @@ Item {
                                     enabled: sectionDelegate.index > 0
                                     opacity: enabled ? 1 : 0.3
                                     colBackground: "transparent"
-                                    colBackgroundHover: bg.inirEverywhere ? Appearance.inir.colLayer1Hover
+                                    colBackgroundHover: bg.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
                                         : bg.angelEverywhere ? Appearance.angel.colGlassCardHover
                                         : Appearance.colors.colLayer1Hover
                                     onClicked: root.moveSectionUp(sectionDelegate.index)
-                                    contentItem: MaterialSymbol { anchors.centerIn: parent; text: "arrow_upward"; iconSize: 16; color: bg.inirEverywhere ? Appearance.inir.colText : bg.angelEverywhere ? Appearance.angel.colText : Appearance.colors.colOnLayer1 }
+                                    contentItem: MaterialSymbol { anchors.centerIn: parent; text: "arrow_upward"; iconSize: 16; color: bg.ilmangoEverywhere ? Appearance.ilmango.colText : bg.angelEverywhere ? Appearance.angel.colText : Appearance.colors.colOnLayer1 }
                                     StyledToolTip { text: Translation.tr("Move up") }
                                 }
                                 
@@ -1531,11 +1531,11 @@ Item {
                                     enabled: sectionDelegate.index < root.controlsSectionOrder.length - 1
                                     opacity: enabled ? 1 : 0.3
                                     colBackground: "transparent"
-                                    colBackgroundHover: bg.inirEverywhere ? Appearance.inir.colLayer1Hover
+                                    colBackgroundHover: bg.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
                                         : bg.angelEverywhere ? Appearance.angel.colGlassCardHover
                                         : Appearance.colors.colLayer1Hover
                                     onClicked: root.moveSectionDown(sectionDelegate.index)
-                                    contentItem: MaterialSymbol { anchors.centerIn: parent; text: "arrow_downward"; iconSize: 16; color: bg.inirEverywhere ? Appearance.inir.colText : bg.angelEverywhere ? Appearance.angel.colText : Appearance.colors.colOnLayer1 }
+                                    contentItem: MaterialSymbol { anchors.centerIn: parent; text: "arrow_downward"; iconSize: 16; color: bg.ilmangoEverywhere ? Appearance.ilmango.colText : bg.angelEverywhere ? Appearance.angel.colText : Appearance.colors.colOnLayer1 }
                                     StyledToolTip { text: Translation.tr("Move down") }
                                 }
                             }
@@ -1819,7 +1819,7 @@ Item {
             }
         }
         GlobalStates.sidebarRightOpen = false
-        Qt.callLater(() => Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "settings"]))
+        Qt.callLater(() => Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "settings"]))
     }
 
     // ═════════════════════════════════════════════════════════════
@@ -1874,7 +1874,7 @@ Item {
                 text: sectionHeader.headerIcon
                 iconSize: 18
                 fill: 1
-                color: bg.inirEverywhere  ? Appearance.inir.colPrimary
+                color: bg.ilmangoEverywhere  ? Appearance.ilmango.colPrimary
                      : bg.angelEverywhere ? Appearance.angel.colPrimary
                      : Appearance.colors.colPrimary
             }
@@ -1884,7 +1884,7 @@ Item {
                 text: sectionHeader.headerText
                 font.pixelSize: Appearance.font.pixelSize.small
                 font.weight: Font.Medium
-                color: bg.inirEverywhere  ? Appearance.inir.colText
+                color: bg.ilmangoEverywhere  ? Appearance.ilmango.colText
                      : bg.angelEverywhere ? Appearance.angel.colText
                      : Appearance.colors.colOnLayer0
             }
@@ -1896,7 +1896,7 @@ Item {
                     implicitWidth: Math.max(18, badgeLabelInHeader.implicitWidth + 8)
                     implicitHeight: 18
                     radius: 9
-                    color: bg.inirEverywhere  ? Appearance.inir.colSecondaryContainer
+                    color: bg.ilmangoEverywhere  ? Appearance.ilmango.colSecondaryContainer
                          : bg.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimary, 0.70)
                          : Appearance.colors.colSecondaryContainer
 
@@ -1907,7 +1907,7 @@ Item {
                         font.pixelSize: Appearance.font.pixelSize.smallest
                         font.weight: Font.Bold
                         font.family: Appearance.font.family.numbers
-                        color: bg.inirEverywhere  ? Appearance.inir.colOnSecondaryContainer
+                        color: bg.ilmangoEverywhere  ? Appearance.ilmango.colOnSecondaryContainer
                              : bg.angelEverywhere ? Appearance.angel.colOnPrimary
                              : Appearance.colors.colOnSecondaryContainer
                     }
@@ -1920,18 +1920,18 @@ Item {
             RippleButton {
                 implicitWidth: 28; implicitHeight: 28
                 buttonRadius: bg.angelEverywhere ? Appearance.angel.roundingSmall
-                    : bg.inirEverywhere ? Appearance.inir.roundingSmall : 14
-                colBackground: bg.inirEverywhere ? ColorUtils.transparentize(Appearance.inir.colLayer1, 0.35)
+                    : bg.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : 14
+                colBackground: bg.ilmangoEverywhere ? ColorUtils.transparentize(Appearance.ilmango.colLayer1, 0.35)
                     : bg.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colGlassCard, 0.72)
                     : bg.auroraEverywhere ? bg.colDarkSurface
                     : ColorUtils.transparentize(Appearance.colors.colLayer1, 0.68)
                 colBackgroundHover: bg.angelEverywhere ? Appearance.angel.colGlassCardHover
-                    : bg.inirEverywhere ? Appearance.inir.colLayer1Hover
+                    : bg.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
                     : Appearance.colors.colLayer1Hover
                 onClicked: sectionHeader.secondaryActionClicked()
                 contentItem: MaterialSymbol {
                     anchors.centerIn: parent; text: sectionHeader.secondaryActionIcon; iconSize: 16
-                    color: bg.inirEverywhere  ? Appearance.inir.colTextSecondary
+                    color: bg.ilmangoEverywhere  ? Appearance.ilmango.colTextSecondary
                          : bg.angelEverywhere ? Appearance.angel.colTextSecondary
                          : Appearance.colors.colSubtext
                 }
@@ -1948,27 +1948,27 @@ Item {
             RippleButton {
                 implicitWidth: 28; implicitHeight: 28
                 buttonRadius: bg.angelEverywhere ? Appearance.angel.roundingSmall
-                    : bg.inirEverywhere ? Appearance.inir.roundingSmall : 14
+                    : bg.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : 14
                 colBackground: sectionHeader.actionToggled
-                    ? (bg.inirEverywhere ? Appearance.inir.colSecondaryContainer
+                    ? (bg.ilmangoEverywhere ? Appearance.ilmango.colSecondaryContainer
                      : bg.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimary, 0.60)
                      : Appearance.colors.colSecondaryContainer)
-                    : (bg.inirEverywhere ? ColorUtils.transparentize(Appearance.inir.colLayer1, 0.35)
+                    : (bg.ilmangoEverywhere ? ColorUtils.transparentize(Appearance.ilmango.colLayer1, 0.35)
                      : bg.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colGlassCard, 0.72)
                      : bg.auroraEverywhere ? bg.colDarkSurface
                      : ColorUtils.transparentize(Appearance.colors.colLayer1, 0.68))
                 colBackgroundHover: bg.angelEverywhere ? Appearance.angel.colGlassCardHover
-                    : bg.inirEverywhere ? Appearance.inir.colLayer1Hover
+                    : bg.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
                     : Appearance.colors.colLayer1Hover
                 onClicked: sectionHeader.actionClicked()
                 contentItem: MaterialSymbol {
                     anchors.centerIn: parent; text: sectionHeader.actionIcon; iconSize: 16
                     fill: sectionHeader.actionToggled ? 1 : 0; animateFill: true
                     color: sectionHeader.actionToggled
-                        ? (bg.inirEverywhere  ? Appearance.inir.colOnSecondaryContainer
+                        ? (bg.ilmangoEverywhere  ? Appearance.ilmango.colOnSecondaryContainer
                          : bg.angelEverywhere ? Appearance.angel.colOnPrimary
                          : Appearance.colors.colOnSecondaryContainer)
-                        : (bg.inirEverywhere  ? Appearance.inir.colTextSecondary
+                        : (bg.ilmangoEverywhere  ? Appearance.ilmango.colTextSecondary
                          : bg.angelEverywhere ? Appearance.angel.colTextSecondary
                          : Appearance.colors.colSubtext)
                 }
@@ -2009,28 +2009,28 @@ Item {
                 buttonRadius: bg.zzzEverywhere ? Appearance.zzz.controlRadius : Appearance.rounding.full
                 colBackground: Notifications.silent
                     ? (bg.zzzEverywhere ? Appearance.zzz.sticker
-                        : bg.inirEverywhere ? Appearance.inir.colSecondaryContainer
+                        : bg.ilmangoEverywhere ? Appearance.ilmango.colSecondaryContainer
                         : bg.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimary, 0.60)
                         : Appearance.colors.colSecondaryContainer)
-                    : (bg.inirEverywhere ? Appearance.inir.colLayer1
+                    : (bg.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                         : bg.angelEverywhere ? Appearance.angel.colGlassCard
                         : bg.colDarkSurface)
                 colBackgroundHover: Notifications.silent
                     ? (bg.zzzEverywhere ? Appearance.colors.colPrimaryHover
-                        : bg.inirEverywhere ? Appearance.inir.colSecondaryContainerHover
+                        : bg.ilmangoEverywhere ? Appearance.ilmango.colSecondaryContainerHover
                         : bg.angelEverywhere ? Appearance.angel.colPrimaryHover
                         : Appearance.colors.colSecondaryContainerHover)
                     : (bg.zzzEverywhere ? Appearance.colors.colLayer1Hover
-                        : bg.inirEverywhere ? Appearance.inir.colLayer1Hover
+                        : bg.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
                         : bg.angelEverywhere ? Appearance.angel.colGlassCardHover
                         : bg.colDarkSurfaceHover)
                 colRipple: Notifications.silent
                     ? (bg.zzzEverywhere ? Appearance.colors.colPrimaryActive
-                        : bg.inirEverywhere ? Appearance.inir.colSecondaryContainerActive
+                        : bg.ilmangoEverywhere ? Appearance.ilmango.colSecondaryContainerActive
                         : bg.angelEverywhere ? Appearance.angel.colPrimaryActive
                         : Appearance.colors.colSecondaryContainerActive)
                     : (bg.zzzEverywhere ? Appearance.colors.colLayer1Active
-                        : bg.inirEverywhere ? Appearance.inir.colLayer1Active
+                        : bg.ilmangoEverywhere ? Appearance.ilmango.colLayer1Active
                         : bg.angelEverywhere ? Appearance.angel.colGlassCardActive
                         : bg.colDarkSurfaceActive)
                 onClicked: Notifications.silent = !Notifications.silent
@@ -2045,11 +2045,11 @@ Item {
                         iconSize: 16
                         color: Notifications.silent
                             ? (bg.zzzEverywhere ? Appearance.zzz.onSticker
-                                : bg.inirEverywhere ? Appearance.inir.colOnSecondaryContainer
+                                : bg.ilmangoEverywhere ? Appearance.ilmango.colOnSecondaryContainer
                                 : bg.angelEverywhere ? Appearance.angel.colOnPrimary
                                 : Appearance.colors.colOnSecondaryContainer)
                             : (bg.zzzEverywhere ? Appearance.colors.colSubtext
-                                : bg.inirEverywhere ? Appearance.inir.colTextSecondary
+                                : bg.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                                 : bg.angelEverywhere ? Appearance.angel.colTextSecondary
                                 : Appearance.colors.colSubtext)
                     }
@@ -2061,11 +2061,11 @@ Item {
                         font.pixelSize: Appearance.font.pixelSize.smaller
                         color: Notifications.silent
                             ? (bg.zzzEverywhere ? Appearance.zzz.onSticker
-                                : bg.inirEverywhere ? Appearance.inir.colOnSecondaryContainer
+                                : bg.ilmangoEverywhere ? Appearance.ilmango.colOnSecondaryContainer
                                 : bg.angelEverywhere ? Appearance.angel.colOnPrimary
                                 : Appearance.colors.colOnSecondaryContainer)
                             : (bg.zzzEverywhere ? Appearance.colors.colOnLayer1
-                                : bg.inirEverywhere ? Appearance.inir.colText
+                                : bg.ilmangoEverywhere ? Appearance.ilmango.colText
                                 : bg.angelEverywhere ? Appearance.angel.colText
                                 : Appearance.colors.colOnLayer1)
                     }
@@ -2097,7 +2097,7 @@ Item {
                 label: Translation.tr("Screenshot")
                 onClicked: {
                     GlobalStates.sidebarRightOpen = false
-                    Qt.callLater(() => Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "region", "screenshot"]))
+                    Qt.callLater(() => Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "region", "screenshot"]))
                 }
             }
 
@@ -2107,7 +2107,7 @@ Item {
                 label: Translation.tr("Record")
                 onClicked: {
                     GlobalStates.sidebarRightOpen = false
-                    Qt.callLater(() => Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "region", "record"]))
+                    Qt.callLater(() => Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "region", "record"]))
                 }
             }
 
@@ -2117,7 +2117,7 @@ Item {
                 label: Translation.tr("OCR")
                 onClicked: {
                     GlobalStates.sidebarRightOpen = false
-                    Qt.callLater(() => Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "region", "ocr"]))
+                    Qt.callLater(() => Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "region", "ocr"]))
                 }
             }
 
@@ -2127,7 +2127,7 @@ Item {
                 label: Translation.tr("Search")
                 onClicked: {
                     GlobalStates.sidebarRightOpen = false
-                    Qt.callLater(() => Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "region", "search"]))
+                    Qt.callLater(() => Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "region", "search"]))
                 }
             }
 
@@ -2182,7 +2182,7 @@ Item {
                 id: bubbleBackground
                 anchors.centerIn: parent
                 color: bg.angelEverywhere ? Appearance.angel.colPrimary
-                    : bg.inirEverywhere ? Appearance.inir.colPrimary
+                    : bg.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                     : Appearance.colors.colPrimary
                 radius: Appearance.rounding.full
                 implicitWidth: bubbleLabel.implicitWidth + 24
@@ -2195,7 +2195,7 @@ Item {
                     font.pixelSize: Appearance.font.pixelSize.small
                     font.weight: Font.Medium
                     color: bg.angelEverywhere ? Appearance.angel.colOnPrimary
-                        : bg.inirEverywhere ? Appearance.inir.colOnPrimary
+                        : bg.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary
                         : Appearance.colors.colOnPrimary
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
@@ -2216,16 +2216,16 @@ Item {
         implicitHeight: 52
 
         // Style helpers
-        readonly property color _colPrimary: bg.inirEverywhere ? Appearance.inir.colPrimary
+        readonly property color _colPrimary: bg.ilmangoEverywhere ? Appearance.ilmango.colPrimary
             : bg.angelEverywhere ? Appearance.angel.colPrimary
             : Appearance.colors.colPrimary
-        readonly property color _colText: bg.inirEverywhere ? Appearance.inir.colText
+        readonly property color _colText: bg.ilmangoEverywhere ? Appearance.ilmango.colText
             : bg.angelEverywhere ? Appearance.angel.colText
             : Appearance.colors.colOnLayer1
-        readonly property color _colOnToggle: bg.inirEverywhere ? Appearance.inir.colOnSecondaryContainer
+        readonly property color _colOnToggle: bg.ilmangoEverywhere ? Appearance.ilmango.colOnSecondaryContainer
             : bg.angelEverywhere ? Appearance.angel.colOnPrimary
             : Appearance.colors.colOnSecondaryContainer
-        readonly property color _colToggleBg: bg.inirEverywhere ? Appearance.inir.colSecondaryContainer
+        readonly property color _colToggleBg: bg.ilmangoEverywhere ? Appearance.ilmango.colSecondaryContainer
             : bg.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimary, 0.6)
             : Appearance.colors.colSecondaryContainer
 
@@ -2233,15 +2233,15 @@ Item {
             id: qaBtnBg
             anchors.fill: parent
             radius: bg.angelEverywhere ? Appearance.angel.roundingSmall
-                : bg.inirEverywhere ? Appearance.inir.roundingSmall
+                : bg.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
                 : Appearance.rounding.small
             color: {
                 if (qaBtnMA.containsPress)
-                    return bg.inirEverywhere ? Appearance.inir.colLayer2Active
+                    return bg.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
                         : bg.angelEverywhere ? Appearance.angel.colGlassCardActive
                         : bg.colDarkSurfaceActive
                 if (qaBtnMA.containsMouse)
-                    return bg.inirEverywhere ? Appearance.inir.colLayer2Hover
+                    return bg.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                         : bg.angelEverywhere ? Appearance.angel.colGlassCardHover
                         : bg.colDarkSurfaceHover
                 if (qaBtn.toggled)

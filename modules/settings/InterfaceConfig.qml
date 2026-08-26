@@ -520,7 +520,7 @@ ContentPage {
                 StyledText {
                     text: Translation.tr("From")
                     color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                        : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurface
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurface
                 }
                 MaterialTextField {
                     Layout.preferredWidth: 90
@@ -537,7 +537,7 @@ ContentPage {
                 StyledText {
                     text: Translation.tr("to")
                     color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                        : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurface
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurface
                 }
                 MaterialTextField {
                     Layout.preferredWidth: 90
@@ -1081,11 +1081,11 @@ ContentPage {
                         visible: coinInput.text.length > 0 && cryptoSection.filteredCoins().length > 0
 
                         background: Rectangle {
-                            color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                                  : Appearance.colors.colLayer2Base
-                            radius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                            radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
                             border.width: 1
-                            border.color: Appearance.inirEverywhere ? Appearance.inir.colBorder
+                            border.color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                                         : Appearance.colors.colLayer0Border
                         }
 
@@ -1456,11 +1456,11 @@ ContentPage {
                         visible: tzInput.text.length > 0 && worldClockSection.filteredTimezones().length > 0
 
                         background: Rectangle {
-                            color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                                  : Appearance.colors.colLayer2Base
-                            radius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                            radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
                             border.width: 1
-                            border.color: Appearance.inirEverywhere ? Appearance.inir.colBorder
+                            border.color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                                         : Appearance.colors.colLayer0Border
                         }
 
@@ -1556,10 +1556,10 @@ ContentPage {
 
                             Layout.fillWidth: true
                             implicitHeight: 44
-                            radius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                            radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
                             color: tzRowHover.containsMouse
-                                ? (Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover : Appearance.colors.colLayer2Hover)
-                                : (Appearance.inirEverywhere ? Appearance.inir.colLayer2 : Appearance.colors.colLayer2)
+                                ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover : Appearance.colors.colLayer2Hover)
+                                : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 : Appearance.colors.colLayer2)
 
                             Behavior on color {
                                 enabled: Appearance.animationsEnabled
@@ -1687,8 +1687,8 @@ ContentPage {
                     Layout.fillWidth: true
                     visible: (Config.options?.sidebar?.widgets?.worldClock_settings?.timezones ?? []).length === 0
                     implicitHeight: emptyCol.implicitHeight + 20
-                    radius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
-                    color: Appearance.inirEverywhere ? Appearance.inir.colLayer2 : Appearance.colors.colLayer2
+                    radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 : Appearance.colors.colLayer2
 
                     ColumnLayout {
                         id: emptyCol

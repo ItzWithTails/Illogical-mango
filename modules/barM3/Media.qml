@@ -223,7 +223,7 @@ Item {
                         Image {
                             id: avatarImage
                             anchors.fill: parent
-                            // Upstream hardcoded ~/.face. iNiR already resolves
+                            // Upstream hardcoded ~/.face. Illogical-mango already resolves
                             // the avatar across AccountsService and the two
                             // ricer paths, so use its primary source.
                             source: Directories.userAvatarSourcePrimary

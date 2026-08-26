@@ -3,7 +3,7 @@
 
 MIGRATION_ID="035-hide-xembedsniproxy-window"
 MIGRATION_TITLE="Hide the XEmbed tray bridge window"
-MIGRATION_DESCRIPTION="Adds a Niri rule that keeps xembedsniproxy's internal X11 selection window transparent, floating, and unfocused so iNiR restarts no longer flash a black window."
+MIGRATION_DESCRIPTION="Adds a Niri rule that keeps xembedsniproxy's internal X11 selection window transparent, floating, and unfocused so Illogical-mango restarts no longer flash a black window."
 MIGRATION_TARGET_FILE="~/.config/niri/config.d/30-window-rules.kdl"
 MIGRATION_REQUIRED=true
 
@@ -24,7 +24,7 @@ migration_preview() {
 migration_apply() {
     [[ -f "$_xembed_rules_file" ]] || return 1
 
-    local tmp_file="${_xembed_rules_file}.inir-xembed.$$"
+    local tmp_file="${_xembed_rules_file}.ilmango-xembed.$$"
     awk '
         BEGIN { inserted = 0 }
         !inserted && /^\/\/ ── Privacy:/ {

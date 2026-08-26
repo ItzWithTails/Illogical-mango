@@ -131,9 +131,9 @@ Item {
 
     readonly property bool showTitle: Config.options?.bar?.activeWindow?.showTitle ?? true
 
-    property color titleColor: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer0
+    property color titleColor: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer0
     property color appNameColor: Appearance.regaliaEverywhere ? Appearance.regalia.onMuted
-        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
 
     // Lock both rows to baselines derived from the configured UI font. Emoji,
     // Nerd Font symbols and other fallback glyphs may report taller bounds, but

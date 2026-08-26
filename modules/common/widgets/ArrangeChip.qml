@@ -8,7 +8,7 @@ import qs.modules.common
  * label that can be "lifted" (tap once) and then placed on any
  * ArrangeDropSlot. Purely presentational — the page owns the lifted
  * state and the actual move. Pairs with ArrangeDropSlot; pattern
- * documented in the inir-settings-ui skill.
+ * documented in the ilmango-settings-ui skill.
  */
 Rectangle {
     id: root

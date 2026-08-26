@@ -117,7 +117,7 @@ DashCard {
                     buttonRadius: Appearance.rounding.full
                     colBackground: "transparent"
                     colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                        : root.inirEverywhere ? Appearance.inir.colLayer2Hover
+                        : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                         : root.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
                         : Appearance.colors.colLayer2Hover
                     property alias iconName: symbol.text

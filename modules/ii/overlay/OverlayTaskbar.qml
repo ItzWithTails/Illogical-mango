@@ -20,15 +20,15 @@ Rectangle {
     implicitWidth: contentRow.implicitWidth + (padding * 2)
     implicitHeight: contentRow.implicitHeight + (padding * 2)
     color: Appearance.angelEverywhere || Appearance.regaliaEverywhere ? "transparent"
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
         : Appearance.colors.colSurfaceContainer
     radius: Appearance.regaliaEverywhere ? Appearance.regalia.roundLarge
         : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-        : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
         : Appearance.rounding.large
     border.color: Appearance.regaliaEverywhere ? "transparent"
         : Appearance.angelEverywhere ? Appearance.angel.colBorder
-        : Appearance.inirEverywhere ? Appearance.inir.colBorder
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
         : Appearance.colors.colOutlineVariant
     border.width: Appearance.regaliaEverywhere ? 0
         : Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : 1
@@ -127,7 +127,7 @@ Rectangle {
     component Separator: Rectangle {
         implicitWidth: 1
         color: Appearance.angelEverywhere ? Appearance.angel.colBorderSubtle
-            : Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
             : Appearance.colors.colOutlineVariant
         Layout.fillHeight: true
         Layout.topMargin: 10

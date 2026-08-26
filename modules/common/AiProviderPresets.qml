@@ -189,7 +189,7 @@ Singleton {
             "requiresKey": true,
             "keyId": "opencode-zen",
             "keyGetLink": "https://opencode.ai/auth",
-            "description": Translation.tr("OpenCode's full live catalog. iNiR selects the correct Responses, Messages, Gemini or Chat Completions route per model."),
+            "description": Translation.tr("OpenCode's full live catalog. Illogical-mango selects the correct Responses, Messages, Gemini or Chat Completions route per model."),
             "free": true,
             "local": false,
             "featured": true,

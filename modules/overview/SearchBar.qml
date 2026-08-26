@@ -127,7 +127,7 @@ RowLayout {
         onClicked: {
             GlobalStates.overviewOpen = false;
             // Use IPC to trigger region search (works for both Hyprland and Niri)
-            Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "region", "googleLens"]);
+            Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "region", "googleLens"]);
         }
         text: "image_search"
         StyledToolTip {
@@ -150,9 +150,9 @@ RowLayout {
 
         colText: toggled
             ? (Appearance.regaliaEverywhere ? Appearance.regalia.primaryPlateInk
-                : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary : Appearance.colors.colOnPrimary)
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary : Appearance.colors.colOnPrimary)
             : (Appearance.regaliaEverywhere ? Appearance.regalia.onMuted
-                : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurfaceVariant)
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurfaceVariant)
         background: Item {
             RegaliaControlFace {
                 anchors.fill: parent
@@ -184,9 +184,9 @@ RowLayout {
                 }
                 color: {
                     if (songRecButton.toggled) {
-                        return songRecButton.hovered ? (Appearance.inirEverywhere ? Appearance.inir.colPrimaryHover : Appearance.colors.colPrimaryHover) : (Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary)
+                        return songRecButton.hovered ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryHover : Appearance.colors.colPrimaryHover) : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary)
                     } else {
-                        return songRecButton.hovered ? (Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover : Appearance.colors.colSurfaceContainerHigh) : (Appearance.inirEverywhere ? Appearance.inir.colLayer2 : ColorUtils.transparentize(Appearance.colors.colSurfaceContainerHigh))
+                        return songRecButton.hovered ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover : Appearance.colors.colSurfaceContainerHigh) : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 : ColorUtils.transparentize(Appearance.colors.colSurfaceContainerHigh))
                     }
                 }
                 Behavior on color {

@@ -16,7 +16,7 @@ import Quickshell.Io
  *
  * Provides a unified, categorized catalog of shell actions that can be:
  * - Searched via the overview launcher (action prefix)
- * - Invoked via IPC: `inir globalActions run <actionId> [args]`
+ * - Invoked via IPC: `ilmango globalActions run <actionId> [args]`
  * - Extended by users via scripts in ~/.config/illogical-impulse/actions/
  *
  * Architecture:
@@ -33,7 +33,7 @@ Singleton {
     readonly property var allActions: _rebuildActions()
 
     function runLauncher(args): void {
-        Quickshell.execDetached([Quickshell.shellPath("scripts/inir")].concat(args ?? []))
+        Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango")].concat(args ?? []))
     }
 
     function applyGlobalStyle(styleId: string): void {
@@ -341,13 +341,13 @@ Singleton {
             execute: () => { root.applyGlobalStyle("aurora") }
         },
         {
-            id: "style-inir",
-            name: Translation.tr("Style: iNiR"),
-            description: Translation.tr("Switch to iNiR style"),
+            id: "style-ilmango",
+            name: Translation.tr("Style: Illogical-mango"),
+            description: Translation.tr("Switch to Illogical-mango style"),
             icon: "terminal",
             category: "appearance",
-            keywords: ["style", "inir", "theme"],
-            execute: () => { root.applyGlobalStyle("inir") }
+            keywords: ["style", "ilmango", "theme"],
+            execute: () => { root.applyGlobalStyle("ilmango") }
         },
         {
             id: "style-angel",

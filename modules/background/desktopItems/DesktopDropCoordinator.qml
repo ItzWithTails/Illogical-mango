@@ -133,7 +133,7 @@ Item {
         anchors.fill: parent
         z: -100
         enabled: root.interactive && !GlobalStates.screenLocked && !GlobalStates.widgetEditMode
-        keys: ["application/x-inir-desktop-entry", "text/uri-list", "text/plain"]
+        keys: ["application/x-ilmango-desktop-entry", "text/uri-list", "text/plain"]
         onEntered: drag => {
             root.dropHover = true
             drag.accept(Qt.CopyAction)
@@ -141,10 +141,10 @@ Item {
         onExited: root.dropHover = false
         onDropped: drop => {
             root.dropHover = false
-            if (drop.keys.includes("application/x-inir-desktop-entry")) {
+            if (drop.keys.includes("application/x-ilmango-desktop-entry")) {
                 root._dropX = drop.x
                 root._dropY = drop.y
-                const desktopId = String(drop.getDataAsString("application/x-inir-desktop-entry") ?? "")
+                const desktopId = String(drop.getDataAsString("application/x-ilmango-desktop-entry") ?? "")
                     .trim().replace(/\.desktop$/i, "")
                 const entry = AppSearch.lookupDesktopEntry(desktopId)
                 if (desktopId.length === 0 || !entry) {

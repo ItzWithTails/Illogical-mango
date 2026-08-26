@@ -998,24 +998,24 @@ def generate_zed_config(
 
     theme_data = {
         "$schema": "https://zed.dev/schema/themes/v0.2.0.json",
-        "name": "iNiR Material",
-        "author": "iNiR Theme System",
+        "name": "Illogical-mango Material",
+        "author": "Illogical-mango Theme System",
         "themes": [
-            {"name": "iNiR Dark", "appearance": "dark", "style": dark_style},
-            {"name": "iNiR Light", "appearance": "light", "style": light_style},
+            {"name": "Illogical-mango Dark", "appearance": "dark", "style": dark_style},
+            {"name": "Illogical-mango Light", "appearance": "light", "style": light_style},
             {
-                "name": "iNiR Borderless Dark",
+                "name": "Illogical-mango Borderless Dark",
                 "appearance": "dark",
                 "style": borderless_dark_style,
             },
             {
-                "name": "iNiR Borderless Light",
+                "name": "Illogical-mango Borderless Light",
                 "appearance": "light",
                 "style": borderless_light_style,
             },
-            {"name": "iNiR-alt Dark", "appearance": "dark", "style": alt_dark_style},
+            {"name": "Illogical-mango-alt Dark", "appearance": "dark", "style": alt_dark_style},
             {
-                "name": "iNiR-alt Light",
+                "name": "Illogical-mango-alt Light",
                 "appearance": "light",
                 "style": alt_light_style,
             },

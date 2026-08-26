@@ -1191,7 +1191,7 @@ Item {
 
                 /**
                  * The pill replaces the bar, so it also has to be the way into the
-                 * shell's own panels. These two reach iNiR's sidebars directly;
+                 * shell's own panels. These two reach Illogical-mango's sidebars directly;
                  * everything else in this row belongs to the pill itself.
                  */
                 // Hairline before the shell shortcuts (sidebars + power).

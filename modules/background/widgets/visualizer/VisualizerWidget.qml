@@ -239,7 +239,7 @@ AbstractBackgroundWidget {
     // ── Visualizer rendering ─────────────────────────────────────
     CavaSpectrum {
         anchors.fill: parent
-        anchors.margins: Appearance.angelEverywhere || Appearance.inirEverywhere ? 4 : 0
+        anchors.margins: Appearance.angelEverywhere || Appearance.ilmangoEverywhere ? 4 : 0
         points: cavaProcess.points
         active: root._active && cavaProcess.audioSignalActive
         threadedRendering: true

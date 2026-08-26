@@ -15,7 +15,7 @@ import Quickshell.Widgets
 Item {
     id: root
 
-    // Upstream hardcoded 23/28 against its own fixed 40px bar. iNiR's bar
+    // Upstream hardcoded 23/28 against its own fixed 40px bar. Illogical-mango's bar
     // height is user-configurable (bar.height), so at anything but 40 the
     // icons floated as small chips in a taller bar. Scale off the real bar
     // size and let bar.m3.dockToPanel.* override with an explicit px value.
@@ -107,7 +107,7 @@ Item {
     }
 
     function commitOrder() {
-        // Upstream assigned the list directly, which under iNiR's Config is
+        // Upstream assigned the list directly, which under Illogical-mango's Config is
         // session-only: the new order was lost on the next restart.
         Config.setNestedValue("dock.pinnedApps", _workOrder.slice())
     }
@@ -192,7 +192,7 @@ Item {
                         middleClickAction: () => { AppSearch.launchEntry(slotItem.deskEntry) }
                         // Upstream unpinned the app on right click, so a stray
                         // right click silently destroyed the layout. Right click
-                        // opens the menu, exactly like iNiR's own dock.
+                        // opens the menu, exactly like Illogical-mango's own dock.
                         altAction: () => { pinnedMenu.active = true }
 
                         ContextMenu {

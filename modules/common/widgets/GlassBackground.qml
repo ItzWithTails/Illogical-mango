@@ -12,7 +12,7 @@ Rectangle {
     id: root
     
     property color fallbackColor: Appearance.colors.colLayer1
-    property color inirColor: Appearance.inir.colLayer1
+    property color ilmangoColor: Appearance.ilmango.colLayer1
     property real auroraTransparency: Appearance.aurora.popupTransparentize
     property bool wallpaperBackdropEnabled: true
     
@@ -24,7 +24,7 @@ Rectangle {
     
     readonly property bool angelEverywhere: Appearance.angelEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     // Bypasses the style gate, which is what its callers always documented it as
     // doing. It used to be AND-ed inside the backend check, so a surface asking
     // for a backdrop outside aurora — island glass, or a backdrop the user turned
@@ -40,7 +40,7 @@ Rectangle {
             && root.wallpaperBackdropEnabled)
     
     color: root.useWallpaperBackdrop ? "transparent"
-        : root.inirEverywhere ? root.inirColor
+        : root.ilmangoEverywhere ? root.ilmangoColor
         : root.fallbackColor
     
     property bool hovered: false

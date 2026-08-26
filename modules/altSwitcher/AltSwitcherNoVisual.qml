@@ -59,7 +59,7 @@ Scope {
 
     function routeToWaffle(functionName: string): void {
         Quickshell.execDetached([
-            Quickshell.shellPath("scripts/inir"),
+            Quickshell.shellPath("scripts/ilmango"),
             "waffleAltSwitcher",
             functionName
         ])

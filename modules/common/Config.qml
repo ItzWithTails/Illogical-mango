@@ -10,7 +10,7 @@ Singleton {
     property alias options: configOptionsJsonAdapter
     property bool ready: false
     property int revision: 0
-    property bool isSettingsProcess: (Quickshell.env("INIR_STANDALONE_WINDOW") ?? "") === "1"
+    property bool isSettingsProcess: (Quickshell.env("ILMANGO_STANDALONE_WINDOW") ?? "") === "1"
     property int readWriteDelay: 50 // milliseconds
     property bool blockWrites: false
     // Custom widget data stored outside JsonAdapter to avoid VME crash on property var
@@ -624,7 +624,7 @@ Singleton {
             }
 
             property JsonObject mascot: JsonObject {
-                property bool enable: false // Show the iNiR mascot illustration across shell surfaces (empty states, About, etc.)
+                property bool enable: false // Show the Illogical-mango mascot illustration across shell surfaces (empty states, About, etc.)
                 property JsonObject surfaces: JsonObject {
                     // Where the static mascot may appear; each maps to a group of placements
                     property bool emptyStates: true // Notifications, clipboard, todo, media, calendar, wallpapers, search results
@@ -721,7 +721,7 @@ Singleton {
 
             property JsonObject appearance: JsonObject {
                 property string theme: "auto" // Theme preset ID: "auto" for wallpaper-based, or preset name like "gruvbox-dark", "catppuccin-mocha", "custom", etc.
-                property string globalStyle: "material" // "material" | "cards" | "aurora" | "inir" | "angel" | "regalia" | "zzz" | "cookie"
+                property string globalStyle: "material" // "material" | "cards" | "aurora" | "ilmango" | "angel" | "regalia" | "zzz" | "cookie"
                 // Shared skin for every island surface (islands bar, island dock,
                 // island sidebars, island search). Consumed by IslandPanel.
                 property JsonObject island: JsonObject {
@@ -846,7 +846,7 @@ Singleton {
                     property int material: 1
                     property int cards: 3
                     property int aurora: 0
-                    property int inir: 1
+                    property int ilmango: 1
                     property int angel: 1
                     property int regalia: 1
                     property int zzz: 0
@@ -1047,7 +1047,7 @@ Singleton {
             property JsonObject performance: JsonObject {
                 property bool lowPower: false
                 property bool reduceAnimations: false
-                // JSGCHeap watchdog (#164). Stats stay on `inir memory`;
+                // JSGCHeap watchdog (#164). Stats stay on `ilmango memory`;
                 // the restart notification is opt-in.
                 property bool memoryMonitoring: true
                 property int jsgcThreshold: 300
@@ -1923,7 +1923,7 @@ Singleton {
                         property bool battery: true
                         property bool inbox: true
                         property bool mixer: true
-                        property bool sidebars: true // The two shortcuts into iNiR's own sidebars
+                        property bool sidebars: true // The two shortcuts into Illogical-mango's own sidebars
                         property bool power: true
                     }
                     // Optional hover-row surfaces; the stock ones are always available.
@@ -1947,7 +1947,7 @@ Singleton {
                 // keeps its own layout/appearance contract instead of reusing
                 // bar.layout/bar.modules/bar.borderless, because its grouping
                 // model (three flat layouts of widget names, string grouping
-                // style, per-position pill radii) is incompatible with iNiR's
+                // style, per-position pill radii) is incompatible with Illogical-mango's
                 // five-zone registry. Nothing here changes any other bar.
                 property JsonObject m3: JsonObject {
                     // 0: Hug | 1: Float | 2: Plain rectangle | 3: Material 3
@@ -2070,7 +2070,7 @@ Singleton {
                 property int customRounding: -1 // -1: use global theme rounding | 0+: override bar rounding (px)
                 property bool floatStyleShadow: true // Show shadow behind bar when cornerStyle == 1 (Float)
                 property bool borderless: true // true for no grouping of items
-                property string topLeftIcon: "distro" // Options: "distro" or any icon name in ~/.config/quickshell/inir/assets/icons
+                property string topLeftIcon: "distro" // Options: "distro" or any icon name in ~/.config/quickshell/ilmango/assets/icons
                 property bool showBackground: true
                 property bool showScrollHints: true // Show brightness/volume scroll hints on hover
                 property string leftScrollAction: "brightness" // "brightness", "volume", "workspace", "none"
@@ -2447,8 +2447,8 @@ Singleton {
             }
 
             property JsonObject hotspot: JsonObject {
-                property string ssid: "iNiR Hotspot"
-                property string password: "inirhotspot"
+                property string ssid: "Illogical-mango Hotspot"
+                property string password: "ilmangohotspot"
                 property string band: "bg" // "bg" = 2.4GHz, "a" = 5GHz
             }
 

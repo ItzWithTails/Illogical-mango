@@ -10,9 +10,9 @@ Rectangle {
     default property alias contentData: buttonRow.data
 
     radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-         : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+         : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
     color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colSurfaceContainer
     implicitWidth: mainRowLayout.implicitWidth + mainRowLayout.anchors.margins * 2
@@ -31,7 +31,7 @@ Rectangle {
             text: "info"
             iconSize: Appearance.font.pixelSize.huge
             color: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                 : Appearance.inirEverywhere ? Appearance.inir.colAccent : Appearance.colors.colPrimary
+                 : Appearance.ilmangoEverywhere ? Appearance.ilmango.colAccent : Appearance.colors.colPrimary
         }
 
         ColumnLayout {
@@ -43,7 +43,7 @@ Rectangle {
                 Layout.fillWidth: true
                 text: "Notice message"
                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                     : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurface
+                     : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurface
                 wrapMode: Text.WordWrap
             }
 

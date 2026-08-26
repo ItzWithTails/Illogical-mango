@@ -1,15 +1,15 @@
 # Architecture Overview
 
-How iNiR is put together, from the highest level down to the part that matters for your question.
+How Illogical-mango is put together, from the highest level down to the part that matters for your question.
 
 ## The 30-second version
 
-iNiR is a single-process QML application that runs inside Quickshell. There's no backend daemon, no IPC server, no separate process for services. Everything (the bar, sidebars, notifications, audio control, compositor IPC, config management) lives in one QML runtime talking to system services through D-Bus, sockets, and subprocess calls.
+Illogical-mango is a single-process QML application that runs inside Quickshell. There's no backend daemon, no IPC server, no separate process for services. Everything (the bar, sidebars, notifications, audio control, compositor IPC, config management) lives in one QML runtime talking to system services through D-Bus, sockets, and subprocess calls.
 
 ```
 Your apps
    |
-iNiR shell (bar, panels, notifications, settings, everything)
+Illogical-mango shell (bar, panels, notifications, settings, everything)
    |
 Quickshell (QML shell framework)
    |
@@ -34,7 +34,7 @@ Total cold start to panels visible: under 2 seconds on decent hardware.
 
 The shell has two completely separate visual identities that share the same services layer:
 
-**Material ii** uses Material Design language with 6 style variants (material, cards, aurora, inir, angel, zzz). Bar at the top. Sidebars from the edges. Overview launcher.
+**Material ii** uses Material Design language with 6 style variants (material, cards, aurora, ilmango, angel, zzz). Bar at the top. Sidebars from the edges. Overview launcher.
 
 **Waffle** uses Windows 11 Fluent Design. Taskbar at the bottom. Start menu. Action center. Notification center.
 
@@ -102,7 +102,7 @@ A simplified map of what lives where:
 |-----------|-------------|------------|
 | `modules/common/` | Config, Appearance, shared widgets | Critical |
 | `services/` | 70+ system integration singletons | High |
-| `scripts/inir` | CLI launcher (~3600 lines of bash) | High |
+| `scripts/ilmango` | CLI launcher (~3600 lines of bash) | High |
 | `sdata/` | Install, update, migrations | High |
 | `defaults/` | Shipped default config and app configs | Medium |
 | `modules/bar/` | Top bar (ii family) | Normal |
@@ -116,20 +116,20 @@ Full breakdown: [Project Map](PROJECT_MAP.md)
 
 ## Distribution
 
-iNiR ships as a git repo with an interactive installer:
+Illogical-mango ships as a git repo with an interactive installer:
 
 ```bash
-git clone https://github.com/snowarch/inir.git
-cd inir
+git clone https://github.com/ItzWithTails/illogical-mango.git
+cd ilmango
 ./setup install
 ```
 
 Two install modes:
 
-- **Repo-sync**: `./setup install` syncs the repo to `~/.config/quickshell/inir/`
-- **Package-managed**: `make install` copies to `/usr/share/quickshell/inir/`
+- **Repo-sync**: `./setup install` syncs the repo to `~/.config/quickshell/ilmango/`
+- **Package-managed**: `make install` copies to `/usr/share/quickshell/ilmango/`
 
-Updates: `./setup update` or `inir update` (git pull + sync + migrate + restart).
+Updates: `./setup update` or `ilmango update` (git pull + sync + migrate + restart).
 
 The systemd service wires to the compositor via wants links, not `graphical-session.target` (which would also start on KDE/GNOME).
 

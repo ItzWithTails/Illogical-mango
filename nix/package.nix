@@ -123,7 +123,7 @@ let
     ++ optionalQt6 "qtwayland";
 in
 pkgs.stdenvNoCC.mkDerivation {
-  pname = "inir";
+  pname = "ilmango";
   version = lib.removeSuffix "\n" (builtins.readFile ../VERSION);
   src = lib.cleanSource ../.;
 
@@ -132,17 +132,17 @@ pkgs.stdenvNoCC.mkDerivation {
   # Prevent patchShebangs from attempting to rewrite Python scripts;
   # non-executable files are skipped during fixupPhase.
   preFixup = ''
-    find "$out/share/quickshell/inir" -type f -name '*.py' -exec chmod -x {} +
+    find "$out/share/quickshell/ilmango" -type f -name '*.py' -exec chmod -x {} +
   '';
 
   postFixup = ''
-    find "$out/share/quickshell/inir" -type f -name '*.py' -exec chmod +x {} +
+    find "$out/share/quickshell/ilmango" -type f -name '*.py' -exec chmod +x {} +
   '';
 
   installPhase = ''
     runHook preInstall
 
-    runtime="$out/share/quickshell/inir"
+    runtime="$out/share/quickshell/ilmango"
     mkdir -p "$runtime" "$out/bin"
 
     while IFS= read -r path; do
@@ -162,7 +162,7 @@ pkgs.stdenvNoCC.mkDerivation {
       install -Dm644 "$f" "$runtime/$f"
     done
 
-    chmod +x "$runtime/setup" "$runtime/scripts/inir"
+    chmod +x "$runtime/setup" "$runtime/scripts/ilmango"
     find "$runtime/scripts" -type f \( -name '*.sh' -o -name '*.fish' -o -name '*.py' \) -exec chmod +x {} \;
 
     # The source tree intentionally targets Arch, where helpers live under
@@ -172,13 +172,13 @@ pkgs.stdenvNoCC.mkDerivation {
       -type f \( -name '*.qml' -o -name '*.js' -o -name '*.sh' -o -name '*.py' \) \
       -exec sed -i '1!s#/usr/bin/##g' {} +
 
-    makeWrapper "$runtime/scripts/inir" "$out/bin/inir" \
+    makeWrapper "$runtime/scripts/ilmango" "$out/bin/ilmango" \
       --prefix PATH : "${lib.makeBinPath runtimeDeps}" \
       --prefix QML2_IMPORT_PATH : "${lib.makeSearchPath "lib/qt-6/qml" qmlDeps}" \
       --prefix QT_PLUGIN_PATH : "${lib.makeSearchPath "lib/qt-6/plugins" qmlDeps}" \
       ${materialSymbolsWrapperArg}
-      --set-default INIR_SYSTEM_RUNTIME_DIR "$runtime" \
-      --set-default INIR_FALLBACK_SYSTEM_RUNTIME_DIR "$runtime"
+      --set-default ILMANGO_SYSTEM_RUNTIME_DIR "$runtime" \
+      --set-default ILMANGO_FALLBACK_SYSTEM_RUNTIME_DIR "$runtime"
 
     runHook postInstall
   '';
@@ -187,9 +187,9 @@ pkgs.stdenvNoCC.mkDerivation {
 
   meta = {
     description = "Complete desktop shell for Niri, built on Quickshell";
-    homepage = "https://github.com/snowarch/inir";
+    homepage = "https://github.com/ItzWithTails/illogical-mango";
     license = lib.licenses.gpl3Only;
     platforms = lib.platforms.linux;
-    mainProgram = "inir";
+    mainProgram = "ilmango";
   };
 }

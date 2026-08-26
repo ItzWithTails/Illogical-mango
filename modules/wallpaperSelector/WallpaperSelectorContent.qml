@@ -214,7 +214,7 @@ MouseArea {
 
     StyledRectangularShadow {
         target: wallpaperGridBackground
-        visible: !Appearance.inirEverywhere && !Appearance.zzzEverywhere
+        visible: !Appearance.ilmangoEverywhere && !Appearance.zzzEverywhere
     }
     GlassBackground {
         id: wallpaperGridBackground
@@ -224,21 +224,21 @@ MouseArea {
         }
         focus: true
         Keys.forwardTo: [root]
-        border.width: (Appearance.inirEverywhere || Appearance.auroraEverywhere) ? 1 : 1
+        border.width: (Appearance.ilmangoEverywhere || Appearance.auroraEverywhere) ? 1 : 1
         border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong
             : Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-            : Appearance.inirEverywhere ? Appearance.inir.colBorder 
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder 
             : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder : Appearance.colors.colLayer0Border
         Behavior on border.color {
             enabled: Appearance.animationsEnabled
             ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
         }
         fallbackColor: Appearance.zzzEverywhere ? Appearance.zzz.paper : Appearance.colors.colLayer0
-        inirColor: Appearance.inir.colLayer0
+        ilmangoColor: Appearance.ilmango.colLayer0
         auroraTransparency: Appearance.aurora.overlayTransparentize
         radius: Appearance.zzzEverywhere ? Appearance.zzz.panelRadius
             : Appearance.angelEverywhere ? Appearance.angel.roundingLarge
-            : Appearance.inirEverywhere ? Appearance.inir.roundingLarge 
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingLarge 
             : (Appearance.rounding.screenRounding - Appearance.sizes.hyprlandGapsOut + 1)
         Behavior on radius { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementResize.duration; easing.type: Appearance.animation.elementResize.type; easing.bezierCurve: Appearance.animation.elementResize.bezierCurve } }
 
@@ -273,7 +273,7 @@ MouseArea {
                 implicitHeight: quickDirColumnLayout.implicitHeight
                 color: Appearance.zzzEverywhere ? Appearance.zzz.paperAlt
                     : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                    : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                     : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface : Appearance.colors.colLayer1
                 radius: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius : wallpaperGridBackground.radius - Layout.margins
                 border.width: Appearance.zzzEverywhere ? 1 : 0
@@ -382,12 +382,12 @@ MouseArea {
                     Layout.topMargin: 0
                     implicitHeight: visible ? monitorIndicatorText.implicitHeight + 16 : 0
                     color: Appearance.zzzEverywhere ? Appearance.zzz.paperAlt
-                        : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                         : Appearance.colors.colLayer1
                     radius: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius : wallpaperGridBackground.radius - Layout.margins
-                    border.width: Appearance.zzzEverywhere ? 1 : Appearance.inirEverywhere ? 1 : 0
-                    border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairline : Appearance.inirEverywhere ? Appearance.inir.colBorder : "transparent"
+                    border.width: Appearance.zzzEverywhere ? 1 : Appearance.ilmangoEverywhere ? 1 : 0
+                    border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairline : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent"
                     Behavior on radius { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementResize.duration; easing.type: Appearance.animation.elementResize.type; easing.bezierCurve: Appearance.animation.elementResize.bezierCurve } }
                     Behavior on color { enabled: Appearance.animationsEnabled; ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }
                     Behavior on border.width { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }

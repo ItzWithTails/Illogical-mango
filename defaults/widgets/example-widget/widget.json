@@ -2,7 +2,7 @@
     "name": "Quick Glance",
     "icon": "dashboard",
     "version": "1.0",
-    "author": "inir",
+    "author": "ilmango",
     "description": "A configurable at-a-glance system strip",
     "category": "system",
     "main": "ExampleWidget.qml",

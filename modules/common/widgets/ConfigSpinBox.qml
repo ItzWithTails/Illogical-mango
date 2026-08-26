@@ -103,7 +103,7 @@ RowLayout {
                 maximumLineCount: 1
                 text: root.text
                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                    : Appearance.inirEverywhere ? Appearance.inir.colText
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                     : Appearance.colors.colOnSurface
                 opacity: root.enabled ? 1 : 0.4
             }

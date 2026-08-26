@@ -1253,7 +1253,7 @@ ContentPage {
             StyledText {
                 Layout.fillWidth: true
                 text: root.hasCustomConfigDiffs
-                    ? Translation.tr("These entries differ from iNiR-managed defaults and may affect update compatibility.")
+                    ? Translation.tr("These entries differ from Illogical-mango-managed defaults and may affect update compatibility.")
                     : Translation.tr("Only expected generated/user-owned files were found. No managed override warnings.")
                 font.pixelSize: Appearance.font.pixelSize.small
                 color: Appearance.colors.colSubtext

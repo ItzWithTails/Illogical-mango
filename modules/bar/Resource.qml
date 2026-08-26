@@ -43,9 +43,9 @@ Item {
             lineWidth: Appearance.rounding.unsharpen
             value: percentage
             implicitSize: 20
-            colPrimary: root.warning ? (Appearance.inirEverywhere ? Appearance.inir.colError : Appearance.colors.colError) :
-                        root.caution ? (Appearance.inirEverywhere ? Appearance.inir.colWarning : Appearance.colors.colTertiary) :
-                        (Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurfaceVariant)
+            colPrimary: root.warning ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colError : Appearance.colors.colError) :
+                        root.caution ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colWarning : Appearance.colors.colTertiary) :
+                        (Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurfaceVariant)
             accountForLightBleeding: !root.warning && !root.caution
             enableAnimation: false
 
@@ -60,7 +60,7 @@ Item {
                     fill: 1
                     text: iconName
                     iconSize: Appearance.font.pixelSize.normal
-                    color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurfaceVariant
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurfaceVariant
                 }
             }
         }
@@ -81,7 +81,7 @@ Item {
                 anchors.centerIn: parent
                 color: root.warning ? (Appearance.zzzEverywhere ? Appearance.zzz.signal : Appearance.colors.colError)
                     : Appearance.zzzEverywhere ? (root.caution ? Appearance.zzz.tertiary : Appearance.zzz.ink)
-                    : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
                 Behavior on color {
                     enabled: Appearance.animationsEnabled
                     ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }

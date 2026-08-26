@@ -12,7 +12,7 @@ Item {
         Config.options?.dock?.style === "island" ? "island" : "")
     readonly property bool zzzStyle: surfaceDialect === "zzz"
     readonly property bool angelStyle: surfaceDialect === "angel"
-    readonly property bool inirStyle: surfaceDialect === "inir"
+    readonly property bool ilmangoStyle: surfaceDialect === "ilmango"
     readonly property bool auroraStyle: surfaceDialect === "aurora" || angelStyle
     
     readonly property real dockHeight: Config.options?.dock?.height ?? 70
@@ -35,7 +35,7 @@ Item {
         height: root.vertical ? 1 : root.separatorSize
         color: root.zzzStyle ? Appearance.zzz.hairlineStrong
              : root.angelStyle ? Appearance.angel.colCardBorder
-             : root.inirStyle ? Appearance.inir.colBorderSubtle
+             : root.ilmangoStyle ? Appearance.ilmango.colBorderSubtle
              : root.auroraStyle ? ColorUtils.transparentize(Appearance.colors.colOnLayer0, 0.7)
              : Appearance.colors.colOutlineVariant
         Behavior on color { enabled: Appearance.animationsEnabled; ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }

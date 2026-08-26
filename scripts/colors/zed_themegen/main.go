@@ -1072,7 +1072,7 @@ func main() {
 	altDark = deepCopyMap(altDark)
 	altLight = deepCopyMap(altLight)
 
-	// Keep default iNiR border tones aligned with the iNiR-alt border palette.
+	// Keep default Illogical-mango border tones aligned with the Illogical-mango-alt border palette.
 	applyBorderPalette(darkStyle, altDark)
 	applyBorderPalette(lightStyle, altLight)
 
@@ -1081,15 +1081,15 @@ func main() {
 
 	themeData := map[string]any{
 		"$schema": "https://zed.dev/schema/themes/v0.2.0.json",
-		"name":    "iNiR Material",
-		"author":  "iNiR Theme System",
+		"name":    "Illogical-mango Material",
+		"author":  "Illogical-mango Theme System",
 		"themes": []any{
-			map[string]any{"name": "iNiR Dark", "appearance": "dark", "style": darkStyle},
-			map[string]any{"name": "iNiR Light", "appearance": "light", "style": lightStyle},
-			map[string]any{"name": "iNiR Borderless Dark", "appearance": "dark", "style": makeBorderlessStyle(darkStyle)},
-			map[string]any{"name": "iNiR Borderless Light", "appearance": "light", "style": makeBorderlessStyle(lightStyle)},
-			map[string]any{"name": "iNiR-alt Dark", "appearance": "dark", "style": altDark},
-			map[string]any{"name": "iNiR-alt Light", "appearance": "light", "style": altLight},
+			map[string]any{"name": "Illogical-mango Dark", "appearance": "dark", "style": darkStyle},
+			map[string]any{"name": "Illogical-mango Light", "appearance": "light", "style": lightStyle},
+			map[string]any{"name": "Illogical-mango Borderless Dark", "appearance": "dark", "style": makeBorderlessStyle(darkStyle)},
+			map[string]any{"name": "Illogical-mango Borderless Light", "appearance": "light", "style": makeBorderlessStyle(lightStyle)},
+			map[string]any{"name": "Illogical-mango-alt Dark", "appearance": "dark", "style": altDark},
+			map[string]any{"name": "Illogical-mango-alt Light", "appearance": "light", "style": altLight},
 		},
 	}
 

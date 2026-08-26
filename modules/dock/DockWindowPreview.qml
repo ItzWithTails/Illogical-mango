@@ -37,12 +37,12 @@ Button {
     background: Rectangle {
         id: background
         radius: Appearance.regaliaEverywhere ? Appearance.regalia.roundSmall
-            : Appearance.inirEverywhere ? (Appearance.inir?.roundingSmall ?? 8) : Appearance.rounding.small
+            : Appearance.ilmangoEverywhere ? (Appearance.ilmango?.roundingSmall ?? 8) : Appearance.rounding.small
         color: Appearance.regaliaEverywhere ? "transparent"
             : root.down
-                ? ColorUtils.transparentize(Appearance.inirEverywhere ? Appearance.inir?.colPrimary ?? Appearance.colors.colPrimary : Appearance.colors.colPrimary, 0.7)
+                ? ColorUtils.transparentize(Appearance.ilmangoEverywhere ? Appearance.ilmango?.colPrimary ?? Appearance.colors.colPrimary : Appearance.colors.colPrimary, 0.7)
                 : (root.hovered
-                    ? ColorUtils.transparentize(Appearance.inirEverywhere ? Appearance.inir?.colLayer2Hover ?? Appearance.colors.colSurfaceContainerHigh : Appearance.colors.colSurfaceContainerHigh, 0.5)
+                    ? ColorUtils.transparentize(Appearance.ilmangoEverywhere ? Appearance.ilmango?.colLayer2Hover ?? Appearance.colors.colSurfaceContainerHigh : Appearance.colors.colSurfaceContainerHigh, 0.5)
                     : "transparent")
         RegaliaControlFace {
             anchors.fill: parent
@@ -105,8 +105,8 @@ Button {
                         ?? ""
                     elide: Text.ElideRight
                     font.pixelSize: Appearance.font.pixelSize.small
-                    color: Appearance.inirEverywhere 
-                        ? (Appearance.inir?.colText ?? Appearance.colors.colOnLayer0)
+                    color: Appearance.ilmangoEverywhere 
+                        ? (Appearance.ilmango?.colText ?? Appearance.colors.colOnLayer0)
                         : Appearance.colors.colOnLayer0
                     verticalAlignment: Text.AlignVCenter
                 }
@@ -141,7 +141,7 @@ Button {
                     iconSize: 14
                     color: root.hovered 
                         ? Appearance.colors.colError
-                        : (Appearance.inirEverywhere ? Appearance.inir?.colTextSecondary ?? Appearance.colors.colSubtext : Appearance.colors.colSubtext)
+                        : (Appearance.ilmangoEverywhere ? Appearance.ilmango?.colTextSecondary ?? Appearance.colors.colSubtext : Appearance.colors.colSubtext)
                 }
             }
         }
@@ -167,8 +167,8 @@ Button {
                 anchors.fill: parent
                 radius: Appearance.regaliaEverywhere ? Appearance.regalia.roundSmall : Appearance.rounding.small
                 color: Appearance.regaliaEverywhere ? Appearance.regalia.bg1
-                    : Appearance.inirEverywhere
-                        ? (Appearance.inir?.colLayer1 ?? Appearance.colors.colSurfaceContainerLow)
+                    : Appearance.ilmangoEverywhere
+                        ? (Appearance.ilmango?.colLayer1 ?? Appearance.colors.colSurfaceContainerLow)
                         : Appearance.colors.colSurfaceContainerLow
                 visible: windowPreview.status !== Image.Ready
 

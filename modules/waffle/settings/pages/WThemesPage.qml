@@ -587,8 +587,8 @@ WSettingsPage {
                     displayName: Translation.tr("Aurora")
                 },
                 {
-                    value: "inir",
-                    displayName: Translation.tr("Inir")
+                    value: "ilmango",
+                    displayName: Translation.tr("Ilmango")
                 },
                 {
                     value: "angel",

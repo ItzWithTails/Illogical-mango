@@ -16,7 +16,7 @@ Singleton {
     property bool ready: false
     readonly property string currentTheme: Config.options?.appearance?.theme ?? "auto"
     readonly property bool isAutoTheme: currentTheme === "auto"
-    readonly property bool isStandaloneSettingsWindow: (Quickshell.env("INIR_STANDALONE_WINDOW") ?? "") === "1"
+    readonly property bool isStandaloneSettingsWindow: (Quickshell.env("ILMANGO_STANDALONE_WINDOW") ?? "") === "1"
     readonly property bool defaultApplyExternal: !isStandaloneSettingsWindow
     readonly property bool vesktopEnabled: (Config.options?.appearance?.wallpaperTheming?.enableVesktop ?? true) !== false
     readonly property var wallpaperThemingCfg: Config.options?.appearance?.wallpaperTheming ?? null
@@ -108,7 +108,7 @@ Singleton {
         switch (styleId) {
         case "cards": return styles?.cards ?? 3
         case "aurora": return styles?.aurora ?? 1
-        case "inir": return styles?.inir ?? 1
+        case "ilmango": return styles?.ilmango ?? 1
         case "angel": return styles?.angel ?? 1
         case "regalia": return styles?.regalia ?? 1
         case "zzz": return styles?.zzz ?? 0

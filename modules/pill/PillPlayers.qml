@@ -6,7 +6,7 @@ import qs.services
 import qs.modules.common
 
 /**
- * Adapter that presents iNiR's MprisController through the shape the ported pill
+ * Adapter that presents Illogical-mango's MprisController through the shape the ported pill
  * surfaces expect. The island's media card and bud were written against a player
  * facade with `has`/`title`/`artist`/`artUrl`/`pickable`, and MprisController
  * exposes the same facts under different names.

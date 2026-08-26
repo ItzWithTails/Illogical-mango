@@ -278,7 +278,7 @@ Singleton {
         currentOutputWorkspaces = allWorkspaces.filter(w => w.output === currentOutput)
     }
 
-    // ========== ACTIONS (mirror the NiriService names iNiR call sites use) ==========
+    // ========== ACTIONS (mirror the NiriService names Illogical-mango call sites use) ==========
 
     function switchToWorkspace(tagIndex) {
         return dispatch("view," + tagIndex + ",0")

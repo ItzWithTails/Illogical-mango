@@ -10,7 +10,7 @@ import QtQuick.Layouts
 
 // Rich weather view for the right-sidebar Weather tab. Material 3, minimalist:
 // hero · hourly strip · daily forecast with temperature-range bars · sun/moon ·
-// metrics · air quality. Family-aware tokens (material / aurora / inir / angel).
+// metrics · air quality. Family-aware tokens (material / aurora / ilmango / angel).
 Item {
     id: root
     property int margin: 12
@@ -20,27 +20,27 @@ Item {
 
     // ── Tokens ───────────────────────────────────────────────────────────
     readonly property bool angel: Appearance.angelEverywhere
-    readonly property bool inir: Appearance.inirEverywhere
+    readonly property bool ilmango: Appearance.ilmangoEverywhere
     readonly property bool aurora: Appearance.auroraEverywhere
     readonly property bool zzz: Appearance.zzzEverywhere
     readonly property color colText: angel ? Appearance.angel.colText
-        : inir ? Appearance.inir.colText
+        : ilmango ? Appearance.ilmango.colText
         : zzz ? Appearance.zzz.ink : Appearance.colors.colOnSurface
     readonly property color colSub: angel ? Appearance.angel.colTextSecondary
-        : inir ? Appearance.inir.colTextSecondary
+        : ilmango ? Appearance.ilmango.colTextSecondary
         : zzz ? Appearance.zzz.inkMuted : Appearance.colors.colOnSurfaceVariant
     readonly property color colPrimary: angel ? Appearance.angel.colPrimary
-        : inir ? Appearance.inir.colPrimary
+        : ilmango ? Appearance.ilmango.colPrimary
         : zzz ? Appearance.zzz.accent : Appearance.colors.colPrimary
     readonly property color colCard: angel ? Appearance.angel.colGlassCard
-        : inir ? Appearance.inir.colLayer1
+        : ilmango ? Appearance.ilmango.colLayer1
         : zzz ? "transparent" // zzz: bgless — el fondo verde (tinte del wallpaper) chocaba; las cards viven sobre el placa carbon
         : aurora ? ColorUtils.transparentize(Appearance.colors.colLayer1, 0.4)
         : Appearance.colors.colSurfaceContainerHigh
     readonly property color colTrack: ColorUtils.transparentize(root.colSub, 0.78)
     readonly property color colHairline: ColorUtils.transparentize(root.colSub, 0.86)
     readonly property color colTint: ColorUtils.transparentize(root.colPrimary, 0.78)
-    readonly property real cardRadius: inir ? Appearance.inir.roundingNormal
+    readonly property real cardRadius: ilmango ? Appearance.ilmango.roundingNormal
         : angel ? Appearance.angel.roundingNormal : Appearance.rounding.normal
 
     readonly property var w: Weather.data
@@ -90,7 +90,7 @@ Item {
     component Card: Rectangle {
         radius: root.cardRadius
         color: root.colCard
-        border.width: (root.angel || root.inir) ? 1 : 0
+        border.width: (root.angel || root.ilmango) ? 1 : 0
         border.color: ColorUtils.transparentize(root.colSub, 0.82)
     }
 

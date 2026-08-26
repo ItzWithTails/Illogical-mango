@@ -8,7 +8,7 @@ import qs.modules.pill
 /**
  * Ricelin hub: every switchable piece of the Ricelin dialect in one place,
  * each labelled with the area of the shell it affects. Nothing here replaces
- * an original iNiR look — every control flips between the stock style and its
+ * an original Illogical-mango look — every control flips between the stock style and its
  * Ricelin counterpart, and the same keys stay available on their home pages
  * (Bar, Interface, Services).
  */
@@ -25,7 +25,7 @@ ContentPage {
         { key: "launcher", icon: "apps", label: Translation.tr("App launcher"), tip: Translation.tr("Fuzzy app search with an inline calculator.") },
         { key: "clipboard", icon: "content_paste", label: Translation.tr("Clipboard"), tip: Translation.tr("Searchable clipboard history.") },
         { key: "sysmon", icon: "monitor_heart", label: Translation.tr("System monitor"), tip: Translation.tr("CPU, memory and network dials.") },
-        { key: "recorder", icon: "screen_record", label: Translation.tr("Screen recorder"), tip: Translation.tr("Region/screen capture over iNiR's recorder. Also reachable via 'inir pill open recorder'.") }
+        { key: "recorder", icon: "screen_record", label: Translation.tr("Screen recorder"), tip: Translation.tr("Region/screen capture over Illogical-mango's recorder. Also reachable via 'ilmango pill open recorder'.") }
     ]
 
     SettingsCardSection {
@@ -65,7 +65,7 @@ ContentPage {
                 checked: Config.options?.bar?.pill?.toasts ?? true
                 onCheckedChanged: Config.setNestedValue("bar.pill.toasts", checked)
                 StyledToolTip {
-                    text: Translation.tr("Notifications take over the resting pill. Off hands them back to iNiR's regular notification popups.")
+                    text: Translation.tr("Notifications take over the resting pill. Off hands them back to Illogical-mango's regular notification popups.")
                 }
             }
 
@@ -76,7 +76,7 @@ ContentPage {
                 checked: Config.options?.bar?.pill?.osd ?? true
                 onCheckedChanged: Config.setNestedValue("bar.pill.osd", checked)
                 StyledToolTip {
-                    text: Translation.tr("Volume, brightness and mic changes flash on the pill. Off hands them back to iNiR's regular on-screen display.")
+                    text: Translation.tr("Volume, brightness and mic changes flash on the pill. Off hands them back to Illogical-mango's regular on-screen display.")
                 }
             }
 

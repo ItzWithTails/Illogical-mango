@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-preview_dir="$HOME/.cache/inir/window-previews"
+preview_dir="$HOME/.cache/ilmango/window-previews"
 mkdir -p "$preview_dir"
 
 niri_bin="/usr/bin/niri"
@@ -34,7 +34,7 @@ for bin in "$niri_bin" "$jq_bin" "$cliphist_bin" "$head_bin" \
   fi
 done
 
-state_dir="$(mktemp -d -t inir-window-previews.XXXXXX)"
+state_dir="$(mktemp -d -t ilmango-window-previews.XXXXXX)"
 trap 'rm -rf -- "$state_dir"' EXIT
 
 select_clipboard_mime() {
@@ -67,12 +67,12 @@ restore_clipboard_file() {
 
   # wl-copy normally forks and remains alive as the Wayland selection owner.
   # When this script runs from Quickshell that daemon would otherwise remain
-  # inside inir.service after a shell restart.  Let the systemd user manager
+  # inside ilmango.service after a shell restart.  Let the systemd user manager
   # own a foreground wl-copy in its own transient service instead: the
-  # clipboard survives iNiR restarts, while the shell cgroup remains clean.
+  # clipboard survives Illogical-mango restarts, while the shell cgroup remains clean.
   # Use a per-capture unit name so an older selection owner can finish its
   # Wayland cancellation path without racing a unit-name reuse.
-  local unit="inir-clipboard-owner-${BASHPID:-$$}"
+  local unit="ilmango-clipboard-owner-${BASHPID:-$$}"
   if command -v /usr/bin/systemd-run >/dev/null 2>&1; then
     if /usr/bin/systemd-run \
       --user \

@@ -1,4 +1,4 @@
-# Determine distribution for iNiR installer
+# Determine distribution for Illogical-mango installer
 # This is NOT a script for execution, but for loading functions
 
 # shellcheck shell=bash

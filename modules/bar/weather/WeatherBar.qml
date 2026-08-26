@@ -37,7 +37,7 @@ MouseArea {
         eggTapWindow.restart()
         if (root._eggTaps >= 5 && (Config.options?.mascot?.enable ?? false)) {
             root._eggTaps = 0
-            Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "appear", "weather-umbrella", "top"])
+            Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "appear", "weather-umbrella", "top"])
         }
         GlobalStates.sidebarRightRequestedWidget = "weather"
         GlobalStates.openSidebarRight(root.QsWindow.window?.screen?.name ?? "")
@@ -52,7 +52,7 @@ MouseArea {
             text: Icons.getWeatherIcon(Weather.data?.wCode, Weather.isNightNow()) ?? "cloud"
             iconSize: Appearance.font.pixelSize.large
             color: Appearance.angelEverywhere ? Appearance.angel.colText
-                : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
             Layout.alignment: Qt.AlignVCenter
         }
 
@@ -60,7 +60,7 @@ MouseArea {
             visible: true
             font.pixelSize: Appearance.font.pixelSize.small
             color: Appearance.angelEverywhere ? Appearance.angel.colText
-                : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
             text: Weather.data?.temp ?? "--°"
             Layout.alignment: Qt.AlignVCenter
         }

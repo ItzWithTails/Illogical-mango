@@ -168,7 +168,7 @@ BarWidgetSwitcher {
                 font.pixelSize: root._datePixelSize > 0
                     ? root._datePixelSize : Appearance.font.pixelSize.small
                 color: M3Palette.pillInk("clockWidget")
-                // iNiR's DateTime exposes `date` (long form) and `shortDate`;
+                // Illogical-mango's DateTime exposes `date` (long form) and `shortDate`;
                 // upstream's `longDate` does not exist here.
                 text: DateTime.date
                 Layout.alignment: Qt.AlignVCenter

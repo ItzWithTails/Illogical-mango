@@ -2,12 +2,12 @@
 
 MIGRATION_ID="025-sddm-dropin-rename"
 MIGRATION_TITLE="Rename SDDM drop-in so we stop fighting other configs"
-MIGRATION_DESCRIPTION="Pre-2.26 versions of iNiR shipped /etc/sddm.conf.d/inir-theme.conf and worked around the alphabetical merge order by silently sed -i'ing InputMethod=qtvirtualkeyboard out of foreign drop-ins like kde_settings.conf. That stomped on user/KDE settings every install/update. The new install uses /etc/sddm.conf.d/99-inir-theme.conf which sorts last alphabetically and wins by drop-in order, so iNiR no longer needs to touch foreign files. This migration renames the legacy drop-in for existing users."
-MIGRATION_TARGET_FILE="/etc/sddm.conf.d/inir-theme.conf"
+MIGRATION_DESCRIPTION="Pre-2.26 versions of Illogical-mango shipped /etc/sddm.conf.d/ilmango-theme.conf and worked around the alphabetical merge order by silently sed -i'ing InputMethod=qtvirtualkeyboard out of foreign drop-ins like kde_settings.conf. That stomped on user/KDE settings every install/update. The new install uses /etc/sddm.conf.d/99-ilmango-theme.conf which sorts last alphabetically and wins by drop-in order, so Illogical-mango no longer needs to touch foreign files. This migration renames the legacy drop-in for existing users."
+MIGRATION_TARGET_FILE="/etc/sddm.conf.d/ilmango-theme.conf"
 MIGRATION_REQUIRED=true
 
-_sddm_legacy_path="/etc/sddm.conf.d/inir-theme.conf"
-_sddm_new_path="/etc/sddm.conf.d/99-inir-theme.conf"
+_sddm_legacy_path="/etc/sddm.conf.d/ilmango-theme.conf"
+_sddm_new_path="/etc/sddm.conf.d/99-ilmango-theme.conf"
 
 migration_check() {
   # Only applicable if SDDM is even installed and the legacy file exists.
@@ -21,7 +21,7 @@ migration_check() {
 migration_preview() {
   echo -e "${STY_GREEN}+ ${_sddm_new_path}${STY_RST} (rename of legacy drop-in)"
   echo -e "${STY_RED}- ${_sddm_legacy_path}${STY_RST}"
-  echo -e "${STY_FAINT}  The new name sorts after kde_settings.conf etc. so iNiR's settings"
+  echo -e "${STY_FAINT}  The new name sorts after kde_settings.conf etc. so Illogical-mango's settings"
   echo -e "  win without us having to delete InputMethod= lines from foreign files.${STY_RST}"
 }
 

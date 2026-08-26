@@ -45,7 +45,7 @@ Item {
     StyledRectangularShadow { 
         target: card
         visible: !Appearance.zzzEverywhere
-            && (Appearance.angelEverywhere || (!Appearance.inirEverywhere && !Appearance.auroraEverywhere))
+            && (Appearance.angelEverywhere || (!Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere))
     }
     
     Rectangle {
@@ -54,7 +54,7 @@ Item {
         width: parent.width - Appearance.sizes.elevationMargin
         height: parent.height - Appearance.sizes.elevationMargin
         radius: Appearance.zzzEverywhere ? Appearance.zzz.panelRadius
-            : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : root.radius
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : root.radius
         color: Appearance.zzzEverywhere ? Appearance.zzz.paper : "transparent"
         border.width: Appearance.zzzEverywhere ? Appearance.zzz.borderThick : 0
         border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong : "transparent"
@@ -95,8 +95,8 @@ Item {
         Rectangle {
             anchors.fill: parent
             visible: !playerBase.downloaded
-            color: Appearance.inirEverywhere 
-                ? playerBase.inirLayer1
+            color: Appearance.ilmangoEverywhere 
+                ? playerBase.ilmangoLayer1
                 : Appearance.zzzEverywhere ? Appearance.zzz.paperAlt
                 : (blendedColors?.colLayer0 ?? Appearance.colors.colLayer0)
             
@@ -104,8 +104,8 @@ Item {
                 anchors.centerIn: parent
                 text: "music_note"
                 iconSize: 64
-                color: Appearance.inirEverywhere 
-                    ? playerBase.inirTextSecondary 
+                color: Appearance.ilmangoEverywhere 
+                    ? playerBase.ilmangoTextSecondary 
                     : Appearance.zzzEverywhere ? Appearance.zzz.inkMuted
                     : (blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
             }

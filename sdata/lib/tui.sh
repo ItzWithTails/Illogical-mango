@@ -1,5 +1,5 @@
 #!/bin/bash
-# TUI functions for iNiR setup
+# TUI functions for Illogical-mango setup
 # Ink design: whitespace over borders, color over chrome.
 # This script is meant to be sourced.
 
@@ -448,12 +448,12 @@ tui_banner() {
             "██║██║╚════╝██║╚██╗██║██║██╔══██╗██║" \
             "██║██║      ██║ ╚████║██║██║  ██║██║" \
             "╚═╝╚═╝      ╚═╝  ╚═══╝╚═╝╚═╝  ╚═╝╚═╝"
-        echo "iNiR — your niri shell" | gum style \
+        echo "Illogical-mango — your niri shell" | gum style \
             --foreground "$(_tui_color_value muted)" \
             --align center \
             --width 50
     else
-        local tagline="iNiR — your niri shell"
+        local tagline="Illogical-mango — your niri shell"
         # Banner art is 38 chars wide + 3 spaces indent = 41 visible cols
         local art_width=41
         local tag_pad=$(( (art_width - ${#tagline}) / 2 ))

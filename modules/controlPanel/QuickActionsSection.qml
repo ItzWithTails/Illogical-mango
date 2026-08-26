@@ -15,12 +15,12 @@ PanelSurface {
     implicitHeight: actionsGrid.implicitHeight + 16
     readonly property bool compactMode: Config.options?.controlPanel?.compactMode ?? true
     
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
     readonly property bool regaliaEverywhere: Appearance.regaliaEverywhere
 
     elevation: 1
-    radiusOverride: inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+    radiusOverride: ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
 
     AngelPartialBorder { targetRadius: root.radiusOverride; coverage: 0.45; visible: Appearance.angelEverywhere }
 
@@ -100,7 +100,7 @@ PanelSurface {
             icon: "settings"
             onClicked: {
                 GlobalStates.controlPanelOpen = false
-                Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "settings"])
+                Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "settings"])
             }
         }
 
@@ -108,14 +108,14 @@ PanelSurface {
             icon: "lock"
             onClicked: {
                 GlobalStates.controlPanelOpen = false
-                Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "lock", "activate"])
+                Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "lock", "activate"])
             }
         }
 
         ActionTile {
             icon: "power_settings_new"
             iconColor: Appearance.angelEverywhere ? Appearance.colors.colError
-                     : root.inirEverywhere ? Appearance.inir.colError
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colError
                      : root.auroraEverywhere ? Appearance.colors.colError
                      : Appearance.colors.colError
             onClicked: {
@@ -133,12 +133,12 @@ PanelSurface {
             ? (root.regaliaEverywhere ? Appearance.regalia.primaryPlateInk
              : Appearance.cookieEverywhere ? Appearance.colors.colOnPrimaryContainer
              : Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-             : root.inirEverywhere ? Appearance.inir.colOnPrimary
+             : root.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary
              : root.auroraEverywhere ? Appearance.colors.colOnPrimary
              : Appearance.colors.colOnPrimary)
             : (root.regaliaEverywhere ? Appearance.regalia.onColor
              : Appearance.angelEverywhere ? Appearance.angel.colText
-             : root.inirEverywhere ? Appearance.inir.colText
+             : root.ilmangoEverywhere ? Appearance.ilmango.colText
              : root.auroraEverywhere ? Appearance.colors.colOnSurface
              : Appearance.colors.colOnLayer1)
         signal clicked()
@@ -147,7 +147,7 @@ PanelSurface {
         implicitHeight: root.compactMode ? 30 : 36
         radius: root.regaliaEverywhere ? Appearance.regalia.controlRadius
             : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-            : root.inirEverywhere ? Appearance.inir.roundingSmall
+            : root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
             : Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
             : Appearance.rounding.small
         
@@ -155,26 +155,26 @@ PanelSurface {
             : tileMouseArea.containsMouse
                 ? (active
                     ? (Appearance.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimaryHover, 0.35)
-                     : root.inirEverywhere ? Appearance.inir.colPrimaryHover
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colPrimaryHover
                      : root.auroraEverywhere ? Appearance.colors.colPrimaryHover
                      : Appearance.colors.colPrimaryHover)
                     : (Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                     : root.inirEverywhere ? Appearance.inir.colLayer2Hover
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                      : root.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
                      : Appearance.colors.colLayer2Hover))
                 : (active
                     ? (Appearance.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimary, 0.45)
-                     : root.inirEverywhere ? Appearance.inir.colPrimary
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                      : root.auroraEverywhere ? Appearance.colors.colPrimary
                      : Appearance.colors.colPrimary)
                     : (Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                     : root.inirEverywhere ? Appearance.inir.colLayer2
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                      : root.auroraEverywhere ? Appearance.aurora.colSubSurface
                      : Appearance.colors.colLayer2))
 
-        border.width: Appearance.angelEverywhere ? 0 : (root.inirEverywhere ? 1 : Appearance.zzzEverywhere ? 1 : 0)
+        border.width: Appearance.angelEverywhere ? 0 : (root.ilmangoEverywhere ? 1 : Appearance.zzzEverywhere ? 1 : 0)
         border.color: Appearance.angelEverywhere ? "transparent"
-            : root.inirEverywhere ? (active ? Appearance.inir.colPrimary : Appearance.inir.colBorderSubtle)
+            : root.ilmangoEverywhere ? (active ? Appearance.ilmango.colPrimary : Appearance.ilmango.colBorderSubtle)
             : Appearance.zzzEverywhere ? Appearance.zzz.hairline : "transparent"
 
         Behavior on border.width {

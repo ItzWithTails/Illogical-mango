@@ -266,7 +266,7 @@ Scope {
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.keyboardFocus: surfaceOpen || pill.held
                 ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
-            WlrLayershell.namespace: "inir-pill"
+            WlrLayershell.namespace: "ilmango-pill"
 
             anchors { top: true; left: true; right: true; bottom: true }
 

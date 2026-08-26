@@ -53,7 +53,7 @@ logger.add(sys.stdout, level="INFO")
 # Not /tmp/thumbgen.log: that path is predictable in a world-writable directory,
 # so on a shared host another user can pre-create it (or symlink it elsewhere) and
 # logger.add() then raises at import time, killing every thumbnail run.
-_log_dir = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "inir"
+_log_dir = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "ilmango"
 _log_dir.mkdir(parents=True, exist_ok=True)
 logger.add(_log_dir / "thumbgen.log", level="DEBUG", rotation="100 MB")
 
@@ -64,7 +64,7 @@ def _worker_init() -> None:
 
 
 def _terminate_pool(_signum, _frame) -> None:
-    """Do not leave multiprocessing workers in inir.service after QML exits."""
+    """Do not leave multiprocessing workers in ilmango.service after QML exits."""
     global active_pool
     if active_pool is not None:
         active_pool.terminate()

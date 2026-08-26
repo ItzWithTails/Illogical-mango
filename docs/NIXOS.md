@@ -2,41 +2,41 @@
 
 > Experimental. The Arch installer is still the primary supported path.
 
-iNiR provides a flake with:
+Illogical-mango provides a flake with:
 
 | Output | Purpose |
 |---|---|
-| `packages.<system>.default` | Packaged iNiR runtime and `inir` launcher |
-| `nixosModules.inir` | NixOS module for system package + user service |
-| `homeModules.inir` | Home Manager module for user package + user service |
+| `packages.<system>.default` | Packaged Illogical-mango runtime and `ilmango` launcher |
+| `nixosModules.ilmango` | NixOS module for system package + user service |
+| `homeModules.ilmango` | Home Manager module for user package + user service |
 
-The module does not run `./setup install` or `./setup update`. Nix owns the installed files, and iNiR runs from the package store path.
+The module does not run `./setup install` or `./setup update`. Nix owns the installed files, and Illogical-mango runs from the package store path.
 
 The package and modules are ordinary Nix expressions under `nix/`. Flakes are only one entrypoint, so traditional Nix configurations can import them directly. Both entrypoints use the same `package.nix`, NixOS module, and Home Manager module rather than maintaining separate implementations.
 
 ## Without flakes
 
-Point `inirSrc` at a local checkout or a source pinned with your preferred Nix fetcher:
+Point `ilmangoSrc` at a local checkout or a source pinned with your preferred Nix fetcher:
 
 ```nix
 { pkgs, ... }:
 let
-  inirSrc = /path/to/inir;
+  ilmangoSrc = /path/to/ilmango;
 in
 {
   imports = [
-    (import (inirSrc + "/nix/nixos-module.nix"))
+    (import (ilmangoSrc + "/nix/nixos-module.nix"))
   ];
 
-  programs.inir = {
+  programs.ilmango = {
     enable = true;
-    package = pkgs.callPackage (inirSrc + "/nix/package.nix") { inherit pkgs; };
+    package = pkgs.callPackage (ilmangoSrc + "/nix/package.nix") { inherit pkgs; };
     service.compositor = "niri";
   };
 }
 ```
 
-For Home Manager, import `nix/home-module.nix` instead. The package expression accepts the consumer's `pkgs` set explicitly, so traditional configurations can choose or pin nixpkgs without converting the project to a flake. Both modules use that same package expression by default unless `programs.inir.package` is overridden.
+For Home Manager, import `nix/home-module.nix` instead. The package expression accepts the consumer's `pkgs` set explicitly, so traditional configurations can choose or pin nixpkgs without converting the project to a flake. Both modules use that same package expression by default unless `programs.ilmango.package` is overridden.
 
 ## With niri-flake
 
@@ -47,7 +47,7 @@ Add both flakes:
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     niri.url = "github:sodiboo/niri-flake";
-    inir.url = "github:snowarch/inir";
+    ilmango.url = "github:ItzWithTails/illogical-mango";
   };
 }
 ```
@@ -58,12 +58,12 @@ Then import both modules in your NixOS configuration:
 { config, inputs, ... }: {
   imports = [
     inputs.niri.nixosModules.niri
-    inputs.inir.nixosModules.inir
+    inputs.ilmango.nixosModules.ilmango
   ];
 
   programs.niri.enable = true;
 
-  programs.inir = {
+  programs.ilmango = {
     enable = true;
     service.compositor = "niri";
     extraPackages = [ config.programs.niri.package ];
@@ -71,33 +71,33 @@ Then import both modules in your NixOS configuration:
 }
 ```
 
-`programs.inir.service.compositor = "niri"` creates the user unit wiring under `niri.service.wants/inir.service`. It does not wire iNiR to `graphical-session.target`, so it will not auto-start under KDE, GNOME, or other desktop sessions.
+`programs.ilmango.service.compositor = "niri"` creates the user unit wiring under `niri.service.wants/ilmango.service`. It does not wire Illogical-mango to `graphical-session.target`, so it will not auto-start under KDE, GNOME, or other desktop sessions.
 
-`extraPackages = [ config.programs.niri.package ];` puts the same `niri` client binary used by your compositor on iNiR's runtime `PATH`, so features that call `niri msg` use the matching package.
+`extraPackages = [ config.programs.niri.package ];` puts the same `niri` client binary used by your compositor on Illogical-mango's runtime `PATH`, so features that call `niri msg` use the matching package.
 
-For useful default shortcuts, merge iNiR actions into `programs.niri.settings.binds`:
+For useful default shortcuts, merge Illogical-mango actions into `programs.niri.settings.binds`:
 
 ```nix
 {
   programs.niri.settings.binds = {
     "Mod+Space" = {
       repeat = false;
-      action.spawn = [ "inir" "overview" "toggle" ];
+      action.spawn = [ "ilmango" "overview" "toggle" ];
     };
 
-    "Mod+V".action.spawn = [ "inir" "clipboard" "toggle" ];
-    "Mod+Comma".action.spawn = [ "inir" "settings" ];
-    "Mod+Slash".action.spawn = [ "inir" "cheatsheet" "toggle" ];
-    "Mod+Shift+W".action.spawn = [ "inir" "panelFamily" "cycle" ];
+    "Mod+V".action.spawn = [ "ilmango" "clipboard" "toggle" ];
+    "Mod+Comma".action.spawn = [ "ilmango" "settings" ];
+    "Mod+Slash".action.spawn = [ "ilmango" "cheatsheet" "toggle" ];
+    "Mod+Shift+W".action.spawn = [ "ilmango" "panelFamily" "cycle" ];
 
     "Mod+Alt+L" = {
       allow-when-locked = true;
-      action.spawn = [ "inir" "lock" "activate" ];
+      action.spawn = [ "ilmango" "lock" "activate" ];
     };
 
-    "Mod+Shift+S".action.spawn = [ "inir" "region" "screenshot" ];
-    "Mod+Shift+X".action.spawn = [ "inir" "region" "ocr" ];
-    "Mod+Shift+A".action.spawn = [ "inir" "region" "search" ];
+    "Mod+Shift+S".action.spawn = [ "ilmango" "region" "screenshot" ];
+    "Mod+Shift+X".action.spawn = [ "ilmango" "region" "ocr" ];
+    "Mod+Shift+A".action.spawn = [ "ilmango" "region" "search" ];
   };
 }
 ```
@@ -109,10 +109,10 @@ If you manage your user session with Home Manager, import the Home Manager modul
 ```nix
 { inputs, ... }: {
   imports = [
-    inputs.inir.homeModules.inir
+    inputs.ilmango.homeModules.ilmango
   ];
 
-  programs.inir = {
+  programs.ilmango = {
     enable = true;
     service.compositor = "niri";
   };
@@ -122,13 +122,13 @@ If you manage your user session with Home Manager, import the Home Manager modul
 The Home Manager module can also expose the packaged runtime at:
 
 ```text
-~/.config/quickshell/inir
+~/.config/quickshell/ilmango
 ```
 
 That symlink keeps tools that expect the traditional config path working, but it is opt-in because it will conflict with an existing repo checkout at the same path. Enable it with:
 
 ```nix
-programs.inir.configSymlink.enable = true;
+programs.ilmango.configSymlink.enable = true;
 ```
 
 ## Hyprland
@@ -136,28 +136,28 @@ programs.inir.configSymlink.enable = true;
 Hyprland users can wire the service to the UWSM unit:
 
 ```nix
-programs.inir.service.compositor = "hyprland";
+programs.ilmango.service.compositor = "hyprland";
 ```
 
-This creates `wayland-wm@Hyprland.service.wants/inir.service`.
+This creates `wayland-wm@Hyprland.service.wants/ilmango.service`.
 
 ## Manual service wiring
 
 To create the service but avoid auto-start wiring:
 
 ```nix
-programs.inir.service.compositor = null;
+programs.ilmango.service.compositor = null;
 ```
 
 Then start it manually:
 
 ```bash
-systemctl --user start inir.service
+systemctl --user start ilmango.service
 ```
 
 ## Notes
 
-- Use `inir logs --full` for runtime errors.
-- The packaged `inir` launcher wraps Quickshell and runtime tools in `PATH`.
-- User preferences still live in iNiR's normal config/state files; the packaged QML source itself is immutable.
-- `inir update` is not the right update path for a Nix install. Update through your flake inputs and rebuild.
+- Use `ilmango logs --full` for runtime errors.
+- The packaged `ilmango` launcher wraps Quickshell and runtime tools in `PATH`.
+- User preferences still live in Illogical-mango's normal config/state files; the packaged QML source itself is immutable.
+- `ilmango update` is not the right update path for a Nix install. Update through your flake inputs and rebuild.

@@ -105,7 +105,7 @@ DashCard {
             visible: root.hasData
 
             readonly property color cellColor: root.colAccent
-            readonly property color emptyColor: root.inirEverywhere ? Appearance.inir.colLayer2
+            readonly property color emptyColor: root.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                 : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
                 : Appearance.colors.colLayer2
             onCellColorChanged: requestPaint()

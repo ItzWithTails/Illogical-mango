@@ -238,7 +238,7 @@ Item {
         readonly property bool regaliaEverywhere: surfaceDialect === "regalia"
         readonly property bool angelEverywhere: surfaceDialect === "angel"
         readonly property bool auroraEverywhere: surfaceDialect === "aurora" || angelEverywhere
-        readonly property bool inirEverywhere: surfaceDialect === "inir"
+        readonly property bool ilmangoEverywhere: surfaceDialect === "ilmango"
         readonly property bool gameModeMinimal: Appearance.gameModeMinimal
         readonly property string wallpaperUrl: {
             const _dep1 = WallpaperListener.multiMonitorEnabled
@@ -266,19 +266,19 @@ Item {
         color: (gameModeMinimal || islandStyle) ? "transparent"
              : zzzEverywhere ? Appearance.zzz.chrome
              : regaliaEverywhere ? "transparent"
-             : inirEverywhere ? (cardStyle ? Appearance.inir.colLayer1 : Appearance.inir.colLayer0)
+             : ilmangoEverywhere ? (cardStyle ? Appearance.ilmango.colLayer1 : Appearance.ilmango.colLayer0)
              : auroraEverywhere ? ColorUtils.applyAlpha((blendedColors?.colLayer0 ?? Appearance.colors.colLayer0), 1)
              : (cardStyle ? Appearance.colors.colLayer1 : Appearance.colors.colLayer0)
         border.width: (gameModeMinimal || islandStyle || regaliaEverywhere) ? 0 : zzzEverywhere ? 1 : (angelEverywhere ? Appearance.angel.panelBorderWidth : 1)
         border.color: regaliaEverywhere ? "transparent"
             : zzzEverywhere ? Appearance.zzz.hairline
             : angelEverywhere ? Appearance.angel.colPanelBorder
-            : inirEverywhere ? Appearance.inir.colBorder
+            : ilmangoEverywhere ? Appearance.ilmango.colBorder
             : Appearance.colors.colLayer0Border
         radius: zzzEverywhere ? Appearance.zzz.panelRadius
             : regaliaEverywhere ? Appearance.regalia.panelRadius
             : angelEverywhere ? Appearance.angel.roundingNormal
-            : inirEverywhere ? Appearance.inir.roundingNormal
+            : ilmangoEverywhere ? Appearance.ilmango.roundingNormal
             : cardStyle ? Appearance.rounding.normal : (Appearance.rounding.screenRounding - Appearance.sizes.hyprlandGapsOut + 1)
 
         Behavior on radius {
@@ -430,9 +430,9 @@ Item {
             anchors.fill: parent
             anchors.margins: sidebarPadding
             anchors.topMargin: sidebarLeftBackground.angelEverywhere ? sidebarPadding + 4
-                : sidebarLeftBackground.inirEverywhere ? sidebarPadding + 6 : sidebarPadding - 4
+                : sidebarLeftBackground.ilmangoEverywhere ? sidebarPadding + 6 : sidebarPadding - 4
             spacing: sidebarLeftBackground.angelEverywhere ? sidebarPadding + 2
-                : sidebarLeftBackground.inirEverywhere ? sidebarPadding + 4 : sidebarPadding
+                : sidebarLeftBackground.ilmangoEverywhere ? sidebarPadding + 4 : sidebarPadding
 
             // Tab bar — hidden when webapp is fullscreen in sidebar
             Toolbar {
@@ -441,7 +441,7 @@ Item {
                 enableShadow: false
                 padding: 6
                 implicitHeight: tabBar.implicitHeight + padding * 2
-                transparent: Appearance.zzzEverywhere || Appearance.auroraEverywhere || Appearance.inirEverywhere
+                transparent: Appearance.zzzEverywhere || Appearance.auroraEverywhere || Appearance.ilmangoEverywhere
                 visible: !root.pluginViewActive
 
                 ToolbarTabBar {
@@ -492,18 +492,18 @@ Item {
                 }
                 radius: Appearance.zzzEverywhere ? Appearance.zzz.cardRadius
                     : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                    : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
                 color: Appearance.zzzEverywhere ? "transparent"
                     : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                    : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                      : Appearance.auroraEverywhere ? "transparent"
                      : Appearance.colors.colLayer1
                 border.width: Appearance.zzzEverywhere ? 0
                     : Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
-                    : Appearance.inirEverywhere ? 1 : 0
+                    : Appearance.ilmangoEverywhere ? 1 : 0
                 border.color: Appearance.zzzEverywhere ? "transparent"
                     : Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                    : Appearance.inirEverywhere ? Appearance.inir.colBorder : "transparent"
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent"
                 // Organic morph on style/shape switch (organic-transitions)
                 Behavior on radius { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementResize.duration; easing.type: Appearance.animation.elementResize.type; easing.bezierCurve: Appearance.animation.elementResize.bezierCurve } }
                 Behavior on color { enabled: Appearance.animationsEnabled; ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }

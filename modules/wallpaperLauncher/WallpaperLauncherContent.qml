@@ -198,7 +198,7 @@ FocusScope {
 
     StyledRectangularShadow {
         target: panel
-        visible: !Appearance.inirEverywhere && !Appearance.zzzEverywhere
+        visible: !Appearance.ilmangoEverywhere && !Appearance.zzzEverywhere
     }
 
     GlassBackground {
@@ -206,16 +206,16 @@ FocusScope {
         anchors.fill: parent
         fallbackColor: ColorUtils.applyAlpha(
             Appearance.zzzEverywhere ? Appearance.zzz.paper : Appearance.colors.colLayer0, 1)
-        inirColor: Appearance.inir.colLayer0
+        ilmangoColor: Appearance.ilmango.colLayer0
         auroraTransparency: Appearance.aurora.overlayTransparentize
         radius: Appearance.zzzEverywhere ? Appearance.zzz.panelRadius
             : Appearance.angelEverywhere ? Appearance.angel.roundingLarge
-            : Appearance.inirEverywhere ? Appearance.inir.roundingLarge
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingLarge
             : Appearance.rounding.large
         border.width: 1
         border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong
             : Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-            : Appearance.inirEverywhere ? Appearance.inir.colBorder
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
             : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder
             : Appearance.colors.colLayer0Border
 

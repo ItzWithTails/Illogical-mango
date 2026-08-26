@@ -1,6 +1,6 @@
 //@ pragma UseQApplication
 //@ pragma Env QS_NO_RELOAD_POPUP=1
-//@ pragma Env INIR_STANDALONE_WINDOW=1
+//@ pragma Env ILMANGO_STANDALONE_WINDOW=1
 //@ pragma Env QT_QUICK_CONTROLS_STYLE=Basic
 //@ pragma Env QT_QUICK_FLICKABLE_WHEEL_DECELERATION=10000
 
@@ -51,7 +51,7 @@ Scope {
     readonly property string selectedProfileAudience: selectedProfile === "minimum"
         ? Translation.tr("Best if you want the shell out of the way and will add pieces yourself.")
         : selectedProfile === "full"
-            ? Translation.tr("Best if you want to see everything iNiR can do on day one.")
+            ? Translation.tr("Best if you want to see everything Illogical-mango can do on day one.")
             : Translation.tr("Best for most people. This is what a fresh install ships.")
 
     // Every starting profile prepares shared services and the Material II
@@ -253,7 +253,7 @@ Scope {
     readonly property var steps: [
         {
             icon: "waving_hand", title: Translation.tr("Welcome"),
-            headline: Translation.tr("Welcome to iNiR"),
+            headline: Translation.tr("Welcome to Illogical-mango"),
             subtitle: Translation.tr("Five short steps. Everything here can be changed later in Settings.")
         },
         {
@@ -296,7 +296,7 @@ Scope {
         repeat: false
         onTriggered: {
             // first_run.txt is already written by FirstRunExperience before launching us
-            Quickshell.execDetached(["/usr/bin/notify-send", Translation.tr("Welcome to inir"), Translation.tr("Press Super+/ for all keyboard shortcuts."), "-a", "Shell"])
+            Quickshell.execDetached(["/usr/bin/notify-send", Translation.tr("Welcome to ilmango"), Translation.tr("Press Super+/ for all keyboard shortcuts."), "-a", "Shell"])
             Qt.quit()
         }
     }
@@ -454,18 +454,18 @@ Scope {
                 id: cardBg
                 anchors.fill: parent
 
-                radius: Appearance.inirEverywhere ? Appearance.inir.roundingLarge
+                radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingLarge
                       : Appearance.rounding.large
 
                 // Base color — colLayer1Base is the raw m3surfaceContainerLow without
                 // contentTransparency mixing, so the wizard stays solid even when the user
                 // has transparency enabled in Material/Cards styles.
-                color: Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                      : Appearance.auroraEverywhere ? "transparent"
                      : Appearance.colors.colLayer1Base
 
-                border.width: Appearance.inirEverywhere ? 1 : (Appearance.auroraEverywhere ? 0 : 1)
-                border.color: Appearance.inirEverywhere ? Appearance.inir.colBorder
+                border.width: Appearance.ilmangoEverywhere ? 1 : (Appearance.auroraEverywhere ? 0 : 1)
+                border.color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                             : Appearance.colors.colLayer0Border
 
                 Behavior on color { ColorAnimation { duration: Appearance.animation.elementMoveFast.duration } }
@@ -673,7 +673,7 @@ Scope {
                     Layout.leftMargin: 20
                     Layout.rightMargin: 20
                     height: 1
-                    color: Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
                          : Appearance.colors.colOutlineVariant
                 }
 
@@ -886,7 +886,7 @@ Scope {
                 }
 
                 StyledToolTip {
-                    text: Translation.tr("You can re-open this wizard anytime with:\n  inir welcome")
+                    text: Translation.tr("You can re-open this wizard anytime with:\n  ilmango welcome")
                 }
 
                 HoverHandler {
@@ -942,12 +942,12 @@ Scope {
             Layout.maximumWidth: 540
             implicitWidth: 520
             implicitHeight: previewCol.implicitHeight + 24
-            radius: Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
-            color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+            radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                  : Appearance.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colLayer2, 0.5)
                  : Appearance.colors.colLayer2
-            border.width: Appearance.inirEverywhere ? 1 : 0
-            border.color: Appearance.inir.colBorderSubtle
+            border.width: Appearance.ilmangoEverywhere ? 1 : 0
+            border.color: Appearance.ilmango.colBorderSubtle
 
             ColumnLayout {
                 id: previewCol
@@ -1038,16 +1038,16 @@ Scope {
                     readonly property bool selected: (Config.options?.settingsUi?.easyMode ?? false) === true
                     Layout.fillWidth: true
                     Layout.preferredHeight: settingsDepthRow.cardHeight
-                    radius: Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+                    radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
                     color: selected
                         ? Appearance.colors.colPrimaryContainer
-                        : (Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                        : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                           : Appearance.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colLayer2, 0.5)
                           : Appearance.colors.colLayer2)
                     border.width: selected ? 2 : 1
                     border.color: selected
                         ? Appearance.colors.colPrimary
-                        : (Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+                        : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
                           : Appearance.colors.colLayer0Border)
 
                     Behavior on color {
@@ -1126,16 +1126,16 @@ Scope {
                     readonly property bool selected: (Config.options?.settingsUi?.easyMode ?? false) === false
                     Layout.fillWidth: true
                     Layout.preferredHeight: settingsDepthRow.cardHeight
-                    radius: Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+                    radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
                     color: selected
                         ? Appearance.colors.colPrimaryContainer
-                        : (Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                        : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                           : Appearance.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colLayer2, 0.5)
                           : Appearance.colors.colLayer2)
                     border.width: selected ? 2 : 1
                     border.color: selected
                         ? Appearance.colors.colPrimary
-                        : (Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+                        : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
                           : Appearance.colors.colLayer0Border)
 
                     Behavior on color {
@@ -1280,7 +1280,7 @@ Scope {
                         { displayName: "Material", icon: "dashboard", value: "material" },
                         { displayName: "Cards", icon: "crop_square", value: "cards" },
                         { displayName: "Aurora", icon: "blur_on", value: "aurora" },
-                        { displayName: "Inir", icon: "terminal", value: "inir" }
+                        { displayName: "Ilmango", icon: "terminal", value: "ilmango" }
                     ]
                 }
 
@@ -1699,7 +1699,7 @@ Scope {
                 Rectangle {
                     Layout.fillWidth: true
                     implicitHeight: profileSummaryColumn.implicitHeight + 20
-                    radius: Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.small
+                    radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.small
                     color: root.profileCustomized
                         ? Appearance.colors.colLayer2
                         : Appearance.colors.colPrimaryContainer
@@ -1841,7 +1841,7 @@ Scope {
                 ConfigSwitch {
                     buttonIcon: "pets"
                     text: Translation.tr("Kira, the desktop companion")
-                    description: Translation.tr("iNiR's mascot peeks in from the screen edges and reacts to what you do. Purely decorative, and she never takes focus.")
+                    description: Translation.tr("Illogical-mango's mascot peeks in from the screen edges and reacts to what you do. Purely decorative, and she never takes focus.")
                     checked: Config.options?.mascot?.enable ?? false
                     onToggledByUser: checked => root.setProfileFeature("mascot.enable", checked)
                 }
@@ -1897,12 +1897,12 @@ Scope {
                     Layout.preferredWidth: 340
                     Layout.alignment: Qt.AlignTop
                     implicitHeight: shortcutsCardCol.implicitHeight + 24
-                    radius: Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
-                    color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                    radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                          : Appearance.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colLayer2, 0.5)
                          : Appearance.colors.colLayer2
-                    border.width: Appearance.inirEverywhere ? 1 : 0
-                    border.color: Appearance.inir.colBorderSubtle
+                    border.width: Appearance.ilmangoEverywhere ? 1 : 0
+                    border.color: Appearance.ilmango.colBorderSubtle
 
                     ColumnLayout {
                         id: shortcutsCardCol
@@ -1966,12 +1966,12 @@ Scope {
                     Layout.preferredWidth: 340
                     Layout.alignment: Qt.AlignTop
                     implicitHeight: tryItCardCol.implicitHeight + 24
-                    radius: Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
-                    color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                    radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                          : Appearance.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colLayer2, 0.5)
                          : Appearance.colors.colLayer2
-                    border.width: Appearance.inirEverywhere ? 1 : 0
-                    border.color: Appearance.inir.colBorderSubtle
+                    border.width: Appearance.ilmangoEverywhere ? 1 : 0
+                    border.color: Appearance.ilmango.colBorderSubtle
 
                     ColumnLayout {
                         id: tryItCardCol
@@ -2031,7 +2031,7 @@ Scope {
                                 colBackgroundHover: Appearance.colors.colLayer1Hover
 
                                 onClicked: Quickshell.execDetached([
-                                    Quickshell.shellPath("scripts/inir"),
+                                    Quickshell.shellPath("scripts/ilmango"),
                                     modelData.target,
                                     modelData.fn
                                 ])
@@ -2087,11 +2087,11 @@ Scope {
                 Layout.preferredWidth: 694
                 Layout.maximumWidth: 700
                 Layout.preferredHeight: helpCalloutRow.implicitHeight + 18
-                buttonRadius: Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+                buttonRadius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
                 colBackground: ColorUtils.transparentize(Appearance.colors.colPrimaryContainer, 0.6)
                 colBackgroundHover: ColorUtils.transparentize(Appearance.colors.colPrimaryContainer, 0.4)
 
-                onClicked: Qt.openUrlExternally("https://github.com/snowarch/inir/wiki/Troubleshooting")
+                onClicked: Qt.openUrlExternally("https://github.com/ItzWithTails/illogical-mango/wiki/Troubleshooting")
 
                 Rectangle {
                     anchors.fill: parent
@@ -2154,7 +2154,7 @@ Scope {
                     buttonRadius: Appearance.rounding.small
                     colBackground: Appearance.colors.colLayer2
                     colBackgroundHover: Appearance.colors.colLayer2Hover
-                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "settings"])
+                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "settings"])
                     RowLayout {
                         id: settingsChipRow
                         anchors.centerIn: parent
@@ -2170,7 +2170,7 @@ Scope {
                     buttonRadius: Appearance.rounding.small
                     colBackground: Appearance.colors.colLayer2
                     colBackgroundHover: Appearance.colors.colLayer2Hover
-                    onClicked: Qt.openUrlExternally("https://github.com/snowarch/inir/wiki")
+                    onClicked: Qt.openUrlExternally("https://github.com/ItzWithTails/illogical-mango/wiki")
                     RowLayout {
                         id: docsChipRow
                         anchors.centerIn: parent
@@ -2186,7 +2186,7 @@ Scope {
                     buttonRadius: Appearance.rounding.small
                     colBackground: Appearance.colors.colLayer2
                     colBackgroundHover: Appearance.colors.colLayer2Hover
-                    onClicked: Qt.openUrlExternally("https://github.com/snowarch/inir/issues")
+                    onClicked: Qt.openUrlExternally("https://github.com/ItzWithTails/illogical-mango/issues")
                     RowLayout {
                         id: issueChipRow
                         anchors.centerIn: parent

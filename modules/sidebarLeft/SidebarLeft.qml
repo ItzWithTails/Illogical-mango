@@ -38,7 +38,7 @@ Scope {
         sourceComponent: FloatingWindow {
             id: aiChatWindow
             visible: true
-            title: "iNiR AI Chat"
+            title: "Illogical-mango AI Chat"
             implicitWidth: 520
             implicitHeight: 780
             minimumSize: Qt.size(380, 400)

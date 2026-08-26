@@ -1,6 +1,6 @@
 # Theming Architecture
 
-This document describes the current iNiR theming pipeline at a high level.
+This document describes the current Illogical-mango theming pipeline at a high level.
 
 ## Pipeline overview
 

@@ -48,7 +48,7 @@ ColumnLayout {
         switch (MascotCatalog.collectionRole(pose)) {
         case "identity": return Translation.tr("Canonical identity reference")
         case "expression-study": return Translation.tr("Expression and acting study")
-        case "brand-key-art": return Translation.tr("iNiR brand key art")
+        case "brand-key-art": return Translation.tr("Illogical-mango brand key art")
         case "chaos-fail": return Translation.tr("Rare chaos-mode comedy fall")
         case "recording-director": return Translation.tr("Screenshot and recording director")
         case "fullbody": return Translation.tr("Full-body runtime pose")

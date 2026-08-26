@@ -21,19 +21,19 @@ Item {
 
     // Style tokens
     readonly property color colText: Appearance.angelEverywhere ? Appearance.angel.colText
-        : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
     readonly property color colSubtext: Appearance.zzzEverywhere ? Appearance.zzz.inkMuted
         : Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
     readonly property color colPrimary: Appearance.zzzEverywhere ? Appearance.zzz.accent
         : Appearance.angelEverywhere ? Appearance.angel.colPrimary
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary
     readonly property color colOnPrimary: Appearance.zzzEverywhere ? Appearance.zzz.onSticker
         : Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-        : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary : Appearance.colors.colOnPrimary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary : Appearance.colors.colOnPrimary
     readonly property real cardRadius: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
 
     // Refresh when events change
     property int _eventsTrigger: 0
@@ -131,10 +131,10 @@ Item {
                 Layout.preferredWidth: 32
                 Layout.preferredHeight: 32
                 buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                    : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                 colBackground: "transparent"
                 colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                    : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                     : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover : Appearance.colors.colLayer2Hover
                 onClicked: root.backClicked()
 
@@ -179,7 +179,7 @@ Item {
                 Layout.preferredWidth: 32
                 Layout.preferredHeight: 32
                 buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                    : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                 colBackground: ColorUtils.transparentize(root.colPrimary, 0.88)
                 colBackgroundHover: ColorUtils.transparentize(root.colPrimary, 0.80)
                 onClicked: root.addEventClicked(root.selectedDate)

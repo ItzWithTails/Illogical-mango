@@ -40,23 +40,23 @@ Item {
 
     // ── Theme tokens ──────────────────────────────────────────────────
     readonly property color colText: Appearance.zzzEverywhere ? Appearance.zzz.ink
-        : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
     readonly property color colSubtext: Appearance.zzzEverywhere ? Appearance.zzz.inkMuted
-        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
     readonly property color colPrimary: Appearance.zzzEverywhere ? Appearance.zzz.accent
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary
     readonly property color colSurface: Appearance.zzzEverywhere ? "transparent"
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colLayer2
     readonly property color colSurfaceHover: Appearance.zzzEverywhere ? Appearance.zzz.chrome
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
         : Appearance.colors.colLayer2Hover
     readonly property real radiusCard: Appearance.zzzEverywhere ? Appearance.zzz.cardRadius
-        : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
     readonly property real radiusInner: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
 
     // ── System timezone detection ─────────────────────────────────────
     Process {
@@ -319,7 +319,7 @@ Item {
                             radius: height / 2
                             color: clockRow.accentLocal
                                 ? ColorUtils.transparentize(root.colPrimary, 0.85)
-                                : (Appearance.inirEverywhere ? Appearance.inir.colLayer1 : Appearance.colors.colLayer1)
+                                : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1 : Appearance.colors.colLayer1)
 
                             MaterialSymbol {
                                 anchors.centerIn: parent

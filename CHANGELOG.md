@@ -1,9 +1,36 @@
 # Changelog
 
-All notable changes to iNiR will be documented in this file.
+All notable changes to Illogical-mango will be documented in this file.
+Entries from before the rename still say "iNiR" — that was the project's name at
+the time, and the history is left as it was written.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Changed
+- **Renamed iNiR to Illogical-mango.** The brand is `Illogical-mango`; the CLI, config
+  paths, environment variables and internal identifiers are `ilmango`. `mango` alone was
+  not available — it already means the MangoWC compositor throughout the tree.
+  - CLI: `inir` → `ilmango`; the launcher, completions, desktop entries, systemd units
+    and Arch packages follow the same name.
+  - Config: `~/.config/inir` → `~/.config/ilmango`; shell payload
+    `~/.config/quickshell/inir` → `~/.config/quickshell/ilmango`.
+  - Environment: every `INIR_*` variable is now `ILMANGO_*` (`INIR_VENV` → `ILMANGO_VENV`).
+  - Compositor keybinds move from `~/.config/mango/inir.conf` to
+    `~/.config/mango/ilmango.conf`, and the `source-optional=` line is rewritten in place.
+  - The `Inir` global style is now `Ilmango`: `appearance.globalStyle` values and
+    `globalStyleCornerStyles` keys are renamed in user configs, along with all 15
+    translation files.
+  - Update checks and packaging now point at `ItzWithTails/illogical-mango` instead of the
+    upstream repository.
+  - Migration `037-ilmango-rename` moves every installed artifact and leaves symlinks at
+    the old paths, so existing keybinds and user scripts keep resolving. Arch packages
+    carry `provides`/`replaces` for their `inir-*` predecessors.
+  - Upstream references are untouched: `snowarch/iNiR`, the `iNiR-Walls` wallpaper pack and
+    the `inir-mascot` art pack keep their names, and credits still name iNiR as the shell
+    this was ported from.
 
 ## [2.29.2] - 2026-08-24
 

@@ -1,4 +1,4 @@
-# Install dependencies for iNiR on Fedora-based systems
+# Install dependencies for Illogical-mango on Fedora-based systems
 # This script is meant to be sourced, not run directly.
 
 # shellcheck shell=bash
@@ -26,7 +26,7 @@ tui_info "Detected Fedora ${FEDORA_VERSION}"
 #####################################################################################
 # Compositor detection
 #####################################################################################
-# iNiR runs on niri, mango or Hyprland. Installing niri unconditionally would
+# Illogical-mango runs on niri, mango or Hyprland. Installing niri unconditionally would
 # push a second compositor onto a machine that already has a working one, so
 # every niri step below is gated on this. Same rule as sdata/lib/doctor.sh.
 #
@@ -532,7 +532,7 @@ tui_info "Installing critical fonts..."
 FONT_DIR="$HOME/.local/share/fonts"
 mkdir -p "$FONT_DIR"
 
-# Material Symbols Rounded (icons) - this is the font iNiR actually uses
+# Material Symbols Rounded (icons) - this is the font Illogical-mango actually uses
 if ! fc-list | grep -qi "Material Symbols Rounded"; then
   log_info "Downloading Material Symbols Rounded font..."
   
@@ -686,7 +686,7 @@ if ! fc-list | grep -qi "Rubik"; then
     log_success "Rubik installed"
 fi
 
-# Geist (used by default in iNiR)
+# Geist (used by default in Illogical-mango)
 if ! fc-list | grep -qi "Geist"; then
   log_info "Downloading Geist font..."
   TEMP_DIR="/tmp/geist-font-$$"

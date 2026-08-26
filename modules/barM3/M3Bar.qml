@@ -73,7 +73,7 @@ Scope {
                 // Upstream raised the bar to Overlay only while a Hyprland
                 // special workspace sat over a fullscreen window. Niri has no
                 // special workspace, so the bar stays on Top and fullscreen
-                // windows cover it, which is what iNiR's own bar does too.
+                // windows cover it, which is what Illogical-mango's own bar does too.
                 WlrLayershell.layer: WlrLayer.Top
                 implicitHeight: Appearance.sizes.barHeight + Appearance.rounding.screenRounding
                     + (barRoot.autoHideEnabled ? barRoot.layerGap : 0)

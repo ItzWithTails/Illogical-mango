@@ -17,15 +17,15 @@ spawn-at-startup "bash" "-c" "systemctl --user import-environment XDG_MENU_PREFI
 // rich content out of an editor like ChatGPT's), wl-paste matches that and the
 // raw <meta http-equiv=...> markup is what would land in the history. Asking
 // for text/plain instead would drop those entries entirely.
-// Access via iNiR's clipboard overlay (Mod+V).
-spawn-at-startup "bash" "-c" "wl-paste --type text --watch ~/.config/quickshell/inir/scripts/clipboard-store.py &"
+// Access via Illogical-mango's clipboard overlay (Mod+V).
+spawn-at-startup "bash" "-c" "wl-paste --type text --watch ~/.config/quickshell/ilmango/scripts/clipboard-store.py &"
 spawn-at-startup "bash" "-c" "wl-paste --type image --watch cliphist store &"
 
 // Polkit authentication agent — needed for GUI sudo prompts (software install,
-// disk mount, etc.). iNiR's setup auto-detects which agent is installed and
+// disk mount, etc.). Illogical-mango's setup auto-detects which agent is installed and
 // patches this line accordingly (KDE, GNOME, MATE, LXQt, or lxpolkit).
 spawn-at-startup "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
 
-// ── iNiR shell ──────────────────────────────────────────────────────────────
-// iNiR is managed by the user systemd service (inir.service).
+// ── Illogical-mango shell ──────────────────────────────────────────────────────────────
+// Illogical-mango is managed by the user systemd service (ilmango.service).
 // Do not add a compositor startup entry here or you'll get two shells.

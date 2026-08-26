@@ -81,7 +81,7 @@ Item {
     readonly property bool _zzz: Appearance.zzzEverywhere
     readonly property real _radius: _zzz ? 0
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
         : Appearance.rounding.normal
     readonly property color _ringColor: dropTargeted
         ? (_zzz ? Appearance.zzz.accent : Appearance.colors.colPrimary)
@@ -103,7 +103,7 @@ Item {
         target: clipBox
         visible: card.selected && !card._zzz
             && (Appearance.angelEverywhere
-                || (!Appearance.inirEverywhere && !Appearance.auroraEverywhere))
+                || (!Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere))
     }
 
     Rectangle {

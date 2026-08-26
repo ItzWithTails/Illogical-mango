@@ -9,7 +9,7 @@ import qs.services.deferred
 
 /**
  * 控 CLIPBOARD surface: search field over the cliphist history, drawn as one of
- * the pill's surfaces. Entries come from iNiR's Cliphist service snapshot so the
+ * the pill's surfaces. Entries come from Illogical-mango's Cliphist service snapshot so the
  * list is populated as soon as the pill finishes morphing; typing runs the
  * service's fuzzy query. Return copies the selected entry and closes, hovering a
  * row cross-fades a dismiss glyph that deletes it (Ctrl+X does the same for the

@@ -28,7 +28,7 @@ Item {
     readonly property MprisPlayer player: MprisController.activePlayer
     readonly property bool isYtMusicActive: MprisController.isYtMusicActive
     readonly property bool hasPlayer: (player && player.trackTitle) || (isYtMusicActive && YtMusic.currentVideoId)
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
 
     readonly property string effectiveArtUrl: isYtMusicActive && YtMusic.currentThumbnail ? YtMusic.currentThumbnail : (player?.trackArtUrl ?? "")
@@ -66,11 +66,11 @@ Item {
 
     property QtObject blendedColors: AdaptedMaterialScheme { color: root.artDominantColor }
     
-    readonly property color jiraColText: Appearance.inir.colText
-    readonly property color jiraColTextSecondary: Appearance.inir.colTextSecondary
-    readonly property color jiraColPrimary: Appearance.inir.colPrimary
-    readonly property color jiraColLayer1: Appearance.inir.colLayer1
-    readonly property color jiraColLayer2: Appearance.inir.colLayer2
+    readonly property color jiraColText: Appearance.ilmango.colText
+    readonly property color jiraColTextSecondary: Appearance.ilmango.colTextSecondary
+    readonly property color jiraColPrimary: Appearance.ilmango.colPrimary
+    readonly property color jiraColLayer1: Appearance.ilmango.colLayer1
+    readonly property color jiraColLayer2: Appearance.ilmango.colLayer2
     readonly property int cardHeight: root.compactMode ? 128 : 160
     readonly property int coverArtSize: root.compactMode ? 104 : 136
     readonly property int outerMargin: root.compactMode ? 10 : 12
@@ -84,18 +84,18 @@ Item {
         anchors.fill: parent
         implicitHeight: root.cardHeight
         radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-             : root.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+             : root.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
         color: Appearance.angelEverywhere ? "transparent"
              : Appearance.zzzEverywhere ? Appearance.colors.colLayer1
-             : root.inirEverywhere ? Appearance.inir.colLayer1
+             : root.ilmangoEverywhere ? Appearance.ilmango.colLayer1
              : root.auroraEverywhere ? ColorUtils.transparentize(root.blendedColors?.colLayer0 ?? Appearance.colors.colLayer0, 0.7)
              : (root.blendedColors?.colLayer0 ?? Appearance.colors.colLayer0)
         border.width: Appearance.angelEverywhere ? 0
                     : Appearance.zzzEverywhere ? 1
-                    : (root.inirEverywhere ? 1 : 0)
+                    : (root.ilmangoEverywhere ? 1 : 0)
         border.color: Appearance.angelEverywhere ? "transparent"
                     : Appearance.zzzEverywhere ? Appearance.zzz.hairline
-                    : root.inirEverywhere ? Appearance.inir.colBorder : "transparent"
+                    : root.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent"
         Behavior on border.width {
             enabled: Appearance.animationsEnabled
             NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -123,7 +123,7 @@ Item {
             cache: false
             smooth: true
             mipmap: true
-            opacity: root.displayedArtFilePath !== "" ? (root.inirEverywhere ? 0.15 : (root.auroraEverywhere ? 0.25 : 0.5)) : 0
+            opacity: root.displayedArtFilePath !== "" ? (root.ilmangoEverywhere ? 0.15 : (root.auroraEverywhere ? 0.25 : 0.5)) : 0
             visible: opacity > 0
             Behavior on opacity {
                 enabled: Appearance.animationsEnabled
@@ -133,16 +133,16 @@ Item {
             layer.enabled: Appearance.effectsEnabled
             layer.effect: MultiEffect {
                 blurEnabled: true
-                blur: root.inirEverywhere ? 0.3 : 0.15
+                blur: root.ilmangoEverywhere ? 0.3 : 0.15
                 blurMax: 16
-                saturation: root.inirEverywhere ? 0.1 : 0.3
+                saturation: root.ilmangoEverywhere ? 0.1 : 0.3
             }
         }
 
         // Dark overlay for Material
         Rectangle {
             anchors.fill: parent
-            visible: !root.inirEverywhere && !root.auroraEverywhere
+            visible: !root.ilmangoEverywhere && !root.auroraEverywhere
             gradient: Gradient {
                 orientation: Gradient.Horizontal
                 GradientStop { position: 0.0; color: "transparent" }
@@ -163,7 +163,7 @@ Item {
             smoothing: 2
             color: ColorUtils.transparentize(
                 Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                : root.inirEverywhere ? root.jiraColPrimary : (root.blendedColors?.colPrimary ?? Appearance.colors.colPrimary), 
+                : root.ilmangoEverywhere ? root.jiraColPrimary : (root.blendedColors?.colPrimary ?? Appearance.colors.colPrimary), 
                 0.6
             )
         }
@@ -179,7 +179,7 @@ Item {
                 Layout.preferredWidth: root.coverArtSize
                 Layout.preferredHeight: root.coverArtSize
                 radius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                    : root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                    : root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
                 color: "transparent"
                 clip: true
 
@@ -189,7 +189,7 @@ Item {
                         width: root.coverArtSize
                         height: root.coverArtSize
                         radius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                            : root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small 
+                            : root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small 
                     }
                 }
 
@@ -209,7 +209,7 @@ Item {
                 Rectangle {
                     anchors.fill: parent
                     color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                        : root.inirEverywhere ? root.jiraColLayer2 : (root.blendedColors?.colLayer1 ?? Appearance.colors.colLayer1)
+                        : root.ilmangoEverywhere ? root.jiraColLayer2 : (root.blendedColors?.colLayer1 ?? Appearance.colors.colLayer1)
                     opacity: !root.downloaded ? 1 : 0
                     visible: opacity > 0
                     Behavior on opacity {
@@ -222,7 +222,7 @@ Item {
                         text: "music_note"
                         iconSize: root.compactMode ? 36 : 48
                         color: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                            : root.inirEverywhere ? root.jiraColTextSecondary : (root.blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
+                            : root.ilmangoEverywhere ? root.jiraColTextSecondary : (root.blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
                     }
                 }
             }
@@ -237,7 +237,7 @@ Item {
                     font.pixelSize: root.compactMode ? Appearance.font.pixelSize.smaller : Appearance.font.pixelSize.normal
                     font.weight: Font.Medium
                     color: Appearance.angelEverywhere ? Appearance.angel.colText
-                        : root.inirEverywhere ? root.jiraColText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                        : root.ilmangoEverywhere ? root.jiraColText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                     elide: Text.ElideRight
                 }
 
@@ -246,7 +246,7 @@ Item {
                     text: root.effectiveArtist || ""
                     font.pixelSize: root.compactMode ? Appearance.font.pixelSize.smallest : Appearance.font.pixelSize.smaller
                     color: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                        : root.inirEverywhere ? root.jiraColTextSecondary : (root.blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
+                        : root.ilmangoEverywhere ? root.jiraColTextSecondary : (root.blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
                     elide: Text.ElideRight
                     opacity: text !== "" ? 0.7 : 0
                     visible: opacity > 0
@@ -271,15 +271,15 @@ Item {
                             wavy: root.player?.isPlaying ?? false
                             animateWave: root.player?.isPlaying ?? false
                             highlightColor: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                                : root.inirEverywhere ? root.jiraColPrimary
+                                : root.ilmangoEverywhere ? root.jiraColPrimary
                                 : Appearance.zzzEverywhere ? Appearance.zzz.accentSoft
                                 : (root.blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
                             trackColor: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                                : root.inirEverywhere ? Appearance.inir.colLayer2
+                                : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                                 : Appearance.zzzEverywhere ? Appearance.zzz.metricTrack
                                 : (root.blendedColors?.colSecondaryContainer ?? Appearance.colors.colSecondaryContainer)
                             handleColor: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                                : root.inirEverywhere ? root.jiraColPrimary
+                                : root.ilmangoEverywhere ? root.jiraColPrimary
                                 : Appearance.zzzEverywhere ? "transparent"
                                 : (root.blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
                             value: root.player?.length > 0 ? root.player.position / root.player.length : 0
@@ -295,11 +295,11 @@ Item {
                             wavy: root.player?.isPlaying ?? false
                             animateWave: root.player?.isPlaying ?? false
                             highlightColor: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                                : root.inirEverywhere ? root.jiraColPrimary
+                                : root.ilmangoEverywhere ? root.jiraColPrimary
                                 : Appearance.zzzEverywhere ? Appearance.zzz.accentSoft
                                 : (root.blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
                             trackColor: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                                : root.inirEverywhere ? Appearance.inir.colLayer2
+                                : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                                 : Appearance.zzzEverywhere ? Appearance.zzz.metricTrack
                                 : (root.blendedColors?.colSecondaryContainer ?? Appearance.colors.colSecondaryContainer)
                             value: root.player?.length > 0 ? root.player.position / root.player.length : 0
@@ -317,7 +317,7 @@ Item {
                         font.pixelSize: Appearance.font.pixelSize.smallest
                         font.family: Appearance.font.family.numbers
                         color: Appearance.angelEverywhere ? Appearance.angel.colText
-                            : root.inirEverywhere ? root.jiraColText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                            : root.ilmangoEverywhere ? root.jiraColText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                     }
 
                     Item { Layout.fillWidth: true }
@@ -328,12 +328,12 @@ Item {
                         implicitHeight: root.controlButtonSize
                         enabled: MprisController.canGoPrevious
                         buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                            : root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                            : root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                         colBackground: "transparent"
                         colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                            : root.inirEverywhere ? Appearance.inir.colLayer2Hover : ColorUtils.transparentize(root.blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
+                            : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover : ColorUtils.transparentize(root.blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
                         colRipple: Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-                            : root.inirEverywhere ? Appearance.inir.colLayer2Active : (root.blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
+                            : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active : (root.blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
                         onClicked: MprisController.previous()
 
                         contentItem: Item {
@@ -343,7 +343,7 @@ Item {
                                 iconSize: root.controlIconSize
                                 fill: 1
                                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                                    : root.inirEverywhere ? root.jiraColText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                                    : root.ilmangoEverywhere ? root.jiraColText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                             }
                         }
 
@@ -355,19 +355,19 @@ Item {
                         implicitWidth: root.primaryControlButtonSize
                         implicitHeight: root.primaryControlButtonSize
                         buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                            : root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                            : root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                         colBackground: "transparent"
                         colBackgroundHover: Appearance.angelEverywhere
                             ? Appearance.angel.colGlassCardHover
-                            : root.inirEverywhere
-                            ? Appearance.inir.colLayer2Hover
+                            : root.ilmangoEverywhere
+                            ? Appearance.ilmango.colLayer2Hover
                             : root.auroraEverywhere
                                 ? ColorUtils.transparentize(root.blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
                                 : Appearance.colors.colLayer1Hover
                         colRipple: Appearance.angelEverywhere
                             ? Appearance.angel.colGlassCardActive
-                            : root.inirEverywhere
-                            ? Appearance.inir.colLayer2Active
+                            : root.ilmangoEverywhere
+                            ? Appearance.ilmango.colLayer2Active
                             : root.auroraEverywhere
                                 ? (root.blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
                                 : Appearance.colors.colLayer1Active
@@ -381,7 +381,7 @@ Item {
                                 fill: 1
                                 color: Appearance.angelEverywhere
                                     ? Appearance.angel.colPrimary
-                                    : root.inirEverywhere
+                                    : root.ilmangoEverywhere
                                     ? root.jiraColPrimary
                                     : root.auroraEverywhere
                                         ? (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
@@ -397,12 +397,12 @@ Item {
                         implicitHeight: root.controlButtonSize
                         enabled: MprisController.canGoNext
                         buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                            : root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                            : root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                         colBackground: "transparent"
                         colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                            : root.inirEverywhere ? Appearance.inir.colLayer2Hover : ColorUtils.transparentize(root.blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
+                            : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover : ColorUtils.transparentize(root.blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
                         colRipple: Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-                            : root.inirEverywhere ? Appearance.inir.colLayer2Active : (root.blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
+                            : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active : (root.blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
                         onClicked: MprisController.next()
 
                         contentItem: Item {
@@ -412,7 +412,7 @@ Item {
                                 iconSize: root.controlIconSize
                                 fill: 1
                                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                                    : root.inirEverywhere ? root.jiraColText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                                    : root.ilmangoEverywhere ? root.jiraColText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                             }
                         }
 
@@ -426,7 +426,7 @@ Item {
                         font.pixelSize: Appearance.font.pixelSize.smallest
                         font.family: Appearance.font.family.numbers
                         color: Appearance.angelEverywhere ? Appearance.angel.colText
-                            : root.inirEverywhere ? root.jiraColText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                            : root.ilmangoEverywhere ? root.jiraColText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                     }
                 }
             }

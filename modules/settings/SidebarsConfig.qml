@@ -53,15 +53,15 @@ ContentPage {
                 SettingsSwitch {
                     buttonIcon: "branding_watermark"
                     text: Translation.tr("Use Card style")
-                    enabled: Appearance.globalStyle === "material" || Appearance.globalStyle === "inir"
+                    enabled: Appearance.globalStyle === "material" || Appearance.globalStyle === "ilmango"
                     checked: Config.options.sidebar?.cardStyle ?? false
                     onCheckedChanged: {
                         Config.setNestedValue("sidebar.cardStyle", checked);
                     }
                     StyledToolTip {
-                        text: (Appearance.globalStyle === "material" || Appearance.globalStyle === "inir")
+                        text: (Appearance.globalStyle === "material" || Appearance.globalStyle === "ilmango")
                             ? Translation.tr("Apply rounded card styling to sidebars")
-                            : Translation.tr("Only available with Material or Inir global style")
+                            : Translation.tr("Only available with Material or Ilmango global style")
                     }
                 }
 

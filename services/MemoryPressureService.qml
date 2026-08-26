@@ -36,14 +36,14 @@ Singleton {
         _log("user requested restart")
         Quickshell.execDetached([
             "/usr/bin/notify-send",
-            "iNiR",
+            "Illogical-mango",
             Translation.tr("Restarting shell..."),
             "-a", "Shell",
             "--hint=int:transient:1",
         ])
         // Small delay so notification shows
         Qt.callLater(() => {
-            Quickshell.execDetached(["systemctl", "--user", "restart", "inir.service"])
+            Quickshell.execDetached(["systemctl", "--user", "restart", "ilmango.service"])
         })
     }
 
@@ -91,8 +91,8 @@ Singleton {
 
         Quickshell.execDetached([
             "/usr/bin/notify-send",
-            "iNiR",
-            Translation.tr("Memory usage is high (~%1 MB accumulated). A restart would free it. Run: inir memory restart").arg(mbEstimate),
+            "Illogical-mango",
+            Translation.tr("Memory usage is high (~%1 MB accumulated). A restart would free it. Run: ilmango memory restart").arg(mbEstimate),
             "-u", "critical",
             "-a", "Shell",
         ])

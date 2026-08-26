@@ -1,18 +1,19 @@
 # Config System
 
-How configuration works in iNiR, from the user's perspective and from the code side.
+How configuration works in Illogical-mango, from the user's perspective and from the code side.
 
 ## For users
 
-Everything is configurable through the graphical Settings UI. Open it with `Super+,` or `inir settings`. You should never need to edit the config file by hand.
+Everything is configurable through the graphical Settings UI. Open it with `Super+,` or `ilmango settings`. You should never need to edit the config file by hand.
 
 If you do want to edit it directly, it lives at:
 
 ```
-~/.config/illogical-impulse/config.json
+~/.config/ilmango/config.json
 ```
 
-(The directory name is a legacy artifact from when iNiR was called illogical-impulse. `~/.config/inir` is symlinked to it.)
+(`~/.config/illogical-impulse` and `~/.config/inir` are symlinks to it — leftovers from the
+project's earlier names, kept so old paths keep resolving.)
 
 Changes you make in the file are picked up automatically within 50ms. No restart needed.
 
@@ -165,7 +166,7 @@ Each zone is an array of module ids. Use Settings -> Bar -> Bar module layout un
 
 ### Live shell layout
 
-Settings -> Shell Layout and `inir shellLayout` use the same controller as the
+Settings -> Shell Layout and `ilmango shellLayout` use the same controller as the
 live desktop editor. Existing canonical keys remain authoritative:
 
 - ii bar: `bar.vertical` plus `bar.bottom`
@@ -188,7 +189,7 @@ change when the roles swap physical edges.
 Desktop widgets keep their original free/zone editor and independent
 `widgetEditMode`. Persistent layer-shell surfaces use the separate Shell Layout
 editor and move between advertised edge slots. Enter it from the desktop
-context menu, Settings -> Shell Layout, or `inir shellLayout open`. Its own
+context menu, Settings -> Shell Layout, or `ilmango shellLayout open`. Its own
 layer-shell HUD stays above the edited panels and does not reuse the widget
 canvas or toolbar. Drag any highlighted surface toward a screen edge: legal
 edges light up as full strips, a chip follows the pointer with the drop
@@ -221,7 +222,7 @@ Dragging, resizing or toggling a widget on one desktop therefore does not move
 or hide its peer on another output. Settings -> Monitors shows connected and
 saved-disconnected outputs, with per-widget reset and whole-output reset.
 
-When a new output appears or its logical resolution changes, iNiR initializes
+When a new output appears or its logical resolution changes, Illogical-mango initializes
 missing free-placement coordinates against that output's panel-safe work area
 and separates unlocked collisions. Widget content and visual options remain
 global unless the corresponding control is explicitly output-local. The Shell

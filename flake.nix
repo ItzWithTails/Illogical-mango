@@ -1,5 +1,5 @@
 {
-  description = "iNiR desktop shell for Niri, packaged for NixOS and Home Manager";
+  description = "Illogical-mango desktop shell for Niri, packaged for NixOS and Home Manager";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -23,18 +23,18 @@
         in
         {
           default = package;
-          inir = package;
+          ilmango = package;
         });
 
       nixosModules.default = nixosModule;
-      nixosModules.inir = nixosModule;
+      nixosModules.ilmango = nixosModule;
 
       homeModules.default = homeModule;
-      homeModules.inir = homeModule;
+      homeModules.ilmango = homeModule;
 
       # Conventional alias most Home Manager setups look for.
       homeManagerModules.default = homeModule;
-      homeManagerModules.inir = homeModule;
+      homeManagerModules.ilmango = homeModule;
 
       formatter = forAllSystems (pkgs: pkgs.nixpkgs-fmt);
     };

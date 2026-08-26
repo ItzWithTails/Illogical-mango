@@ -44,32 +44,32 @@ Item {
     readonly property bool _zzz: root._dialect === "zzz"
     readonly property bool _angel: root._dialect === "angel"
     readonly property bool _regalia: root._dialect === "regalia"
-    readonly property bool _inir: root._dialect === "inir"
+    readonly property bool _ilmango: root._dialect === "ilmango"
     readonly property bool _aurora: root._dialect === "aurora" || root._angel
     readonly property bool _cookie: root._dialect === "cookie"
     readonly property bool _island: root._dialect === "island"
 
     readonly property color _colText: root._zzz ? Appearance.zzz.ink
         : root._angel ? Appearance.angel.colText
-        : root._inir ? Appearance.inir.colText
+        : root._ilmango ? Appearance.ilmango.colText
         : root._aurora ? Appearance.colors.colOnSurface
         : Appearance.colors.colOnLayer1
     readonly property color _colSubtext: root._zzz ? Appearance.zzz.inkMuted
         : root._angel ? Appearance.angel.colTextSecondary
-        : root._inir ? Appearance.inir.colTextSecondary
+        : root._ilmango ? Appearance.ilmango.colTextSecondary
         : Appearance.colors.colSubtext
     readonly property color _colAccent: root._zzz ? Appearance.zzz.accent
         : root._angel ? Appearance.angel.colPrimary
-        : root._inir ? Appearance.inir.colPrimary
+        : root._ilmango ? Appearance.ilmango.colPrimary
         : Appearance.colors.colPrimary
     readonly property color _colBannerBase: root._zzz ? Appearance.zzz.tile
         : root._angel ? Qt.alpha(Appearance.angel.colGlassCard, 1)
-        : root._inir ? Qt.alpha(Appearance.inir.colLayer1, 1)
+        : root._ilmango ? Qt.alpha(Appearance.ilmango.colLayer1, 1)
         : root._island ? Qt.alpha(Appearance.colors.colLayer1, 1)
         : Qt.alpha(Appearance.colors.colLayer0Base, 1)
     readonly property color _avatarPlate: root._zzz ? Appearance.zzz.chrome
         : root._angel ? Qt.alpha(Appearance.angel.colGlassCard, 1)
-        : root._inir ? Qt.alpha(Appearance.inir.colLayer1, 1)
+        : root._ilmango ? Qt.alpha(Appearance.ilmango.colLayer1, 1)
         : root._island ? Appearance.colors.colLayer1
         : Qt.alpha(Appearance.colors.colLayer1, 1)
 
@@ -131,7 +131,7 @@ Item {
         : root._cookie ? Appearance.rounding.normal
         : root._island ? (Config.options?.appearance?.island?.radius ?? 18)
         : root._angel ? Appearance.angel.roundingLarge
-        : root._inir ? Appearance.inir.roundingLarge
+        : root._ilmango ? Appearance.ilmango.roundingLarge
         : Appearance.rounding.large
     readonly property real _panelConcentricRadius: (root.atPanelTop && root.panelRadius > root.panelInset)
         ? Appearance.concentricRadius(root.panelRadius, root.panelInset) : 0
@@ -483,16 +483,16 @@ Item {
         property string tooltipText
         readonly property bool _zzz: headerButton.dialect === "zzz"
         readonly property bool _angel: headerButton.dialect === "angel"
-        readonly property bool _inir: headerButton.dialect === "inir"
+        readonly property bool _ilmango: headerButton.dialect === "ilmango"
         readonly property bool _aurora: headerButton.dialect === "aurora" || headerButton._angel
         property color iconColor: headerButton.toggled
             ? (headerButton._zzz ? Appearance.zzz.accent
                 : headerButton._angel ? Appearance.angel.colOnPrimary
-                : headerButton._inir ? Appearance.inir.colOnPrimaryContainer
+                : headerButton._ilmango ? Appearance.ilmango.colOnPrimaryContainer
                 : Appearance.colors.colOnPrimaryContainer)
             : (headerButton._zzz ? Appearance.zzz.ink
                 : headerButton._angel ? Appearance.angel.colText
-                : headerButton._inir ? Appearance.inir.colText
+                : headerButton._ilmango ? Appearance.ilmango.colText
                 : headerButton._aurora ? Appearance.colors.colOnSurface
                 : Appearance.colors.colOnLayer1)
 
@@ -500,17 +500,17 @@ Item {
         implicitHeight: 34
         buttonRadius: headerButton._zzz ? Appearance.zzz.controlRadius
             : headerButton._angel ? Appearance.angel.roundingSmall
-            : headerButton._inir ? Appearance.inir.roundingSmall
+            : headerButton._ilmango ? Appearance.ilmango.roundingSmall
             : Appearance.rounding.full
         colBackground: "transparent"
         colBackgroundHover: headerButton._zzz ? Appearance.zzz.chrome
             : headerButton._angel ? Appearance.angel.colGlassCardHover
-            : headerButton._inir ? Appearance.inir.colLayer2Hover
+            : headerButton._ilmango ? Appearance.ilmango.colLayer2Hover
             : headerButton._aurora ? Appearance.aurora.colSubSurfaceHover
             : Appearance.colors.colLayer2Hover
         colBackgroundToggled: headerButton._zzz ? Appearance.zzz.chrome
             : headerButton._angel ? Appearance.angel.colPrimary
-            : headerButton._inir ? Appearance.inir.colPrimaryContainer
+            : headerButton._ilmango ? Appearance.ilmango.colPrimaryContainer
             : Appearance.colors.colPrimaryContainer
 
         contentItem: MaterialSymbol {

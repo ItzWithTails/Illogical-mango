@@ -29,26 +29,26 @@ Item {
     readonly property int tileColumns: 6
     readonly property color headerAccentColor: root.zzzEverywhere ? Appearance.zzz.accent
         : Appearance.angelEverywhere ? Appearance.angel.colPrimary
-        : Appearance.inirEverywhere ? Appearance.inir.colAccent
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colAccent
         : Appearance.colors.colPrimary
     readonly property color surfaceColor: root.zzzEverywhere ? Appearance.zzz.paper
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
         : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
         : Appearance.colors.colLayer1
     readonly property color surfaceHoverColor: root.zzzEverywhere ? Appearance.zzz.paperAlt
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
         : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurfaceHover
         : Appearance.colors.colLayer1Hover
     readonly property color surfaceActiveColor: root.zzzEverywhere ? Appearance.zzz.signal
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1Active
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Active
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
         : Appearance.colors.colLayer1Active
     readonly property color surfaceBorderColor: root.zzzEverywhere ? Appearance.zzz.hairline
         : Appearance.angelEverywhere ? Appearance.angel.colBorderSubtle
-        : Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
         : Appearance.auroraEverywhere ? Appearance.aurora.colPopupBorder
         : Appearance.colors.colLayer0Border
 
@@ -152,11 +152,11 @@ Item {
         implicitHeight: Math.min(root.availableHeight, 680)
         radius: root.zzzEverywhere ? Appearance.zzz.panelRadius
             : Appearance.angelEverywhere ? Appearance.angel.roundingLarge
-            : Appearance.inirEverywhere ? Appearance.inir.roundingLarge
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingLarge
             : Appearance.rounding.large
         Behavior on radius { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementResize.duration; easing.type: Appearance.animation.elementResize.type; easing.bezierCurve: Appearance.animation.elementResize.bezierCurve } }
         fallbackColor: root.surfaceColor
-        inirColor: Appearance.inir.colLayer1
+        ilmangoColor: Appearance.ilmango.colLayer1
         auroraTransparency: Appearance.aurora.popupTransparentize
         wallpaperBackdropEnabled: root.panelVisible && !root.zzzEverywhere
         border.width: root.zzzEverywhere ? Appearance.zzz.borderThick : Appearance.angelEverywhere ? 0 : 1
@@ -310,12 +310,12 @@ Item {
                         implicitHeight: catCardColumn.implicitHeight + 32
                         radius: root.zzzEverywhere ? Appearance.zzz.panelRadius
                             : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                            : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
                             : Appearance.rounding.normal
                         Behavior on radius { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementResize.duration; easing.type: Appearance.animation.elementResize.type; easing.bezierCurve: Appearance.animation.elementResize.bezierCurve } }
                         color: root.zzzEverywhere ? Appearance.zzz.paperAlt
                             : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                            : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                             : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
                             : Appearance.colors.colLayer2
                         border.width: 1
@@ -509,9 +509,9 @@ Item {
 
             Drag.dragType: Drag.Automatic
             Drag.supportedActions: Qt.CopyAction
-            Drag.keys: ["application/x-inir-desktop-entry"]
+            Drag.keys: ["application/x-ilmango-desktop-entry"]
             Drag.mimeData: ({
-                "application/x-inir-desktop-entry": appBtn.desktopEntryId
+                "application/x-ilmango-desktop-entry": appBtn.desktopEntryId
             })
             Drag.imageSource: Quickshell.iconPath(
                 String(appBtn.entry?.icon ?? ""), "application-x-executable")

@@ -1,4 +1,4 @@
-# Greeting for iNiR installer
+# Greeting for Illogical-mango installer
 # This script is meant to be sourced.
 
 # shellcheck shell=bash

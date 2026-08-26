@@ -68,7 +68,7 @@ The Aurora and Angel styles use frosted glass effects. The "backdrop" is a separ
 
 ## Auto-cycling
 
-Set an interval and iNiR cycles through wallpapers in a directory automatically. Configurable per-directory with optional color regeneration on each change.
+Set an interval and Illogical-mango cycles through wallpapers in a directory automatically. Configurable per-directory with optional color regeneration on each change.
 
 Settings -> Appearance -> Background -> Shuffle wallpapers controls:
 
@@ -91,12 +91,12 @@ When a preset is active, changing wallpapers still changes the background image 
 
 ## CLI reference
 
-There is no `inir wallpapers` command. The real IPC target is
+There is no `ilmango wallpapers` command. The real IPC target is
 `wallpaperSelector` (see [docs/IPC.md](IPC.md)):
 
 ```bash
-inir wallpaperSelector toggle   # Open/close the wallpaper picker grid
-inir wallpaperSelector random   # Pick a random wallpaper from the current folder
+ilmango wallpaperSelector toggle   # Open/close the wallpaper picker grid
+ilmango wallpaperSelector random   # Pick a random wallpaper from the current folder
 ```
 
 Setting a specific wallpaper by path is done through the picker UI (or the

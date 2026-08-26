@@ -1,6 +1,6 @@
 # Theming Targets
 
-This document explains the first modular layer of the iNiR theming system.
+This document explains the first modular layer of the Illogical-mango theming system.
 
 ## Goal
 
@@ -39,7 +39,7 @@ Each manifest declares:
 ## Listing targets
 
 ```bash
-inir theme list-targets
+ilmango theme list-targets
 ```
 
 Output columns:
@@ -53,7 +53,7 @@ Output columns:
 ## Inspecting a target
 
 ```bash
-inir theme inspect terminals
+ilmango theme inspect terminals
 ```
 
 This prints:
@@ -69,13 +69,13 @@ This prints:
 Validate all declared targets:
 
 ```bash
-inir theme doctor
+ilmango theme doctor
 ```
 
 Validate one target:
 
 ```bash
-inir theme doctor editors
+ilmango theme doctor editors
 ```
 
 The doctor currently checks:
@@ -91,19 +91,19 @@ The doctor currently checks:
 Apply one target:
 
 ```bash
-inir theme apply terminals
+ilmango theme apply terminals
 ```
 
 Apply several:
 
 ```bash
-inir theme apply gtk-kde editors chrome
+ilmango theme apply gtk-kde editors chrome
 ```
 
 Apply all declared targets:
 
 ```bash
-inir theme apply all
+ilmango theme apply all
 ```
 
 ## Scaffolding a new target
@@ -111,13 +111,13 @@ inir theme apply all
 Create a new target skeleton:
 
 ```bash
-inir theme scaffold myapp
+ilmango theme scaffold myapp
 ```
 
 Example with custom metadata:
 
 ```bash
-inir theme scaffold myapp \
+ilmango theme scaffold myapp \
   --label "My App" \
   --category custom \
   --inputs palette.json terminal.json \
@@ -200,7 +200,7 @@ Add:
 You can also generate both files automatically with:
 
 ```bash
-inir theme scaffold <id>
+ilmango theme scaffold <id>
 ```
 
 Example:
@@ -212,7 +212,7 @@ Example:
   "module": "70-myapp.sh",
   "category": "custom",
   "inputs": ["palette.json"],
-  "description": "Apply generated iNiR palette to My App.",
+  "description": "Apply generated Illogical-mango palette to My App.",
   "configKey": "appearance.wallpaperTheming.enableAppsAndShell"
 }
 ```
@@ -222,25 +222,25 @@ Example:
 List targets:
 
 ```bash
-inir theme list-targets
+ilmango theme list-targets
 ```
 
 Apply only your target:
 
 ```bash
-inir theme apply myapp
+ilmango theme apply myapp
 ```
 
 Inspect the generated target:
 
 ```bash
-inir theme inspect myapp
+ilmango theme inspect myapp
 ```
 
 Doctor-check it:
 
 ```bash
-inir theme doctor myapp
+ilmango theme doctor myapp
 ```
 
 ## Design intent
@@ -248,7 +248,7 @@ inir theme doctor myapp
 This is the first compatibility slice, not the final architecture.
 
 It deliberately does **not** replace the current pipeline yet.
-Instead it gives iNiR:
+Instead it gives Illogical-mango:
 
 - explicit target discovery
 - selective apply
@@ -273,10 +273,10 @@ Today the modular layer is:
 3. **Target modules**
    - the real implementation scripts that generate or apply app-specific output
 4. **CLI layer**
-    - `inir theme list-targets`
-    - `inir theme inspect <id>`
-    - `inir theme doctor [id]`
-    - `inir theme scaffold <id>`
-    - `inir theme apply <ids...|all>`
+    - `ilmango theme list-targets`
+    - `ilmango theme inspect <id>`
+    - `ilmango theme doctor [id]`
+    - `ilmango theme scaffold <id>`
+    - `ilmango theme apply <ids...|all>`
 
 This means contributors can now reason about theming by target, instead of reverse-engineering the entire apply pipeline first.

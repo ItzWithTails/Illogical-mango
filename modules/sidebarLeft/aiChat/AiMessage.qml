@@ -28,7 +28,7 @@ Rectangle {
 
     radius: Appearance.rounding.normal
     color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface : Appearance.colors.colLayer1
 
     function saveMessage() {

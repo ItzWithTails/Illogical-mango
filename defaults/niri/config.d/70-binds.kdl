@@ -7,7 +7,7 @@
 // Use `wev` to discover XKB key names.
 // Most actions here can also be triggered via `niri msg action <name>`.
 //
-// iNiR binds route through the `inir` launcher which talks to Quickshell
+// Illogical-mango binds route through the `ilmango` launcher which talks to Quickshell
 // via IPC. Niri-native actions (focus, move, resize…) go directly to Niri.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -30,54 +30,54 @@ binds {
     Mod+Shift+O { power-off-monitors; }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // iNiR shell overlays & tools
+    // Illogical-mango shell overlays & tools
     // ═══════════════════════════════════════════════════════════════════════
 
     // Crosshair overlay toggle.
-    Super+G { spawn "inir" "overlay" "toggle"; }
+    Super+G { spawn "ilmango" "overlay" "toggle"; }
 
-    // iNiR app launcher / overview.
-    Mod+Space repeat=false { spawn "inir" "overview" "toggle"; }
+    // Illogical-mango app launcher / overview.
+    Mod+Space repeat=false { spawn "ilmango" "overview" "toggle"; }
 
     // Clipboard history overlay.
-    Mod+V { spawn "inir" "clipboard" "toggle"; }
+    Mod+V { spawn "ilmango" "clipboard" "toggle"; }
 
     // Lock screen.
-    Mod+Alt+L allow-when-locked=true { spawn "inir" "lock" "activate"; }
+    Mod+Alt+L allow-when-locked=true { spawn "ilmango" "lock" "activate"; }
     // Re-focus the lock surface (workaround when input feels dead after suspend/resume).
-    Mod+Ctrl+Shift+L allow-when-locked=true { spawn "inir" "lock" "focus"; }
+    Mod+Ctrl+Shift+L allow-when-locked=true { spawn "ilmango" "lock" "focus"; }
 
     // Region selector: screenshot / OCR / Google Lens search.
-    Mod+Shift+S { spawn "inir" "region" "screenshot"; }
-    Mod+Shift+X { spawn "inir" "region" "ocr"; }
-    Mod+Shift+A { spawn "inir" "region" "search"; }
+    Mod+Shift+S { spawn "ilmango" "region" "screenshot"; }
+    Mod+Shift+X { spawn "ilmango" "region" "ocr"; }
+    Mod+Shift+A { spawn "ilmango" "region" "search"; }
     // Unified snip menu (pick action/scope from the in-overlay toolbar).
-    Ctrl+Shift+S { spawn "inir" "region" "menu"; }
+    Ctrl+Shift+S { spawn "ilmango" "region" "menu"; }
 
     // Wallpaper picker, settings, cheatsheet, panel family switch.
-    Ctrl+Alt+T { spawn "inir" "wallpaperSelector" "toggle"; }
-    Mod+Comma { spawn "inir" "settings"; }
-    Mod+Slash { spawn "inir" "cheatsheet" "toggle"; }
-    Mod+Shift+W { spawn "inir" "panelFamily" "cycle"; }
+    Ctrl+Alt+T { spawn "ilmango" "wallpaperSelector" "toggle"; }
+    Mod+Comma { spawn "ilmango" "settings"; }
+    Mod+Slash { spawn "ilmango" "cheatsheet" "toggle"; }
+    Mod+Shift+W { spawn "ilmango" "panelFamily" "cycle"; }
 
     // Session / power dialog.
-    Mod+Shift+Q { spawn "inir" "session" "toggle"; }
+    Mod+Shift+Q { spawn "ilmango" "session" "toggle"; }
 
     // ═══════════════════════════════════════════════════════════════════════
     // App launchers
     // ═══════════════════════════════════════════════════════════════════════
 
-    Mod+T { spawn "inir" "terminal"; }
-    Mod+Return { spawn "inir" "terminal"; }
+    Mod+T { spawn "ilmango" "terminal"; }
+    Mod+Return { spawn "ilmango" "terminal"; }
     Super+E { spawn "nautilus"; }
-    Super+W { spawn "inir" "browser"; }
+    Super+W { spawn "ilmango" "browser"; }
 
     // ═══════════════════════════════════════════════════════════════════════
     // Window management
     // ═══════════════════════════════════════════════════════════════════════
 
-    // Close window (iNiR's close with confirmation dialog for unsaved work).
-    Mod+Q repeat=false { spawn "inir" "close-window"; }
+    // Close window (Illogical-mango's close with confirmation dialog for unsaved work).
+    Mod+Q repeat=false { spawn "ilmango" "close-window"; }
 
     // Maximize column (fills screen width, keeps gaps/bar).
     Mod+D { maximize-column; }
@@ -102,7 +102,7 @@ binds {
     Mod+R { switch-preset-column-width; }
 
     // Screen recording — region select with audio.
-    Mod+Shift+R { spawn "inir" "region" "recordWithSound"; }
+    Mod+Shift+R { spawn "ilmango" "region" "recordWithSound"; }
 
     // Reset window height to default.
     Mod+Ctrl+R { reset-window-height; }
@@ -231,7 +231,7 @@ binds {
     Mod+WheelScrollLeft  { focus-column-left; }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // Screenshots (Niri native — iNiR has its own region selector above)
+    // Screenshots (Niri native — Illogical-mango has its own region selector above)
     // ═══════════════════════════════════════════════════════════════════════
 
     Print      { screenshot; }
@@ -239,33 +239,33 @@ binds {
     Alt+Print  { screenshot-window; }
 
     // ═══════════════════════════════════════════════════════════════════════
-    // Hardware keys → iNiR IPC (with OSD feedback)
+    // Hardware keys → Illogical-mango IPC (with OSD feedback)
     // ═══════════════════════════════════════════════════════════════════════
 
-    // Volume (routed through iNiR for OSD + EasyEffects-aware sink resolution).
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "inir" "audio" "volumeUp"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn "inir" "audio" "volumeDown"; }
-    XF86AudioMute        allow-when-locked=true { spawn "inir" "audio" "mute"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn "inir" "audio" "micMute"; }
+    // Volume (routed through Illogical-mango for OSD + EasyEffects-aware sink resolution).
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "ilmango" "audio" "volumeUp"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "ilmango" "audio" "volumeDown"; }
+    XF86AudioMute        allow-when-locked=true { spawn "ilmango" "audio" "mute"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "ilmango" "audio" "micMute"; }
 
     // Brightness.
-    XF86MonBrightnessUp   allow-when-locked=true { spawn "inir" "brightness" "increment"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "inir" "brightness" "decrement"; }
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "ilmango" "brightness" "increment"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "ilmango" "brightness" "decrement"; }
 
     // Media playback (MPRIS — works with any player: Spotify, Firefox, mpv…).
-    XF86AudioPlay  { spawn "inir" "mpris" "playPause"; }
-    XF86AudioPause { spawn "inir" "mpris" "playPause"; }
-    XF86AudioNext  { spawn "inir" "mpris" "next"; }
-    XF86AudioPrev  { spawn "inir" "mpris" "previous"; }
+    XF86AudioPlay  { spawn "ilmango" "mpris" "playPause"; }
+    XF86AudioPause { spawn "ilmango" "mpris" "playPause"; }
+    XF86AudioNext  { spawn "ilmango" "mpris" "next"; }
+    XF86AudioPrev  { spawn "ilmango" "mpris" "previous"; }
 
     // Keyboard shortcuts for media (when no media keys are available).
-    Ctrl+Mod+Space { spawn "inir" "mpris" "playPause"; }
-    Mod+Alt+N      { spawn "inir" "mpris" "next"; }
-    Mod+Alt+P      { spawn "inir" "mpris" "previous"; }
-    Mod+Shift+M    { spawn "inir" "audio" "mute"; }
-    Mod+Shift+P    { spawn "inir" "mpris" "playPause"; }
-    Mod+Shift+N    { spawn "inir" "mpris" "next"; }
-    Mod+Shift+B    { spawn "inir" "mpris" "previous"; }
+    Ctrl+Mod+Space { spawn "ilmango" "mpris" "playPause"; }
+    Mod+Alt+N      { spawn "ilmango" "mpris" "next"; }
+    Mod+Alt+P      { spawn "ilmango" "mpris" "previous"; }
+    Mod+Shift+M    { spawn "ilmango" "audio" "mute"; }
+    Mod+Shift+P    { spawn "ilmango" "mpris" "playPause"; }
+    Mod+Shift+N    { spawn "ilmango" "mpris" "next"; }
+    Mod+Shift+B    { spawn "ilmango" "mpris" "previous"; }
 }
 
 recent-windows {

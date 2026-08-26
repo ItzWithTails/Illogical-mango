@@ -29,7 +29,7 @@ Item {
     readonly property string surfaceDialect: Appearance.surfaceDialectFor(
         Config.options?.dock?.style === "island" ? "island" : "")
     readonly property bool zzzStyle: surfaceDialect === "zzz"
-    readonly property bool inirStyle: surfaceDialect === "inir"
+    readonly property bool ilmangoStyle: surfaceDialect === "ilmango"
     readonly property bool pillStyle: Config.options?.dock?.style === "pill" && !zzzStyle
     readonly property bool macosStyle: Config.options?.dock?.style === "macos" && !zzzStyle
 
@@ -826,7 +826,7 @@ Item {
                     : (parent.height - height) / 2
 
                 color: root.zzzStyle ? Appearance.zzz.tertiary
-                     : root.inirStyle ? Appearance.inir.colPrimary
+                     : root.ilmangoStyle ? Appearance.ilmango.colPrimary
                      : Appearance.colors.colPrimary
                 Behavior on color {
                     enabled: Appearance.animationsEnabled

@@ -21,21 +21,21 @@ Rectangle {
     readonly property bool showTitle: Config.options?.dashboard?.appearance?.showCardTitles ?? true
     readonly property real pad: compact ? 8 : 12
 
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
     readonly property bool zzzEverywhere: Appearance.zzzEverywhere
     readonly property color colText: zzzEverywhere ? Appearance.zzz.ink
         : Appearance.angelEverywhere ? Appearance.angel.colText
-        : inirEverywhere ? Appearance.inir.colText
+        : ilmangoEverywhere ? Appearance.ilmango.colText
         : auroraEverywhere ? Appearance.colors.colOnSurface
         : Appearance.colors.colOnLayer1
     readonly property color colSubtext: zzzEverywhere ? Appearance.zzz.inkMuted
         : Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-        : inirEverywhere ? Appearance.inir.colTextSecondary
+        : ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
         : Appearance.colors.colSubtext
     readonly property color colAccent: zzzEverywhere ? Appearance.zzz.accent
         : Appearance.angelEverywhere ? Appearance.angel.colPrimary
-        : inirEverywhere ? Appearance.inir.colPrimary
+        : ilmangoEverywhere ? Appearance.ilmango.colPrimary
         : auroraEverywhere ? Appearance.colors.colPrimary
         : Appearance.colors.colPrimary
 
@@ -44,11 +44,11 @@ Rectangle {
 
     radius: zzzEverywhere ? Appearance.zzz.panelRadius
         : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-        : inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+        : ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
     color: {
         const base = zzzEverywhere ? Appearance.zzz.paper
             : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-            : inirEverywhere ? Appearance.inir.colLayer1
+            : ilmangoEverywhere ? Appearance.ilmango.colLayer1
             : auroraEverywhere ? Appearance.aurora.colSubSurface
             : Appearance.colors.colLayer1
         return zzzEverywhere || root.cardOpacity >= 1 ? base : ColorUtils.applyAlpha(base, root.cardOpacity * base.a)
@@ -65,7 +65,7 @@ Rectangle {
         : zzzEverywhere ? 0 : 1
     border.color: Appearance.angelEverywhere ? "transparent"
         : zzzEverywhere ? Appearance.zzz.hairline
-        : inirEverywhere ? Appearance.inir.colBorder
+        : ilmangoEverywhere ? Appearance.ilmango.colBorder
         : ColorUtils.applyAlpha(Appearance.colors.colOnLayer1, 0.06)
     Behavior on border.color {
         enabled: Appearance.animationsEnabled

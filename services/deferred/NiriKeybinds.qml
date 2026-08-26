@@ -8,7 +8,7 @@ import qs.modules.common.functions
 import qs.services
 
 /**
- * Keybinds for Niri compositor with iNiR shell.
+ * Keybinds for Niri compositor with Illogical-mango shell.
  * Dynamically parses user's ~/.config/niri/config.kdl
  * Falls back to defaults if parsing fails.
  *
@@ -278,10 +278,10 @@ Singleton {
             ]}]
         },
         {
-            name: "iNiR Shell",
+            name: "Illogical-mango Shell",
             children: [{ keybinds: [
-                { mods: ["Super"], key: "Space", comment: "iNiR Overview" },
-                { mods: ["Super"], key: "G", comment: "iNiR Overlay" },
+                { mods: ["Super"], key: "Space", comment: "Illogical-mango Overview" },
+                { mods: ["Super"], key: "G", comment: "Illogical-mango Overlay" },
                 { mods: ["Super"], key: "V", comment: "Clipboard" },
                 { mods: ["Super"], key: "Comma", comment: "Settings" },
                 { mods: ["Super"], key: "Slash", comment: "Cheatsheet" },

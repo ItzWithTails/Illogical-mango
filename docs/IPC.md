@@ -1,29 +1,29 @@
 # IPC Reference
 
-iNiR exposes IPC targets you can call from Niri keybinds, scripts, or your terminal.
+Illogical-mango exposes IPC targets you can call from Niri keybinds, scripts, or your terminal.
 
-> **Quick discovery:** `inir help` lists all targets, `inir <target> --help` shows available functions.
-> Shell completions: `eval "$(inir completions bash)"` (also zsh, fish).
+> **Quick discovery:** `ilmango help` lists all targets, `ilmango <target> --help` shows available functions.
+> Shell completions: `eval "$(ilmango completions bash)"` (also zsh, fish).
 
 From terminal (for testing, or showing off):
 
 ```bash
-inir <target> <function>
+ilmango <target> <function>
 ```
 
 In Niri config (for actual keybinds):
 
 ```kdl
-bind "Key" { spawn "inir" "<target>" "<function>"; }
+bind "Key" { spawn "ilmango" "<target>" "<function>"; }
 ```
 
-For low-level debugging, `inir ipc <target> <function>` still works.
+For low-level debugging, `ilmango ipc <target> <function>` still works.
 
 ---
 
 ## Available Targets
 
-Everything iNiR can do, exposed for your scripting pleasure.
+Everything Illogical-mango can do, exposed for your scripting pleasure.
 
 ### dev
 
@@ -39,15 +39,15 @@ returned as JSON by `list`.
 | `current` | Return the current destination or `closed` |
 
 ```bash
-inir dev list | jq -r '.[].id'
-inir dev open sidebar-left/anime-schedule
-inir dev close
-inir dev audit
-inir dev audit sidebar-left/ai settings/ai
-inir dev audit --all --all-families
+ilmango dev list | jq -r '.[].id'
+ilmango dev open sidebar-left/anime-schedule
+ilmango dev close
+ilmango dev audit
+ilmango dev audit sidebar-left/ai settings/ai
+ilmango dev audit --all --all-families
 ```
 
-`inir dev audit` selects destinations related to changed area-specific files in
+`ilmango dev audit` selects destinations related to changed area-specific files in
 the current worktree. Destination arguments select an exact scope, while
 `--all` requests every safe destination and `--all-families` includes both ii
 and waffle. Each visited destination is closed again and new QML warnings or
@@ -71,7 +71,7 @@ Toggle the workspace overview panel. The one with all your windows looking tiny 
 | `toggleReleaseInterrupt` | Clear the super-key release interrupt flag |
 
 ```kdl
-bind "Mod+Space" { spawn "inir" "overview" "toggle"; }
+bind "Mod+Space" { spawn "ilmango" "overview" "toggle"; }
 ```
 
 ---
@@ -88,7 +88,7 @@ Workspace edge strip. Shows a compact per-workspace rail and expands it for swit
 | `status` | Return strip state (`open` or `auto`) |
 
 ```kdl
-bind "Super+Tab" { spawn "inir" "workspaceStrip" "toggle"; }
+bind "Super+Tab" { spawn "ilmango" "workspaceStrip" "toggle"; }
 ```
 
 ---
@@ -102,7 +102,7 @@ Floating tools (Super+G): notes, images, crosshair, recorder, resources and othe
 | `toggle` | Open/close Floating tools |
 
 ```kdl
-bind "Super+G" { spawn "inir" "overlay" "toggle"; }
+bind "Super+G" { spawn "ilmango" "overlay" "toggle"; }
 ```
 
 ---
@@ -119,7 +119,7 @@ The pill bar's morphing surfaces (only registered while Bar appearance is set to
 | `state` | Print the open surface name, or `closed` |
 
 ```kdl
-bind "Super+V" repeat=false { spawn "inir" "pill" "toggle" "clipboard"; }
+bind "Super+V" repeat=false { spawn "ilmango" "pill" "toggle" "clipboard"; }
 ```
 
 ---
@@ -135,7 +135,7 @@ Clipboard history panel. Because Ctrl+V only remembers one thing, and that's not
 | `close` | Close panel |
 
 ```kdl
-bind "Super+V" repeat=false { spawn "inir" "clipboard" "toggle"; }
+bind "Super+V" repeat=false { spawn "ilmango" "clipboard" "toggle"; }
 ```
 
 ---
@@ -153,8 +153,8 @@ Alt+Tab window switcher. Works across workspaces, unlike some other implementati
 | `previous` | Focus previous window |
 
 ```kdl
-bind "Alt+Tab" { spawn "inir" "altSwitcher" "next"; }
-bind "Alt+Shift+Tab" { spawn "inir" "altSwitcher" "previous"; }
+bind "Alt+Tab" { spawn "ilmango" "altSwitcher" "next"; }
+bind "Alt+Shift+Tab" { spawn "ilmango" "altSwitcher" "previous"; }
 ```
 
 ---
@@ -176,10 +176,10 @@ Region selection tools. Screenshots, OCR, recording. Draw a box, get stuff done.
 | `current` | Return the selector state (open/action/mode) as JSON |
 
 ```kdl
-bind "Super+Shift+S" { spawn "inir" "region" "screenshot"; }
-bind "Super+Shift+X" { spawn "inir" "region" "ocr"; }
-bind "Super+Shift+A" { spawn "inir" "region" "search"; }
-bind "Ctrl+Shift+S" { spawn "inir" "region" "menu"; }
+bind "Super+Shift+S" { spawn "ilmango" "region" "screenshot"; }
+bind "Super+Shift+X" { spawn "ilmango" "region" "ocr"; }
+bind "Super+Shift+A" { spawn "ilmango" "region" "search"; }
+bind "Ctrl+Shift+S" { spawn "ilmango" "region" "menu"; }
 ```
 
 ---
@@ -197,7 +197,7 @@ Provider-neutral voice input for web search and AI dictation. Auto prefers local
 | `status` | Return backend, local detection, recording and error state as JSON |
 
 ```kdl
-bind "Super+Shift+V" { spawn "inir" "voiceSearch" "toggle"; }
+bind "Super+Shift+V" { spawn "ilmango" "voiceSearch" "toggle"; }
 ```
 
 ---
@@ -213,7 +213,7 @@ Power menu. Logout, suspend, reboot, shutdown. The "I'm done for today" buttons.
 | `close` | Hide session screen |
 
 ```kdl
-bind "Super+Shift+E" { spawn "inir" "session" "toggle"; }
+bind "Super+Shift+E" { spawn "ilmango" "session" "toggle"; }
 ```
 
 ---
@@ -230,7 +230,7 @@ Lock screen. For when you need to pretend you're working.
 | `focus` | Refocus the lock screen input |
 
 ```kdl
-bind "Super+Alt+L" allow-when-locked=true { spawn "inir" "lock" "activate"; }
+bind "Super+Alt+L" allow-when-locked=true { spawn "ilmango" "lock" "activate"; }
 ```
 
 ---
@@ -260,7 +260,7 @@ Keyboard shortcuts reference. For when you forget what you just configured five 
 | `close` | Hide cheatsheet overlay |
 
 ```kdl
-bind "Super+Slash" { spawn "inir" "cheatsheet" "toggle"; }
+bind "Super+Slash" { spawn "ilmango" "cheatsheet" "toggle"; }
 ```
 
 ---
@@ -272,11 +272,11 @@ Close window confirmation dialog. Shows a prompt before closing the focused wind
 | Function | Description |
 |----------|-------------|
 | `trigger` | Show close confirmation for focused window |
-| `triggerWindow <windowId> <appId>` | Close or confirm the exact window captured by `inir close-window` |
+| `triggerWindow <windowId> <appId>` | Close or confirm the exact window captured by `ilmango close-window` |
 | `close` | Dismiss the dialog without closing |
 
 ```kdl
-bind "Mod+Q" repeat=false { spawn "inir" "close-window"; }
+bind "Mod+Q" repeat=false { spawn "ilmango" "close-window"; }
 ```
 
 By default, confirmation is disabled (closes immediately). Enable it in settings or config:
@@ -299,14 +299,14 @@ Open or toggle the settings window. GUI config so you don't have to edit JSON by
 | `toggle` | Toggle settings (overlay mode toggles, window mode opens) |
 
 ```kdl
-bind "Super+Comma" { spawn "inir" "settings"; }
+bind "Super+Comma" { spawn "ilmango" "settings"; }
 ```
 
 ---
 
 ### settingsNav
 
-Navigate the settings overlay to a specific page (same as clicking the nav rail). Opening the window itself is the `inir settings` CLI command (target `settings` above).
+Navigate the settings overlay to a specific page (same as clicking the nav rail). Opening the window itself is the `ilmango settings` CLI command (target `settings` above).
 
 | Function | Description |
 |----------|-------------|
@@ -315,7 +315,7 @@ Navigate the settings overlay to a specific page (same as clicking the nav rail)
 | `current` | Current page index, or `-1` when no page is open |
 
 ```sh
-inir ipc settingsNav page 5
+ilmango ipc settingsNav page 5
 ```
 
 ---
@@ -430,8 +430,8 @@ Command palette / action registry. Search and execute shell actions from scripts
 Categories: `system`, `appearance`, `tools`, `media`, `settings`, `custom`.
 
 ```kdl
-bind "Super+Slash" { spawn "inir" "globalActions" "open"; }
-bind "Super+M" { spawn "inir" "globalActions" "run" "toggle-mute"; }
+bind "Super+Slash" { spawn "ilmango" "globalActions" "open"; }
+bind "Super+M" { spawn "ilmango" "globalActions" "run" "toggle-mute"; }
 ```
 
 ---
@@ -451,8 +451,8 @@ Wallpaper picker with grid, coverflow and compact launcher styles.
 | `status` | Return picker style, open surface, target monitor and selection target as JSON |
 
 ```kdl
-bind "Ctrl+Alt+T" { spawn "inir" "wallpaperSelector" "toggle"; }
-bind "Ctrl+Alt+A" { spawn "inir" "wallpaperSelector" "openLauncher" "animated"; }
+bind "Ctrl+Alt+T" { spawn "ilmango" "wallpaperSelector" "toggle"; }
+bind "Ctrl+Alt+A" { spawn "ilmango" "wallpaperSelector" "openLauncher" "animated"; }
 ```
 
 ---
@@ -471,9 +471,9 @@ Navigation and apply controls for the compact wallpaper launcher.
 Open the launcher before calling its controls:
 
 ```bash
-inir wallpaperSelector openLauncher static
-inir wallpaperLauncher next
-inir wallpaperLauncher applyCurrent
+ilmango wallpaperSelector openLauncher static
+ilmango wallpaperLauncher next
+ilmango wallpaperLauncher applyCurrent
 ```
 
 ---
@@ -551,9 +551,9 @@ Media player control. Automatically detects and uses YtMusic controls when activ
 | `next` | Next track (uses YtMusic if active) |
 
 ```kdl
-bind "Ctrl+Mod+Space" { spawn "inir" "mpris" "playPause"; }
-bind "Mod+Alt+N" { spawn "inir" "mpris" "next"; }
-bind "Mod+Alt+P" { spawn "inir" "mpris" "previous"; }
+bind "Ctrl+Mod+Space" { spawn "ilmango" "mpris" "playPause"; }
+bind "Mod+Alt+N" { spawn "ilmango" "mpris" "next"; }
+bind "Mod+Alt+P" { spawn "ilmango" "mpris" "previous"; }
 ```
 
 ---
@@ -570,7 +570,7 @@ Direct YtMusic player control. Use these if you want to control YtMusic specific
 | `stop` | Stop YtMusic playback |
 
 ```kdl
-bind "Mod+M+Space" { spawn "inir" "ytmusic" "playPause"; }
+bind "Mod+M+Space" { spawn "ilmango" "ytmusic" "playPause"; }
 ```
 
 ---
@@ -649,7 +649,7 @@ Performance mode for gaming. Auto-detects fullscreen apps and disables animation
 | `status` | Print current gamemode state (e.g. `active (manual)`, `inactive (off)`) |
 
 ```kdl
-bind "Super+F12" { spawn "inir" "gamemode" "toggle"; }
+bind "Super+F12" { spawn "ilmango" "gamemode" "toggle"; }
 ```
 
 ---
@@ -664,7 +664,7 @@ Switch between panel styles. ii supports two visual styles: Material ii (default
 | `set` | Set specific family ("ii" or "waffle") |
 
 ```kdl
-bind "Mod+Shift+W" { spawn "inir" "panelFamily" "cycle"; }
+bind "Mod+Shift+W" { spawn "ilmango" "panelFamily" "cycle"; }
 ```
 
 ---
@@ -697,18 +697,18 @@ taskbar through validated operations over canonical Config keys.
 | `validate` | Validate a surface and slot combination without changing Config |
 
 ```bash
-inir shellLayout open
-inir shellLayout lift featureSidebar
-inir shellLayout preview right
-inir shellLayout place right   # prepares the occupied-edge swap
-inir shellLayout place right   # confirms and commits it
-inir shellLayout setProperty featureSidebar sizeMode fit
-inir shellLayout reset featureSidebar
-inir shellLayout close
+ilmango shellLayout open
+ilmango shellLayout lift featureSidebar
+ilmango shellLayout preview right
+ilmango shellLayout place right   # prepares the occupied-edge swap
+ilmango shellLayout place right   # confirms and commits it
+ilmango shellLayout setProperty featureSidebar sizeMode fit
+ilmango shellLayout reset featureSidebar
+ilmango shellLayout close
 ```
 
 ```kdl
-bind "Super+W" { spawn "inir" "shellLayout" "toggle"; }
+bind "Super+W" { spawn "ilmango" "shellLayout" "toggle"; }
 ```
 
 ---
@@ -780,7 +780,7 @@ Keyboard layout switching (Niri only). Cycles through configured keyboard layout
 | `getLayouts` | Get all configured layout names (JSON array) |
 
 ```kdl
-bind "Mod+Alt+K" { spawn "inir" "keyboard" "switchLayout"; }
+bind "Mod+Alt+K" { spawn "ilmango" "keyboard" "switchLayout"; }
 ```
 
 ---
@@ -917,19 +917,19 @@ Desktop background and widget controls.
 | `clockDebugRestore` | Restore the config captured by clock diagnostics |
 
 The mutating diagnostic functions require the supervised shell to be loaded
-with `INIR_REGION_DEBUG=1`. They snapshot the clock's relevant config on first
+with `ILMANGO_REGION_DEBUG=1`. They snapshot the clock's relevant config on first
 use; always finish a diagnostic run with `clockDebugRestore` before removing
 the environment flag.
 
 ```kdl
-bind "Super+W" { spawn "inir" "background" "toggleEditMode"; }
+bind "Super+W" { spawn "ilmango" "background" "toggleEditMode"; }
 ```
 
 ---
 
 ### customWidgets
 
-Custom widget management. Create, list, reload, and remove user-installed widgets from `~/.config/inir/widgets/`.
+Custom widget management. Create, list, reload, and remove user-installed widgets from `~/.config/ilmango/widgets/`.
 
 | Function | Description |
 |----------|-------------|
@@ -965,8 +965,8 @@ Screen recording floating pill OSD. Shows elapsed time and stop button during ac
 ### autostart
 
 Niri login autostart manager. Reads and writes the managed section of
-`~/.config/niri/config.d/50-startup.kdl` (delimited by `// >>> inir-managed-autostart >>>` /
-`// <<< inir-managed-autostart <<<`). Base iNiR lines and any hand-written
+`~/.config/niri/config.d/50-startup.kdl` (delimited by `// >>> ilmango-managed-autostart >>>` /
+`// <<< ilmango-managed-autostart <<<`). Base Illogical-mango lines and any hand-written
 `spawn-at-startup` lines outside the markers are preserved verbatim; toggling an
 entry comments the line out instead of deleting it. Safe no-op on non-Niri
 compositors (the page shows a guard instead).
@@ -988,14 +988,14 @@ launches via hand-written lines outside the markers are detected and shown as
 
 ## Standalone Commands
 
-These are top-level `inir` commands that work directly, without going through IPC.
+These are top-level `ilmango` commands that work directly, without going through IPC.
 
 ### colorpicker
 
 Launch `hyprpicker` to pick a color from anywhere on the screen. The hex value is copied to the clipboard (`-a` flag).
 
 ```kdl
-bind "Super+Shift+C" { spawn "inir" "colorpicker"; }
+bind "Super+Shift+C" { spawn "ilmango" "colorpicker"; }
 ```
 
 Requires `hyprpicker` installed.

@@ -8,7 +8,7 @@ import qs.modules.common
 /**
  * Glance surface: the day at one look — current weather, today's agenda and
  * pending tasks side by side, so none of them needs its own trip through the
- * pill. Not a Ricelin port; an iNiR-original surface written in the same
+ * pill. Not a Ricelin port; an Illogical-mango-original surface written in the same
  * washi/flame dialect (hairline columns, tracked caption headers, one warm
  * accent for "next up").
  *

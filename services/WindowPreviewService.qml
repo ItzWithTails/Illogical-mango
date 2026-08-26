@@ -14,7 +14,7 @@ import qs.modules.common.functions
  * 
  * Strategy:
  * - Capture previews ONLY when TaskView opens
- * - Cache in ~/.cache/inir/window-previews/
+ * - Cache in ~/.cache/ilmango/window-previews/
  * - Only capture windows that don't have a recent preview
  * - Clean up on window close
  */
@@ -25,7 +25,7 @@ Singleton {
         if (Quickshell.env("QS_DEBUG") === "1") console.log(...args);
     }
 
-    readonly property string previewDir: FileUtils.trimFileProtocol(Directories.genericCache) + "/inir/window-previews"
+    readonly property string previewDir: FileUtils.trimFileProtocol(Directories.genericCache) + "/ilmango/window-previews"
     
     // Map of windowId -> { path, timestamp }
     property var previewCache: ({})

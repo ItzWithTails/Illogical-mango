@@ -78,7 +78,7 @@ ColumnLayout {
         radius: Appearance.rounding.normal
         color: headerMouseArea.containsMouse && root.collapsible 
             ? (Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-              : Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover
+              : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
               : Appearance.colors.colLayer1Hover)
             : "transparent"
         
@@ -104,7 +104,7 @@ ColumnLayout {
                 font.pixelSize: Appearance.font.pixelSize.larger
                 font.weight: Font.Medium
                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                     : Appearance.inirEverywhere ? Appearance.inir.colText
+                     : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                      : Appearance.colors.colOnSecondaryContainer
                 Layout.fillWidth: true
             }

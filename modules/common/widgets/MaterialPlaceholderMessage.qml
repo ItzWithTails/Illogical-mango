@@ -45,35 +45,35 @@ Item {
         id: placeholderColumn
         anchors.centerIn: parent
         width: Math.min(root.maximumWidth, parent ? parent.width - 24 : root.maximumWidth)
-        spacing: root.compact ? 6 : (Appearance.inirEverywhere ? 8 : 10)
+        spacing: root.compact ? 6 : (Appearance.ilmangoEverywhere ? 8 : 10)
 
         Item {
             visible: root.icon !== ""
             Layout.alignment: Qt.AlignHCenter
-            implicitWidth: Appearance.inirEverywhere ? 72 : materialShape.implicitWidth
-            implicitHeight: Appearance.inirEverywhere ? 72 : materialShape.implicitHeight
+            implicitWidth: Appearance.ilmangoEverywhere ? 72 : materialShape.implicitWidth
+            implicitHeight: Appearance.ilmangoEverywhere ? 72 : materialShape.implicitHeight
 
             Rectangle {
                 anchors.fill: parent
-                visible: Appearance.inirEverywhere
-                radius: Appearance.inir.roundingNormal
-                color: Appearance.inir.colLayer2
+                visible: Appearance.ilmangoEverywhere
+                radius: Appearance.ilmango.roundingNormal
+                color: Appearance.ilmango.colLayer2
                 border.width: 1
-                border.color: Appearance.inir.colBorder
+                border.color: Appearance.ilmango.colBorder
             }
 
             MaterialSymbol {
                 anchors.centerIn: parent
-                visible: Appearance.inirEverywhere
+                visible: Appearance.ilmangoEverywhere
                 text: root.icon
                 iconSize: 32
-                color: Appearance.inir.colTextSecondary
+                color: Appearance.ilmango.colTextSecondary
             }
 
             MaterialShapeWrappedMaterialSymbol {
                 id: materialShape
                 anchors.centerIn: parent
-                visible: !Appearance.inirEverywhere
+                visible: !Appearance.ilmangoEverywhere
                 text: root.icon
                 shape: root.shape
                 padding: 12
@@ -90,7 +90,7 @@ Item {
             wrapMode: Text.Wrap
             font.pixelSize: root.compact ? Appearance.font.pixelSize.normal : Appearance.font.pixelSize.large
             font.weight: Font.DemiBold
-            color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurface
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurface
         }
 
         StyledText {
@@ -101,7 +101,7 @@ Item {
             horizontalAlignment: root.textHorizontalAlignment
             wrapMode: Text.Wrap
             font.pixelSize: Appearance.font.pixelSize.small
-            color: Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
         }
 
         RippleButtonWithIcon {

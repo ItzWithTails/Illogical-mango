@@ -9,7 +9,7 @@ STATE_DIR="$XDG_STATE_HOME/quickshell"
 
 # shellcheck source=scripts/lib/config-path.sh
 source "$SCRIPT_DIR/../lib/config-path.sh"
-CONFIG_FILE="$(inir_config_file)"
+CONFIG_FILE="$(ilmango_config_file)"
 MODULE_LOG="$STATE_DIR/user/generated/theming_modules.log"
 TARGETS_DIR="$SCRIPT_DIR/targets"
 MODULES_DIR="$SCRIPT_DIR/modules"
@@ -67,8 +67,8 @@ config_json() {
 
 venv_python() {
   local venv_path
-  if [[ -n "${INIR_VENV:-}" ]]; then
-    venv_path="$(eval echo "$INIR_VENV")"
+  if [[ -n "${ILMANGO_VENV:-}" ]]; then
+    venv_path="$(eval echo "$ILMANGO_VENV")"
   elif [[ -n "${ILLOGICAL_IMPULSE_VIRTUAL_ENV:-}" ]]; then
     venv_path="$(eval echo "$ILLOGICAL_IMPULSE_VIRTUAL_ENV")"
   else

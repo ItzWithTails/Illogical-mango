@@ -95,15 +95,15 @@ Item {
                 width: volumeRow.width + 12
                 height: volumeRow.height + 8
                 radius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                      : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.verysmall
+                      : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.verysmall
                 color: Appearance.angelEverywhere ? Appearance.angel.colGlassPopup
-                     : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                     : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                      : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                      : Appearance.colors.colLayer3
                 border.width: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
-                            : (Appearance.inirEverywhere || Appearance.auroraEverywhere) ? 1 : 0
+                            : (Appearance.ilmangoEverywhere || Appearance.auroraEverywhere) ? 1 : 0
                 border.color: Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                            : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                             : Appearance.auroraEverywhere ? Appearance.aurora.colPopupBorder
                             : Appearance.colors.colLayer3Hover
 
@@ -283,7 +283,7 @@ Item {
                 value: (activePlayer && activePlayer.length > 0) ? (activePlayer.position / activePlayer.length) : 0
                 implicitSize: Appearance.zzzEverywhere && !root.showVerboseLabel ? 22 : 22
                 colPrimary: Appearance.zzzEverywhere ? Appearance.zzz.accent
-                    : Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                     : Appearance.auroraEverywhere ? Appearance.colors.colPrimary
                     : Appearance.colors.colOnLayer0
                 enableAnimation: activePlayer?.playbackState === MprisPlaybackState.Playing
@@ -299,7 +299,7 @@ Item {
                         text: activePlayer?.isPlaying ? "pause" : "music_note"
                         iconSize: Appearance.font.pixelSize.normal
                         color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                            : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary
                             : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer0
                             : Appearance.colors.colOnLayer0
                         Behavior on color {
@@ -346,7 +346,7 @@ Item {
                     animationDistanceX: root.effectiveTrackAnimationDirection * 10
                     animationDistanceY: 0
                     color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                        : Appearance.inirEverywhere ? Appearance.inir.colText
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                         : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer0
                         : Appearance.colors.colOnLayer1
                     Behavior on color {

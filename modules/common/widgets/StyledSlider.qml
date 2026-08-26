@@ -40,25 +40,25 @@ Slider {
     property real handlePressedWidth: Appearance.regaliaEverywhere ? 13 : Appearance.zzzEverywhere ? 0 : 1.5
     property color highlightColor: Appearance.regaliaEverywhere ? Appearance.regalia.hardwarePrimary
         : Appearance.angelEverywhere ? Appearance.angel.colPrimary
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
         : Appearance.zzzEverywhere ? Appearance.zzz.accentSoft : Appearance.colors.colPrimary
     property color trackColor: Appearance.regaliaEverywhere ? Appearance.regalia.controlPlate
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
         : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
         : Appearance.zzzEverywhere ? Appearance.zzz.metricTrack
         : Appearance.colors.colSecondaryContainer
     property color handleColor: Appearance.regaliaEverywhere ? Appearance.regalia.hardwarePrimary
         : Appearance.angelEverywhere ? Appearance.angel.colPrimary
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
         : Appearance.zzzEverywhere ? "transparent" : Appearance.colors.colPrimary
     property color dotColor: Appearance.regaliaEverywhere ? Appearance.regalia.onMuted
         : Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
         : Appearance.zzzEverywhere ? Appearance.zzz.onMuted : Appearance.colors.colOnSecondaryContainer
     property color dotColorHighlighted: Appearance.regaliaEverywhere ? Appearance.regalia.hardwarePrimaryInk
         : Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-        : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary
         : Appearance.zzzEverywhere ? Appearance.zzz.onColor : Appearance.colors.colOnPrimary
     property real unsharpenRadius: Appearance.rounding.unsharpen
     property real trackWidth: Appearance.regaliaEverywhere ? Math.min(7, configuration) : configuration

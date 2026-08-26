@@ -69,14 +69,14 @@ Item { // Bar content region
                 monochromeIcon: true,
                 text: Translation.tr("Settings"),
                 action: () => {
-                    Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "settings"])
+                    Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "settings"])
                 },
             },
         ]
     }
     readonly property bool cardStyleEverywhere: (Config.options?.dock?.cardStyle ?? false) && (Config.options?.sidebar?.cardStyle ?? false) && (Config.options?.bar?.cornerStyle === 3)
     readonly property color separatorColor: Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong : Appearance.colors.colOutlineVariant
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
     readonly property bool zzzEverywhere: Appearance.zzzEverywhere
     readonly property bool gameModeMinimal: Appearance.gameModeMinimal
@@ -135,7 +135,7 @@ Item { // Bar content region
                     return ColorUtils.transparentize(base, Appearance.angel.compositorPanelTransparentize)
                 return ColorUtils.applyAlpha(base, 1)
             }
-            if (root.inirEverywhere) return Appearance.inir.colLayer0
+            if (root.ilmangoEverywhere) return Appearance.ilmango.colLayer0
             if (root.auroraEverywhere) {
                 const base = root.blendedColors?.colLayer0 ?? Appearance.colors.colLayer0
                 if (root.nativeBlurActive)
@@ -146,7 +146,7 @@ Item { // Bar content region
         }
         radius: root.zzzEverywhere ? 0
             : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-            : root.inirEverywhere ? Appearance.inir.roundingNormal
+            : root.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
             : floatingStyle ? ((Config.options?.bar?.cornerStyle ?? 0) === 3 ? Appearance.rounding.normal : Appearance.rounding.windowRounding) : 0
         // No Behavior on the base radius — the per-corner radii below own the
         // corners, and a second interceptor on radius is unsupported (Qt warn).
@@ -169,14 +169,14 @@ Item { // Bar content region
             enabled: Appearance.animationsEnabled
             NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
         }
-        border.width: root.zzzEverywhere ? 1 : (Appearance.angelEverywhere ? 0 : (root.inirEverywhere ? 1 : (floatingStyle ? 1 : 0)))
+        border.width: root.zzzEverywhere ? 1 : (Appearance.angelEverywhere ? 0 : (root.ilmangoEverywhere ? 1 : (floatingStyle ? 1 : 0)))
         Behavior on border.width {
             enabled: Appearance.animationsEnabled
             NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
         }
         border.color: root.zzzEverywhere ? Appearance.zzz.borderColor
             : Appearance.angelEverywhere ? "transparent"
-            : root.inirEverywhere ? Appearance.inir.colBorder
+            : root.ilmangoEverywhere ? Appearance.ilmango.colBorder
             : Appearance.colors.colLayer0Border
         Behavior on border.color {
             enabled: Appearance.animationsEnabled
@@ -208,7 +208,7 @@ Item { // Bar content region
     Item {
         id: auroraBlurLayer
         anchors.fill: barBackground
-        visible: root.auroraEverywhere && !root.inirEverywhere && !root.gameModeMinimal
+        visible: root.auroraEverywhere && !root.ilmangoEverywhere && !root.gameModeMinimal
             && (Config.options?.bar?.showBackground ?? true) && !root.nativeBlurActive
 
         // Clip + mask to barBackground shape
@@ -240,7 +240,7 @@ Item { // Bar content region
             sourceSize.height: root.screen?.height ?? 1080
             asynchronous: true
 
-            layer.enabled: Appearance.effectsEnabled && root.auroraEverywhere && !root.inirEverywhere && !root.nativeBlurActive
+            layer.enabled: Appearance.effectsEnabled && root.auroraEverywhere && !root.ilmangoEverywhere && !root.nativeBlurActive
             layer.effect: MultiEffect {
                 source: blurredWallpaper
                 anchors.fill: source

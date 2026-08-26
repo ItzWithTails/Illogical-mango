@@ -9,7 +9,7 @@ import qs.modules.common
  * Event facade for the pill's calendar surface.
  *
  * Upstream kept its own JSON store keyed by "YYYY-MM-DD" date strings with a
- * {date, endDate, time, endTime, text, recur} shape. iNiR's Events service is the
+ * {date, endDate, time, endTime, text, recur} shape. Illogical-mango's Events service is the
  * real store and speaks Date objects with an ISO `dateTime`. Everything is
  * translated here so both the calendar and the rest of the shell see one agenda.
  */

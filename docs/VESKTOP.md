@@ -1,6 +1,6 @@
 # Vesktop Theming
 
-iNiR includes automatic Discord/Vesktop theming that syncs with your wallpaper colors.
+Illogical-mango includes automatic Discord/Vesktop theming that syncs with your wallpaper colors.
 
 ## Included Theme
 
@@ -8,7 +8,7 @@ iNiR includes automatic Discord/Vesktop theming that syncs with your wallpaper c
 A Material Design Discord theme based on [refact0r/system24](https://github.com/refact0r/system24) with Material You colors from your wallpaper.
 
 Features:
-- Oxanium font (iNiR branding)
+- Oxanium font (Illogical-mango branding)
 - Material Design styling (rounded corners, proper spacing)
 - Compact server icons and scrollbars
 - Full Material You color integration
@@ -19,7 +19,7 @@ Features:
 
 1. Install [Vesktop](https://github.com/Vencord/Vesktop) (or any Vencord-based client)
 
-2. The theme is automatically installed to `~/.config/vesktop/themes/` during iNiR setup
+2. The theme is automatically installed to `~/.config/vesktop/themes/` during Illogical-mango setup
 
 3. In Vesktop, go to Settings → Vencord → Themes and enable `system24`
 
@@ -57,10 +57,10 @@ If colors get out of sync, regenerate manually:
 
 ```fish
 # Regenerate theme
-bash ~/.config/quickshell/inir/scripts/colors/system24_palette.sh
+bash ~/.config/quickshell/ilmango/scripts/colors/system24_palette.sh
 
 # Or trigger a full wallpaper refresh
-~/.config/quickshell/inir/scripts/colors/switchwall.sh --noswitch
+~/.config/quickshell/ilmango/scripts/colors/switchwall.sh --noswitch
 ```
 
 ## Customization
@@ -95,15 +95,15 @@ Then regenerate the theme.
 - Open DevTools (Ctrl+Shift+I) and check:
   - Network tab for failed `system24.css` requests
   - Console tab for `@import`/CSP related errors
-- Optional: place a local copy of System24 at `~/.config/vesktop/themes/system24.local.css` (same folder as the theme). If present, iNiR will import it first.
+- Optional: place a local copy of System24 at `~/.config/vesktop/themes/system24.local.css` (same folder as the theme). If present, Illogical-mango will import it first.
 
 ### Wrong colors
-- Run `bash ~/.config/quickshell/inir/scripts/colors/system24_palette.sh` to regenerate
+- Run `bash ~/.config/quickshell/ilmango/scripts/colors/system24_palette.sh` to regenerate
 - Check `~/.local/state/quickshell/user/generated/palette.json` exists
 
 ### Debugging generation failures
-- Run `bash ~/.config/quickshell/inir/scripts/colors/system24_palette.sh` in a terminal and check for errors
-- If you're using preset themes (Settings), `apply-gtk-theme.sh` no longer suppresses Python errors, so `qs log -c inir` (or your shell logs) should show failures
+- Run `bash ~/.config/quickshell/ilmango/scripts/colors/system24_palette.sh` in a terminal and check for errors
+- If you're using preset themes (Settings), `apply-gtk-theme.sh` no longer suppresses Python errors, so `qs log -c ilmango` (or your shell logs) should show failures
 
 ### Hot-reload not working
 - The theme palette is embedded in the main file, so Ctrl+R should work

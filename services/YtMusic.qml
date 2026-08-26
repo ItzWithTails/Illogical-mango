@@ -1651,7 +1651,7 @@ print("")
         ? root.customCookiesPath : root._cookiesFilePath
     // yt-dlp's --cookies option writes the jar back after a request. Playback therefore gets a
     // disposable copy so server-side rotations can never corrupt InnerTube's canonical session.
-    readonly property string _playbackCookiesFile: Directories.cachePath + "/inir/ytmusic-playback-cookies.txt"
+    readonly property string _playbackCookiesFile: Directories.cachePath + "/ilmango/ytmusic-playback-cookies.txt"
 
     function _getThumbnailUrl(videoId): string {
         if (!videoId) return ""
@@ -2229,7 +2229,7 @@ print("")
     }
 
     // Kill any orphaned mpv instances that use our IPC socket.
-    // Handles processes that survived across inir restart or weren't cleaned up properly.
+    // Handles processes that survived across ilmango restart or weren't cleaned up properly.
     Process {
         id: _killOrphanedMpvProc
         command: ["/bin/sh", "-c", "pkill -f 'mpv.*qs-ytmusic-mpv\\.sock' 2>/dev/null; true"]

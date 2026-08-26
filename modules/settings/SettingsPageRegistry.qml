@@ -156,7 +156,7 @@ Singleton {
             key: "autostart",
             name: Translation.tr("Autostart"),
             icon: "rocket_launch",
-            desc: Translation.tr("Apps that start with iNiR"),
+            desc: Translation.tr("Apps that start with Illogical-mango"),
             essential: false,
             component: "modules/settings/AutostartConfig.qml"
         },
@@ -776,7 +776,7 @@ Singleton {
             pageIndex: 14, pageName: root.pages[14].name,
             section: Translation.tr("Appearance"),
             label: Translation.tr("Desktop widgets"),
-            description: Translation.tr("Current iNiR palette"),
+            description: Translation.tr("Current Illogical-mango palette"),
             keywords: ["widget", "color", "colour", "palette", "preset", "primary", "secondary", "tertiary", "signal", "surface", "wallpaper"]
         },
         {
@@ -910,8 +910,8 @@ Singleton {
             pageIndex: 4, pageName: root.pages[4].name,
             section: Translation.tr("Global Style"),
             label: Translation.tr("Global Style"),
-            description: Translation.tr("Material, Cards, Aurora glass effect, Inir TUI style"),
-            keywords: ["global", "style", "aurora", "inir", "material", "cards", "glass", "tui", "transparency", "blur"]
+            description: Translation.tr("Material, Cards, Aurora glass effect, Ilmango TUI style"),
+            keywords: ["global", "style", "aurora", "ilmango", "material", "cards", "glass", "tui", "transparency", "blur"]
         },
         {
             pageIndex: 4, pageName: root.pages[4].name,
@@ -930,9 +930,9 @@ Singleton {
         {
             pageIndex: 4, pageName: root.pages[4].name,
             section: Translation.tr("Global Style"),
-            label: Translation.tr("Inir"),
+            label: Translation.tr("Ilmango"),
             description: Translation.tr("TUI-inspired style with accent borders"),
-            keywords: ["inir", "tui", "terminal", "borders", "style", "minimal"]
+            keywords: ["ilmango", "tui", "terminal", "borders", "style", "minimal"]
         },
         {
             pageIndex: 4, pageName: root.pages[4].name,
@@ -1847,7 +1847,7 @@ Singleton {
         // Desktop Widgets (page 14)
         // =====================================================================
         { pageIndex: 14, pageName: root.pages[14].name, section: Translation.tr("Edit Mode"), label: Translation.tr("Widget edit mode"), description: Translation.tr("Grid overlay and snap-to-grid for widget placement"), keywords: ["widget", "edit", "grid", "snap", "placement", "drag"] },
-        { pageIndex: 14, pageName: root.pages[14].name, section: Translation.tr("Appearance"), label: Translation.tr("Desktop widgets"), description: Translation.tr("Current iNiR palette"), keywords: ["widget", "color", "colour", "palette", "preset", "primary", "secondary", "tertiary", "signal", "surface", "wallpaper"] },
+        { pageIndex: 14, pageName: root.pages[14].name, section: Translation.tr("Appearance"), label: Translation.tr("Desktop widgets"), description: Translation.tr("Current Illogical-mango palette"), keywords: ["widget", "color", "colour", "palette", "preset", "primary", "secondary", "tertiary", "signal", "surface", "wallpaper"] },
         { pageIndex: 14, pageName: root.pages[14].name, section: Translation.tr("Clock"), label: Translation.tr("Desktop clock"), description: Translation.tr("Clock widget on the desktop background"), keywords: ["clock", "widget", "cookie", "digital", "background", "desktop", "wallpaper", "adaptive", "colors"] },
         { pageIndex: 14, pageName: root.pages[14].name, section: Translation.tr("Clock"), label: Translation.tr("Clock style"), description: Translation.tr("Cookie, digital or Android stacked clock"), keywords: ["clock", "style", "cookie", "digital", "android", "stacked", "analog", "hands"] },
         { pageIndex: 14, pageName: root.pages[14].name, section: Translation.tr("Japanese Typography"), label: Translation.tr("Japanese typography widget"), description: Translation.tr("Vertical editorial lettering with layout, font, palette, seal, and footer controls"), keywords: ["japanese", "typography", "vertical", "text", "kanji", "kana", "poster", "magazine", "editorial", "seal", "widget", "font", "mincho", "gothic", "color", "palette", "sumi", "outline"] },
@@ -1886,7 +1886,7 @@ Singleton {
             pageIndex: 17, pageName: root.pages[17].name,
             section: Translation.tr("How autostart works"),
             label: Translation.tr("Autostart"),
-            description: Translation.tr("Launch apps when iNiR starts"),
+            description: Translation.tr("Launch apps when Illogical-mango starts"),
             keywords: ["autostart", "startup", "launch", "apps", "boot", "discord", "steam", "telegram"]
         },
 

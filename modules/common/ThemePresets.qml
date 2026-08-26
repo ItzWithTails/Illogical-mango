@@ -571,7 +571,7 @@ Singleton {
         }
     ]
 
-    // Angel - Signature theme for iNiR
+    // Angel - Signature theme for Illogical-mango
     // Celestial twilight aesthetic: warm golden halos against deep cosmic void
     // Inspired by the image: amber eyes, ethereal glow, dark silhouette
     readonly property var angelColors: ({
@@ -2095,7 +2095,7 @@ Singleton {
         m3onSurfaceVariant: "#b0b8e6", // Boosted from #848bbd for legibility
         m3inverseSurface: "#ffffff",
         m3inverseOnSurface: "#262335",
-        m3outline: "#616eb3", // Boosted form #495495 for Inir borders
+        m3outline: "#616eb3", // Boosted form #495495 for Ilmango borders
         m3outlineVariant: "#34294a",
         m3shadow: "#000000",
         m3scrim: "#000000",

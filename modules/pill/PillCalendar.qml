@@ -420,7 +420,7 @@ PillSurface {
                             font.features: { "tnum": 1 }
                         }
                         /**
-                         * Upstream showed per-day humidity. iNiR's forecast carries
+                         * Upstream showed per-day humidity. Illogical-mango's forecast carries
                          * the day's low instead — humidity is only known for right
                          * now — so the strip shows the low rather than a blank or an
                          * invented number.

@@ -112,7 +112,7 @@
             "material": 1,
             "cards": 3,
             "aurora": 0,
-            "inir": 1,
+            "ilmango": 1,
             "angel": 1,
             "regalia": 1,
             "zzz": 0,
@@ -1866,8 +1866,8 @@
         "niriWindowListUpdateIntervalMsGameMode": 500
     },
     "hotspot": {
-        "ssid": "iNiR Hotspot",
-        "password": "inirhotspot",
+        "ssid": "Illogical-mango Hotspot",
+        "password": "ilmangohotspot",
         "band": "bg"
     },
     "keyboardIndicators": {

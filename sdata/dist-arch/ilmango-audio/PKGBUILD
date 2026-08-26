@@ -1,0 +1,34 @@
+pkgname=ilmango-audio
+pkgver=1.0
+pkgrel=1
+pkgdesc='Illogical-mango - audio dependency bundle'
+arch=(any)
+license=('GPL-3.0-only')
+provides=('inir-audio')
+replaces=('inir-audio')
+conflicts=('inir-audio')
+depends=(
+  # PipeWire audio stack
+  pipewire
+  pipewire-pulse
+  pipewire-alsa
+  wireplumber
+
+  # Media control
+  playerctl
+  libdbusmenu-gtk3
+  pavucontrol
+
+  # Audio visualizer
+  cava
+
+  # Audio effects
+  easyeffects
+
+  # Media playback
+  mpv
+  mpv-mpris
+  yt-dlp
+  socat
+)
+

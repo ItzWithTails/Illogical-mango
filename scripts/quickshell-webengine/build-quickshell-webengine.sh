@@ -2,7 +2,7 @@
 # build-quickshell-webengine.sh — Build Quickshell with QtWebEngine support
 #
 # This script clones, patches, and builds Quickshell with WebEngine support
-# for iNiR's WebApp plugin system. For Arch Linux users, prefer the PKGBUILD
+# for Illogical-mango's WebApp plugin system. For Arch Linux users, prefer the PKGBUILD
 # in scripts/quickshell-webengine/ instead.
 #
 # Usage:
@@ -27,7 +27,7 @@ if [[ "${1:-}" == "--install" ]]; then
 fi
 
 echo "═══════════════════════════════════════════════════"
-echo "  Quickshell + WebEngine build for iNiR"
+echo "  Quickshell + WebEngine build for Illogical-mango"
 echo "═══════════════════════════════════════════════════"
 
 # ── Clone ─────────────────────────────────────────────
@@ -94,7 +94,7 @@ cmake -B build -G Ninja \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX" \
     -DINSTALL_QMLDIR="$QML_DIR" \
-    -DDISTRIBUTOR="iNiR build script" \
+    -DDISTRIBUTOR="Illogical-mango build script" \
     -DUSE_JEMALLOC=OFF \
     -DCRASH_REPORTER=OFF \
     -DCRASH_HANDLER=OFF
@@ -111,7 +111,7 @@ if $DO_INSTALL; then
     sudo cmake --install build
     echo "    ✓ Installed to $INSTALL_PREFIX"
     echo ""
-    echo "Done! Restart your shell with: inir restart"
+    echo "Done! Restart your shell with: ilmango restart"
 else
     echo "[5/5] Skipping install (run with --install to install system-wide)"
     echo ""

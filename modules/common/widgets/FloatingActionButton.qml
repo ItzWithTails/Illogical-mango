@@ -26,19 +26,19 @@ RippleButton {
         : Appearance.angelEverywhere ? Appearance.angel.roundingNormal : (baseSize / 14 * 4)
     colBackground: Appearance.zzzEverywhere ? Appearance.zzz.sticker
                  : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                 : Appearance.inirEverywhere ? Appearance.inir.colPrimaryContainer
+                 : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryContainer
                  : Appearance.colors.colPrimaryContainer
     colBackgroundHover: Appearance.zzzEverywhere ? Appearance.colors.colPrimaryHover
                       : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                      : Appearance.inirEverywhere ? Appearance.inir.colPrimaryContainerHover
+                      : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryContainerHover
                       : Appearance.colors.colPrimaryContainerHover
     colRipple: Appearance.zzzEverywhere ? Appearance.colors.colPrimaryActive
              : Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-             : Appearance.inirEverywhere ? Appearance.inir.colPrimaryContainerActive
+             : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryContainerActive
              : Appearance.colors.colPrimaryContainerActive
     property color colOnBackground: Appearance.zzzEverywhere ? Appearance.zzz.onSticker
                                   : Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                                  : Appearance.inirEverywhere ? Appearance.inir.colOnPrimaryContainer
+                                  : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimaryContainer
                                   : Appearance.colors.colOnPrimaryContainer
     contentItem: Row {
         id: contentRowLayout

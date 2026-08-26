@@ -58,13 +58,14 @@ Wayland → GPU
 - **Configurable without editing code.** Everything is a GUI setting on top of a single
   `config.json`. You never need to touch QML to change how it looks or behaves.
 - **A real install and upgrade path.** `./setup` takes care of dependencies and system
-  config; `inir update` pulls, runs schema migrations, preserves your changes and can
+  config; `ilmango update` pulls, runs schema migrations, preserves your changes and can
   roll back.
 
 **Lineage.** [end-4's illogical-impulse](https://github.com/end-4/dots-hyprland) (Hyprland
 dots) → [snowarch's iNiR](https://github.com/snowarch/iNiR) (rewritten for niri) → this,
-ported to MangoWM. The CLI, the config paths and the internals are still called `inir`:
-renaming them would break every upgrade path, so the name stayed.
+ported to MangoWM. The CLI, the config paths and the internals are called `ilmango`.
+Installs from the iNiR era are carried over by migration 037, which leaves symlinks at the
+old paths so existing keybinds and scripts keep working.
 Why not fork end-4 directly? The logic is simple - a project that has been ported once is
 easier to port again.
 As an analogy, take Void Linux. Install systemd on it and it will run just fine.
@@ -83,8 +84,8 @@ dock, overview and workspace strip already expect, and those modules work unchan
 Configuration is deliberately non-destructive. mango reads exactly one file
 (`~/.config/mango/config.conf`) and merges nothing, so the installer never overwrites your
 compositor config. It puts the shell's keybinds and autostart into
-`~/.config/mango/inir.conf` and appends a single `source-optional=` line pointing at it,
-without touching your window management. Autostart is an `exec-once=inir run --daemon`
+`~/.config/mango/ilmango.conf` and appends a single `source-optional=` line pointing at it,
+without touching your window management. Autostart is an `exec-once=ilmango run --daemon`
 line in that file, not a systemd unit.
 
 > [!NOTE]
@@ -132,7 +133,7 @@ Both panel families, carried over from upstream unchanged.
 **Two panel families**, switchable on the fly with <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd>:
 
 - **Material ii** — floating bar, sidebars, dock and 8 visual styles (Material, Cards,
-  Aurora, iNiR, Angel, Regalia, ZZZ, Cookie Shapes)
+  Aurora, Illogical-mango, Angel, Regalia, ZZZ, Cookie Shapes)
 - **Waffle** — Windows 11-style taskbar, start menu, action center, notification center
 
 **Automatic theming.** Pick a wallpaper and the whole system follows: Material You colors
@@ -144,7 +145,7 @@ and SDDM. Ships with Regalia, Gruvbox, Catppuccin and Rosé Pine presets, or bui
 
 ### Theming and appearance
 
-- **8 visual styles**: Material (solid), Cards, Aurora (glass blur), iNiR (TUI-inspired), Angel (neo-brutalism), Regalia (black engineered chassis, warm ivory ink, restrained champagne hardware), ZZZ (poster plates), Cookie Shapes (animated shape morphing)
+- **8 visual styles**: Material (solid), Cards, Aurora (glass blur), Illogical-mango (TUI-inspired), Angel (neo-brutalism), Regalia (black engineered chassis, warm ivory ink, restrained champagne hardware), ZZZ (poster plates), Cookie Shapes (animated shape morphing)
 - **Dynamic wallpaper colors** via Material You, propagated system-wide
 - **10 terminal and TUI tools auto-themed**: foot, kitty, alacritty, ghostty, wezterm, starship, fuzzel, btop, lazygit, yazi
 - **App theming**: GTK3/4, Qt (via plasma-integration and darkly), Firefox (MaterialFox), Discord/Vesktop (System24), Zed, Spicetify, Steam, SDDM
@@ -196,7 +197,7 @@ Right sidebar:
 
 - **GUI settings**: configure everything without touching files
 - **GameMode**: auto-disables effects for fullscreen apps
-- **Auto-updates**: `inir update` with rollback, migrations, and user change preservation
+- **Auto-updates**: `ilmango update` with rollback, migrations, and user change preservation
 - **Lock screen** and **session screen** (logout/reboot/shutdown/suspend)
 - **Polkit agent**, **on-screen keyboard**, **autostart manager** backed by the `exec-once` line in the mango config
 - **Kira**: opt-in pixel-art mascot who wanders the screen edges and reacts to what you do. Off by default; the ~32 MiB art pack is a separate download under `./setup` › Extras
@@ -213,23 +214,23 @@ Right sidebar:
 ## Quick Start (the installer will be different in the future)
 
 ```bash
-git clone https://github.com/ItzWithTails/Illogical-mango.git
+git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
 ./setup install       # interactive, asks before each step
 ./setup install -y    # automatic, no questions asked
 ```
 
 The installer takes care of dependencies, system config and theming. It writes the shell's
-keybinds to `~/.config/mango/inir.conf` and hooks them into your existing mango config
+keybinds to `~/.config/mango/ilmango.conf` and hooks them into your existing mango config
 without touching your window management. Restart mango or run
 `mmsg dispatch reload_config`.
 
 ```bash
-inir run                        # launch the shell
-inir settings                   # open settings GUI
-inir logs                       # check the logs
-inir doctor                     # auto-diagnose and fix
-inir update                     # pull + migrate + restart
+ilmango run                        # launch the shell
+ilmango settings                   # open settings GUI
+ilmango logs                       # check the logs
+ilmango doctor                     # auto-diagnose and fix
+ilmango update                     # pull + migrate + restart
 ```
 
 Other entry points:
@@ -300,10 +301,10 @@ docs and this README disagree about which compositor is supported, this README i
 ## Troubleshooting
 
 ```bash
-inir logs                       # recent runtime logs
-inir restart                    # restart the active runtime
-inir repair                     # doctor + restart + filtered log check
-inir doctor                     # auto-diagnose and fix common problems
+ilmango logs                       # recent runtime logs
+ilmango restart                    # restart the active runtime
+ilmango repair                     # doctor + restart + filtered log check
+ilmango doctor                     # auto-diagnose and fix common problems
 ./setup rollback                # undo the last update
 claude "help me please"         # if you'd rather not work it out yourself. come on, it has to earn its $20 somehow
 ```

@@ -30,12 +30,12 @@ Item {
 
         width: contentLayout.implicitWidth + 32
         height: contentLayout.implicitHeight + 20
-        radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+        radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
         fallbackColor: Appearance.colors.colLayer1
-        inirColor: Appearance.inir.colLayer2
+        ilmangoColor: Appearance.ilmango.colLayer2
         auroraTransparency: Appearance.aurora.popupTransparentize
         border.width: 1
-        border.color: root.isError ? (Appearance.inirEverywhere ? Appearance.inir.colError : Appearance.colors.colError) : (Appearance.angelEverywhere ? Appearance.angel.colBorder : Appearance.inirEverywhere ? Appearance.inir.colBorder : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder : Appearance.colors.colOutlineVariant)
+        border.color: root.isError ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colError : Appearance.colors.colError) : (Appearance.angelEverywhere ? Appearance.angel.colBorder : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder : Appearance.colors.colOutlineVariant)
         Component.onCompleted: progressAnim.start()
 
         MouseArea {
@@ -77,9 +77,9 @@ Item {
                             ? Appearance.colors.colOnErrorContainer
                             : Appearance.colors.colOnPrimaryContainer)
                         : root.isError
-                            ? (Appearance.inirEverywhere ? Appearance.inir.colError : Appearance.colors.colError)
+                            ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colError : Appearance.colors.colError)
                             : (Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                                : Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                                 : Appearance.colors.colOnLayer1)
                 }
             }

@@ -3,7 +3,7 @@
 ## Directory Layout
 
 ```
-inir/
+ilmango/
 ├── shell.qml                     # Root entry — loads services, selects panel family
 ├── ShellIiPanels.qml             # Material Design panel family
 ├── ShellWafflePanels.qml         # Windows 11 panel family
@@ -53,7 +53,7 @@ inir/
 │   ├── LyricsService.qml         # Synchronized lyrics for media controls
 │   └── [more services]
 ├── scripts/                      # Shell/fish/python helpers
-│   ├── inir                      # CLI launcher (bash, IPC + lifecycle commands)
+│   ├── ilmango                      # CLI launcher (bash, IPC + lifecycle commands)
 │   ├── colors/                   # Color generation pipeline
 │   │   ├── applycolor.sh         # Orchestrator
 │   │   ├── generate_colors_material.py  # Material You color generation
@@ -115,8 +115,8 @@ inir/
 
 **scripts/:**
 - Purpose: Shell/fish/python helper scripts for theming, CLI, and automation
-- Contains: CLI launcher (`inir`), color generation pipeline (`colors/`), utility scripts
-- Key files: `scripts/inir` (CLI launcher), `scripts/colors/applycolor.sh` (orchestrator)
+- Contains: CLI launcher (`ilmango`), color generation pipeline (`colors/`), utility scripts
+- Key files: `scripts/ilmango` (CLI launcher), `scripts/colors/applycolor.sh` (orchestrator)
 
 **sdata/:**
 - Purpose: Install/update lifecycle scripts and migration history
@@ -135,8 +135,8 @@ inir/
 
 **distro/arch/:**
 - Purpose: Arch Linux packaging files (PKGBUILDs and dependency manifests)
-- Contains: inir-shell, inir-shell-git, inir-meta PKGBUILDs
-- Key files: `distro/arch/inir-shell/PKGBUILD`, `distro/arch/inir-shell-git/PKGBUILD`
+- Contains: ilmango-shell, ilmango-shell-git, ilmango-meta PKGBUILDs
+- Key files: `distro/arch/ilmango-shell/PKGBUILD`, `distro/arch/ilmango-shell-git/PKGBUILD`
 
 **assets/:**
 - Purpose: Static assets (icons, wallpapers, systemd units, desktop entries)
@@ -195,7 +195,7 @@ inir/
 **New QML component:** `modules/common/widgets/` for shared widgets, `modules/[module-name]/` for module-specific components
 **New service:** `services/` as a top-level `PascalCase.qml` singleton, register in `services/qmldir`
 **New module directory:** Scaffold and register it through the owning family loader and Config contract
-**New script:** `scripts/[category]/` following existing category conventions (colors/, inir/, lib/, etc.)
+**New script:** `scripts/[category]/` following existing category conventions (colors/, ilmango/, lib/, etc.)
 **New migration:** `sdata/migrations/` with next sequential number (check `ls sdata/migrations/` for current maximum)
 **New config key:** Update `modules/common/Config.qml`, consumers, and every owning Settings family; use `defaults/config.json` only for curated fresh-install preferences
 **New translation:** Wrap a literal in `Translation.tr(...)`, then synchronize and audit every locale catalog

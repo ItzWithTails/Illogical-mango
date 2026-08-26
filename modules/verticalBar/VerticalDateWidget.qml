@@ -29,7 +29,7 @@ Item { // Full hitbox
             ShapePath {
                 strokeWidth: 1.2
                 strokeColor: Appearance.regaliaEverywhere ? Appearance.regalia.onMuted
-                    : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
                 fillColor: "transparent"
                 startX: content.width - diagonalLine.padding
                 startY: diagonalLine.padding
@@ -47,7 +47,7 @@ Item { // Full hitbox
                 left: parent.left
             }
             font.pixelSize: Appearance.font.pixelSize.smallie
-            color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
             text: dayOfMonth
         }
 
@@ -58,7 +58,7 @@ Item { // Full hitbox
                 right: parent.right
             }
             font.pixelSize: Appearance.font.pixelSize.smallie
-            color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
             text: monthOfYear
         }
     }

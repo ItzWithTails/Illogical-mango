@@ -75,7 +75,7 @@ ContentPage {
                 checked: Config.options?.mascot?.enable ?? false
                 onCheckedChanged: Config.setNestedValue("mascot.enable", checked)
                 StyledToolTip {
-                    text: Translation.tr("Show the iNiR mascot in About, empty states and other shell surfaces")
+                    text: Translation.tr("Show the Illogical-mango mascot in About, empty states and other shell surfaces")
                 }
             }
 
@@ -303,12 +303,12 @@ ContentPage {
                     materialIcon: "cyclone"
                     mainText: Translation.tr("Unleash chaos")
                     enabled: Config.options?.mascot?.chaos?.enable ?? false
-                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "romp"])
+                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "romp"])
                 }
                 RippleButtonWithIcon {
                     materialIcon: "cleaning_services"
                     mainText: Translation.tr("Tidy up")
-                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "tidy"])
+                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "tidy"])
                 }
             }
         }
@@ -322,19 +322,19 @@ ContentPage {
                 RippleButtonWithIcon {
                     materialIcon: "waving_hand"
                     mainText: Translation.tr("Peek now")
-                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "poke"])
+                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "poke"])
                 }
 
                 RippleButtonWithIcon {
                     materialIcon: "sentiment_very_satisfied"
                     mainText: Translation.tr("Say hi")
-                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "appear", "wave-loop", "bottom"])
+                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "appear", "wave-loop", "bottom"])
                 }
 
                 RippleButtonWithIcon {
                     materialIcon: "visibility_off"
                     mainText: Translation.tr("Send her away")
-                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "hide"])
+                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "hide"])
                 }
             }
 

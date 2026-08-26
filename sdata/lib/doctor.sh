@@ -1,4 +1,4 @@
-# Doctor command for iNiR
+# Doctor command for Illogical-mango
 # Diagnoses AND FIXES common issues
 # This script is meant to be sourced.
 
@@ -113,7 +113,7 @@ check_dependencies() {
     )
 
     # Check required commands
-    # The compositor is the one dependency with alternatives: iNiR runs on
+    # The compositor is the one dependency with alternatives: Illogical-mango runs on
     # niri, mango or Hyprland. Requiring `niri` unconditionally made doctor
     # report a healthy mango system as broken — and, because doctor feeds
     # doctor_missing_deps straight into the installer, it would then try to
@@ -290,7 +290,7 @@ check_repo_checkout_state() {
 
     if [[ ! -d "${REPO_ROOT}/.git" ]]; then
         doctor_fail "Repo checkout is missing git metadata"
-        echo -e "    ${STY_FAINT}Run setup from a real iNiR checkout, not a random copy${STY_RST}"
+        echo -e "    ${STY_FAINT}Run setup from a real Illogical-mango checkout, not a random copy${STY_RST}"
         return 1
     fi
 
@@ -339,16 +339,16 @@ check_launcher_health() {
     installed_strategy="$(get_installed_update_strategy)"
 
     local launcher_cmd expected_launcher repo_launcher runtime_launcher
-    launcher_cmd="$(command -v inir 2>/dev/null || true)"
-    expected_launcher="${XDG_BIN_HOME}/inir"
-    repo_launcher="${REPO_ROOT}/scripts/inir"
-    runtime_launcher="$(doctor_runtime_dir 2>/dev/null)/scripts/inir"
+    launcher_cmd="$(command -v ilmango 2>/dev/null || true)"
+    expected_launcher="${XDG_BIN_HOME}/ilmango"
+    repo_launcher="${REPO_ROOT}/scripts/ilmango"
+    runtime_launcher="$(doctor_runtime_dir 2>/dev/null)/scripts/ilmango"
 
     if [[ "$installed_strategy" == "package-manager" ]]; then
         if [[ -n "$launcher_cmd" ]]; then
             doctor_pass "Launcher available"
         else
-            doctor_fail "inir launcher not found in PATH"
+            doctor_fail "ilmango launcher not found in PATH"
             echo -e "    ${STY_FAINT}Run the package install flow again, or install the launcher manually${STY_RST}"
         fi
         return 0
@@ -758,7 +758,7 @@ _try_install_font_package() {
 }
 
 check_niri_running() {
-    # iNiR runs on more than niri now, so report whichever supported
+    # Illogical-mango runs on more than niri now, so report whichever supported
     # compositor owns this session rather than failing everything that
     # is not niri.
     if [[ -n "$NIRI_SOCKET" && -S "$NIRI_SOCKET" ]]; then
@@ -823,7 +823,7 @@ check_manifest() {
         doctor_runtime_dir_or_fail "File manifest"
         return 0
     fi
-    local manifest="${target}/.inir-manifest"
+    local manifest="${target}/.ilmango-manifest"
     local installed_marker="${DOTS_CORE_CONFDIR}/installed_true"
     local installed_strategy
     installed_strategy=$(get_installed_update_strategy)
@@ -852,38 +852,38 @@ check_service_unit_health() {
 
     local installed_strategy service_path expected_target
     installed_strategy="$(get_installed_update_strategy)"
-    service_path="${XDG_CONFIG_HOME}/systemd/user/inir.service"
+    service_path="${XDG_CONFIG_HOME}/systemd/user/ilmango.service"
     expected_target="$(doctor_detect_compositor_service 2>/dev/null || true)"
 
     if [[ ! -f "$service_path" ]]; then
         if [[ "$installed_strategy" == "package-manager" ]]; then
             doctor_pass "User service not installed"
         else
-            doctor_fail "User inir.service missing"
-            echo -e "    ${STY_FAINT}Run: inir service install${STY_RST}"
+            doctor_fail "User ilmango.service missing"
+            echo -e "    ${STY_FAINT}Run: ilmango service install${STY_RST}"
         fi
         return 0
     fi
 
-    if [[ "$installed_strategy" != "package-manager" ]] && declare -F sync_user_inir_service_from_repo_if_present >/dev/null 2>&1; then
-        if sync_user_inir_service_from_repo_if_present >/dev/null 2>&1; then
-            doctor_fix "Refreshed user inir.service from repo"
+    if [[ "$installed_strategy" != "package-manager" ]] && declare -F sync_user_ilmango_service_from_repo_if_present >/dev/null 2>&1; then
+        if sync_user_ilmango_service_from_repo_if_present >/dev/null 2>&1; then
+            doctor_fix "Refreshed user ilmango.service from repo"
         fi
     fi
 
     local kill_mode fragment_path
-    kill_mode="$(systemctl --user show -p KillMode inir.service 2>/dev/null | cut -d= -f2)"
-    fragment_path="$(systemctl --user show -p FragmentPath inir.service 2>/dev/null | cut -d= -f2)"
+    kill_mode="$(systemctl --user show -p KillMode ilmango.service 2>/dev/null | cut -d= -f2)"
+    fragment_path="$(systemctl --user show -p FragmentPath ilmango.service 2>/dev/null | cut -d= -f2)"
 
     if [[ -n "$kill_mode" && "$kill_mode" != "process" ]]; then
-        doctor_fail "inir.service KillMode is '${kill_mode}'"
-        echo -e "    ${STY_FAINT}Run: inir service install${STY_RST}"
+        doctor_fail "ilmango.service KillMode is '${kill_mode}'"
+        echo -e "    ${STY_FAINT}Run: ilmango service install${STY_RST}"
     else
         doctor_pass "User service file present"
     fi
 
     if [[ -n "$fragment_path" && "$fragment_path" != "$service_path" ]]; then
-        tui_warn "systemd is loading inir.service from ${fragment_path}"
+        tui_warn "systemd is loading ilmango.service from ${fragment_path}"
     fi
 
     local has_expected_link=false
@@ -891,7 +891,7 @@ check_service_unit_health() {
     local wants_dir
     for wants_dir in "${XDG_CONFIG_HOME}/systemd/user"/*.wants; do
         [[ -d "$wants_dir" ]] || continue
-        [[ -e "$wants_dir/inir.service" || -L "$wants_dir/inir.service" ]] || continue
+        [[ -e "$wants_dir/ilmango.service" || -L "$wants_dir/ilmango.service" ]] || continue
         local target_name
         target_name="$(basename "${wants_dir%.wants}")"
         if [[ -n "$expected_target" && "$target_name" == "$expected_target" ]]; then
@@ -902,17 +902,17 @@ check_service_unit_health() {
     done
 
     if [[ -n "$expected_target" && "$has_expected_link" == false ]]; then
-        if [[ "$installed_strategy" != "package-manager" ]] && declare -F ensure_user_inir_service_enabled >/dev/null 2>&1 && ensure_user_inir_service_enabled >/dev/null 2>&1; then
-            doctor_fix "Enabled inir.service for ${expected_target}"
+        if [[ "$installed_strategy" != "package-manager" ]] && declare -F ensure_user_ilmango_service_enabled >/dev/null 2>&1 && ensure_user_ilmango_service_enabled >/dev/null 2>&1; then
+            doctor_fix "Enabled ilmango.service for ${expected_target}"
         else
-            doctor_fail "inir.service not wired to ${expected_target}"
-            echo -e "    ${STY_FAINT}Run: inir service enable${STY_RST}"
+            doctor_fail "ilmango.service not wired to ${expected_target}"
+            echo -e "    ${STY_FAINT}Run: ilmango service enable${STY_RST}"
         fi
     fi
 
     if [[ ${#stale_links[@]} -gt 0 ]]; then
         doctor_fail "Stale service links found: ${stale_links[*]}"
-        echo -e "    ${STY_FAINT}Run: inir service disable && inir service enable${STY_RST}"
+        echo -e "    ${STY_FAINT}Run: ilmango service disable && ilmango service enable${STY_RST}"
     fi
 
     if [[ -z "$expected_target" ]]; then
@@ -1127,7 +1127,7 @@ check_quickshell_abi() {
     _rebuild_cmd="$(_doctor_abi_rebuild_cmd)"
     if [[ -n "$_rebuild_cmd" ]]; then
         echo -e "  ${STY_YELLOW}To fix: ${_rebuild_cmd//--noconfirm /}${STY_RST}"
-        echo -e "  ${STY_FAINT}Or run: inir doctor --fix-abi${STY_RST}"
+        echo -e "  ${STY_FAINT}Or run: ilmango doctor --fix-abi${STY_RST}"
     else
         echo -e "  ${STY_YELLOW}No automatic fix available for this install type.${STY_RST}"
         echo -e "  ${STY_FAINT}See: https://quickshell.org/docs/master/guide/install-setup${STY_RST}"
@@ -1187,7 +1187,7 @@ check_quickshell_loads() {
         # Check for ABI mismatch in crash output
         if echo "$output" | grep -qiE "built against Qt|Qt.*mismatch|incompatible Qt"; then
             doctor_fail "Quickshell crashed due to Qt ABI mismatch"
-            echo -e "  ${STY_YELLOW}Run: inir doctor  (to auto-rebuild quickshell)${STY_RST}"
+            echo -e "  ${STY_YELLOW}Run: ilmango doctor  (to auto-rebuild quickshell)${STY_RST}"
             return 1
         fi
         
@@ -1326,14 +1326,14 @@ check_conflicting_services() {
             pkill -x "$proc" 2>/dev/null
             systemctl --user disable --now "${proc}.service" 2>/dev/null || true
         done
-        doctor_fix "Stopped conflicting: ${running[*]} (iNiR has built-in notifications, re-enable with: systemctl --user enable <service>)"
+        doctor_fix "Stopped conflicting: ${running[*]} (Illogical-mango has built-in notifications, re-enable with: systemctl --user enable <service>)"
     else
         doctor_pass "No conflicting notification daemons"
     fi
 }
 
 check_conflicting_shells() {
-    # Quickshell-based shells that conflict with iNiR at the package level.
+    # Quickshell-based shells that conflict with Illogical-mango at the package level.
     # These provide/replace quickshell or own overlapping config paths.
     local shell_pkgs=(
         "cachyos-niri-noctalia"
@@ -1359,7 +1359,7 @@ check_conflicting_shells() {
 
     if [[ ${#found[@]} -gt 0 ]]; then
         doctor_fail "Conflicting Quickshell shells installed: ${found[*]}"
-        echo -e "    ${STY_FAINT}These must be removed for iNiR to work. Run: ./setup install${STY_RST}"
+        echo -e "    ${STY_FAINT}These must be removed for Illogical-mango to work. Run: ./setup install${STY_RST}"
     else
         doctor_pass "No conflicting Quickshell shells"
     fi
@@ -1418,38 +1418,38 @@ check_environment_vars() {
     local venv_path="${XDG_STATE_HOME:-$HOME/.local/state}/quickshell/.venv"
     local fixed=0
     
-    # Check bash — look for INIR_VENV (canonical) or ILLOGICAL_IMPULSE_VIRTUAL_ENV (legacy)
-    if [[ -f "$HOME/.bashrc" ]] && ! grep -q "INIR_VENV" "$HOME/.bashrc" 2>/dev/null; then
+    # Check bash — look for ILMANGO_VENV (canonical) or ILLOGICAL_IMPULSE_VIRTUAL_ENV (legacy)
+    if [[ -f "$HOME/.bashrc" ]] && ! grep -q "ILMANGO_VENV" "$HOME/.bashrc" 2>/dev/null; then
         cat >> "$HOME/.bashrc" << BEOF
 
-# iNiR environment
-export INIR_VENV="${venv_path}"
-export ILLOGICAL_IMPULSE_VIRTUAL_ENV="\$INIR_VENV"
-# end iNiR
+# Illogical-mango environment
+export ILMANGO_VENV="${venv_path}"
+export ILLOGICAL_IMPULSE_VIRTUAL_ENV="\$ILMANGO_VENV"
+# end Illogical-mango
 BEOF
         ((fixed++)) || true
     fi
     
     # Check fish
-    local fish_conf="${XDG_CONFIG_HOME}/fish/conf.d/inir-env.fish"
+    local fish_conf="${XDG_CONFIG_HOME}/fish/conf.d/ilmango-env.fish"
     if command -v fish &>/dev/null && [[ ! -f "$fish_conf" ]]; then
         mkdir -p "$(dirname "$fish_conf")"
         cat > "$fish_conf" << FEOF
-# iNiR environment — auto-generated by doctor
-set -gx INIR_VENV "${venv_path}"
-set -gx ILLOGICAL_IMPULSE_VIRTUAL_ENV "\$INIR_VENV"
+# Illogical-mango environment — auto-generated by doctor
+set -gx ILMANGO_VENV "${venv_path}"
+set -gx ILLOGICAL_IMPULSE_VIRTUAL_ENV "\$ILMANGO_VENV"
 FEOF
         ((fixed++)) || true
     fi
     
     # Check zsh
-    if [[ -f "$HOME/.zshrc" ]] && ! grep -q "INIR_VENV" "$HOME/.zshrc" 2>/dev/null; then
+    if [[ -f "$HOME/.zshrc" ]] && ! grep -q "ILMANGO_VENV" "$HOME/.zshrc" 2>/dev/null; then
         cat >> "$HOME/.zshrc" << ZEOF
 
-# iNiR environment
-export INIR_VENV="${venv_path}"
-export ILLOGICAL_IMPULSE_VIRTUAL_ENV="\$INIR_VENV"
-# end iNiR
+# Illogical-mango environment
+export ILMANGO_VENV="${venv_path}"
+export ILLOGICAL_IMPULSE_VIRTUAL_ENV="\$ILMANGO_VENV"
+# end Illogical-mango
 ZEOF
         ((fixed++)) || true
     fi
@@ -1718,7 +1718,7 @@ run_doctor_with_fixes() {
                         echo ""
                         echo -e "  ${STY_RED}Rebuild failed (exit $_rebuild_rc).${STY_RST}"
                     else
-                        rm -f "${XDG_CACHE_HOME:-$HOME/.cache}/inir/abi-check" 2>/dev/null
+                        rm -f "${XDG_CACHE_HOME:-$HOME/.cache}/ilmango/abi-check" 2>/dev/null
                         if _doctor_abi_detect; then
                             echo ""
                             echo -e "  ${STY_GREEN}Quickshell rebuilt successfully. ABI mismatch resolved.${STY_RST}"
@@ -1762,11 +1762,11 @@ run_doctor_with_fixes() {
     if [[ $doctor_failed -gt 0 ]]; then
         tui_error "Some issues need manual attention."
         tui_info "Start with: ./setup status"
-        tui_info "Then read logs: inir logs"
+        tui_info "Then read logs: ilmango logs"
         return 1
     elif [[ $doctor_fixed -gt 0 ]]; then
         tui_success "All issues fixed automatically."
-        tui_info "Restart the shell to apply: inir restart"
+        tui_info "Restart the shell to apply: ilmango restart"
     else
         tui_success "Everything looks good!"
     fi

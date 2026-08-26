@@ -398,7 +398,7 @@ Scope {
             radius: panelBackground.radius
             opacity: panelBackground.opacity
             visible: !Appearance.zzzEverywhere
-                && (Appearance.angelEverywhere || (!Appearance.inirEverywhere && !Appearance.auroraEverywhere))
+                && (Appearance.angelEverywhere || (!Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere))
         }
 
         // Click outside the panel to close
@@ -424,7 +424,7 @@ Scope {
             height: Math.min(contentColumn.implicitHeight, panelMaxHeight)
             fallbackColor: Appearance.zzzEverywhere ? Appearance.zzz.paper
                 : Appearance.regaliaEverywhere ? "transparent" : Appearance.colors.colLayer1
-            inirColor: Appearance.inir.colLayer1
+            ilmangoColor: Appearance.ilmango.colLayer1
             auroraTransparency: Appearance.angelEverywhere
                 ? Appearance.angel.panelTransparentize
                 : Math.max(0.12, Appearance.aurora.subSurfaceTransparentize - 0.14)
@@ -442,7 +442,7 @@ Scope {
             }
             border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong
                 : Appearance.angelEverywhere ? Appearance.angel.colPanelBorder
-                : Appearance.inirEverywhere ? Appearance.inir.colBorder 
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder 
                 : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder 
                 : Appearance.colors.colOutlineVariant
             Behavior on border.color {
@@ -452,7 +452,7 @@ Scope {
             radius: Appearance.regaliaEverywhere ? Appearance.regalia.panelRadius
                 : Appearance.zzzEverywhere ? Appearance.zzz.panelRadius
                 : Appearance.angelEverywhere ? Appearance.angel.roundingLarge
-                : Appearance.inirEverywhere ? Appearance.inir.roundingLarge : Appearance.rounding.screenRounding
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingLarge : Appearance.rounding.screenRounding
             Behavior on radius { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementResize.duration; easing.type: Appearance.animation.elementResize.type; easing.bezierCurve: Appearance.animation.elementResize.bezierCurve } }
             Behavior on color { enabled: Appearance.animationsEnabled; ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }
             
@@ -529,7 +529,7 @@ Scope {
                         text: "content_paste"
                         iconSize: Appearance.font.pixelSize.huge
                         color: Appearance.zzzEverywhere ? Appearance.zzz.accent
-                            : Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary
                         Behavior on color {
                             enabled: Appearance.animationsEnabled
                             ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -544,7 +544,7 @@ Scope {
                         font.weight: Appearance.zzzEverywhere ? Font.Black : Font.Normal
                         font.italic: Appearance.zzzEverywhere
                         color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                            : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurface
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurface
                         Behavior on color {
                             enabled: Appearance.animationsEnabled
                             ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -605,7 +605,7 @@ Scope {
                         text: root.matchCount + " " + Translation.tr("matches")
                         font.pixelSize: Appearance.font.pixelSize.smaller
                         color: Appearance.zzzEverywhere ? Appearance.zzz.inkMuted
-                            : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
                         Behavior on color {
                             enabled: Appearance.animationsEnabled
                             ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -638,7 +638,7 @@ Scope {
                         visible: root.showClearConfirmation
                         text: Translation.tr("Clear all?")
                         font.pixelSize: Appearance.font.pixelSize.small
-                        color: Appearance.inirEverywhere ? Appearance.inir.colError : Appearance.colors.colError
+                        color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colError : Appearance.colors.colError
                     }
 
                     IconToolbarButton {
@@ -678,10 +678,10 @@ Scope {
                     Layout.fillHeight: true
                     implicitHeight: Math.min(480, Math.max(160, listView.contentHeight + 20))
                     radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                        : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
                     color: Appearance.angelEverywhere
                         ? ColorUtils.transparentize(Appearance.angel.colGlassCard, 0.76)
-                        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                         : Appearance.auroraEverywhere
                         ? ColorUtils.transparentize(Appearance.colors.colLayer0Base,
                             Math.max(0.12, Appearance.aurora.subSurfaceTransparentize - 0.14))
@@ -841,7 +841,7 @@ Scope {
                             StyledText {
                                 Layout.alignment: Qt.AlignHCenter
                                 text: Translation.tr("No clipboard entries")
-                                color: Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
+                                color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
                                 font.pixelSize: Appearance.font.pixelSize.small
                             }
                         }
@@ -864,10 +864,10 @@ Scope {
                         anchors.bottom: parent.bottom
                         implicitHeight: hintsColumn.implicitHeight + 16
                         radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                            : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
                         color: Appearance.angelEverywhere
                             ? ColorUtils.transparentize(Appearance.angel.colGlassCard, 0.76)
-                            : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                             : Appearance.auroraEverywhere
                             ? ColorUtils.transparentize(Appearance.colors.colLayer0Base,
                                 Math.max(0.12, Appearance.aurora.subSurfaceTransparentize - 0.14))
@@ -889,7 +889,7 @@ Scope {
                                 text: Translation.tr("↑/↓, J/K: Navigate • Enter: Paste")
                                 font.pixelSize: Appearance.font.pixelSize.smaller
                                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                                    : Appearance.inirEverywhere ? Appearance.inir.colText 
+                                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText 
                                     : Appearance.auroraEverywhere ? Appearance.colors.colOnSurface 
                                     : Appearance.colors.colOnPrimaryContainer
                                 elide: Text.ElideRight
@@ -900,7 +900,7 @@ Scope {
                                 text: Translation.tr("Ctrl+C: Copy • Ctrl+P: Pin • Del: Delete • Shift+Del: Clear all • Esc: Close")
                                 font.pixelSize: Appearance.font.pixelSize.smaller
                                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                                    : Appearance.inirEverywhere ? Appearance.inir.colText 
+                                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText 
                                     : Appearance.auroraEverywhere ? Appearance.colors.colOnSurface 
                                     : Appearance.colors.colOnPrimaryContainer
                                 elide: Text.ElideRight
@@ -910,7 +910,7 @@ Scope {
                                 text: Translation.tr("Navigate mode: Tab/Shift+Tab jump between matches")
                                 font.pixelSize: Appearance.font.pixelSize.smaller
                                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                                    : Appearance.inirEverywhere ? Appearance.inir.colText 
+                                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText 
                                     : Appearance.auroraEverywhere ? Appearance.colors.colOnSurface 
                                     : Appearance.colors.colOnPrimaryContainer
                                 elide: Text.ElideRight

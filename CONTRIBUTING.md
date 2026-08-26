@@ -1,4 +1,4 @@
-# Contributing to iNiR
+# Contributing to Illogical-mango
 
 ## Branch Model
 
@@ -16,28 +16,28 @@ without that pass.
 1. Fork the repository and clone your fork
 2. Create a branch from `prerelease`: `git checkout -b fix/descriptive-name origin/prerelease`
 3. Make your changes following the patterns below
-4. Test: `inir restart && inir logs | tail -50`
+4. Test: `ilmango restart && ilmango logs | tail -50`
 5. Commit with a clear message (see conventions below)
 6. Push and open a pull request against `prerelease`
 
 ## Development Setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/inir.git
-cd inir
+git clone https://github.com/YOUR_USERNAME/illogical-mango.git
+cd ilmango
 ./setup install
-inir run
+ilmango run
 ```
 
-iNiR hot-reloads: saving a file applies it to the running shell
+Illogical-mango hot-reloads: saving a file applies it to the running shell
 immediately. When you need a clean slate:
 
 ```bash
-inir restart                    # Restart the supervised shell service
-inir logs -f                    # Follow live logs while you test
+ilmango restart                    # Restart the supervised shell service
+ilmango logs -f                    # Follow live logs while you test
 ```
 
-Do not run `qs kill -c inir` or a bare `qs -c inir` — the shell runs as a
+Do not run `qs kill -c ilmango` or a bare `qs -c ilmango` — the shell runs as a
 supervised systemd service, and raw quickshell commands leave it unmanaged.
 
 ## Commit Conventions
@@ -109,13 +109,13 @@ radius: 8
 
 ### Style Dispatch
 
-Six styles with priority **zzz > angel > inir > aurora > material** (cards
+Six styles with priority **zzz > angel > ilmango > aurora > material** (cards
 is derived from material):
 
 ```qml
 color: Appearance.zzzEverywhere ? Appearance.zzz.paper
      : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-     : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+     : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
      : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
      : Appearance.colors.colLayer1
 ```
@@ -207,10 +207,10 @@ When a config or data format changes between versions:
 Using AI tools to write code is fine — shipping their output untested is
 not. Before opening a PR:
 
-- Run your change on a real iNiR setup and exercise the exact flow you
+- Run your change on a real Illogical-mango setup and exercise the exact flow you
   touched. "It looks right" is not testing.
 - Describe in the PR what you ran and what you observed.
-- No invented APIs — every Quickshell/iNiR API you call must exist. Check
+- No invented APIs — every Quickshell/Illogical-mango API you call must exist. Check
   existing code or the [Quickshell docs](https://quickshell.org/docs/).
 - No drive-by reformatting, file restructuring, or boilerplate comments
   around code you did not change.
@@ -228,4 +228,4 @@ This project follows a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, 
 ## Getting Help
 
 - [Discord](https://discord.gg/pAPTfAhZUJ)
-- [Issue tracker](https://github.com/snowarch/inir/issues)
+- [Issue tracker](https://github.com/ItzWithTails/illogical-mango/issues)

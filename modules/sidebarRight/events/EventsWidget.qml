@@ -19,19 +19,19 @@ Item {
 
     // Style tokens
     readonly property color colPrimary: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary
     readonly property color colText: Appearance.angelEverywhere ? Appearance.angel.colText
-        : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
     readonly property color colSubtext: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
     readonly property color colBadgeBg: Appearance.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimary, 0.70)
-        : Appearance.inirEverywhere ? Appearance.inir.colSecondaryContainer
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colSecondaryContainer
         : Appearance.colors.colSecondaryContainer
     readonly property color colBadgeText: Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-        : Appearance.inirEverywhere ? Appearance.inir.colOnSecondaryContainer
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnSecondaryContainer
         : Appearance.colors.colOnSecondaryContainer
     readonly property color colEmptyBg: Appearance.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimary, 0.85)
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
         : Appearance.auroraEverywhere ? (Appearance.aurora?.colSubSurface ?? Appearance.colors.colSecondaryContainer)
         : Appearance.colors.colSecondaryContainer
     

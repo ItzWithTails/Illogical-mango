@@ -33,12 +33,12 @@ Item {
         color: hovered
             ? (Appearance.zzzEverywhere ? Appearance.zzz.bg2
              : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-             : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+             : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
              : Appearance.colors.colLayer2Hover)
             : "transparent"
         radius: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
               : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-              : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+              : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
               : Appearance.rounding.verysmall
         Behavior on radius { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementResize.duration; easing.type: Appearance.animation.elementResize.type; easing.bezierCurve: Appearance.animation.elementResize.bezierCurve } }
         Behavior on color {
@@ -68,7 +68,7 @@ Item {
             text: root.category
             font.pixelSize: Appearance.font.pixelSize.small
             color: Appearance.zzzEverywhere ? Appearance.zzz.ghostInk
-                 : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+                 : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                  : Appearance.colors.colSubtext
             Behavior on color {
                 enabled: Appearance.animationsEnabled
@@ -97,7 +97,7 @@ Item {
                 visible: root.showMainKey && root.hasModifiers
                 text: "+"
                 color: Appearance.zzzEverywhere ? Appearance.zzz.ghostInk
-                     : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+                     : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                      : Appearance.colors.colSubtext
                 Behavior on color {
                     enabled: Appearance.animationsEnabled
@@ -119,7 +119,7 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             font.pixelSize: Appearance.font.pixelSize.normal
             color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                 : Appearance.inirEverywhere ? Appearance.inir.colText
+                 : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                  : Appearance.colors.colOnLayer1
             Behavior on color {
                 enabled: Appearance.animationsEnabled
@@ -143,7 +143,7 @@ Item {
         height: 1
         color: Appearance.zzzEverywhere ? Appearance.zzz.hairline
              : Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-             : Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+             : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
              : Appearance.colors.colOutlineVariant
         Behavior on color {
             enabled: Appearance.animationsEnabled

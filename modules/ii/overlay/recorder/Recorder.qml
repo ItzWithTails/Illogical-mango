@@ -195,7 +195,7 @@ StyledOverlayWidget {
                     name: Translation.tr("Screenshot region")
                     onClicked: {
                         GlobalStates.overlayOpen = false;
-                        Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "region", "screenshot"]);
+                        Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "region", "screenshot"]);
                     }
                 }
 
@@ -219,7 +219,7 @@ StyledOverlayWidget {
                     Behavior on scale { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }
                     onClicked: {
                         GlobalStates.overlayOpen = false;
-                        Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "region", "recordWithSound"]);
+                        Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "region", "recordWithSound"]);
                     }
                 }
 

@@ -14,14 +14,14 @@ RowLayout {
     id: root
     spacing: 8
 
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
     readonly property bool showPowerButtons: Config.options?.dashboard?.showPowerButtons ?? true
     readonly property color colText: Appearance.angelEverywhere ? Appearance.angel.colText
-        : inirEverywhere ? Appearance.inir.colText
+        : ilmangoEverywhere ? Appearance.ilmango.colText
         : Appearance.colors.colOnLayer0
     readonly property color colSubtext: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-        : inirEverywhere ? Appearance.inir.colTextSecondary
+        : ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
         : Appearance.colors.colSubtext
 
     component HeaderButton: RippleButton {
@@ -32,11 +32,11 @@ RowLayout {
         implicitHeight: 38
         buttonRadius: toggled ? Appearance.rounding.normal : Appearance.rounding.full
         colBackground: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-            : root.inirEverywhere ? Appearance.inir.colLayer1
+            : root.ilmangoEverywhere ? Appearance.ilmango.colLayer1
             : root.auroraEverywhere ? Appearance.aurora.colSubSurface
             : Appearance.colors.colLayer1
         colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-            : root.inirEverywhere ? Appearance.inir.colLayer1Hover
+            : root.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
             : root.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
             : Appearance.colors.colLayer1Hover
         colBackgroundToggled: Appearance.colors.colSecondaryContainer
@@ -92,7 +92,7 @@ RowLayout {
         tooltip: Translation.tr("Settings")
         onClicked: {
             GlobalStates.dashboardOpen = false
-            Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "settings"])
+            Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "settings"])
         }
     }
     HeaderButton {

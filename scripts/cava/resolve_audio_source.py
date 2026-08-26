@@ -212,7 +212,7 @@ def _parse_sink_inputs(text: str, clients: dict[str, PulseClient]) -> list[SinkI
 
 def _hint_binaries(desktop_entry: str) -> set[str]:
     entry = desktop_entry.strip().lower()
-    if not entry or entry == "__inir_music_player__":
+    if not entry or entry == "__ilmango_music_player__":
         return set()
     hints: set[str] = set()
     for key, binaries in DESKTOP_ENTRY_BINARIES.items():

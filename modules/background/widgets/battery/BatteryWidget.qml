@@ -128,7 +128,7 @@ AbstractBackgroundWidget {
     // ── Ring mode ─────────────────────────────────────────────
     Item {
         anchors.fill: parent
-        anchors.margins: Appearance.angelEverywhere || Appearance.inirEverywhere ? 4 : 0
+        anchors.margins: Appearance.angelEverywhere || Appearance.ilmangoEverywhere ? 4 : 0
         visible: root.displayMode === "ring"
 
         Column {
@@ -173,7 +173,7 @@ AbstractBackgroundWidget {
     // ── Bars mode (VU meter style) ────────────────────────────
     Item {
         anchors.fill: parent
-        anchors.margins: Appearance.angelEverywhere || Appearance.inirEverywhere ? 4 : 0
+        anchors.margins: Appearance.angelEverywhere || Appearance.ilmangoEverywhere ? 4 : 0
         visible: root.displayMode === "bars"
 
         Row {
@@ -251,7 +251,7 @@ AbstractBackgroundWidget {
     // ── Pill mode (minimal horizontal bar) ────────────────────
     Item {
         anchors.fill: parent
-        anchors.margins: Appearance.angelEverywhere || Appearance.inirEverywhere ? 8 : 4
+        anchors.margins: Appearance.angelEverywhere || Appearance.ilmangoEverywhere ? 8 : 4
         visible: root.displayMode === "pill"
 
         // Percentage + time above pill

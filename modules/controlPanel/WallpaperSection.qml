@@ -16,11 +16,11 @@ PanelSurface {
     implicitHeight: wallpaperLayout.implicitHeight + 16
     readonly property bool showSchemeChips: Config.options?.controlPanel?.showWallpaperSchemeChips ?? false
     
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
 
     elevation: 1
-    radiusOverride: inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+    radiusOverride: ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
 
     ColumnLayout {
         id: wallpaperLayout
@@ -36,7 +36,7 @@ PanelSurface {
             MaterialSymbol {
                 text: "wallpaper"
                 iconSize: 16
-                color: root.inirEverywhere ? Appearance.inir.colPrimary
+                color: root.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                      : root.auroraEverywhere ? Appearance.colors.colPrimary
                      : Appearance.colors.colPrimary
             }
@@ -45,7 +45,7 @@ PanelSurface {
                 text: Translation.tr("Wallpaper")
                 font.pixelSize: Appearance.font.pixelSize.small
                 font.weight: Font.Medium
-                color: root.inirEverywhere ? Appearance.inir.colText
+                color: root.ilmangoEverywhere ? Appearance.ilmango.colText
                      : root.auroraEverywhere ? Appearance.colors.colOnSurface
                      : Appearance.colors.colOnLayer1
             }
@@ -55,9 +55,9 @@ PanelSurface {
             RippleButton {
                 implicitWidth: 26
                 implicitHeight: 26
-                buttonRadius: root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                buttonRadius: root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                 colBackground: "transparent"
-                colBackgroundHover: root.inirEverywhere ? Appearance.inir.colLayer2Hover 
+                colBackgroundHover: root.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover 
                     : root.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
                     : Appearance.colors.colLayer2Hover
                 onClicked: Wallpapers.randomFromCurrentFolder()
@@ -65,7 +65,7 @@ PanelSurface {
                     anchors.centerIn: parent
                     text: "shuffle"
                     iconSize: 14
-                    color: root.inirEverywhere ? Appearance.inir.colTextSecondary
+                    color: root.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                          : root.auroraEverywhere ? Appearance.colors.colOnSurfaceVariant
                          : Appearance.colors.colSubtext
                 }
@@ -75,9 +75,9 @@ PanelSurface {
             RippleButton {
                 implicitWidth: 26
                 implicitHeight: 26
-                buttonRadius: root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                buttonRadius: root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                 colBackground: "transparent"
-                colBackgroundHover: root.inirEverywhere ? Appearance.inir.colLayer2Hover 
+                colBackgroundHover: root.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover 
                     : root.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
                     : Appearance.colors.colLayer2Hover
                 onClicked: GlobalActions.runLauncher(["wallpaperSelector", "toggle"])
@@ -85,7 +85,7 @@ PanelSurface {
                     anchors.centerIn: parent
                     text: "folder_open"
                     iconSize: 14
-                    color: root.inirEverywhere ? Appearance.inir.colTextSecondary
+                    color: root.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                          : root.auroraEverywhere ? Appearance.colors.colOnSurfaceVariant
                          : Appearance.colors.colSubtext
                 }
@@ -102,7 +102,7 @@ PanelSurface {
             Rectangle {
                 id: previewMask
                 anchors.fill: parent
-                radius: root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                radius: root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
                 visible: false
             }
 
@@ -134,7 +134,7 @@ PanelSurface {
                 Rectangle {
                     id: fadeMask
                     anchors.fill: parent
-                    radius: root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                    radius: root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
                     visible: false
                 }
 

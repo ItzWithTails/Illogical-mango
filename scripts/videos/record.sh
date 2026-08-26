@@ -53,7 +53,7 @@ audio_mode_description() {
 determine_active_audio_mode() {
     if [[ ${SOUND_FLAG:-0} -ne 1 || -z "${AUDIO_CAPTURE_DEVICE:-}" ]]; then
         printf '%s\n' "none"
-    elif [[ "$AUDIO_CAPTURE_DEVICE" == "${MIX_SINK_PREFIX:-inir_recorder_mix_}"*.monitor ]]; then
+    elif [[ "$AUDIO_CAPTURE_DEVICE" == "${MIX_SINK_PREFIX:-ilmango_recorder_mix_}"*.monitor ]]; then
         printf '%s\n' "both"
     elif [[ "$AUDIO_CAPTURE_DEVICE" == *.monitor ]]; then
         printf '%s\n' "system"
@@ -360,7 +360,7 @@ create_audio_mix() {
         "rate=$AUDIO_SAMPLE_RATE" \
         "channels=2" \
         "channel_map=front-left,front-right" \
-        "sink_properties=device.description=iNiR_Recorder_Mix" 2>/dev/null || true)"
+        "sink_properties=device.description=Illogical-mango_Recorder_Mix" 2>/dev/null || true)"
     if [[ -z "$MIX_SINK_MODULE" ]]; then
         cleanup_audio_mix
         return 1
@@ -470,7 +470,7 @@ maybe_compress_recording() {
     input_base="$(basename "$input_file")"
     input_stem="${input_base%.*}"
     output_file="$input_dir/${input_stem}.discord.mp4"
-    local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/inir"
+    local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/ilmango"
     local lock_file="$cache_dir/discord-compress.lock"
     mkdir -p "$cache_dir"
 
@@ -721,7 +721,7 @@ start_recording_command() {
 }
 
 # Try to get save path from config, fallback to XDG Videos
-CONFIG_FILE="$(inir_config_file)"
+CONFIG_FILE="$(ilmango_config_file)"
 SAVE_PATH=""
 QUALITY_PRESET="balanced"
 VIDEO_CODEC=""
@@ -742,7 +742,7 @@ AUDIO_CAPTURE_DEVICE=""
 ACTIVE_AUDIO_MODE="none"
 AUDIO_BACKEND=""
 AUDIO_SAMPLE_RATE="48000"
-MIX_SINK_PREFIX="inir_recorder_mix_"
+MIX_SINK_PREFIX="ilmango_recorder_mix_"
 MIX_SINK_NAME=""
 MIX_SINK_MODULE=""
 MIX_SYSTEM_MODULE=""
@@ -761,7 +761,7 @@ DISCORD_COMPRESS_ONLY_IF_NEEDED="true"
 DISCORD_COMPRESS_AUDIO_BITRATE_KBPS="96"
 DISCORD_COMPRESS_PRESET="slow"
 DISCORD_COMPRESS_MAX_DIMENSION="1280"
-STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/inir"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/ilmango"
 RECORDER_PID_FILE="$STATE_DIR/recorder.pid"
 RECORDER_STOP_FILE="$STATE_DIR/recorder.stop"
 RECORDER_STATUS_FILE="$STATE_DIR/recorder-status.json"

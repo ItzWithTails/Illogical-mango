@@ -1,6 +1,6 @@
 //@ pragma UseQApplication
 //@ pragma Env QS_NO_RELOAD_POPUP=1
-//@ pragma Env INIR_STANDALONE_WINDOW=1
+//@ pragma Env ILMANGO_STANDALONE_WINDOW=1
 //@ pragma Env QT_QUICK_CONTROLS_STYLE=Basic
 //@ pragma Env QT_QUICK_FLICKABLE_WHEEL_DECELERATION=10000
 // Launcher keeps QT_SCALE_FACTOR=1; shell scaling lives in appearance.typography.sizeScale
@@ -473,7 +473,7 @@ ApplicationWindow {
     width: 1100
     height: 750
     color: root.uiReady
-        ? (Appearance.inirEverywhere ? Appearance.inir.colLayer0
+        ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer0
           : Appearance.zzzEverywhere ? Appearance.colors.colLayer0
           : Appearance.m3colors.m3background)
         : "transparent"
@@ -635,18 +635,18 @@ ApplicationWindow {
                 color: settingsSearchField.activeFocus
                     ? (Appearance.angelEverywhere ? Appearance.angel.colGlassCard
                       : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
-                      : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                      : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                       : Appearance.colors.colLayer1)
                     : (Appearance.angelEverywhere ? Appearance.angel.colGlassCard
                       : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
-                      : Appearance.inirEverywhere ? Appearance.inir.colLayer0
+                      : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer0
                       : Appearance.colors.colLayer0)
                 border.width: settingsSearchField.activeFocus ? 2
                     : (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : 1)
                 border.color: settingsSearchField.activeFocus
                     ? Appearance.colors.colPrimary
                     : (Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                      : Appearance.inirEverywhere ? Appearance.inir.colBorderMuted
+                      : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderMuted
                       : Appearance.m3colors.m3outlineVariant)
 
                 Behavior on color { ColorAnimation { duration: 150 } }
@@ -821,7 +821,7 @@ ApplicationWindow {
                     buttonRadius: Appearance.rounding.full
                     implicitWidth: 35
                     implicitHeight: 35
-                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "lock", "activate"])
+                    onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "lock", "activate"])
                     contentItem: MaterialSymbol {
                         anchors.centerIn: parent
                         horizontalAlignment: Text.AlignHCenter
@@ -880,7 +880,7 @@ ApplicationWindow {
                                 Layout.fillWidth: true
                                 spacing: 0
                                 readonly property color headerAccentColor: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                                    : Appearance.inirEverywhere ? Appearance.inir.colAccent
+                                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colAccent
                                     : Appearance.colors.colPrimary
 
                                 // ── Category header ──
@@ -946,8 +946,8 @@ ApplicationWindow {
                                         ? "transparent"
                                         : Appearance.angelEverywhere
                                         ? Appearance.angel.colGlassCardHover
-                                        : Appearance.inirEverywhere
-                                            ? Appearance.inir.colLayer1Hover
+                                        : Appearance.ilmangoEverywhere
+                                            ? Appearance.ilmango.colLayer1Hover
                                             : Appearance.auroraEverywhere
                                                 ? Appearance.aurora.colElevatedSurface
                                                 : CF.ColorUtils.transparentize(Appearance.colors.colLayer1Hover, 0.5)
@@ -976,8 +976,8 @@ ApplicationWindow {
                                                         ? Appearance.regalia.hardwarePrimary
                                                         : Appearance.zzzEverywhere
                                                         ? Appearance.zzz.ink
-                                                        : Appearance.inirEverywhere
-                                                        ? Appearance.inir.colAccent
+                                                        : Appearance.ilmangoEverywhere
+                                                        ? Appearance.ilmango.colAccent
                                                         : Appearance.colors.colPrimary)
                                                     : Appearance.colors.colOnSurfaceVariant
                                                 rotation: navItem.modelData.iconRotation || 0
@@ -1026,7 +1026,7 @@ ApplicationWindow {
                                 : Appearance.rounding.small
                             chamfer: Appearance.zzzEverywhere && !Appearance.zzz.round ? Appearance.zzz.cutCorner : 0
                             fillColor: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                                 : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                                 : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                                  : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
                                  : Appearance.zzzEverywhere ? Appearance.zzz.sticker
                                  : Appearance.colors.colPrimaryContainer
@@ -1101,7 +1101,7 @@ ApplicationWindow {
                                 visible: !Appearance.zzzEverywhere
                                 height: (parent.hasTarget && visible) ? parent.height * 0.5 : 0
                                 color: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                                     : Appearance.inirEverywhere ? Appearance.inir.colAccent
+                                     : Appearance.ilmangoEverywhere ? Appearance.ilmango.colAccent
                                      : Appearance.colors.colPrimary
                                 Behavior on height {
                                     enabled: Appearance.animationsEnabled
@@ -1236,7 +1236,7 @@ ApplicationWindow {
                     id: settingsRestartTimer
                     interval: 500
                     onTriggered: {
-                        Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "settings"])
+                        Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "settings"])
                         Qt.quit()
                     }
                 }
@@ -1251,17 +1251,17 @@ ApplicationWindow {
                 color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
                      : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                      : Appearance.zzzEverywhere ? Appearance.zzz.bg2
-                     : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                     : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                      : Appearance.colors.colSurfaceContainerLow
                 radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                      : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+                      : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
                       : Appearance.rounding.windowRounding - root.contentPadding
                 border.width: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
                             : Appearance.zzzEverywhere ? Appearance.zzz.borderThick
-                            : Appearance.inirEverywhere ? 1 : 0
+                            : Appearance.ilmangoEverywhere ? 1 : 0
                 border.color: Appearance.angelEverywhere ? Appearance.angel.colCardBorder
                             : Appearance.zzzEverywhere ? Appearance.zzz.hairline
-                            : Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
                             : "transparent"
 
                 // ── Page header: icon + name + description ──
@@ -1282,7 +1282,7 @@ ApplicationWindow {
                             text: windowPageHeader.meta.icon ?? ""
                             rotation: windowPageHeader.meta.iconRotation ?? 0
                             iconSize: 20
-                            color: Appearance.inirEverywhere ? Appearance.inir.colAccent : Appearance.colors.colPrimary
+                            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colAccent : Appearance.colors.colPrimary
                         }
 
                         StyledText {
@@ -1318,7 +1318,7 @@ ApplicationWindow {
                     Rectangle {
                         anchors { bottom: parent.bottom; left: parent.left; right: parent.right; leftMargin: 16; rightMargin: 16 }
                         height: 1
-                        color: Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle : Appearance.m3colors.m3outlineVariant
+                        color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle : Appearance.m3colors.m3outlineVariant
                         opacity: 0.5
                     }
                 }
@@ -1383,13 +1383,13 @@ ApplicationWindow {
                         anchors.top: parent.top
                         anchors.topMargin: 8
                         radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                             : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+                             : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
                              : Appearance.rounding.normal
                         color: "transparent"
                         border.width: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
-                                    : Appearance.inirEverywhere ? 1 : 1
+                                    : Appearance.ilmangoEverywhere ? 1 : 1
                         border.color: Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                            : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                             : Appearance.auroraEverywhere ? Appearance.aurora.colPopupBorder
                             : Appearance.m3colors.m3outlineVariant
 
@@ -1402,7 +1402,7 @@ ApplicationWindow {
                             screenHeight: Quickshell.screens[0]?.height ?? root.height
                             hovered: false
                             fallbackColor: Appearance.colors.colLayer1
-                            inirColor: Appearance.inir.colLayer2
+                            ilmangoColor: Appearance.ilmango.colLayer2
                             auroraTransparency: Math.max(0.22, Appearance.aurora.popupTransparentize - 0.12)
                         }
 
@@ -1457,17 +1457,17 @@ ApplicationWindow {
                                 width: resultsListView.width
                                 implicitHeight: 52
                                 buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                                            : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+                                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
                                             : Appearance.rounding.small
 
                                 colBackground: ListView.isCurrentItem
                                     ? (Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                                      : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                                      : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                                       : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
                                       : Appearance.colors.colPrimaryContainer)
                                     : "transparent"
                                 colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                                                  : Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover
+                                                  : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
                                                   : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                                                   : Appearance.colors.colLayer2
 
@@ -1592,7 +1592,7 @@ ApplicationWindow {
                         screenHeight: Quickshell.screens[0]?.height ?? root.height
                         hovered: false
                         fallbackColor: Appearance.colors.colLayer1
-                        inirColor: Appearance.inir.colLayer2
+                        ilmangoColor: Appearance.ilmango.colLayer2
                         auroraTransparency: Math.max(0.22, Appearance.aurora.popupTransparentize - 0.12)
                     }
 

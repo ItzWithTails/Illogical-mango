@@ -150,14 +150,14 @@ Item {
 
     property QtObject blendedColors: AdaptedMaterialScheme { color: root.artDominantColor }
 
-    // Inir fixed colors
-    readonly property color inirText: Appearance.inir.colText
-    readonly property color inirTextSecondary: Appearance.inir.colTextSecondary
-    readonly property color inirPrimary: Appearance.inir.colPrimary
-    readonly property color inirLayer1: Appearance.inir.colLayer1
-    readonly property color inirLayer2: Appearance.inir.colLayer2
+    // Ilmango fixed colors
+    readonly property color ilmangoText: Appearance.ilmango.colText
+    readonly property color ilmangoTextSecondary: Appearance.ilmango.colTextSecondary
+    readonly property color ilmangoPrimary: Appearance.ilmango.colPrimary
+    readonly property color ilmangoLayer1: Appearance.ilmango.colLayer1
+    readonly property color ilmangoLayer2: Appearance.ilmango.colLayer2
 
-    StyledRectangularShadow { target: card; visible: Appearance.angelEverywhere || (!Appearance.inirEverywhere && !Appearance.auroraEverywhere) }
+    StyledRectangularShadow { target: card; visible: Appearance.angelEverywhere || (!Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere) }
 
     Rectangle {
         id: card
@@ -166,14 +166,14 @@ Item {
         height: parent.height - Appearance.sizes.elevationMargin
         radius: Appearance.zzzEverywhere ? Appearance.zzz.panelRadius
              : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-             : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : root.radius
+             : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : root.radius
         Behavior on radius {
             enabled: Appearance.animationsEnabled
             NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
         }
         color: Appearance.zzzEverywhere ? Appearance.zzz.bg0
              : Appearance.angelEverywhere ? "transparent"
-             : Appearance.inirEverywhere ? root.inirLayer1
+             : Appearance.ilmangoEverywhere ? root.ilmangoLayer1
              : Appearance.auroraEverywhere ? "transparent"
              : (blendedColors?.colLayer0 ?? Appearance.colors.colLayer0)
         Behavior on color {
@@ -181,14 +181,14 @@ Item {
             ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
         }
         border.width: Appearance.zzzEverywhere ? Appearance.zzz.borderThick
-                    : (Appearance.angelEverywhere || Appearance.inirEverywhere || Appearance.auroraEverywhere) ? 1 : 0
+                    : (Appearance.angelEverywhere || Appearance.ilmangoEverywhere || Appearance.auroraEverywhere) ? 1 : 0
         Behavior on border.width {
             enabled: Appearance.animationsEnabled
             NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
         }
         border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong
                     : Appearance.angelEverywhere ? Appearance.angel.colBorder
-                    : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                     : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder
                     : "transparent"
         Behavior on border.color {
@@ -209,7 +209,7 @@ Item {
             y: -root.screenY - (card.y + (root.height - card.height) / 2)
             width: Quickshell.screens[0]?.width ?? 1920
             height: Quickshell.screens[0]?.height ?? 1080
-            visible: Appearance.auroraEverywhere && !Appearance.inirEverywhere
+            visible: Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
             source: visible ? Wallpapers.effectiveWallpaperUrl : ""
             fillMode: Image.PreserveAspectCrop
             cache: true
@@ -219,7 +219,7 @@ Item {
             mipmap: true
             asynchronous: true
 
-            layer.enabled: Appearance.effectsEnabled && Appearance.auroraEverywhere && !Appearance.inirEverywhere
+            layer.enabled: Appearance.effectsEnabled && Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
             layer.effect: MultiEffect {
                 source: auroraWallpaper
                 anchors.fill: source
@@ -235,7 +235,7 @@ Item {
         // Aurora tint overlay
         Rectangle {
             anchors.fill: parent
-            visible: Appearance.auroraEverywhere && !Appearance.inirEverywhere
+            visible: Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
             color: Appearance.angelEverywhere
                 ? ColorUtils.transparentize(blendedColors?.colLayer0 ?? Appearance.colors.colLayer0Base, Appearance.angel.overlayOpacity)
                 : ColorUtils.transparentize(blendedColors?.colLayer0 ?? Appearance.colors.colLayer0Base, Appearance.aurora.popupTransparentize)
@@ -253,25 +253,25 @@ Item {
             animateChanges: false
             artRadius: card.radius
             placeholderColor: Appearance.zzzEverywhere ? Appearance.zzz.bg0
-                : Appearance.inirEverywhere ? root.inirLayer1
+                : Appearance.ilmangoEverywhere ? root.ilmangoLayer1
                 : (blendedColors?.colLayer0 ?? Appearance.colors.colLayer0)
             iconColor: "transparent"
             opacity: Appearance.zzzEverywhere ? 0.20
-                : Appearance.inirEverywhere ? 0.15
+                : Appearance.ilmangoEverywhere ? 0.15
                 : (Appearance.auroraEverywhere ? 0.2 : 0.5)
             visible: root.displayedArtFilePath !== ""
             effectEnabled: Appearance.effectsEnabled
             blurEnabled: true
-            blur: Appearance.inirEverywhere ? 0.3 : 0.15
+            blur: Appearance.ilmangoEverywhere ? 0.3 : 0.15
             blurMax: 16
-            saturation: Appearance.zzzEverywhere ? 0.14 : (Appearance.inirEverywhere ? 0.1 : 0.3)
+            saturation: Appearance.zzzEverywhere ? 0.14 : (Appearance.ilmangoEverywhere ? 0.1 : 0.3)
         }
 
         // Gradient overlay for Material only — a material-tinted wash that
         // clashes with the flat ZZZ console plate, so exclude it there.
         Rectangle {
             anchors.fill: parent
-            visible: !Appearance.zzzEverywhere && !Appearance.inirEverywhere && !Appearance.auroraEverywhere
+            visible: !Appearance.zzzEverywhere && !Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere
             gradient: Gradient {
                 orientation: Gradient.Horizontal
                 GradientStop { position: 0.0; color: "transparent" }
@@ -292,7 +292,7 @@ Item {
             smoothing: 2
             color: ColorUtils.transparentize(
                 Appearance.zzzEverywhere ? Appearance.zzz.metricFill
-                    : Appearance.inirEverywhere ? root.inirPrimary : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary),
+                    : Appearance.ilmangoEverywhere ? root.ilmangoPrimary : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary),
                 0.6
             )
         }
@@ -309,16 +309,16 @@ Item {
                 Layout.preferredHeight: card.height - 24
                 artRadius: Appearance.zzzEverywhere ? Appearance.zzz.roundNormal
                     : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                    : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
                 source: root.displayedArtFilePath
                 transitionKey: root.mediaTransitionKey
                 downloaded: root.downloaded
                 slideDirection: root.slideDirection
                 placeholderColor: Appearance.zzzEverywhere ? Appearance.zzz.bg2
-                    : Appearance.inirEverywhere ? root.inirLayer2
+                    : Appearance.ilmangoEverywhere ? root.ilmangoLayer2
                     : (blendedColors?.colLayer1 ?? Appearance.colors.colLayer1)
                 iconColor: Appearance.zzzEverywhere ? Appearance.zzz.inkMuted
-                    : Appearance.inirEverywhere ? root.inirTextSecondary
+                    : Appearance.ilmangoEverywhere ? root.ilmangoTextSecondary
                     : (blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
                 iconSize: 32
             }
@@ -337,7 +337,7 @@ Item {
                     font.weight: Appearance.zzzEverywhere ? Font.Black : Font.Medium
                     font.italic: Appearance.zzzEverywhere
                     color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                        : Appearance.inirEverywhere ? root.inirText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                        : Appearance.ilmangoEverywhere ? root.ilmangoText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                     Behavior on color {
                         enabled: Appearance.animationsEnabled
                         ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -354,7 +354,7 @@ Item {
                     text: root.isYtMusicPlayer ? YtMusic.currentArtist : (root.player?.trackArtist || "")
                     font.pixelSize: Appearance.font.pixelSize.small
                     color: Appearance.zzzEverywhere ? Appearance.zzz.inkMuted
-                        : Appearance.inirEverywhere ? root.inirTextSecondary : (blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
+                        : Appearance.ilmangoEverywhere ? root.ilmangoTextSecondary : (blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
                     Behavior on color {
                         enabled: Appearance.animationsEnabled
                         ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -381,15 +381,15 @@ Item {
                             wavy: root.player?.isPlaying ?? false
                             animateWave: root.player?.isPlaying ?? false
                             highlightColor: Appearance.zzzEverywhere ? Appearance.zzz.metricFill
-                                : Appearance.inirEverywhere ? root.inirPrimary
+                                : Appearance.ilmangoEverywhere ? root.ilmangoPrimary
                                 : Appearance.auroraEverywhere ? Appearance.colors.colPrimary
                                 : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
                             trackColor: Appearance.zzzEverywhere ? Appearance.zzz.metricTrack
-                                : Appearance.inirEverywhere ? root.inirLayer2
+                                : Appearance.ilmangoEverywhere ? root.ilmangoLayer2
                                 : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
                                 : (blendedColors?.colSecondaryContainer ?? Appearance.colors.colSecondaryContainer)
                             handleColor: Appearance.zzzEverywhere ? Appearance.zzz.metricFill
-                                : Appearance.inirEverywhere ? root.inirPrimary
+                                : Appearance.ilmangoEverywhere ? root.ilmangoPrimary
                                 : Appearance.auroraEverywhere ? Appearance.colors.colPrimary
                                 : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
                             value: root.player?.length > 0 ? root.player.position / root.player.length : 0
@@ -405,11 +405,11 @@ Item {
                             wavy: root.player?.isPlaying ?? false
                             animateWave: root.player?.isPlaying ?? false
                             highlightColor: Appearance.zzzEverywhere ? Appearance.zzz.metricFill
-                                : Appearance.inirEverywhere ? root.inirPrimary
+                                : Appearance.ilmangoEverywhere ? root.ilmangoPrimary
                                 : Appearance.auroraEverywhere ? Appearance.colors.colPrimary
                                 : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
                             trackColor: Appearance.zzzEverywhere ? Appearance.zzz.metricTrack
-                                : Appearance.inirEverywhere ? root.inirLayer2
+                                : Appearance.ilmangoEverywhere ? root.ilmangoLayer2
                                 : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
                                 : (blendedColors?.colSecondaryContainer ?? Appearance.colors.colSecondaryContainer)
                             value: root.player?.length > 0 ? root.player.position / root.player.length : 0
@@ -427,7 +427,7 @@ Item {
                         font.pixelSize: Appearance.font.pixelSize.smallest
                         font.family: Appearance.font.family.numbers
                         color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                            : Appearance.inirEverywhere ? root.inirText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                            : Appearance.ilmangoEverywhere ? root.ilmangoText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                         Behavior on color {
                             enabled: Appearance.animationsEnabled
                             ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -440,14 +440,14 @@ Item {
                         implicitWidth: 32; implicitHeight: 32
                         enabled: root.effectiveCanGoPrevious
                         buttonRadius: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
-                            : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                         colBackground: "transparent"
                         colBackgroundHover: Appearance.zzzEverywhere ? Appearance.zzz.paperAlt
-                            : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                             : ColorUtils.transparentize(blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
                         colRipple: Appearance.zzzEverywhere ? ColorUtils.applyAlpha(Appearance.zzz.accent, 0.28)
-                            : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
                             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
                             : (blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
                         onClicked: root.doPrevious()
@@ -456,7 +456,7 @@ Item {
                                 anchors.centerIn: parent
                                 text: "skip_previous"; iconSize: 22; fill: 1
                                 color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                                    : Appearance.inirEverywhere ? root.inirText
+                                    : Appearance.ilmangoEverywhere ? root.ilmangoText
                                     : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer0
                                     : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                                 Behavior on color {
@@ -472,14 +472,14 @@ Item {
                         id: playPauseButton
                         implicitWidth: 40; implicitHeight: 40
                         buttonRadius: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
-                            : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                         colBackground: "transparent"
                         colBackgroundHover: Appearance.zzzEverywhere ? Appearance.zzz.paperAlt
-                            : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                             : Appearance.colors.colLayer1Hover
                         colRipple: Appearance.zzzEverywhere ? ColorUtils.applyAlpha(Appearance.zzz.accent, 0.28)
-                            : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
                             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
                             : Appearance.colors.colLayer1Active
                         onClicked: root.doTogglePlaying()
@@ -490,7 +490,7 @@ Item {
                                 text: root.player?.isPlaying ? "pause" : "play_arrow"
                                 iconSize: 24; fill: 1
                                 color: Appearance.zzzEverywhere ? Appearance.zzz.accent
-                                    : Appearance.inirEverywhere ? root.inirPrimary
+                                    : Appearance.ilmangoEverywhere ? root.ilmangoPrimary
                                     : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer0
                                     : Appearance.colors.colOnLayer1
                                 Behavior on color {
@@ -506,14 +506,14 @@ Item {
                         implicitWidth: 32; implicitHeight: 32
                         enabled: root.effectiveCanGoNext
                         buttonRadius: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
-                            : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                         colBackground: "transparent"
                         colBackgroundHover: Appearance.zzzEverywhere ? Appearance.zzz.paperAlt
-                            : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                             : ColorUtils.transparentize(blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
                         colRipple: Appearance.zzzEverywhere ? ColorUtils.applyAlpha(Appearance.zzz.accent, 0.28)
-                            : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
                             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
                             : (blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
                         onClicked: root.doNext()
@@ -522,7 +522,7 @@ Item {
                                 anchors.centerIn: parent
                                 text: "skip_next"; iconSize: 22; fill: 1
                                 color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                                    : Appearance.inirEverywhere ? root.inirText
+                                    : Appearance.ilmangoEverywhere ? root.ilmangoText
                                     : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer0
                                     : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                                 Behavior on color {
@@ -541,7 +541,7 @@ Item {
                         font.pixelSize: Appearance.font.pixelSize.smallest
                         font.family: Appearance.font.family.numbers
                         color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                            : Appearance.inirEverywhere ? root.inirText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                            : Appearance.ilmangoEverywhere ? root.ilmangoText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                         Behavior on color {
                             enabled: Appearance.animationsEnabled
                             ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }

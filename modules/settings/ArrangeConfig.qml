@@ -21,7 +21,7 @@ import qs.modules.common.widgets
  * `property var` inside JsonObject crashes the VME). Every mutation
  * writes a full snapshot; SettingsPageRegistry sanitizes on read so no
  * page can ever be lost — orphans land in a trailing "More" group.
- * Components + method: inir-settings-ui skill.
+ * Components + method: ilmango-settings-ui skill.
  */
 ContentPage {
     id: root

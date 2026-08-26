@@ -53,7 +53,7 @@ Rectangle {
     implicitHeight: contentItem.implicitHeight + root.verticalPadding * 2
     radius: Appearance.zzzEverywhere ? Appearance.zzz.cardRadius
         : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-        : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
         : Appearance.rounding.normal
     Behavior on radius {
         enabled: Appearance.animationsEnabled
@@ -61,21 +61,21 @@ Rectangle {
     }
     color: Appearance.zzzEverywhere ? "transparent"
          : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-         : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+         : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
          : Appearance.auroraEverywhere ? "transparent"
          : Appearance.colors.colLayer1
     Behavior on color {
         enabled: Appearance.animationsEnabled
         ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
     }
-    border.width: Appearance.zzzEverywhere ? 0 : (root.compactSurface ? 0 : (Appearance.angelEverywhere ? 0 : (Appearance.inirEverywhere ? 1 : 0)))
+    border.width: Appearance.zzzEverywhere ? 0 : (root.compactSurface ? 0 : (Appearance.angelEverywhere ? 0 : (Appearance.ilmangoEverywhere ? 1 : 0)))
     Behavior on border.width {
         enabled: Appearance.animationsEnabled
         NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
     }
     border.color: Appearance.zzzEverywhere ? "transparent"
         : Appearance.angelEverywhere ? "transparent"
-        : Appearance.inirEverywhere ? Appearance.inir.colBorder : "transparent"
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent"
     Behavior on border.color {
         enabled: Appearance.animationsEnabled
         ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -150,11 +150,11 @@ Rectangle {
             iconSize: 20
             color: nearFull
                 ? (Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-                 : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary
+                 : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary
                  : Appearance.auroraEverywhere ? Appearance.colors.colOnPrimary
                  : Appearance.colors.colOnPrimary)
                 : (Appearance.angelEverywhere ? Appearance.angel.colText
-                 : Appearance.inirEverywhere ? Appearance.inir.colOnSecondaryContainer
+                 : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnSecondaryContainer
                  : Appearance.auroraEverywhere ? Appearance.colors.colOnSecondaryContainer
                  : Appearance.colors.colOnSecondaryContainer)
             text: quickSlider.materialSymbol

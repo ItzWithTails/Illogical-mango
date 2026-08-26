@@ -1,7 +1,7 @@
 # Optional extras helpers for setup/install flows
 # shellcheck shell=bash
 
-inir_get_user_wallpapers_dir() {
+ilmango_get_user_wallpapers_dir() {
   local _xdg_pictures
   _xdg_pictures="$(xdg-user-dir PICTURES 2>/dev/null || true)"
   if [[ -z "$_xdg_pictures" || "$_xdg_pictures" != /* || "$_xdg_pictures" == "$HOME" ]]; then
@@ -29,7 +29,7 @@ extras_install_sddm_theme() {
 
   tui_info "Setting up ii-pixel-sddm login theme..."
   chmod +x "$sddm_script"
-  if ! INIR_SDDM_AUTO_APPLY="$auto_apply_mode" bash "$sddm_script"; then
+  if ! ILMANGO_SDDM_AUTO_APPLY="$auto_apply_mode" bash "$sddm_script"; then
     log_warning "ii-pixel-sddm setup failed — SDDM config may need manual update"
     log_warning "Try: sudo bash ${sddm_script}"
     return 1
@@ -42,8 +42,8 @@ extras_install_sddm_theme() {
 # - copies only image files into destination
 # - does not overwrite existing non-empty files
 # Output contract:
-# - sets global EXTRAS_INIR_WALLS_FIRST_IMAGE to first copied/available image path (or empty)
-extras_install_inir_walls() {
+# - sets global EXTRAS_ILMANGO_WALLS_FIRST_IMAGE to first copied/available image path (or empty)
+extras_install_ilmango_walls() {
   local walls_repo_url="https://github.com/snowarch/iNiR-Walls.git"
   local walls_estimated_count=148
   local walls_estimated_bytes=663709943
@@ -59,14 +59,14 @@ extras_install_inir_walls() {
   fi
 
   local user_wallpapers_dir
-  user_wallpapers_dir="$(inir_get_user_wallpapers_dir)"
+  user_wallpapers_dir="$(ilmango_get_user_wallpapers_dir)"
   mkdir -p "$user_wallpapers_dir"
 
   local walls_tmp
   walls_tmp="$(mktemp -d)"
   local walls_repo_dir="${walls_tmp}/iNiR-Walls"
   local first_image=""
-  EXTRAS_INIR_WALLS_FIRST_IMAGE=""
+  EXTRAS_ILMANGO_WALLS_FIRST_IMAGE=""
 
   tui_info "Downloading iNiR-Walls repository (git progress below)..."
   if git clone --depth 1 --progress "$walls_repo_url" "$walls_repo_dir"; then
@@ -106,7 +106,7 @@ extras_install_inir_walls() {
   fi
 
   rm -rf "$walls_tmp"
-  EXTRAS_INIR_WALLS_FIRST_IMAGE="$first_image"
+  EXTRAS_ILMANGO_WALLS_FIRST_IMAGE="$first_image"
   return 0
 }
 
@@ -114,7 +114,7 @@ extras_install_inir_walls() {
 # dirn-typo. GPL-3, ~23 MiB. Lives in user-scope ($HOME/.local/share/icons) so
 # it's available to GTK / Qt without root. Non-intrusive: only installs the
 # theme files. The user's current icon theme is NOT touched — they can switch
-# via iNiR Settings if they want.
+# via Illogical-mango Settings if they want.
 #
 # Idempotent: clones on first run, fast-forwards on subsequent runs.
 extras_install_yamis_icons() {
@@ -148,7 +148,7 @@ extras_install_yamis_icons() {
   tui_info "Installing YAMIS monochrome icon theme (~23 MiB, by dirn-typo)..."
   if git clone --depth 1 --quiet "$repo_url" "$dest"; then
     log_success "YAMIS icons installed at ${dest}"
-    log_info  "Switch to it via iNiR Settings → Appearance → Icon theme"
+    log_info  "Switch to it via Illogical-mango Settings → Appearance → Icon theme"
     if command -v gtk-update-icon-cache >/dev/null 2>&1; then
       gtk-update-icon-cache -q "$dest" 2>/dev/null || true
     fi
@@ -173,8 +173,8 @@ extras_refresh_yamis_icons_on_update() {
 # Resolve the latest inir-mascot release tag from the GitHub redirect
 # (no API quota involved). Tests and local mirrors can provide an explicit tag.
 extras_mascot_latest_tag() {
-  if [[ -n "${INIR_MASCOT_RELEASE_TAG:-}" ]]; then
-    printf '%s\n' "$INIR_MASCOT_RELEASE_TAG"
+  if [[ -n "${ILMANGO_MASCOT_RELEASE_TAG:-}" ]]; then
+    printf '%s\n' "$ILMANGO_MASCOT_RELEASE_TAG"
     return 0
   fi
   curl -fsI --max-time 10 "https://github.com/snowarch/inir-mascot/releases/latest" 2>/dev/null \
@@ -182,11 +182,11 @@ extras_mascot_latest_tag() {
 }
 
 extras_mascot_release_base_url() {
-  printf '%s\n' "${INIR_MASCOT_RELEASE_BASE_URL:-https://github.com/snowarch/inir-mascot/releases/latest/download}"
+  printf '%s\n' "${ILMANGO_MASCOT_RELEASE_BASE_URL:-https://github.com/snowarch/inir-mascot/releases/latest/download}"
 }
 
 extras_mascot_helper() {
-  local shell_dir="${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/inir"
+  local shell_dir="${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/ilmango"
   printf '%s\n' "${shell_dir}/scripts/lib/mascot-pack.py"
 }
 
@@ -196,9 +196,9 @@ extras_mascot_helper() {
 # must also match the recorded state, so deleted/corrupt files self-repair.
 # Repo-link checkouts are maintained with inir-mascot/scripts/sync-shell.py.
 extras_refresh_mascot_pack_on_update() {
-  local shell_dir="${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/inir"
+  local shell_dir="${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/ilmango"
   local dest="${shell_dir}/assets/images/mascot"
-  local state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/inir"
+  local state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/ilmango"
   local state_file="${state_dir}/mascot-pack-state.json"
   local legacy_marker="${state_dir}/mascot-pack-version"
   local helper
@@ -243,12 +243,12 @@ PY
 }
 
 # Optional mascot art pack: canonical art comes from snowarch/inir-mascot;
-# manifest/dialogue/behavior stay in iNiR. Download and validation happen in a
+# manifest/dialogue/behavior stay in Illogical-mango. Download and validation happen in a
 # temporary staging directory. Only a complete verified tree is synchronized
 # into the live runtime, preserving manifest.json and other shell-owned files.
 extras_install_mascot_pack() {
   local requested_tag="${1:-}"
-  local shell_dir="${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/inir"
+  local shell_dir="${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/ilmango"
   local dest="${shell_dir}/assets/images/mascot"
   local helper
   helper="$(extras_mascot_helper)"
@@ -262,7 +262,7 @@ extras_install_mascot_pack() {
   tui_dim "Downloads and verifies the complete pack before updating the live assets."
 
   if [[ ! -d "$shell_dir" ]]; then
-    log_warning "iNiR shell dir not found at ${shell_dir}, skipping mascot pack"
+    log_warning "Illogical-mango shell dir not found at ${shell_dir}, skipping mascot pack"
     return 0
   fi
   if [[ ! -f "$helper" ]]; then
@@ -336,7 +336,7 @@ PY
   [[ -n "$tag" ]] || tag="$(extras_mascot_latest_tag)"
   [[ -n "$tag" ]] || tag="unknown"
 
-  local state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/inir"
+  local state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/ilmango"
   local state_file="${state_dir}/mascot-pack-state.json"
   local legacy_marker="${state_dir}/mascot-pack-version"
   local count tree_hash archive_hash

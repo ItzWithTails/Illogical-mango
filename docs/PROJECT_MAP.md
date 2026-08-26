@@ -2,15 +2,15 @@
 
 ## Purpose
 
-This document explains how iNiR is composed, how its main parts relate to each other, what each part is responsible for, and what changes usually affect when you touch it.
+This document explains how Illogical-mango is composed, how its main parts relate to each other, what each part is responsible for, and what changes usually affect when you touch it.
 
 It is written for contributors.
 
 The goal is not to list every file. The goal is to give you a reliable mental model of the project so you can find the right source of truth before changing behavior.
 
-## What iNiR is
+## What Illogical-mango is
 
-iNiR is a desktop shell built on Quickshell and QML.
+Illogical-mango is a desktop shell built on Quickshell and QML.
 
 At runtime, it is not a single monolithic UI. It is a composition of:
 
@@ -169,7 +169,7 @@ A service change usually has broader blast radius than a local module change bec
 
 This directory contains helper scripts used by runtime features, theming, capture flows, daemons, and setup.
 
-Scripts matter because they are where iNiR crosses the boundary from shell UI into the user system.
+Scripts matter because they are where Illogical-mango crosses the boundary from shell UI into the user system.
 
 Typical responsibilities include:
 
@@ -218,7 +218,7 @@ This directory supports installation, packaging, migrations, updates, rollback, 
 
 The `setup` script sources libraries from `sdata/lib/` and uses distribution data under directories such as `sdata/dist-arch/`.
 
-If you change `sdata/`, you are usually changing how iNiR installs, updates, or maintains itself on user machines.
+If you change `sdata/`, you are usually changing how Illogical-mango installs, updates, or maintains itself on user machines.
 
 ### `assets/`
 
@@ -230,7 +230,7 @@ It affects presentation and first-run defaults, but it is not where business log
 
 This contains distributed dotfiles and shared configuration assets that are installed or referenced by setup flows.
 
-It matters for the user environment around iNiR, especially when the project applies or ships theming-related defaults.
+It matters for the user environment around Illogical-mango, especially when the project applies or ships theming-related defaults.
 
 ## Runtime architecture in more detail
 
@@ -263,7 +263,7 @@ If you move behavior earlier or later in the boot sequence, you can change:
 
 The panel-family system is central to the project.
 
-iNiR has two families:
+Illogical-mango has two families:
 
 - `ii`
 - `waffle`
@@ -330,7 +330,7 @@ It also centralizes style dispatch for the six supported styles:
 - material
 - cards
 - aurora
-- inir
+- ilmango
 - angel
 - zzz
 
@@ -501,7 +501,7 @@ A change here affects onboarding completion, first impression, and the first-run
 
 ## Shared dependency direction
 
-Most feature work in iNiR follows this relationship chain:
+Most feature work in Illogical-mango follows this relationship chain:
 
 - config defines what the user wants
 - services and shared singletons translate that into runtime state and system interactions
@@ -793,7 +793,7 @@ These areas are powerful because they are shared. That is exactly why they have 
 
 ## Final model to keep in mind
 
-iNiR scales by separating concerns.
+Illogical-mango scales by separating concerns.
 
 - `shell.qml` decides composition
 - config decides persisted intent

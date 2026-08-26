@@ -195,7 +195,7 @@ def extract_firefox_direct(profile_dir, output_path):
     # freshest cookies (incl. ones YouTube just rotated in) in the write-ahead log; an immutable
     # read of the bare .sqlite would miss them. Opening a normal copy merges the WAL → latest state,
     # and also sidesteps the live-DB lock.
-    tmp = f"/tmp/inir-ytcookies-{int(time.time())}-{os.getpid()}"
+    tmp = f"/tmp/ilmango-ytcookies-{int(time.time())}-{os.getpid()}"
     os.makedirs(tmp, exist_ok=True)
     try:
         for ext in ("", "-wal", "-shm"):
@@ -213,7 +213,7 @@ def extract_firefox_direct(profile_dir, output_path):
         return False, f"Could not read cookie DB: {e}"
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    lines = ["# Netscape HTTP Cookie File", "# Extracted by iNiR (direct, rotation-safe)"]
+    lines = ["# Netscape HTTP Cookie File", "# Extracted by Illogical-mango (direct, rotation-safe)"]
     names = set()
     for host, path, secure, expiry, name, value, oa in rows:
         if oa:  # partitioned cookie — not the main session

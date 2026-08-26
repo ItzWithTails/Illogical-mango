@@ -45,18 +45,18 @@ RippleButton {
     readonly property color normalTextColor: root.zzzEverywhere ? Appearance.zzz.ink
         : Appearance.regaliaEverywhere ? Appearance.regalia.onColor
         : Appearance.angelEverywhere ? Appearance.angel.colText
-        : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
     readonly property color selectedTextColor: root.zzzEverywhere ? Appearance.zzz.onSticker
         : Appearance.regaliaEverywhere ? Appearance.regalia.primaryPlateInk
         : Appearance.angelEverywhere ? Appearance.angel.colText
-        : Appearance.inirEverywhere ? Appearance.inir.colText
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
         : Appearance.colors.colOnLayer1
     readonly property color descriptionTextColor: root.isHighlighted
         ? root.selectedTextColor
         : root.zzzEverywhere ? Appearance.zzz.inkMuted
         : Appearance.regaliaEverywhere ? Appearance.regalia.onMuted
         : Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
         : Appearance.colors.colSubtext
     readonly property color selectedBackgroundColor: root.zzzEverywhere ? Appearance.zzz.sticker
         : Appearance.regaliaEverywhere ? Appearance.regalia.primaryPlate
@@ -87,7 +87,7 @@ RippleButton {
     buttonRadius: root.zzzEverywhere ? Appearance.zzz.controlRadius
         : Appearance.regaliaEverywhere ? Appearance.regalia.roundSmall
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.normal
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.normal
     colBackground: (root.down || root.keyboardDown)
         ? root.pressedBackgroundColor
         : (root.isHighlighted
@@ -115,7 +115,7 @@ RippleButton {
     // Matched-char colour must contrast with the CURRENT row background: when the
     // row is selected the bg is the accent plate, so the accent-coloured match
     // would vanish into it — switch to onSignal (the readable on-accent ink).
-    property string highlightPrefix: `<u><font color="${root.zzzEverywhere ? (root.isHighlighted ? Appearance.zzz.onSticker : Appearance.zzz.accent) : Appearance.regaliaEverywhere ? (root.isHighlighted ? Appearance.regalia.primaryPlateInk : Appearance.regalia.hardwarePrimary) : Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary}">`
+    property string highlightPrefix: `<u><font color="${root.zzzEverywhere ? (root.isHighlighted ? Appearance.zzz.onSticker : Appearance.zzz.accent) : Appearance.regaliaEverywhere ? (root.isHighlighted ? Appearance.regalia.primaryPlateInk : Appearance.regalia.hardwarePrimary) : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary}">`
     property string highlightSuffix: `</font></u>`
     function highlightContent(content, query) {
         if (!query || query.length === 0 || content == query || fontType === "monospace")
@@ -188,9 +188,9 @@ RippleButton {
 
         Drag.dragType: Drag.Automatic
         Drag.supportedActions: Qt.CopyAction
-        Drag.keys: ["application/x-inir-desktop-entry"]
+        Drag.keys: ["application/x-ilmango-desktop-entry"]
         Drag.mimeData: ({
-            "application/x-inir-desktop-entry": root.desktopEntryId
+            "application/x-ilmango-desktop-entry": root.desktopEntryId
         })
         Drag.imageSource: Quickshell.iconPath(root.itemIcon, "application-x-executable")
         Drag.imageSourceSize: Qt.size(52, 52)

@@ -3,7 +3,7 @@ import qs.modules.common.widgets
 import QtQuick
 
 /**
- * Renders a model/provider icon, transparently handling both kinds iNiR uses:
+ * Renders a model/provider icon, transparently handling both kinds Illogical-mango uses:
  *  - theme SVGs in assets/icons (e.g. "spark-symbolic", "google-gemini-symbolic")
  *    → drawn with CustomIcon (IconImage).
  *  - Material Symbol glyph names (e.g. "smart_toy", "neurology")
@@ -21,7 +21,7 @@ Item {
     implicitWidth: size
     implicitHeight: size
 
-    // Theme SVG icons in iNiR are named "*-symbolic"; everything else is treated
+    // Theme SVG icons in Illogical-mango are named "*-symbolic"; everything else is treated
     // as a Material glyph.
     readonly property bool isThemeIcon: root.icon.endsWith("-symbolic")
 
@@ -31,7 +31,7 @@ Item {
         width: root.size
         height: root.size
         // Bare icon name (no extension) — matches every other CustomIcon caller
-        // in iNiR; IconImage resolves the file under assets/icons.
+        // in Illogical-mango; IconImage resolves the file under assets/icons.
         source: root.isThemeIcon ? root.icon : ""
         colorize: true
         color: root.color

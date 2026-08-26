@@ -13,7 +13,7 @@ AndroidQuickToggleButton {
 
     name: Translation.tr("Hotspot")
     statusText: root.toggled
-        ? (Config.options?.hotspot?.ssid ?? "iNiR Hotspot")
+        ? (Config.options?.hotspot?.ssid ?? "Illogical-mango Hotspot")
         : Translation.tr("Off")
 
     toggled: false
@@ -30,8 +30,8 @@ AndroidQuickToggleButton {
         if (root.toggled) {
             stopProc.running = true
         } else {
-            const ssid = Config.options?.hotspot?.ssid ?? "iNiR Hotspot"
-            const password = Config.options?.hotspot?.password ?? "inirhotspot"
+            const ssid = Config.options?.hotspot?.ssid ?? "Illogical-mango Hotspot"
+            const password = Config.options?.hotspot?.password ?? "ilmangohotspot"
             const band = Config.options?.hotspot?.band ?? "bg"
             startProc.exec(["/bin/sh", "-c",
                 'nmcli connection delete id Hotspot 2>/dev/null; exec nmcli dev wifi hotspot con-name Hotspot ssid "$1" band "$2" password "$3"',
@@ -80,7 +80,7 @@ AndroidQuickToggleButton {
                     errMsg.length > 0
                         ? errMsg
                         : Translation.tr("Failed to start hotspot. Ensure your Wi-Fi adapter supports AP mode."),
-                    "-a", "iNiR"
+                    "-a", "Illogical-mango"
                 ])
             }
             root.refreshStatus()
@@ -105,7 +105,7 @@ AndroidQuickToggleButton {
                     errMsg.length > 0
                         ? errMsg
                         : Translation.tr("Failed to stop hotspot."),
-                    "-a", "iNiR"
+                    "-a", "Illogical-mango"
                 ])
             }
             root.refreshStatus()

@@ -31,6 +31,6 @@ migration_apply() {
 
 migration_preview() {
   echo "In 70-binds.kdl:"
-  echo "  - Mod+Shift+L allow-when-locked=true { spawn \"inir\" \"lock\" \"focus\"; }"
-  echo "  + Mod+Ctrl+Shift+L allow-when-locked=true { spawn \"inir\" \"lock\" \"focus\"; }"
+  echo "  - Mod+Shift+L allow-when-locked=true { spawn \"ilmango\" \"lock\" \"focus\"; }"
+  echo "  + Mod+Ctrl+Shift+L allow-when-locked=true { spawn \"ilmango\" \"lock\" \"focus\"; }"
 }

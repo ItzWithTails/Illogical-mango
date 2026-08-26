@@ -20,7 +20,7 @@ Item {
     property string surfaceDialect: Appearance.surfaceDialectFor("")
     readonly property bool zzzStyle: surfaceDialect === "zzz"
     readonly property bool angelStyle: surfaceDialect === "angel"
-    readonly property bool inirStyle: surfaceDialect === "inir"
+    readonly property bool ilmangoStyle: surfaceDialect === "ilmango"
     readonly property bool auroraStyle: surfaceDialect === "aurora" || angelStyle
     property int  windowCount: 1
     property int  focusedWindowIndex: 0
@@ -32,7 +32,7 @@ Item {
     // Standard rounding - not a full circle
     readonly property real pillRadius: root.zzzStyle ? Appearance.zzz.controlRadius
                                       : root.angelStyle ? Appearance.angel.roundingSmall
-                                      : root.inirStyle ? Appearance.inir.roundingSmall
+                                      : root.ilmangoStyle ? Appearance.ilmango.roundingSmall
                                       : Appearance.rounding.small
 
     // Background only visible when app is active/focused - translucent and aesthetic
@@ -40,7 +40,7 @@ Item {
         if (!appIsActive) return "transparent"
         if (root.zzzStyle) return Appearance.zzz.bg2
         if (root.angelStyle) return ColorUtils.transparentize(Appearance.angel.colGlassCard, 0.35)
-        if (root.inirStyle) return ColorUtils.transparentize(Appearance.inir.colLayer2, 0.45)
+        if (root.ilmangoStyle) return ColorUtils.transparentize(Appearance.ilmango.colLayer2, 0.45)
         if (root.auroraStyle) return ColorUtils.transparentize(Appearance.aurora.colSubSurface, 0.4)
         return ColorUtils.transparentize(Appearance.colors.colLayer1, 0.45)
     }
@@ -50,7 +50,7 @@ Item {
         if (!appIsActive) return "transparent"
         if (root.zzzStyle) return Appearance.zzz.hairlineStrong
         if (root.angelStyle) return ColorUtils.transparentize(Appearance.angel.colBorder, 0.5)
-        if (root.inirStyle) return ColorUtils.transparentize(Appearance.inir.colBorderAccent, 0.55)
+        if (root.ilmangoStyle) return ColorUtils.transparentize(Appearance.ilmango.colBorderAccent, 0.55)
         if (root.auroraStyle) return ColorUtils.transparentize(Appearance.colors.colPrimary, 0.7)
         return ColorUtils.transparentize(Appearance.colors.colPrimary, 0.65)
     }
@@ -106,12 +106,12 @@ Item {
                 color: isFocused
                     ? (root.zzzStyle ? Appearance.zzz.accent
                      : root.angelStyle ? Appearance.angel.colPrimary
-                     : root.inirStyle ? Appearance.inir.colPrimary
+                     : root.ilmangoStyle ? Appearance.ilmango.colPrimary
                      : Appearance.colors.colPrimary)
                     : ColorUtils.transparentize(
                         root.zzzStyle ? Appearance.zzz.ghostInk
                       : root.angelStyle ? Appearance.angel.colTextSecondary
-                      : root.inirStyle ? Appearance.inir.colText
+                      : root.ilmangoStyle ? Appearance.ilmango.colText
                       : Appearance.colors.colOnLayer0, 0.5)
 
                 Behavior on implicitWidth {
@@ -139,7 +139,7 @@ Item {
             color: ColorUtils.transparentize(
                 root.zzzStyle ? Appearance.zzz.ghostInk
               : root.angelStyle ? Appearance.angel.colTextSecondary
-              : root.inirStyle ? Appearance.inir.colText
+              : root.ilmangoStyle ? Appearance.ilmango.colText
               : Appearance.colors.colOnLayer0, 0.5)
 
             Behavior on opacity {

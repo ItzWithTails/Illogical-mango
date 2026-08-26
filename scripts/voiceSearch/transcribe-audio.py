@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Provider-neutral speech-to-text adapter for iNiR.
+"""Provider-neutral speech-to-text adapter for Illogical-mango.
 
-Secrets are read from INIR_VOICE_API_KEY and never placed in argv. The script
+Secrets are read from ILMANGO_VOICE_API_KEY and never placed in argv. The script
 prints only the transcription on stdout; diagnostics go to stderr.
 """
 
@@ -42,7 +42,7 @@ def _json_request(
 
 
 def _multipart(fields: dict[str, str], file_path: Path) -> tuple[bytes, str]:
-    boundary = "----inir-voice-" + uuid.uuid4().hex
+    boundary = "----ilmango-voice-" + uuid.uuid4().hex
     chunks: list[bytes] = []
     for name, value in fields.items():
         chunks.extend(
@@ -87,7 +87,7 @@ def _openai_compatible(
             "Authorization": f"Bearer {key}",
             "Content-Type": f"multipart/form-data; boundary={boundary}",
             "Accept": "application/json",
-            "User-Agent": "iNiR/Voice",
+            "User-Agent": "Illogical-mango/Voice",
         },
         data=body,
         method="POST",
@@ -100,7 +100,7 @@ def _gemini(file_path: Path, model: str, key: str) -> str:
     size = file_path.stat().st_size
     start_request = urllib.request.Request(
         "https://generativelanguage.googleapis.com/upload/v1beta/files",
-        data=json.dumps({"file": {"display_name": "iNiR voice"}}).encode(),
+        data=json.dumps({"file": {"display_name": "Illogical-mango voice"}}).encode(),
         headers={
             "x-goog-api-key": key,
             "X-Goog-Upload-Protocol": "resumable",
@@ -158,7 +158,7 @@ def _gemini(file_path: Path, model: str, key: str) -> str:
     }
     result = _json_request(
         generation_url,
-        headers={"Content-Type": "application/json", "User-Agent": "iNiR/Voice"},
+        headers={"Content-Type": "application/json", "User-Agent": "Illogical-mango/Voice"},
         data=json.dumps(payload).encode(),
         method="POST",
     )
@@ -178,7 +178,7 @@ def _candidate_local_models(explicit: str) -> list[Path]:
     cache_home = Path(os.environ.get("XDG_CACHE_HOME", home / ".cache"))
     candidates.extend(
         [
-            data_home / "inir/whisper/ggml-base.bin",
+            data_home / "ilmango/whisper/ggml-base.bin",
             data_home / "whisper/ggml-base.bin",
             cache_home / "whisper.cpp/ggml-base.bin",
             cache_home / "whisper/ggml-base.bin",
@@ -201,7 +201,7 @@ def _local_whisper(file_path: Path, model_path: str, language: str) -> str:
     probe = _probe_local(model_path)
     if not probe["available"]:
         raise RuntimeError("whisper-cli or a local ggml model is missing")
-    with tempfile.TemporaryDirectory(prefix="inir-voice-") as temp_dir:
+    with tempfile.TemporaryDirectory(prefix="ilmango-voice-") as temp_dir:
         output_base = Path(temp_dir) / "transcript"
         command = [
             probe["executable"],
@@ -251,7 +251,7 @@ def main() -> int:
         print("Audio file is missing or empty", file=sys.stderr)
         return 2
 
-    key = os.environ.get("INIR_VOICE_API_KEY", "")
+    key = os.environ.get("ILMANGO_VOICE_API_KEY", "")
     try:
         if args.provider == "local":
             transcript = _local_whisper(audio_path, args.local_model, args.language)

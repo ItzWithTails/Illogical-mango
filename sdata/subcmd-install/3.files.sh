@@ -1,4 +1,4 @@
-# Config file installation for iNiR
+# Config file installation for Illogical-mango
 # This script is meant to be sourced.
 
 # shellcheck shell=bash
@@ -18,9 +18,9 @@ for dir in "$XDG_BIN_HOME" "$XDG_CACHE_HOME" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME"
   fi
 done
 
-INIR_LAUNCHER_PATH="${XDG_BIN_HOME}/inir"
-INIR_APPLICATIONS_DIR="${XDG_DATA_HOME}/applications"
-INIR_ICON_DIR="${XDG_DATA_HOME}/icons/hicolor/scalable/apps"
+ILMANGO_LAUNCHER_PATH="${XDG_BIN_HOME}/ilmango"
+ILMANGO_APPLICATIONS_DIR="${XDG_DATA_HOME}/applications"
+ILMANGO_ICON_DIR="${XDG_DATA_HOME}/icons/hicolor/scalable/apps"
 
 # Create quickshell state directories
 v mkdir -p "${XDG_STATE_HOME}/quickshell/user/generated/wallpaper"
@@ -96,12 +96,12 @@ if [[ ! "${SKIP_BACKUP}" == true ]]; then auto_backup_configs; fi
 case "${SKIP_QUICKSHELL}" in
   true) sleep 0;;
   *)
-    tui_info "Installing Quickshell inir config..."
+    tui_info "Installing Quickshell ilmango config..."
 
     # The ii QML code is in the root of this repo, not in dots/
-    # We copy it to ~/.config/quickshell/inir/
+    # We copy it to ~/.config/quickshell/ilmango/
     II_SOURCE="${REPO_ROOT}"
-    II_TARGET="${XDG_CONFIG_HOME}/quickshell/inir"
+    II_TARGET="${XDG_CONFIG_HOME}/quickshell/ilmango"
 
     v mkdir -p "$II_TARGET"
 
@@ -113,7 +113,7 @@ case "${SKIP_QUICKSHELL}" in
 
     # Generate manifest BEFORE syncing (to know what should exist)
     log_info "Generating file manifest..."
-    generate_manifest "$II_SOURCE" "${II_TARGET}/.inir-manifest.new"
+    generate_manifest "$II_SOURCE" "${II_TARGET}/.ilmango-manifest.new"
 
     # Copy all .qml files from root (auto-detect, no manual list needed)
     for qml_file in "${II_SOURCE}"/*.qml; do
@@ -144,12 +144,12 @@ case "${SKIP_QUICKSHELL}" in
     fi
 
     # Finalize manifest
-    mv "${II_TARGET}/.inir-manifest.new" "${II_TARGET}/.inir-manifest"
+    mv "${II_TARGET}/.ilmango-manifest.new" "${II_TARGET}/.ilmango-manifest"
 
     # Cleanup orphan files (files that no longer exist in repo)
     if [[ "${IS_UPDATE}" == "true" ]]; then
       log_info "Cleaning up orphan files..."
-      cleanup_orphans "$II_TARGET" "${II_TARGET}/.inir-manifest"
+      cleanup_orphans "$II_TARGET" "${II_TARGET}/.ilmango-manifest"
     fi
 
     # Fix script permissions
@@ -157,9 +157,9 @@ case "${SKIP_QUICKSHELL}" in
     find "$II_TARGET/scripts" \( -name "*.sh" -o -name "*.fish" -o -name "*.py" \) -exec chmod +x {} \; 2>/dev/null || true
     [[ -f "${II_TARGET}/setup" ]] && chmod +x "${II_TARGET}/setup"
 
-    if [[ -f "${REPO_ROOT}/scripts/inir" ]]; then
-      install_file "${REPO_ROOT}/scripts/inir" "${INIR_LAUNCHER_PATH}"
-      chmod +x "${INIR_LAUNCHER_PATH}"
+    if [[ -f "${REPO_ROOT}/scripts/ilmango" ]]; then
+      install_file "${REPO_ROOT}/scripts/ilmango" "${ILMANGO_LAUNCHER_PATH}"
+      chmod +x "${ILMANGO_LAUNCHER_PATH}"
       ensure_launcher_path_in_shells "${XDG_BIN_HOME}"
       log_success "Launcher installed"
       log_success "Launcher path configured for interactive shells"
@@ -167,22 +167,22 @@ case "${SKIP_QUICKSHELL}" in
 
     local _service_refresh_status=1
     local _service_dir="${XDG_CONFIG_HOME}/systemd/user"
-    local _service_asset="${REPO_ROOT}/assets/systemd/inir.service"
-    local _service_target="${_service_dir}/inir.service"
+    local _service_asset="${REPO_ROOT}/assets/systemd/ilmango.service"
+    local _service_target="${_service_dir}/ilmango.service"
 
     if [[ -f "$_service_asset" ]]; then
       mkdir -p "$_service_dir"
 
       if [[ -f "$_service_target" ]]; then
         # Existing install: sync from repo template
-        if sync_user_inir_service_from_repo_if_present; then
+        if sync_user_ilmango_service_from_repo_if_present; then
           _service_refresh_status=0
-          log_success "User inir.service refreshed"
+          log_success "User ilmango.service refreshed"
         fi
       else
         # Fresh install: create service from template, rewriting ExecStart path
-        local _tmp_svc="${XDG_CACHE_HOME:-$HOME/.cache}/inir.service.$$"
-        local _launcher_escaped="${INIR_LAUNCHER_PATH//&/\\&}"
+        local _tmp_svc="${XDG_CACHE_HOME:-$HOME/.cache}/ilmango.service.$$"
+        local _launcher_escaped="${ILMANGO_LAUNCHER_PATH//&/\\&}"
         sed -e "s|^ExecStart=.*|ExecStart=${_launcher_escaped} run --session|" \
             -e "s|^ExecStopPost=-.*|ExecStopPost=-${_launcher_escaped} cleanup-orphans|" \
             "$_service_asset" > "$_tmp_svc"
@@ -190,12 +190,12 @@ case "${SKIP_QUICKSHELL}" in
         rm -f "$_tmp_svc"
         systemctl --user daemon-reload >/dev/null 2>&1 || true
         _service_refresh_status=0
-        log_success "User inir.service installed"
+        log_success "User ilmango.service installed"
       fi
     fi
 
     if [[ -f "$_service_target" ]]; then
-      # Wire to compositor-specific wants so inir only starts under the correct
+      # Wire to compositor-specific wants so ilmango only starts under the correct
       # compositor — NOT under KDE/GNOME/etc.  Never fall back to
       # graphical-session.target: that target is active in ANY desktop session.
       local _comp_target=""
@@ -208,9 +208,9 @@ case "${SKIP_QUICKSHELL}" in
       if [[ -n "$_comp_target" ]]; then
         local _wants_dir="${XDG_CONFIG_HOME}/systemd/user/${_comp_target}.wants"
         mkdir -p "$_wants_dir"
-        ln -sf "${XDG_CONFIG_HOME}/systemd/user/inir.service" "$_wants_dir/inir.service"
+        ln -sf "${XDG_CONFIG_HOME}/systemd/user/ilmango.service" "$_wants_dir/ilmango.service"
         systemctl --user daemon-reload >/dev/null 2>&1 || true
-        log_success "User inir.service enabled (wired to ${_comp_target})"
+        log_success "User ilmango.service enabled (wired to ${_comp_target})"
       elif command -v mango &>/dev/null; then
         # mango is not a systemd unit — it is started from a TTY or a display
         # manager session, so there is nothing to hang a .wants link on. Its
@@ -219,32 +219,32 @@ case "${SKIP_QUICKSHELL}" in
         log_success "mango detected — autostart handled by exec-once, not systemd"
       else
         log_warning "No supported compositor detected (niri, Hyprland or mango)"
-        log_warning "inir.service not enabled — run 'inir service enable' from your compositor session"
+        log_warning "ilmango.service not enabled — run 'ilmango service enable' from your compositor session"
       fi
     fi
 
     if [[ -f "${REPO_ROOT}/assets/icons/desktop-symbolic.svg" ]]; then
-      install_file "${REPO_ROOT}/assets/icons/desktop-symbolic.svg" "${INIR_ICON_DIR}/inir.svg"
+      install_file "${REPO_ROOT}/assets/icons/desktop-symbolic.svg" "${ILMANGO_ICON_DIR}/ilmango.svg"
       log_success "Launcher icon installed"
     fi
 
-    if [[ -f "${REPO_ROOT}/assets/applications/inir.desktop" ]]; then
-      INIR_DESKTOP_TMP="${XDG_CACHE_HOME}/inir.desktop.$$"
-      sed "s|^Exec=.*|Exec=${INIR_LAUNCHER_PATH//&/\\&} service restart|" "${REPO_ROOT}/assets/applications/inir.desktop" > "${INIR_DESKTOP_TMP}"
-      install_file "${INIR_DESKTOP_TMP}" "${INIR_APPLICATIONS_DIR}/inir.desktop"
-      rm -f "${INIR_DESKTOP_TMP}"
+    if [[ -f "${REPO_ROOT}/assets/applications/ilmango.desktop" ]]; then
+      ILMANGO_DESKTOP_TMP="${XDG_CACHE_HOME}/ilmango.desktop.$$"
+      sed "s|^Exec=.*|Exec=${ILMANGO_LAUNCHER_PATH//&/\\&} service restart|" "${REPO_ROOT}/assets/applications/ilmango.desktop" > "${ILMANGO_DESKTOP_TMP}"
+      install_file "${ILMANGO_DESKTOP_TMP}" "${ILMANGO_APPLICATIONS_DIR}/ilmango.desktop"
+      rm -f "${ILMANGO_DESKTOP_TMP}"
       log_success "Shell desktop entry installed"
     fi
 
-    if [[ -f "${REPO_ROOT}/assets/applications/inir-settings.desktop" ]]; then
-      INIR_SETTINGS_DESKTOP_TMP="${XDG_CACHE_HOME}/inir-settings.desktop.$$"
-      sed "s|^Exec=.*|Exec=${INIR_LAUNCHER_PATH//&/\\&} settings|" "${REPO_ROOT}/assets/applications/inir-settings.desktop" > "${INIR_SETTINGS_DESKTOP_TMP}"
-      install_file "${INIR_SETTINGS_DESKTOP_TMP}" "${INIR_APPLICATIONS_DIR}/inir-settings.desktop"
-      rm -f "${INIR_SETTINGS_DESKTOP_TMP}"
+    if [[ -f "${REPO_ROOT}/assets/applications/ilmango-settings.desktop" ]]; then
+      ILMANGO_SETTINGS_DESKTOP_TMP="${XDG_CACHE_HOME}/ilmango-settings.desktop.$$"
+      sed "s|^Exec=.*|Exec=${ILMANGO_LAUNCHER_PATH//&/\\&} settings|" "${REPO_ROOT}/assets/applications/ilmango-settings.desktop" > "${ILMANGO_SETTINGS_DESKTOP_TMP}"
+      install_file "${ILMANGO_SETTINGS_DESKTOP_TMP}" "${ILMANGO_APPLICATIONS_DIR}/ilmango-settings.desktop"
+      rm -f "${ILMANGO_SETTINGS_DESKTOP_TMP}"
       log_success "Settings desktop entry installed"
     fi
 
-    log_success "Quickshell inir config installed"
+    log_success "Quickshell ilmango config installed"
 
     # Install Python packages now that requirements.txt is in place
     showfun install-python-packages
@@ -275,7 +275,7 @@ tui_info "Installing config files..."
 # Unlike the Niri path below, this never installs a whole compositor config.
 # mango reads exactly one file (~/.config/mango/config.conf, falling back to
 # /etc/mango/config.conf) with no merging, so writing our own would throw away
-# whatever window management the user already has. Instead we drop the iNiR
+# whatever window management the user already has. Instead we drop the Illogical-mango
 # keybinds and autostart into a separate file and pull it in with one
 # `source-optional=` line, which mango ignores if the file ever disappears.
 case "${SKIP_MANGO}" in
@@ -283,12 +283,12 @@ case "${SKIP_MANGO}" in
   *)
     if [[ -f "defaults/mango/config.conf" ]] && command -v mango &>/dev/null; then
       MANGO_DIR="${XDG_CONFIG_HOME}/mango"
-      MANGO_INIR="${MANGO_DIR}/inir.conf"
+      MANGO_ILMANGO="${MANGO_DIR}/ilmango.conf"
       MANGO_MAIN="${MANGO_DIR}/config.conf"
 
       mkdir -p "$MANGO_DIR"
-      install_file "defaults/mango/config.conf" "$MANGO_INIR"
-      log_success "mango keybinds installed (${MANGO_INIR})"
+      install_file "defaults/mango/config.conf" "$MANGO_ILMANGO"
+      log_success "mango keybinds installed (${MANGO_ILMANGO})"
 
       # mango only reads the user config when it exists; otherwise it uses the
       # system one. Seed the user config from the system copy the first time so
@@ -302,12 +302,12 @@ case "${SKIP_MANGO}" in
         fi
       fi
 
-      if grep -q "mango/inir.conf" "$MANGO_MAIN"; then
-        log_success "mango already sources the iNiR config"
+      if grep -q "mango/ilmango.conf" "$MANGO_MAIN"; then
+        log_success "mango already sources the Illogical-mango config"
       else
-        printf '\n# Added by iNiR: shell keybinds and autostart.\nsource-optional=%s\n' \
-          "$MANGO_INIR" >> "$MANGO_MAIN"
-        log_success "mango config now sources ${MANGO_INIR}"
+        printf '\n# Added by Illogical-mango: shell keybinds and autostart.\nsource-optional=%s\n' \
+          "$MANGO_ILMANGO" >> "$MANGO_MAIN"
+        log_success "mango config now sources ${MANGO_ILMANGO}"
       fi
 
       if command -v mmsg &>/dev/null && [[ -n "${MANGO_INSTANCE_SIGNATURE:-}" ]]; then
@@ -324,7 +324,7 @@ case "${SKIP_NIRI}" in
     NIRI_CONFIG="${XDG_CONFIG_HOME}/niri/config.kdl"
 
     # On updates, preserve the user's config and only patch launcher/theme bits.
-    # On first run, always install iNiR defaults (backup_clashing_targets already
+    # On first run, always install Illogical-mango defaults (backup_clashing_targets already
     # saved the pre-existing config to the backup dir).
     if [[ "${INSTALL_FIRSTRUN}" == true ]]; then
       if [[ -d "defaults/niri" ]]; then
@@ -384,13 +384,13 @@ case "${SKIP_NIRI}" in
         log_warning "Qt theme: qt6ct (plasma-integration not found — install it for proper Qt theming)"
       fi
 
-      _launcher_path_escaped="${INIR_LAUNCHER_PATH//&/\\&}"
+      _launcher_path_escaped="${ILMANGO_LAUNCHER_PATH//&/\\&}"
       sed -i \
-        -e 's|spawn "bash" "-lc" "exec \"\$(inir path)/scripts/launch-terminal.sh\""|spawn "'"${_launcher_path_escaped}"'" "terminal"|' \
-        -e 's|spawn "bash" "-lc" "exec \"\$(inir path)/scripts/close-window.sh\""|spawn "'"${_launcher_path_escaped}"'" "close-window"|' \
+        -e 's|spawn "bash" "-lc" "exec \"\$(ilmango path)/scripts/launch-terminal.sh\""|spawn "'"${_launcher_path_escaped}"'" "terminal"|' \
+        -e 's|spawn "bash" "-lc" "exec \"\$(ilmango path)/scripts/close-window.sh\""|spawn "'"${_launcher_path_escaped}"'" "close-window"|' \
         "$NIRI_BINDS_TARGET"
       sed -i \
-        -e 's|spawn "inir" "|spawn "'"${_launcher_path_escaped}"'" "|g' \
+        -e 's|spawn "ilmango" "|spawn "'"${_launcher_path_escaped}"'" "|g' \
         "$NIRI_BINDS_TARGET"
     fi
     ;;
@@ -411,7 +411,7 @@ fi
 if command -v sddm &>/dev/null; then
   if [[ "${INSTALL_FIRSTRUN}" == true ]]; then
     if [[ "${ask}" == "true" ]]; then
-      tui_info "Recommended: install ii-pixel-sddm login theme (matches iNiR lockscreen)."
+      tui_info "Recommended: install ii-pixel-sddm login theme (matches Illogical-mango lockscreen)."
       if tui_confirm "Install ii-pixel-sddm now?" "yes"; then
         extras_install_sddm_theme "yes"
       else
@@ -447,7 +447,7 @@ if [[ -d "dots/.config/fish" ]]; then
   log_success "Fish shell config installed"
 
   # Set Fish as default shell if requested
-  if [[ "${INIR_SET_DEFAULT_SHELL:-}" == "true" ]]; then
+  if [[ "${ILMANGO_SET_DEFAULT_SHELL:-}" == "true" ]]; then
     if command -v chsh &>/dev/null; then
       local fish_path
       fish_path=$(command -v fish 2>/dev/null)
@@ -526,7 +526,7 @@ for gtkver in gtk-3.0 gtk-4.0; do
 done
 
 # KDE settings (for Qt apps like Dolphin, Kate, etc.)
-# These are controlled by iNiR for theming - always overwrite
+# These are controlled by Illogical-mango for theming - always overwrite
 if [[ -f "defaults/kde/kdeglobals" ]]; then
   install_file "defaults/kde/kdeglobals" "${XDG_CONFIG_HOME}/kdeglobals"
 elif [[ -f "dots/.config/kdeglobals" ]]; then
@@ -696,29 +696,29 @@ tui_info "Configuring environment variables..."
 # Secondary: shell profile files for terminals outside Niri session (SSH, TTY, etc.)
 
 # Verify Niri config has the variable
-if grep -q "INIR_VENV" "${XDG_CONFIG_HOME}/niri/config.kdl" 2>/dev/null || \
+if grep -q "ILMANGO_VENV" "${XDG_CONFIG_HOME}/niri/config.kdl" 2>/dev/null || \
    grep -q "ILLOGICAL_IMPULSE_VIRTUAL_ENV" "${XDG_CONFIG_HOME}/niri/config.kdl" 2>/dev/null; then
     log_success "Environment variable configured in Niri config"
 else
-    log_warning "INIR_VENV not found in Niri config"
+    log_warning "ILMANGO_VENV not found in Niri config"
 fi
 
 # Write shell profile env vars (for SSH, TTY, non-Niri terminals)
 VENV_PATH="${XDG_STATE_HOME:-$HOME/.local/state}/quickshell/.venv"
 
 # Bash: source from .bashrc
-BASH_ENV_MARKER="# iNiR environment"
+BASH_ENV_MARKER="# Illogical-mango environment"
 if [[ -f "$HOME/.bashrc" ]]; then
     # Clean up old markers
-    sed -i '/iNiR-env.sh/d' "$HOME/.bashrc"
-    # Remove any existing iNiR block
-    sed -i "/${BASH_ENV_MARKER}/,/# end iNiR/d" "$HOME/.bashrc"
+    sed -i '/Illogical-mango-env.sh/d' "$HOME/.bashrc"
+    # Remove any existing Illogical-mango block
+    sed -i "/${BASH_ENV_MARKER}/,/# end Illogical-mango/d" "$HOME/.bashrc"
 fi
 cat >> "$HOME/.bashrc" << BEOF
 
 ${BASH_ENV_MARKER}
-export INIR_VENV="${VENV_PATH}"
-export ILLOGICAL_IMPULSE_VIRTUAL_ENV="\$INIR_VENV"
+export ILMANGO_VENV="${VENV_PATH}"
+export ILLOGICAL_IMPULSE_VIRTUAL_ENV="\$ILMANGO_VENV"
 # Apply terminal color sequences (Material You from wallpaper)
 if [ -f ~/.local/state/quickshell/user/generated/terminal/sequences.txt ]; then
   cat ~/.local/state/quickshell/user/generated/terminal/sequences.txt
@@ -727,29 +727,29 @@ fi
 if command -v starship >/dev/null 2>&1; then
   eval "\$(starship init bash)"
 fi
-# end iNiR
+# end Illogical-mango
 BEOF
 log_success "Bash environment configured"
 
 # Fish: conf.d snippet
 FISH_CONF_DIR="${XDG_CONFIG_HOME}/fish/conf.d"
 mkdir -p "$FISH_CONF_DIR"
-cat > "${FISH_CONF_DIR}/inir-env.fish" << FEOF
-# iNiR environment — auto-generated by setup install
-set -gx INIR_VENV "${VENV_PATH}"
-set -gx ILLOGICAL_IMPULSE_VIRTUAL_ENV "\$INIR_VENV"
+cat > "${FISH_CONF_DIR}/ilmango-env.fish" << FEOF
+# Illogical-mango environment — auto-generated by setup install
+set -gx ILMANGO_VENV "${VENV_PATH}"
+set -gx ILLOGICAL_IMPULSE_VIRTUAL_ENV "\$ILMANGO_VENV"
 FEOF
 log_success "Fish environment configured"
 
 # Zsh: source from .zshrc (if zsh is installed)
 if [[ -f "$HOME/.zshrc" ]]; then
-    sed -i '/iNiR-env.sh/d' "$HOME/.zshrc"
-    sed -i "/${BASH_ENV_MARKER}/,/# end iNiR/d" "$HOME/.zshrc"
+    sed -i '/Illogical-mango-env.sh/d' "$HOME/.zshrc"
+    sed -i "/${BASH_ENV_MARKER}/,/# end Illogical-mango/d" "$HOME/.zshrc"
     cat >> "$HOME/.zshrc" << ZEOF
 
 ${BASH_ENV_MARKER}
-export INIR_VENV="${VENV_PATH}"
-export ILLOGICAL_IMPULSE_VIRTUAL_ENV="\$INIR_VENV"
+export ILMANGO_VENV="${VENV_PATH}"
+export ILLOGICAL_IMPULSE_VIRTUAL_ENV="\$ILMANGO_VENV"
 # Apply terminal color sequences (Material You from wallpaper)
 if [ -f ~/.local/state/quickshell/user/generated/terminal/sequences.txt ]; then
   cat ~/.local/state/quickshell/user/generated/terminal/sequences.txt
@@ -758,7 +758,7 @@ fi
 if command -v starship >/dev/null 2>&1; then
   eval "\$(starship init zsh)"
 fi
-# end iNiR
+# end Illogical-mango
 ZEOF
     log_success "Zsh environment configured"
 fi
@@ -924,7 +924,7 @@ tui_info "Copying wallpapers..."
 # Copy bundled wallpapers to user's Pictures/Wallpapers (always, don't overwrite)
 #####################################################################################
 # Ensure II_TARGET is defined (in case SKIP_QUICKSHELL was set)
-II_TARGET="${II_TARGET:-${XDG_CONFIG_HOME}/quickshell/inir}"
+II_TARGET="${II_TARGET:-${XDG_CONFIG_HOME}/quickshell/ilmango}"
 # Validate xdg-user-dir output: must be absolute and not equal to $HOME itself
 _xdg_pictures="$(xdg-user-dir PICTURES 2>/dev/null || true)"
 if [[ -z "$_xdg_pictures" || "$_xdg_pictures" != /* || "$_xdg_pictures" == "$HOME" ]]; then
@@ -949,14 +949,14 @@ if [[ -d "${II_TARGET}/assets/wallpapers" ]]; then
 fi
 
 # Optional extra wallpapers (fresh install interactive only)
-INIR_WALLS_DEFAULT_OVERRIDE=""
+ILMANGO_WALLS_DEFAULT_OVERRIDE=""
 if [[ "${INSTALL_FIRSTRUN}" == true && "${ask}" == "true" ]]; then
   if tui_confirm "Download and install iNiR-Walls wallpapers?" "no"; then
-    EXTRAS_INIR_WALLS_FIRST_IMAGE=""
-    extras_install_inir_walls
-    INIR_WALLS_FIRST="${EXTRAS_INIR_WALLS_FIRST_IMAGE}"
-    if [[ -n "$INIR_WALLS_FIRST" ]] && tui_confirm "Replace iNiR default wallpaper selection with an iNiR-Walls wallpaper?" "yes"; then
-      INIR_WALLS_DEFAULT_OVERRIDE="$INIR_WALLS_FIRST"
+    EXTRAS_ILMANGO_WALLS_FIRST_IMAGE=""
+    extras_install_ilmango_walls
+    ILMANGO_WALLS_FIRST="${EXTRAS_ILMANGO_WALLS_FIRST_IMAGE}"
+    if [[ -n "$ILMANGO_WALLS_FIRST" ]] && tui_confirm "Replace Illogical-mango default wallpaper selection with an iNiR-Walls wallpaper?" "yes"; then
+      ILMANGO_WALLS_DEFAULT_OVERRIDE="$ILMANGO_WALLS_FIRST"
       log_success "Default wallpaper source switched to iNiR-Walls"
     fi
   fi
@@ -982,8 +982,8 @@ fi
 #####################################################################################
 # Pick the first available wallpaper (don't hardcode a filename that may not exist)
 DEFAULT_WALLPAPER=""
-if [[ -n "$INIR_WALLS_DEFAULT_OVERRIDE" && -f "$INIR_WALLS_DEFAULT_OVERRIDE" && -s "$INIR_WALLS_DEFAULT_OVERRIDE" ]]; then
-  DEFAULT_WALLPAPER="$INIR_WALLS_DEFAULT_OVERRIDE"
+if [[ -n "$ILMANGO_WALLS_DEFAULT_OVERRIDE" && -f "$ILMANGO_WALLS_DEFAULT_OVERRIDE" && -s "$ILMANGO_WALLS_DEFAULT_OVERRIDE" ]]; then
+  DEFAULT_WALLPAPER="$ILMANGO_WALLS_DEFAULT_OVERRIDE"
 fi
 for candidate in \
   "${USER_WALLPAPERS_DIR}/G5uBmitWkAAyk8s.jpg" \
@@ -1027,9 +1027,9 @@ if [[ "${INSTALL_FIRSTRUN}" == true && -n "${DEFAULT_WALLPAPER}" && -f "${DEFAUL
   fi
 
   # Generate initial theme colors using unified Python pipeline
-  export INIR_VENV="${XDG_STATE_HOME}/quickshell/.venv"
-  export ILLOGICAL_IMPULSE_VIRTUAL_ENV="${INIR_VENV}"
-  _init_python_cmd="${INIR_VENV}/bin/python3"
+  export ILMANGO_VENV="${XDG_STATE_HOME}/quickshell/.venv"
+  export ILLOGICAL_IMPULSE_VIRTUAL_ENV="${ILMANGO_VENV}"
+  _init_python_cmd="${ILMANGO_VENV}/bin/python3"
   _init_gen_material="${II_TARGET}/scripts/colors/generate_colors_material.py"
   _init_template_dir="${XDG_CONFIG_HOME}/matugen"
   _init_scss_file="${XDG_STATE_HOME}/quickshell/user/generated/material_colors.scss"
@@ -1148,7 +1148,7 @@ if ! ${quiet:-false}; then
   _VERIFY_ERRORS=0
   for _crit_file in "shell.qml" "GlobalStates.qml" "modules/common/Config.qml" \
                     "modules/common/Appearance.qml" "services/NiriService.qml"; do
-    if [[ -f "${II_TARGET:-${XDG_CONFIG_HOME}/quickshell/inir}/${_crit_file}" ]]; then
+    if [[ -f "${II_TARGET:-${XDG_CONFIG_HOME}/quickshell/ilmango}/${_crit_file}" ]]; then
       tui_verify_ok "${_crit_file}"
     else
       tui_verify_fail "${_crit_file}" "MISSING"
@@ -1160,7 +1160,7 @@ if ! ${quiet:-false}; then
   echo ""
   for _cfg_path \
     in "${XDG_CONFIG_HOME}/niri/config.kdl:Niri config" \
-       "${DOTS_CORE_CONFDIR}/config.json:iNiR config" \
+       "${DOTS_CORE_CONFDIR}/config.json:Illogical-mango config" \
        "${XDG_CONFIG_HOME}/matugen:Theming templates" \
        "${XDG_CONFIG_HOME}/fuzzel:Fuzzel config" \
        "${XDG_STATE_HOME}/quickshell/user/generated/colors.json:Theme colors"; do
@@ -1189,9 +1189,9 @@ fi
 # In quiet mode, just print a simple status line
 if ${quiet:-false}; then
   if [[ "${IS_UPDATE}" == "true" ]]; then
-    echo "iNiR: update complete"
+    echo "Illogical-mango: update complete"
   else
-    echo "iNiR: install complete"
+    echo "Illogical-mango: install complete"
   fi
 else
   echo ""
@@ -1212,7 +1212,7 @@ EOF
 
     echo -e "${STY_BLUE}${STY_BOLD}┌─ What was updated${STY_RST}"
     echo -e "${STY_BLUE}│${STY_RST}"
-    echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} Quickshell inir synced to ~/.config/quickshell/inir/"
+    echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} Quickshell ilmango synced to ~/.config/quickshell/ilmango/"
     echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} Missing keybinds added to Niri config (if any)"
     echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} Config migrations applied"
     echo -e "${STY_BLUE}│${STY_RST}"
@@ -1233,8 +1233,8 @@ EOF
 
     echo -e "${STY_BLUE}${STY_BOLD}┌─ What was installed${STY_RST}"
     echo -e "${STY_BLUE}│${STY_RST}"
-    echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} Quickshell inir copied to ~/.config/quickshell/inir/"
-    echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} Niri config wired to the inir launcher"
+    echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} Quickshell ilmango copied to ~/.config/quickshell/ilmango/"
+    echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} Niri config wired to the ilmango launcher"
     echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} GTK/Qt theming (Material You + Kvantum + Darkly)"
     echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} Environment variables for ${DETECTED_SHELL:-your shell}"
     echo -e "${STY_BLUE}│${STY_RST}  ${STY_GREEN}✓${STY_RST} Default wallpaper and color scheme"
@@ -1293,13 +1293,13 @@ if ! ${quiet:-false}; then
   fi
 
   echo -e "${STY_FAINT}Backups saved to: ${BACKUP_DIR}${STY_RST}"
-  echo -e "${STY_FAINT}Logs: inir logs${STY_RST}"
+  echo -e "${STY_FAINT}Logs: ilmango logs${STY_RST}"
   echo ""
 
   if [[ "${IS_UPDATE}" == "true" ]]; then
     echo -e "${STY_GREEN}Done. Hot reload should kick in any second now.${STY_RST}"
   else
-    echo -e "${STY_GREEN}Install complete. iNiR is ready through the inir launcher.${STY_RST}"
+    echo -e "${STY_GREEN}Install complete. Illogical-mango is ready through the ilmango launcher.${STY_RST}"
   fi
   echo ""
 

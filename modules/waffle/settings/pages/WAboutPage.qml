@@ -57,7 +57,7 @@ WSettingsPage {
                 spacing: 4
                 
                 WText {
-                    text: "iNiR"
+                    text: "Illogical-mango"
                     font.pixelSize: Looks.font.pixelSize.xlarger * 1.4
                     font.weight: Looks.font.weight.stronger
                 }
@@ -132,18 +132,18 @@ WSettingsPage {
         
         WSettingsButton {
             label: Translation.tr("GitHub Repository")
-            description: "github.com/snowarch/inir"
+            description: "github.com/ItzWithTails/illogical-mango"
             icon: "globe-search"
             buttonText: Translation.tr("Open")
-            onButtonClicked: Qt.openUrlExternally("https://github.com/snowarch/inir")
+            onButtonClicked: Qt.openUrlExternally("https://github.com/ItzWithTails/illogical-mango")
         }
 
         WSettingsButton {
             label: Translation.tr("Documentation")
-            description: "github.com/snowarch/inir/wiki"
+            description: "github.com/ItzWithTails/illogical-mango/wiki"
             icon: "library"
             buttonText: Translation.tr("Open")
-            onButtonClicked: Qt.openUrlExternally("https://github.com/snowarch/inir/wiki")
+            onButtonClicked: Qt.openUrlExternally("https://github.com/ItzWithTails/illogical-mango/wiki")
         }
         
         WSettingsButton {
@@ -208,7 +208,7 @@ WSettingsPage {
         
         WSettingsRow {
             label: Translation.tr("Shell path")
-            description: FileUtils.trimFileProtocol(`${Directories.config}/quickshell/inir/`)
+            description: FileUtils.trimFileProtocol(`${Directories.config}/quickshell/ilmango/`)
             icon: "folder"
         }
         

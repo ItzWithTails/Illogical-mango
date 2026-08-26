@@ -22,7 +22,7 @@ Item {
     property bool live: true
     required property var notif
 
-    /** iNiR exposes urgency as a string, not the Quickshell enum. */
+    /** Illogical-mango exposes urgency as a string, not the Quickshell enum. */
     readonly property bool critical: String(notif.urgency) === "Critical"
     readonly property var acts: (notif.actions ?? []).filter(a => a.text.length > 0)
     readonly property string iconSource: PillNotifs.iconFor(notif)
@@ -228,7 +228,7 @@ Item {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            // iNiR's action objects are plain data; the server
+                            // Illogical-mango's action objects are plain data; the server
                             // invokes them by id, they carry no invoke() of their own.
                             Notifications.attemptInvokeAction(root.notif.notificationId,
                                                               actPill.modelData.identifier);

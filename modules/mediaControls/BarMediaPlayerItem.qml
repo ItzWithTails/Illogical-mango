@@ -35,17 +35,17 @@ Item { // Player instance - Old style design
         property var iconName
         colBackground: Appearance.zzzEverywhere ? Appearance.colors.colLayer1
             : Appearance.angelEverywhere ? "transparent"
-            : Appearance.inirEverywhere ? "transparent"
+            : Appearance.ilmangoEverywhere ? "transparent"
             : Appearance.auroraEverywhere ? "transparent"
             : ColorUtils.transparentize(blendedColors.colSecondaryContainer, 1)
         colBackgroundHover: Appearance.zzzEverywhere ? Appearance.colors.colLayer1Hover
             : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-            : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
             : blendedColors.colSecondaryContainerHover
         colRipple: Appearance.zzzEverywhere ? Appearance.colors.colLayer1Active
             : Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-            : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
             : blendedColors.colSecondaryContainerActive
 
@@ -55,7 +55,7 @@ Item { // Player instance - Old style design
             horizontalAlignment: Text.AlignHCenter
             color: Appearance.zzzEverywhere ? Appearance.colors.colOnLayer1
                 : Appearance.angelEverywhere ? Appearance.angel.colText
-                : Appearance.inirEverywhere ? Appearance.inir.colText
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                 : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer0
                 : blendedColors.colOnSecondaryContainer
             text: iconName
@@ -97,21 +97,21 @@ Item { // Player instance - Old style design
 
     StyledRectangularShadow {
         target: background
-        visible: Appearance.angelEverywhere || (!Appearance.inirEverywhere && !Appearance.auroraEverywhere)
+        visible: Appearance.angelEverywhere || (!Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere)
     }
     Rectangle { // Background
         id: background
         anchors.fill: parent
         anchors.margins: Appearance.sizes.elevationMargin
         color: Appearance.angelEverywhere ? "transparent"
-             : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+             : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
              : Appearance.auroraEverywhere ? "transparent"
              : ColorUtils.applyAlpha(blendedColors.colLayer0, 1)
         radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-             : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : root.radius
-        border.width: Appearance.angelEverywhere ? 0 : ((Appearance.inirEverywhere || Appearance.auroraEverywhere) ? 1 : 0)
+             : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : root.radius
+        border.width: Appearance.angelEverywhere ? 0 : ((Appearance.ilmangoEverywhere || Appearance.auroraEverywhere) ? 1 : 0)
         border.color: Appearance.angelEverywhere ? "transparent"
-                    : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                     : Appearance.auroraEverywhere ? Appearance.aurora.colPopupBorder
                     : "transparent"
         clip: true
@@ -131,7 +131,7 @@ Item { // Player instance - Old style design
         Image {
             id: auroraWallpaper
             anchors.fill: parent
-            visible: Appearance.auroraEverywhere && !Appearance.inirEverywhere
+            visible: Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
             source: visible ? Wallpapers.effectiveWallpaperUrl : ""
             fillMode: Image.PreserveAspectCrop
             cache: true
@@ -139,7 +139,7 @@ Item { // Player instance - Old style design
             sourceSize.height: background.height
             asynchronous: true
 
-            layer.enabled: Appearance.effectsEnabled && Appearance.auroraEverywhere && !Appearance.inirEverywhere
+            layer.enabled: Appearance.effectsEnabled && Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
             layer.effect: MultiEffect {
                 source: auroraWallpaper
                 anchors.fill: source
@@ -155,7 +155,7 @@ Item { // Player instance - Old style design
         // Aurora tint overlay
         Rectangle {
             anchors.fill: parent
-            visible: Appearance.auroraEverywhere && !Appearance.inirEverywhere
+            visible: Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
             color: Appearance.angelEverywhere
                 ? ColorUtils.transparentize(blendedColors.colLayer0, Appearance.angel.overlayOpacity)
                 : ColorUtils.transparentize(blendedColors.colLayer0, Appearance.aurora.popupTransparentize)
@@ -171,7 +171,7 @@ Item { // Player instance - Old style design
             cache: false
             antialiasing: true
             asynchronous: true
-            opacity: Appearance.inirEverywhere ? 0.5 : 0.3
+            opacity: Appearance.ilmangoEverywhere ? 0.5 : 0.3
             visible: root.displayedArtFilePath !== ""
 
             layer.enabled: Appearance.effectsEnabled
@@ -255,7 +255,7 @@ Item { // Player instance - Old style design
                     Layout.fillWidth: true
                     Layout.rightMargin: playPauseButton.size + 8
                     font.pixelSize: Appearance.font.pixelSize.large
-                    color: Appearance.inirEverywhere ? Appearance.inir.colText
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                         : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer0
                         : blendedColors.colOnLayer0
                     elide: Text.ElideRight
@@ -269,7 +269,7 @@ Item { // Player instance - Old style design
                     Layout.fillWidth: true
                     Layout.rightMargin: playPauseButton.size + 8
                     font.pixelSize: Appearance.font.pixelSize.smaller
-                    color: Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                         : Appearance.auroraEverywhere ? Appearance.aurora.colTextSecondary
                         : blendedColors.colSubtext
                     elide: Text.ElideRight
@@ -291,7 +291,7 @@ Item { // Player instance - Old style design
                         anchors.right: parent.right
                         anchors.rightMargin: playPauseButton.size + 8
                         font.pixelSize: Appearance.font.pixelSize.small
-                        color: Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+                        color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                             : Appearance.auroraEverywhere ? Appearance.aurora.colTextSecondary
                             : blendedColors.colSubtext
                         elide: Text.ElideRight
@@ -320,13 +320,13 @@ Item { // Player instance - Old style design
                                 active: root.player?.canSeek ?? false
                                 sourceComponent: StyledSlider {
                                     configuration: StyledSlider.Configuration.Wavy
-                                    highlightColor: Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                                    highlightColor: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                                         : Appearance.auroraEverywhere ? Appearance.colors.colPrimary
                                         : blendedColors.colPrimary
-                                    trackColor: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                                    trackColor: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                                         : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
                                         : blendedColors.colSecondaryContainer
-                                    handleColor: Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                                    handleColor: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                                         : Appearance.auroraEverywhere ? Appearance.colors.colPrimary
                                         : blendedColors.colPrimary
                                     value: root.player?.position / root.player?.length
@@ -346,10 +346,10 @@ Item { // Player instance - Old style design
                                 active: !(root.player?.canSeek ?? false)
                                 sourceComponent: StyledProgressBar {
                                     wavy: root.player?.isPlaying
-                                    highlightColor: Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                                    highlightColor: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                                         : Appearance.auroraEverywhere ? Appearance.colors.colPrimary
                                         : blendedColors.colPrimary
-                                    trackColor: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                                    trackColor: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                                         : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
                                         : blendedColors.colSecondaryContainer
                                     value: root.player?.position / root.player?.length
@@ -373,16 +373,16 @@ Item { // Player instance - Old style design
                         implicitHeight: size
                         downAction: () => root.player?.togglePlaying();
 
-                        buttonRadius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+                        buttonRadius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
                             : Appearance.auroraEverywhere ? Appearance.rounding.normal
                             : (root.player?.isPlaying ? Appearance?.rounding.normal : size / 2)
-                        colBackground: Appearance.inirEverywhere ? "transparent"
+                        colBackground: Appearance.ilmangoEverywhere ? "transparent"
                             : Appearance.auroraEverywhere ? "transparent"
                             : (root.player?.isPlaying ? blendedColors.colPrimary : blendedColors.colSecondaryContainer)
-                        colBackgroundHover: Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+                        colBackgroundHover: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                             : (root.player?.isPlaying ? blendedColors.colPrimaryHover : blendedColors.colSecondaryContainerHover)
-                        colRipple: Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+                        colRipple: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
                             : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
                             : (root.player?.isPlaying ? blendedColors.colPrimaryActive : blendedColors.colSecondaryContainerActive)
 
@@ -390,7 +390,7 @@ Item { // Player instance - Old style design
                             iconSize: Appearance.font.pixelSize.huge
                             fill: 1
                             horizontalAlignment: Text.AlignHCenter
-                            color: Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                                 : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer0
                                 : (root.player?.isPlaying ? blendedColors.colOnPrimary : blendedColors.colOnSecondaryContainer)
                             text: root.player?.isPlaying ? "pause" : "play_arrow"

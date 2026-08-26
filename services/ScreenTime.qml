@@ -35,7 +35,7 @@ Singleton {
     property int _activeRangeDays: 0
     property int _rangeGeneration: 0
     readonly property int _idleTimeoutSeconds: {
-        const override = parseInt(Quickshell.env("INIR_SCREENTIME_IDLE_TIMEOUT_SECONDS") || "")
+        const override = parseInt(Quickshell.env("ILMANGO_SCREENTIME_IDLE_TIMEOUT_SECONDS") || "")
         return override > 0 ? override : 300
     }
     readonly property bool userIdle: idleMonitor.isIdle

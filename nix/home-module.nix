@@ -2,18 +2,18 @@
 
 let
   common = import ./module-common.nix { inherit lib pkgs; };
-  cfg = config.programs.inir;
+  cfg = config.programs.ilmango;
   wantedUnit = common.compositorUnit cfg.service.compositor;
   env = common.serviceEnvironment cfg;
 in
 {
   imports = [ common.optionsModule ];
 
-  options.programs.inir.configSymlink = {
+  options.programs.ilmango.configSymlink = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Expose the packaged shell at ~/.config/quickshell/inir for tools that expect the traditional path.";
+      description = "Expose the packaged shell at ~/.config/quickshell/ilmango for tools that expect the traditional path.";
     };
   };
 
@@ -21,12 +21,12 @@ in
     home.packages = [ cfg.package ];
 
     xdg.configFile = lib.mkIf cfg.configSymlink.enable {
-      "quickshell/inir".source = "${cfg.package}/share/quickshell/inir";
+      "quickshell/ilmango".source = "${cfg.package}/share/quickshell/ilmango";
     };
 
-    systemd.user.services.inir = lib.mkIf cfg.service.enable {
+    systemd.user.services.ilmango = lib.mkIf cfg.service.enable {
       Unit = {
-        Description = "iNiR shell";
+        Description = "Illogical-mango shell";
         PartOf = [ "graphical-session.target" ];
         After = [ "graphical-session.target" ];
         Requisite = [ "graphical-session.target" ];

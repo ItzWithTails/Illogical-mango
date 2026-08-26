@@ -22,8 +22,8 @@ MaterialSymbol {
             rightMargin: root.showUnreadCount ? 0 : 1
             topMargin: root.showUnreadCount ? 0 : 3
         }
-        radius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Math.min(width, height) / 2
-        color: Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colOnLayer0
+        radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Math.min(width, height) / 2
+        color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colOnLayer0
         z: 1
 
         implicitHeight: badgeHeight
@@ -56,7 +56,7 @@ MaterialSymbol {
             visible: opacity > 0
             anchors.centerIn: parent
             font.pixelSize: Appearance.font.pixelSize.smallest
-            color: Appearance.inirEverywhere ? Appearance.inir.colOnPrimary : Appearance.colors.colLayer0
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary : Appearance.colors.colLayer0
             text: root.showUnreadCount ? Notifications.unread : ""
 
             Behavior on opacity {

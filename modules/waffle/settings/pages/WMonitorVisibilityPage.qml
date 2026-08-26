@@ -585,7 +585,7 @@ WSettingsPage {
 
         InfoBanner {
             iconName: "info"
-            message: Translation.tr("This page controls where iNiR shell surfaces appear. It does not change monitor resolution, scale, rotation, or physical output layout.")
+            message: Translation.tr("This page controls where Illogical-mango shell surfaces appear. It does not change monitor resolution, scale, rotation, or physical output layout.")
         }
 
         WSettingsDropdown {

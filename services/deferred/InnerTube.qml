@@ -231,7 +231,7 @@ Singleton {
         stdout: StdioCollector { onStreamFinished: root.refreshAuth() }
     }
 
-    // ---- auth status (reuses iNiR OAuth; re-probe when login state changes) ----
+    // ---- auth status (reuses Illogical-mango OAuth; re-probe when login state changes) ----
     function refreshAuth(): void {
         if (!root.available) return;
         _authProc.exec(["python3", root._script, "auth-status"]);

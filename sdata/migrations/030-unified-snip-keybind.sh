@@ -16,7 +16,7 @@ migration_check() {
   local binds_file="${XDG_CONFIG_HOME:-$HOME/.config}/niri/config.d/70-binds.kdl"
   [[ -f "$binds_file" ]] || return 1
 
-  # Apply only if this is an iNiR-managed binds file (has the region binds),
+  # Apply only if this is an Illogical-mango-managed binds file (has the region binds),
   # the unified menu bind isn't present yet, and Ctrl+Shift+S is still free
   # (niri rejects duplicate keybinds, which would break the whole config).
   grep -q 'region" "screenshot"' "$binds_file" 2>/dev/null || return 1
@@ -27,7 +27,7 @@ migration_check() {
 
 migration_preview() {
   echo -e "In 70-binds.kdl:"
-  echo -e "${STY_GREEN}+ Ctrl+Shift+S { spawn \"inir\" \"region\" \"menu\"; }${STY_RST}"
+  echo -e "${STY_GREEN}+ Ctrl+Shift+S { spawn \"ilmango\" \"region\" \"menu\"; }${STY_RST}"
 }
 
 migration_apply() {
@@ -36,8 +36,8 @@ migration_apply() {
 
   # Insert right after the region "search" bind, falling back to "screenshot".
   if grep -q 'region" "search"' "$binds_file"; then
-    sed -i '/region" "search";/a\    Ctrl+Shift+S { spawn "inir" "region" "menu"; }' "$binds_file"
+    sed -i '/region" "search";/a\    Ctrl+Shift+S { spawn "ilmango" "region" "menu"; }' "$binds_file"
   else
-    sed -i '/region" "screenshot";/a\    Ctrl+Shift+S { spawn "inir" "region" "menu"; }' "$binds_file"
+    sed -i '/region" "screenshot";/a\    Ctrl+Shift+S { spawn "ilmango" "region" "menu"; }' "$binds_file"
   fi
 }

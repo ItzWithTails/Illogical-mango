@@ -120,7 +120,7 @@ Item { // Notification item area
         radius: Appearance.regaliaEverywhere ? Appearance.regalia.roundSmall
             : Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
             : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-            : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
             : Appearance.rounding.small
         anchors.leftMargin: root.xOffset
 
@@ -144,15 +144,15 @@ Item { // Notification item area
             root.notificationCritical ?
                 ColorUtils.mix(Appearance.colors.colSecondaryContainer, Appearance.colors.colLayer2, 0.35) :
                 (Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                    : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                     : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                     : Appearance.colors.colLayer3) :
             "transparent"
         border.width: (expanded && !onlyNotification && Appearance.zzzEverywhere) ? Appearance.zzz.borderThick
-            : (expanded && !onlyNotification && (Appearance.angelEverywhere || Appearance.auroraEverywhere || Appearance.inirEverywhere)) ? 1 : 0
+            : (expanded && !onlyNotification && (Appearance.angelEverywhere || Appearance.auroraEverywhere || Appearance.ilmangoEverywhere)) ? 1 : 0
         border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong
             : Appearance.angelEverywhere ? Appearance.angel.colBorder
-            : Appearance.inirEverywhere ? Appearance.inir.colBorder
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
             : Appearance.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colOutline, 0.8)
             : Appearance.colors.colLayer0Border
 
@@ -287,7 +287,7 @@ Item { // Notification item area
                             width: actionsFlickable.width
                             height: actionsFlickable.height
                             radius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                                : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                                : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
                         }
                     }
 

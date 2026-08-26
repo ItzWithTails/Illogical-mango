@@ -903,15 +903,15 @@ PanelWindow {
         implicitWidth: rompBubbleText.width + pad * 2
         implicitHeight: rompBubbleText.implicitHeight + pad * 2
         radius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-             : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+             : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
              : Appearance.rounding.verysmall
         color: Appearance.angelEverywhere ? Appearance.angel.colGlassTooltip
-             : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+             : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
              : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipSurface
              : Appearance.colors.colLayer3
         border.width: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : 1
         border.color: Appearance.angelEverywhere ? Appearance.angel.colBorderSubtle
-                    : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                     : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder
                     : Appearance.colors.colLayer3Hover
         x: Math.max(12, Math.min(sprite.x + sprite.width / 2 - width / 2, romp.width - width - 12))
@@ -939,7 +939,7 @@ PanelWindow {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: Appearance.font.pixelSize.smaller
             color: Appearance.angelEverywhere ? Appearance.angel.colText
-                 : Appearance.inirEverywhere ? Appearance.inir.colText
+                 : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                  : Appearance.colors.colOnLayer3
         }
     }

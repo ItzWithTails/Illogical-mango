@@ -145,14 +145,14 @@ PopupWindow {
             }
 
             fallbackColor: Appearance.colors.colSurfaceContainer
-            inirColor: Appearance.inir?.colLayer2 ?? Appearance.colors.colSurfaceContainer
+            ilmangoColor: Appearance.ilmango?.colLayer2 ?? Appearance.colors.colSurfaceContainer
             auroraTransparency: Appearance.aurora?.popupTransparentize ?? 0.1
             radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                : Appearance.inirEverywhere ? (Appearance.inir?.roundingNormal ?? 12)
+                : Appearance.ilmangoEverywhere ? (Appearance.ilmango?.roundingNormal ?? 12)
                 : Appearance.rounding.normal
             border.width: 1
             border.color: Appearance.angelEverywhere ? Appearance.angel.colBorder
-                : Appearance.inirEverywhere ? (Appearance.inir?.colBorder ?? "transparent")
+                : Appearance.ilmangoEverywhere ? (Appearance.ilmango?.colBorder ?? "transparent")
                 : Appearance.auroraEverywhere ? (Appearance.aurora?.colTooltipBorder ?? "transparent")
                 : Appearance.colors.colSurfaceContainerHighest
 

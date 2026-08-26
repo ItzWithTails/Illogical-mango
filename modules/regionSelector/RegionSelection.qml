@@ -54,31 +54,31 @@ PanelWindow {
 
     // Tri-style color support
     property color overlayColor: Appearance.angelEverywhere ? ColorUtils.applyAlpha(Appearance.colors.colScrim, 0.33)
-        : Appearance.inirEverywhere ? ColorUtils.applyAlpha(Appearance.colors.colScrim, 0.53)
+        : Appearance.ilmangoEverywhere ? ColorUtils.applyAlpha(Appearance.colors.colScrim, 0.53)
         : Appearance.auroraEverywhere ? ColorUtils.applyAlpha(Appearance.colors.colScrim, 0.4) : ColorUtils.applyAlpha(Appearance.colors.colScrim, 0.53)
-    property color brightText: Appearance.inirEverywhere ? Appearance.inir.colText
+    property color brightText: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
         : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer0
         : (Appearance.m3colors.darkmode ? Appearance.colors.colOnLayer0 : Appearance.colors.colLayer0)
-    property color brightSecondary: Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+    property color brightSecondary: Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
         : Appearance.auroraEverywhere ? Appearance.aurora.colTextSecondary
         : (Appearance.m3colors.darkmode ? Appearance.colors.colSecondary : Appearance.colors.colOnSecondary)
     property color brightTertiary: Appearance.zzzEverywhere ? Appearance.zzz.accent
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
         : Appearance.auroraEverywhere ? Appearance.colors.colPrimary
         : (Appearance.m3colors.darkmode ? Appearance.colors.colTertiary : Qt.lighter(Appearance.colors.colPrimary))
     property color selectionBorderColor: Appearance.zzzEverywhere ? Appearance.zzz.accent
-        : Appearance.inirEverywhere ? Appearance.inir.colBorder
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
         : Appearance.auroraEverywhere ? Appearance.aurora.colPopupBorder
         : ColorUtils.mix(brightText, brightSecondary, 0.5)
     property color selectionFillColor: Appearance.zzzEverywhere ? ColorUtils.transparentize(Appearance.zzz.accent, 0.86)
-        : Appearance.inirEverywhere ? ColorUtils.transparentize(Appearance.inir.colPrimary, 0.8)
+        : Appearance.ilmangoEverywhere ? ColorUtils.transparentize(Appearance.ilmango.colPrimary, 0.8)
         : Appearance.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colPrimary, 0.8)
         : ColorUtils.applyAlpha(Appearance.colors.colOnLayer0, 0.2)
     property color windowBorderColor: brightSecondary
     property color windowFillColor: ColorUtils.transparentize(windowBorderColor, 0.85)
     property color imageBorderColor: brightTertiary
     property color imageFillColor: ColorUtils.transparentize(imageBorderColor, 0.85)
-    property color onBorderColor: Appearance.inirEverywhere ? Appearance.inir.colText
+    property color onBorderColor: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
         : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer0 : Appearance.colors.colScrim
     readonly property var windows: useNiri
         ? (NiriService.windows || [])

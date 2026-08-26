@@ -67,13 +67,14 @@ Wayland → GPU
   و SDDM.
 - **يُضبط دون تعديل الشيفرة.** كل شيء إعداد في الواجهة الرسومية فوق ملف `config.json` واحد.
   لن تحتاج أبدًا إلى لمس QML لتغيير المظهر أو السلوك.
-- **مسار تثبيت وترقية حقيقي.** يتكفّل `./setup` بالاعتماديات وإعداد النظام؛ و`inir update`
+- **مسار تثبيت وترقية حقيقي.** يتكفّل `./setup` بالاعتماديات وإعداد النظام؛ و`ilmango update`
   يجلب التحديثات ويشغّل ترحيلات المخطط ويحافظ على تعديلاتك ويستطيع التراجع.
 
 **النسب.** [illogical-impulse من end-4](https://github.com/end-4/dots-hyprland) (ملفات
 Hyprland) ← [iNiR من snowarch](https://github.com/snowarch/iNiR) (أُعيدت كتابته لأجل niri)
 ← هذا، منقولًا إلى MangoWM. لا تزال الأداة السطرية ومسارات الإعداد والبنية الداخلية تحمل اسم
-`inir`: تغيير الاسم كان سيكسر كل مسارات الترقية، فبقي الاسم كما هو.
+`ilmango`. أما التثبيتات من عهد iNiR فينقلها الترحيل 037، وهو يترك روابط رمزية على المسارات
+القديمة كي تستمر الاختصارات والسكربتات الموجودة في العمل.
 ولماذا لم أشتقّ من end-4 مباشرة؟ المنطق بسيط - المشروع الذي نُقل مرة يسهل نقله مرة أخرى.
 وللتشبيه، خذ Void Linux. ثبّت عليه systemd وسيعمل بلا مشاكل.
 وخذ Arch Linux وانزع منه systemd، عندئذ ستضطر إلى تغيير قاعدة الحزم كلها تقريبًا.
@@ -90,9 +91,9 @@ Hyprland) ← [iNiR من snowarch](https://github.com/snowarch/iNiR) (أُعيد
 
 الإعداد غير مُتلِف عن قصد. يقرأ mango ملفًا واحدًا بالضبط
 (`~/.config/mango/config.conf`) ولا يدمج شيئًا، لذا لا يستبدل المُثبِّت إعدادات مُركِّبك أبدًا.
-يضع اختصارات الصَّدَفة وبدء تشغيلها التلقائي في `~/.config/mango/inir.conf` ويلحق سطرًا واحدًا
+يضع اختصارات الصَّدَفة وبدء تشغيلها التلقائي في `~/.config/mango/ilmango.conf` ويلحق سطرًا واحدًا
 `source-optional=` يشير إليه، دون أن يمسّ إدارة نوافذك. وبدء التشغيل التلقائي سطر
-`exec-once=inir run --daemon` في ذلك الملف، لا وحدة systemd.
+`exec-once=ilmango run --daemon` في ذلك الملف، لا وحدة systemd.
 
 > [!NOTE]
 > **شيفرة niri و Hyprland ما زالت في الشجرة.** بقيت `NiriService.qml` و`HyprlandData.qml`
@@ -142,7 +143,7 @@ Hyprland) ← [iNiR من snowarch](https://github.com/snowarch/iNiR) (أُعيد
 **عائلتا لوحات**، تتبدلان أثناء التشغيل بـ <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd>:
 
 - **Material ii** — شريط عائم، أشرطة جانبية، رصيف، و8 أنماط بصرية (Material و Cards
-  و Aurora و iNiR و Angel و Regalia و ZZZ و Cookie Shapes)
+  و Aurora و Illogical-mango و Angel و Regalia و ZZZ و Cookie Shapes)
 - **Waffle** — شريط مهام على طراز Windows 11، قائمة ابدأ، مركز إجراءات، مركز إشعارات
 
 **تنسيق ألوان تلقائي.** اختر خلفية ويتبعها النظام كله: تنتشر ألوان Material You الخاصة
@@ -154,7 +155,7 @@ Hyprland) ← [iNiR من snowarch](https://github.com/snowarch/iNiR) (أُعيد
 
 ### التنسيق والمظهر
 
-- **8 أنماط بصرية**: Material (صُلب)، Cards، Aurora (ضبابية زجاجية)، iNiR (مستوحى من TUI)، Angel (وحشية جديدة)، Regalia (هيكل هندسي أسود، حبر عاجي دافئ، معدن شمبانيا متحفظ)، ZZZ (ألواح ملصقات)، Cookie Shapes (تحوّل متحرك للأشكال)
+- **8 أنماط بصرية**: Material (صُلب)، Cards، Aurora (ضبابية زجاجية)، Illogical-mango (مستوحى من TUI)، Angel (وحشية جديدة)، Regalia (هيكل هندسي أسود، حبر عاجي دافئ، معدن شمبانيا متحفظ)، ZZZ (ألواح ملصقات)، Cookie Shapes (تحوّل متحرك للأشكال)
 - **ألوان ديناميكية من الخلفية** عبر Material You، تنتشر في النظام كله
 - **10 طرفيات وأدوات TUI تُنسَّق تلقائيًا**: foot و kitty و alacritty و ghostty و wezterm و starship و fuzzel و btop و lazygit و yazi
 - **تنسيق التطبيقات**: GTK3/4، Qt (عبر plasma-integration و darkly)، Firefox (MaterialFox)، Discord/Vesktop (System24)، Zed، Spicetify، Steam، SDDM
@@ -206,7 +207,7 @@ Hyprland) ← [iNiR من snowarch](https://github.com/snowarch/iNiR) (أُعيد
 
 - **إعدادات رسومية**: اضبط كل شيء دون لمس أي ملف
 - **GameMode**: يعطّل المؤثرات تلقائيًا للتطبيقات في وضع ملء الشاشة
-- **تحديثات تلقائية**: `inir update` مع تراجع وترحيلات وحفظ لتعديلاتك
+- **تحديثات تلقائية**: `ilmango update` مع تراجع وترحيلات وحفظ لتعديلاتك
 - **شاشة قفل** و**شاشة جلسة** (خروج/إعادة تشغيل/إيقاف/تعليق)
 - **وكيل polkit**، **لوحة مفاتيح على الشاشة**، **مدير بدء تشغيل تلقائي** مبني على سطر `exec-once` في إعدادات mango
 - **Kira**: تميمة اختيارية برسوم البكسل، تتجول عند حواف الشاشة وتتفاعل مع ما تفعله. مطفأة افتراضيًا، وحزمة الرسوم بحجم ~32 ميبي بايت تُنزَّل على حدة من `./setup` › Extras
@@ -225,7 +226,7 @@ Hyprland) ← [iNiR من snowarch](https://github.com/snowarch/iNiR) (أُعيد
 </div>
 
 ```bash
-git clone https://github.com/ItzWithTails/Illogical-mango.git
+git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
 ./setup install       # تفاعلي، يسأل قبل كل خطوة
 ./setup install -y    # تلقائي، بلا أسئلة
@@ -234,17 +235,17 @@ cd Illogical-mango
 <div dir="rtl">
 
 يتكفّل المُثبِّت بالاعتماديات وإعداد النظام وتنسيق الألوان. يكتب اختصارات الصَّدَفة في
-`~/.config/mango/inir.conf` ويوصلها بإعدادات mango الموجودة عندك دون أن يمسّ إدارة نوافذك.
+`~/.config/mango/ilmango.conf` ويوصلها بإعدادات mango الموجودة عندك دون أن يمسّ إدارة نوافذك.
 أعد تشغيل mango أو نفّذ `mmsg dispatch reload_config`.
 
 </div>
 
 ```bash
-inir run                        # تشغيل الصَّدَفة
-inir settings                   # فتح واجهة الإعدادات
-inir logs                       # الاطلاع على السجلات
-inir doctor                     # تشخيص وإصلاح تلقائي
-inir update                     # جلب + ترحيلات + إعادة تشغيل
+ilmango run                        # تشغيل الصَّدَفة
+ilmango settings                   # فتح واجهة الإعدادات
+ilmango logs                       # الاطلاع على السجلات
+ilmango doctor                     # تشخيص وإصلاح تلقائي
+ilmango update                     # جلب + ترحيلات + إعادة تشغيل
 ```
 
 <div dir="rtl">
@@ -323,10 +324,10 @@ sudo make install       # تثبيت على مستوى النظام بدل مج�
 </div>
 
 ```bash
-inir logs                       # سجلات التشغيل الأخيرة
-inir restart                    # إعادة تشغيل بيئة التشغيل الحالية
-inir repair                     # doctor + إعادة تشغيل + فحص مُرشَّح للسجلات
-inir doctor                     # تشخيص وإصلاح تلقائي للمشكلات الشائعة
+ilmango logs                       # سجلات التشغيل الأخيرة
+ilmango restart                    # إعادة تشغيل بيئة التشغيل الحالية
+ilmango repair                     # doctor + إعادة تشغيل + فحص مُرشَّح للسجلات
+ilmango doctor                     # تشخيص وإصلاح تلقائي للمشكلات الشائعة
 ./setup rollback                # التراجع عن آخر تحديث
 claude "ساعدني من فضلك"          # إن لم ترغب في البحث بنفسك. هيا، عليه أن يستحق العشرين دولارًا
 ```

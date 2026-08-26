@@ -16,32 +16,32 @@ GroupButton {
     buttonRadius: Appearance.regaliaEverywhere ? Appearance.regalia.controlRadius
         : Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
         : ((altAction && toggled) ? Appearance?.rounding.normal : Math.min(baseHeight, baseWidth) / 2)
     buttonRadiusPressed: Appearance.regaliaEverywhere ? Appearance.regalia.controlRadius
         : Appearance.zzzEverywhere ? Appearance.zzz.cornerRadius
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance?.rounding?.small
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance?.rounding?.small
     // ZZZ: the visible surface is the chamfered ZzzPlate below; hold the GroupButton
     // rounded rect transparent.
     colBackground: Appearance.regaliaEverywhere ? Appearance.regalia.controlPlate
         : Appearance.zzzEverywhere ? "transparent"
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
         : Appearance.auroraEverywhere ? "transparent" : Appearance.colors.colLayer2
     colBackgroundHover: Appearance.regaliaEverywhere ? Appearance.regalia.controlPlateHover
         : Appearance.zzzEverywhere ? "transparent"
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover : Appearance.colors.colLayer2Hover
     colBackgroundToggled: Appearance.regaliaEverywhere ? Appearance.regalia.primaryPlate
         : Appearance.zzzEverywhere ? "transparent"
         : Appearance.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimary, 0.45)
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimaryContainer : Appearance.colors.colPrimary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryContainer : Appearance.colors.colPrimary
     colBackgroundToggledHover: Appearance.regaliaEverywhere ? Appearance.regalia.primaryPlateHover
         : Appearance.zzzEverywhere ? "transparent"
         : Appearance.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimaryHover, 0.35)
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimaryContainerHover : Appearance.colors.colPrimaryHover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryContainerHover : Appearance.colors.colPrimaryHover
 
     contentItem: Item {
         // ZZZ console key: a real chamfered plate (geometry, not a sticker). The
@@ -69,8 +69,8 @@ GroupButton {
                 ? (button.toggled ? Appearance.zzz.accent : button.buttonHovered ? Appearance.zzz.ink : Appearance.zzz.inkMuted)
                 : Appearance.angelEverywhere
                 ? (button.toggled ? Appearance.angel.colOnPrimary : Appearance.angel.colText)
-                : Appearance.inirEverywhere
-                ? (button.toggled ? Appearance.inir.colOnPrimaryContainer : Appearance.inir.colText)
+                : Appearance.ilmangoEverywhere
+                ? (button.toggled ? Appearance.ilmango.colOnPrimaryContainer : Appearance.ilmango.colText)
                 : (button.toggled ? Appearance.colors.colOnPrimary : Appearance.colors.colOnLayer1)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter

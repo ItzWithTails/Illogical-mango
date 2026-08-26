@@ -4,14 +4,14 @@
 
 ## How presets work
 
-Normally, iNiR extracts colors from your wallpaper using Material You. Presets skip that step and inject a complete Material 3 color palette directly. The palette propagates to external apps (GTK, terminals, Firefox, etc.) the same way wallpaper colors do.
+Normally, Illogical-mango extracts colors from your wallpaper using Material You. Presets skip that step and inject a complete Material 3 color palette directly. The palette propagates to external apps (GTK, terminals, Firefox, etc.) the same way wallpaper colors do.
 
 Apply presets from Settings > Appearance > Theme, or via IPC:
 
 ```bash
-inir theme setPreset gruvbox-dark
-inir theme setPreset catppuccin-mocha
-inir theme auto                        # back to wallpaper-based
+ilmango theme setPreset gruvbox-dark
+ilmango theme setPreset catppuccin-mocha
+ilmango theme auto                        # back to wallpaper-based
 ```
 
 When a preset is active, changing wallpapers changes the background image but doesn't regenerate colors.
@@ -24,7 +24,7 @@ The full, current list of presets lives in `modules/common/ThemePresets.qml` and
 grep -oP '^\s*id:\s*"\K[^"]+' modules/common/ThemePresets.qml | grep -vE '^(auto|custom)$'
 ```
 
-At time of writing there are 46 theme presets (plus the special `auto` and `custom` entries), spanning Catppuccin (4 flavors), Gruvbox, Nord, Dracula, Tokyo Night, Kanagawa, Rose Pine, Everforest, Solarized, Monokai, Ayu, the iNiR signature styles (Angel / Angel Light), and many more. Preset IDs are kebab-case (e.g. `rose-pine`, `gruvbox-dark`, `tokyo-night`, `one-dark`). Use the ID, not a display name, when scripting.
+At time of writing there are 46 theme presets (plus the special `auto` and `custom` entries), spanning Catppuccin (4 flavors), Gruvbox, Nord, Dracula, Tokyo Night, Kanagawa, Rose Pine, Everforest, Solarized, Monokai, Ayu, the Illogical-mango signature styles (Angel / Angel Light), and many more. Preset IDs are kebab-case (e.g. `rose-pine`, `gruvbox-dark`, `tokyo-night`, `one-dark`). Use the ID, not a display name, when scripting.
 
 ## Preset features
 

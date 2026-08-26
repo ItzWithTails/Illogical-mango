@@ -14,15 +14,15 @@ RippleButton {
     leftPadding: 6
     rightPadding: 10
     buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.verysmall
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.verysmall
     colBackground: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2 
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 
         : Appearance.auroraEverywhere ? "transparent" : Appearance.colors.colSurfaceContainerHighest
     colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover 
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover 
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover : Appearance.colors.colSurfaceContainerHighestHover
     colRipple: Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active 
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active 
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive : Appearance.colors.colSurfaceContainerHighestActive
 
     PointingHandInteraction {}
@@ -46,13 +46,13 @@ RippleButton {
             MaterialSymbol {
                 text: "search"
                 iconSize: 20
-                color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurface
+                color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurface
             }
             StyledText {
                 id: text
                 horizontalAlignment: Text.AlignHCenter
                 text: root.query
-                color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurface
+                color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurface
             }
         }
     }

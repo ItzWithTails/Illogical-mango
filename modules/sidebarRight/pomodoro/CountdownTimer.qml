@@ -76,15 +76,15 @@ Item {
                         height: 54
                         color: minutesInput.activeFocus 
                             ? (Appearance.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimary, 0.8)
-                             : Appearance.inirEverywhere ? Appearance.inir.colSecondaryContainer
+                             : Appearance.ilmangoEverywhere ? Appearance.ilmango.colSecondaryContainer
                              : Appearance.colors.colPrimaryContainer)
                             : "transparent"
                         radius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                            : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
                             : Appearance.rounding.small
                         border.width: minutesInput.activeFocus ? 2 : 0
                         border.color: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                            : Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                             : Appearance.colors.colPrimary
 
                         TextInput {
@@ -95,7 +95,7 @@ Item {
                             font.pixelSize: Math.round(38 * Appearance.fontSizeScale)
                             font.family: Appearance.font.family.main
                             color: Appearance.angelEverywhere ? Appearance.angel.colText
-                                : Appearance.inirEverywhere ? Appearance.inir.colText
+                                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                                 : Appearance.colors.colOnSurface
                             horizontalAlignment: Text.AlignHCenter
                             validator: IntValidator { bottom: 0; top: 99 }
@@ -127,7 +127,7 @@ Item {
                         text: ":"
                         font.pixelSize: Math.round(38 * Appearance.fontSizeScale)
                         color: Appearance.angelEverywhere ? Appearance.angel.colText
-                            : Appearance.inirEverywhere ? Appearance.inir.colText
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                             : Appearance.colors.colOnSurface
                     }
 
@@ -138,15 +138,15 @@ Item {
                         height: 54
                         color: secondsInput.activeFocus 
                             ? (Appearance.angelEverywhere ? ColorUtils.transparentize(Appearance.angel.colPrimary, 0.8)
-                             : Appearance.inirEverywhere ? Appearance.inir.colSecondaryContainer
+                             : Appearance.ilmangoEverywhere ? Appearance.ilmango.colSecondaryContainer
                              : Appearance.colors.colPrimaryContainer)
                             : "transparent"
                         radius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                            : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
                             : Appearance.rounding.small
                         border.width: secondsInput.activeFocus ? 2 : 0
                         border.color: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                            : Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                             : Appearance.colors.colPrimary
 
                         TextInput {
@@ -157,7 +157,7 @@ Item {
                             font.pixelSize: Math.round(38 * Appearance.fontSizeScale)
                             font.family: Appearance.font.family.main
                             color: Appearance.angelEverywhere ? Appearance.angel.colText
-                                : Appearance.inirEverywhere ? Appearance.inir.colText
+                                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                                 : Appearance.colors.colOnSurface
                             horizontalAlignment: Text.AlignHCenter
                             validator: IntValidator { bottom: 0; top: 59 }
@@ -203,7 +203,7 @@ Item {
                     }
                     font.pixelSize: Math.round(40 * Appearance.fontSizeScale)
                     color: Appearance.angelEverywhere ? Appearance.angel.colText
-                        : Appearance.inirEverywhere ? Appearance.inir.colText
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                         : Appearance.colors.colOnSurface
                 }
 
@@ -212,7 +212,7 @@ Item {
                     text: root.editMode ? Translation.tr("Tap to edit") : TimerService.countdownRunning ? Translation.tr("Running") : Translation.tr("Paused")
                     font.pixelSize: Appearance.font.pixelSize.normal
                     color: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                         : Appearance.colors.colSubtext
                 }
             }
@@ -244,13 +244,13 @@ Item {
                     implicitWidth: 45
                     buttonRadius: Appearance.rounding.small
                     colBackground: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                         : Appearance.auroraEverywhere ? "transparent" : Appearance.colors.colLayer2
                     colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover : Appearance.colors.colLayer2Hover
                     colRipple: Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-                        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
                         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive : Appearance.colors.colLayer2Active
                     onClicked: TimerService.setCountdownDuration(modelData.seconds)
 
@@ -259,7 +259,7 @@ Item {
                         horizontalAlignment: Text.AlignHCenter
                         text: modelData.label
                         font.pixelSize: Appearance.font.pixelSize.smaller
-                        color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer2
+                        color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer2
                     }
                 }
             }
@@ -279,19 +279,19 @@ Item {
                 colBackground: TimerService.countdownRunning 
                     ? (Appearance.zzzEverywhere ? Appearance.zzz.sticker
                         : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                         : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface : Appearance.colors.colSecondaryContainer)
                     : Appearance.colors.colPrimary
                 colBackgroundHover: TimerService.countdownRunning 
                     ? (Appearance.zzzEverywhere ? Appearance.colors.colPrimaryHover
                         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                         : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurfaceHover : Appearance.colors.colSecondaryContainerHover)
                     : Appearance.colors.colPrimaryHover
                 colRipple: TimerService.countdownRunning 
                     ? (Appearance.zzzEverywhere ? Appearance.colors.colPrimaryActive
                         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-                        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
                         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive : Appearance.colors.colSecondaryContainerActive)
                     : Appearance.colors.colPrimaryActive
 
@@ -300,7 +300,7 @@ Item {
                     color: TimerService.countdownRunning 
                         ? (Appearance.zzzEverywhere ? Appearance.zzz.onSticker
                             : Appearance.angelEverywhere ? Appearance.angel.colText
-                            : Appearance.inirEverywhere ? Appearance.inir.colText
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                             : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer2 : Appearance.colors.colOnSecondaryContainer)
                         : Appearance.colors.colOnPrimary
                     text: TimerService.countdownRunning ? Translation.tr("Pause") : TimerService.countdownSecondsLeft === TimerService.countdownDuration ? Translation.tr("Start") : Translation.tr("Resume")
@@ -317,15 +317,15 @@ Item {
                 onClicked: TimerService.resetCountdown()
                 enabled: TimerService.countdownSecondsLeft < TimerService.countdownDuration || TimerService.countdownRunning
                 colBackground: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                    : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                     : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface
                     : Appearance.colors.colErrorContainer
                 colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                    : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                     : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurfaceHover
                     : Appearance.colors.colErrorContainerHover
                 colRipple: Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-                    : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
                     : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
                     : Appearance.colors.colErrorContainerActive
 
@@ -333,7 +333,7 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     text: Translation.tr("Reset")
                     color: Appearance.angelEverywhere ? Appearance.angel.colText
-                        : Appearance.inirEverywhere ? Appearance.inir.colText
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                         : Appearance.auroraEverywhere ? Appearance.colors.colOnLayer2
                         : Appearance.colors.colOnErrorContainer
                 }

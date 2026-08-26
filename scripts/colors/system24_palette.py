@@ -50,7 +50,7 @@ OUTPUT_FILE = Path(
 MIDNIGHT_OUTPUT_FILE = Path(
     os.environ.get(
         "MIDNIGHT_DMS_CSS",
-        "~/.config/vesktop/themes/inir-midnight.theme.css",
+        "~/.config/vesktop/themes/ilmango-midnight.theme.css",
     )
 ).expanduser()
 
@@ -84,9 +84,9 @@ def _resolve_output_files(env_var: str, default_path: Path) -> list[Path]:
 
 # Template for the full theme file
 THEME_TEMPLATE = """/**
- * @name iNiR Material
+ * @name Illogical-mango Material
  * @description Material Design Discord theme with Material You colors.
- * @author refact0r (system24 base), iNiR (Material adaptation)
+ * @author refact0r (system24 base), Illogical-mango (Material adaptation)
  * @version 2.2.0
  * @source https://github.com/end-4/iNiR
  */
@@ -147,9 +147,9 @@ body {{
 """
 
 MIDNIGHT_THEME_TEMPLATE = """/**
- * @name iNiR Midnight
- * @description iNiR Midnight Discord theme with Material You colors.
- * @author iNiR (Material palette injection)
+ * @name Illogical-mango Midnight
+ * @description Illogical-mango Midnight Discord theme with Material You colors.
+ * @author Illogical-mango (Material palette injection)
  * @version 2.2.0
  * @source https://github.com/end-4/iNiR
  */

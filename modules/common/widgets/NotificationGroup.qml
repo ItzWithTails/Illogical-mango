@@ -162,7 +162,7 @@ MouseArea { // Notification group area
         color: Appearance.regaliaEverywhere ? "transparent"
             : Appearance.zzzEverywhere ? "transparent"
             : Appearance.angelEverywhere ? (popup ? "transparent" : Appearance.angel.colGlassCard)
-            : Appearance.inirEverywhere ? (popup ? Appearance.inir.colLayer2 : Appearance.inir.colLayer1)
+            : Appearance.ilmangoEverywhere ? (popup ? Appearance.ilmango.colLayer2 : Appearance.ilmango.colLayer1)
             : Appearance.auroraEverywhere ? "transparent"
             : (popup ? ColorUtils.applyAlpha(Appearance.colors.colLayer2, 1 - Appearance.backgroundTransparency)
                      : Appearance.colors.colLayer2)
@@ -170,15 +170,15 @@ MouseArea { // Notification group area
         radius: Appearance.regaliaEverywhere ? Appearance.regalia.roundNormal
             : Appearance.zzzEverywhere ? Appearance.zzz.panelRadius
             : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-            : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
         border.width: Appearance.regaliaEverywhere ? 0
             : Appearance.zzzEverywhere ? 0
             : Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
-            : (Appearance.inirEverywhere || (Appearance.auroraEverywhere && popup)) ? 1 : 0
+            : (Appearance.ilmangoEverywhere || (Appearance.auroraEverywhere && popup)) ? 1 : 0
         border.color: Appearance.regaliaEverywhere ? "transparent"
             : Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong
             : Appearance.angelEverywhere ? Appearance.angel.colBorder
-            : Appearance.inirEverywhere ? Appearance.inir.colBorder
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
             : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder : "transparent"
         RegaliaPlate {
             anchors.fill: parent
@@ -207,7 +207,7 @@ MouseArea { // Notification group area
         clip: true
 
         // Rounded corner clipping for glass blur
-        layer.enabled: root.popup && Appearance.auroraEverywhere && !Appearance.inirEverywhere
+        layer.enabled: root.popup && Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
         layer.effect: GE.OpacityMask {
             maskSource: Rectangle {
                 width: background.width
@@ -236,7 +236,7 @@ MouseArea { // Notification group area
         Image {
             id: notifBlurredWallpaper
             anchors.fill: parent
-            visible: root.popup && Appearance.auroraEverywhere && !Appearance.inirEverywhere
+            visible: root.popup && Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
             source: visible ? Wallpapers.effectiveWallpaperUrl : ""
             fillMode: Image.PreserveAspectCrop
             cache: true
@@ -244,7 +244,7 @@ MouseArea { // Notification group area
             sourceSize.height: 270
             asynchronous: true
 
-            layer.enabled: Appearance.effectsEnabled && Appearance.auroraEverywhere && !Appearance.inirEverywhere
+            layer.enabled: Appearance.effectsEnabled && Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
             layer.effect: MultiEffect {
                 source: notifBlurredWallpaper
                 anchors.fill: source
@@ -262,7 +262,7 @@ MouseArea { // Notification group area
         // Glass tint overlay
         Rectangle {
             anchors.fill: parent
-            visible: root.popup && Appearance.auroraEverywhere && !Appearance.inirEverywhere
+            visible: root.popup && Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
             color: Appearance.angelEverywhere
                 ? ColorUtils.transparentize(Appearance.colors.colLayer0Base, Appearance.angel.overlayOpacity)
                 : ColorUtils.transparentize(Appearance.colors.colLayer0Base, Appearance.aurora.popupTransparentize)

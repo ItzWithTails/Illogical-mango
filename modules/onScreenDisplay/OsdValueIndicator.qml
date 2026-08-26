@@ -34,12 +34,12 @@ Item {
         }
         radius: root._zzz ? Appearance.zzz.panelRadius : Appearance.rounding.full
         fallbackColor: root._zzz ? Appearance.zzz.bg0 : Appearance.colors.colLayer0
-        inirColor: Appearance.inir.colLayer1
+        ilmangoColor: Appearance.ilmango.colLayer1
         auroraTransparency: Appearance.aurora.popupTransparentize
-        border.width: root._zzz || auroraEverywhere || inirEverywhere ? 1 : 0
+        border.width: root._zzz || auroraEverywhere || ilmangoEverywhere ? 1 : 0
         border.color: root._zzz ? Appearance.zzz.borderColor
             : Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-            : inirEverywhere ? Appearance.inir.colBorder
+            : ilmangoEverywhere ? Appearance.ilmango.colBorder
             : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder : Appearance.colors.colLayer0Border
 
         implicitWidth: valueRow.implicitWidth

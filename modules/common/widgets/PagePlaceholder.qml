@@ -30,7 +30,7 @@ Item {
 
     ColumnLayout {
         anchors.centerIn: parent
-        spacing: Appearance.inirEverywhere ? 8 : 5
+        spacing: Appearance.ilmangoEverywhere ? 8 : 5
 
         MascotImage {
             id: placeholderMascot
@@ -42,32 +42,32 @@ Item {
             surface: "emptyStates"
         }
 
-        // Inir: simple rectangle with centered icon
+        // Ilmango: simple rectangle with centered icon
         Item {
-            visible: Appearance.inirEverywhere && !placeholderMascot.visible
+            visible: Appearance.ilmangoEverywhere && !placeholderMascot.visible
             Layout.alignment: Qt.AlignHCenter
             width: 72
             height: 72
             
             Rectangle {
                 anchors.fill: parent
-                radius: Appearance.inir.roundingNormal
-                color: Appearance.inir.colLayer2
+                radius: Appearance.ilmango.roundingNormal
+                color: Appearance.ilmango.colLayer2
                 border.width: 1
-                border.color: Appearance.inir.colBorder
+                border.color: Appearance.ilmango.colBorder
             }
             
             MaterialSymbol {
                 anchors.centerIn: parent
                 text: root.icon
                 iconSize: 32
-                color: Appearance.inir.colTextSecondary
+                color: Appearance.ilmango.colTextSecondary
             }
         }
 
         // Material/Aurora: decorative shape wrapper
         MaterialShapeWrappedMaterialSymbol {
-            visible: !Appearance.inirEverywhere && !placeholderMascot.visible
+            visible: !Appearance.ilmangoEverywhere && !placeholderMascot.visible
             Layout.alignment: Qt.AlignHCenter
             text: root.icon
             shape: root.shape
@@ -85,7 +85,7 @@ Item {
                 pixelSize: Appearance.font.pixelSize.larger
                 variableAxes: Appearance.font.variableAxes.title
             }
-            color: Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colOutline
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colOutline
             horizontalAlignment: Text.AlignHCenter
         }
         StyledText {
@@ -93,7 +93,7 @@ Item {
             Layout.fillWidth: true
             text: root.description
             font.pixelSize: Appearance.font.pixelSize.small
-            color: Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colOutline
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colOutline
             horizontalAlignment: root.descriptionHorizontalAlignment
             wrapMode: Text.Wrap
         }

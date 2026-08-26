@@ -10,7 +10,7 @@ declare -gA IPC_TARGET_DESC=(
   [altSwitcher]="Alt+Tab window switcher. Works across workspaces, unlike some other implementations we won't name."
   [appCatalog]="App catalog service. Browse, search, and install curated applications."
   [audio]="Volume and mute control."
-  [autostart]="Niri login autostart manager. Reads and writes the managed section of \`~/.config/niri/config.d/50-startup.kdl\` (delimited by \`// >>> inir-managed-autostart >>>\` / \`// <<< inir-managed-autostart <<<\`). Base iNiR lines and any hand-written \`spawn-at-startup\` lines outside the markers are preserved verbatim; toggling an entry comments the line out instead of deleting it. Safe no-op on non-Niri compositors (the page shows a guard instead)."
+  [autostart]="Niri login autostart manager. Reads and writes the managed section of \`~/.config/niri/config.d/50-startup.kdl\` (delimited by \`// >>> ilmango-managed-autostart >>>\` / \`// <<< ilmango-managed-autostart <<<\`). Base Illogical-mango lines and any hand-written \`spawn-at-startup\` lines outside the markers are preserved verbatim; toggling an entry comments the line out instead of deleting it. Safe no-op on non-Niri compositors (the page shows a guard instead)."
   [background]="Desktop background and widget controls."
   [bar]="Top bar visibility."
   [brightness]="Display brightness control."
@@ -20,7 +20,7 @@ declare -gA IPC_TARGET_DESC=(
   [closeConfirm]="Close window confirmation dialog. Shows a prompt before closing the focused window. Useful if you're the type who accidentally closes things and then regrets it."
   [controlPanel]="Quick settings panel. Toggles, sliders, and system controls without opening full settings."
   [coverflowSelector]="Wallpaper coverflow (3D card) picker."
-  [customWidgets]="Custom widget management. Create, list, reload, and remove user-installed widgets from \`~/.config/inir/widgets/\`."
+  [customWidgets]="Custom widget management. Create, list, reload, and remove user-installed widgets from \`~/.config/ilmango/widgets/\`."
   [dashboard]="Centered welcome hub panel (ii family): greeting, clock, notifications, media, weather, calendar, todo, system usage and GitHub activity."
   [dev]="Development navigation for loading lazy surfaces and internal views without automating pointer or keyboard input. Destination identifiers are stable and returned as JSON by \`list\`."
   [gamemode]="Performance mode for gaming. Auto-detects fullscreen apps and disables animations/effects. Can also be toggled manually for those stubborn games that don't go fullscreen properly."
@@ -47,7 +47,7 @@ declare -gA IPC_TARGET_DESC=(
   [search]="Waffle start menu / search."
   [session]="Power menu. Logout, suspend, reboot, shutdown. The \"I'm done for today\" buttons."
   [settings]="Open or toggle the settings window. GUI config so you don't have to edit JSON by hand."
-  [settingsNav]="Navigate the settings overlay to a specific page (same as clicking the nav rail). Opening the window itself is the \`inir settings\` CLI command (target \`settings\` above)."
+  [settingsNav]="Navigate the settings overlay to a specific page (same as clicking the nav rail). Opening the window itself is the \`ilmango settings\` CLI command (target \`settings\` above)."
   [shellLayout]="Dedicated persistent-shell layout editing and diagnostics. It is independent from desktop widget edit mode. It moves the ii bar and dock, swaps semantic ii sidebars between physical edges, resizes sidebar roles, and moves the Waffle taskbar through validated operations over canonical Config keys."
   [shellUpdate]="Shell update checker. Monitors the git repo for new commits and shows an update overlay."
   [sidebarLeft]="Left sidebar (AI chat, apps)."
@@ -249,7 +249,7 @@ declare -gA IPC_FUNCTION_DESC=(
   ["clipboard:toggle"]="Open/close panel"
   ["cliphistService:update"]="Refresh clipboard history"
   ["closeConfirm:trigger"]="Show close confirmation for focused window"
-  ["closeConfirm:triggerWindow"]="Close or confirm the exact window captured by \`inir close-window\`"
+  ["closeConfirm:triggerWindow"]="Close or confirm the exact window captured by \`ilmango close-window\`"
   ["closeConfirm:close"]="Dismiss the dialog without closing"
   ["controlPanel:toggle"]="Open/close control panel"
   ["controlPanel:close"]="Close control panel"
@@ -501,36 +501,36 @@ declare -gA IPC_FUNCTION_ARGS=(
 )
 
 declare -gA IPC_TARGET_EXAMPLE=(
-  [altSwitcher]='bind "Alt+Tab" { spawn "inir" "altSwitcher" "next"; }
-bind "Alt+Shift+Tab" { spawn "inir" "altSwitcher" "previous"; }'
-  [background]='bind "Super+W" { spawn "inir" "background" "toggleEditMode"; }'
-  [cheatsheet]='bind "Super+Slash" { spawn "inir" "cheatsheet" "toggle"; }'
-  [clipboard]='bind "Super+V" repeat=false { spawn "inir" "clipboard" "toggle"; }'
-  [closeConfirm]='bind "Mod+Q" repeat=false { spawn "inir" "close-window"; }'
-  [gamemode]='bind "Super+F12" { spawn "inir" "gamemode" "toggle"; }'
-  [globalActions]='bind "Super+Slash" { spawn "inir" "globalActions" "open"; }
-bind "Super+M" { spawn "inir" "globalActions" "run" "toggle-mute"; }'
-  [keyboard]='bind "Mod+Alt+K" { spawn "inir" "keyboard" "switchLayout"; }'
-  [lock]='bind "Super+Alt+L" allow-when-locked=true { spawn "inir" "lock" "activate"; }'
-  [mpris]='bind "Ctrl+Mod+Space" { spawn "inir" "mpris" "playPause"; }
-bind "Mod+Alt+N" { spawn "inir" "mpris" "next"; }
-bind "Mod+Alt+P" { spawn "inir" "mpris" "previous"; }'
-  [overlay]='bind "Super+G" { spawn "inir" "overlay" "toggle"; }'
-  [overview]='bind "Mod+Space" { spawn "inir" "overview" "toggle"; }'
-  [panelFamily]='bind "Mod+Shift+W" { spawn "inir" "panelFamily" "cycle"; }'
-  [pill]='bind "Super+V" repeat=false { spawn "inir" "pill" "toggle" "clipboard"; }'
-  [region]='bind "Super+Shift+S" { spawn "inir" "region" "screenshot"; }
-bind "Super+Shift+X" { spawn "inir" "region" "ocr"; }
-bind "Super+Shift+A" { spawn "inir" "region" "search"; }
-bind "Ctrl+Shift+S" { spawn "inir" "region" "menu"; }'
-  [session]='bind "Super+Shift+E" { spawn "inir" "session" "toggle"; }'
-  [settings]='bind "Super+Comma" { spawn "inir" "settings"; }'
-  [shellLayout]='bind "Super+W" { spawn "inir" "shellLayout" "toggle"; }'
-  [voiceSearch]='bind "Super+Shift+V" { spawn "inir" "voiceSearch" "toggle"; }'
-  [wallpaperSelector]='bind "Ctrl+Alt+T" { spawn "inir" "wallpaperSelector" "toggle"; }
-bind "Ctrl+Alt+A" { spawn "inir" "wallpaperSelector" "openLauncher" "animated"; }'
-  [workspaceStrip]='bind "Super+Tab" { spawn "inir" "workspaceStrip" "toggle"; }'
-  [ytmusic]='bind "Mod+M+Space" { spawn "inir" "ytmusic" "playPause"; }'
+  [altSwitcher]='bind "Alt+Tab" { spawn "ilmango" "altSwitcher" "next"; }
+bind "Alt+Shift+Tab" { spawn "ilmango" "altSwitcher" "previous"; }'
+  [background]='bind "Super+W" { spawn "ilmango" "background" "toggleEditMode"; }'
+  [cheatsheet]='bind "Super+Slash" { spawn "ilmango" "cheatsheet" "toggle"; }'
+  [clipboard]='bind "Super+V" repeat=false { spawn "ilmango" "clipboard" "toggle"; }'
+  [closeConfirm]='bind "Mod+Q" repeat=false { spawn "ilmango" "close-window"; }'
+  [gamemode]='bind "Super+F12" { spawn "ilmango" "gamemode" "toggle"; }'
+  [globalActions]='bind "Super+Slash" { spawn "ilmango" "globalActions" "open"; }
+bind "Super+M" { spawn "ilmango" "globalActions" "run" "toggle-mute"; }'
+  [keyboard]='bind "Mod+Alt+K" { spawn "ilmango" "keyboard" "switchLayout"; }'
+  [lock]='bind "Super+Alt+L" allow-when-locked=true { spawn "ilmango" "lock" "activate"; }'
+  [mpris]='bind "Ctrl+Mod+Space" { spawn "ilmango" "mpris" "playPause"; }
+bind "Mod+Alt+N" { spawn "ilmango" "mpris" "next"; }
+bind "Mod+Alt+P" { spawn "ilmango" "mpris" "previous"; }'
+  [overlay]='bind "Super+G" { spawn "ilmango" "overlay" "toggle"; }'
+  [overview]='bind "Mod+Space" { spawn "ilmango" "overview" "toggle"; }'
+  [panelFamily]='bind "Mod+Shift+W" { spawn "ilmango" "panelFamily" "cycle"; }'
+  [pill]='bind "Super+V" repeat=false { spawn "ilmango" "pill" "toggle" "clipboard"; }'
+  [region]='bind "Super+Shift+S" { spawn "ilmango" "region" "screenshot"; }
+bind "Super+Shift+X" { spawn "ilmango" "region" "ocr"; }
+bind "Super+Shift+A" { spawn "ilmango" "region" "search"; }
+bind "Ctrl+Shift+S" { spawn "ilmango" "region" "menu"; }'
+  [session]='bind "Super+Shift+E" { spawn "ilmango" "session" "toggle"; }'
+  [settings]='bind "Super+Comma" { spawn "ilmango" "settings"; }'
+  [shellLayout]='bind "Super+W" { spawn "ilmango" "shellLayout" "toggle"; }'
+  [voiceSearch]='bind "Super+Shift+V" { spawn "ilmango" "voiceSearch" "toggle"; }'
+  [wallpaperSelector]='bind "Ctrl+Alt+T" { spawn "ilmango" "wallpaperSelector" "toggle"; }
+bind "Ctrl+Alt+A" { spawn "ilmango" "wallpaperSelector" "openLauncher" "animated"; }'
+  [workspaceStrip]='bind "Super+Tab" { spawn "ilmango" "workspaceStrip" "toggle"; }'
+  [ytmusic]='bind "Mod+M+Space" { spawn "ilmango" "ytmusic" "playPause"; }'
 )
 
 IPC_ALL_TARGETS=(ai altSwitcher appCatalog audio autostart background bar brightness cheatsheet clipboard cliphistService closeConfirm controlPanel coverflowSelector customWidgets dashboard dev gamemode globalActions keyboard lock mascot mascotMood mediaControls memory minimize mpris notifications osd osdVolume osk overlay overview packageSearch panelFamily pill recordingOsd region search session settings settingsNav shellLayout shellUpdate sidebarLeft sidebarRight taskview tiling voiceSearch wactionCenter waffleAltSwitcher wallpaperLauncher wallpaperSelector wbar widgetpower wnotificationCenter workspaceStrip wwidgets ytmusic zoom)

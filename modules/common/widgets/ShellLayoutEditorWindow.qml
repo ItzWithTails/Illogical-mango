@@ -36,9 +36,9 @@ Scope {
     readonly property color hairColor: ColorUtils.applyAlpha(root.textColor, 0.12)
     readonly property color frameBgColor: ColorUtils.applyAlpha(root.textColor, 0.06)
     readonly property color frameBgHoverColor: ColorUtils.applyAlpha(root.textColor, 0.11)
-    readonly property bool compactChrome: root.styleKey === "inir"
+    readonly property bool compactChrome: root.styleKey === "ilmango"
         || root.styleKey === "zzz"
-    readonly property bool strongOutline: root.styleKey === "inir"
+    readonly property bool strongOutline: root.styleKey === "ilmango"
         || root.styleKey === "angel"
 
     function surfaceLabel(surfaceId: string): string {

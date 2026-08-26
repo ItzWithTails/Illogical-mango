@@ -135,7 +135,7 @@ Visible surfaces:
 - `modules/sidebarRight/screenTime/ScreenTimeWidget.qml`
 - `modules/waffle/actionCenter/screenTime/ScreenTimePage.qml`
 
-It stores local daily JSON under the iNiR state directory. It has daily totals, app totals, hourly buckets, and per-app hourly drill-down. It is off by default and hidden from sidebar layouts while disabled.
+It stores local daily JSON under the Illogical-mango state directory. It has daily totals, app totals, hourly buckets, and per-app hourly drill-down. It is off by default and hidden from sidebar layouts while disabled.
 
 ### World Clock
 

@@ -54,12 +54,13 @@ Wayland → GPU
   终端与 TUI 工具、Firefox、Discord、Spicetify、Steam 和 SDDM。
 - **不改代码就能配置。** 所有东西都是图形界面里的设置项，底下只有一个 `config.json`。想改外观
   或行为，永远不需要碰 QML。
-- **一条像样的安装与升级路径。** `./setup` 负责依赖和系统配置；`inir update` 拉取更新、执行
+- **一条像样的安装与升级路径。** `./setup` 负责依赖和系统配置；`ilmango update` 拉取更新、执行
   schema 迁移、保留你的修改，并且能回滚。
 
 **来历。** [end-4 的 illogical-impulse](https://github.com/end-4/dots-hyprland)（Hyprland
 dotfiles）→ [snowarch 的 iNiR](https://github.com/snowarch/iNiR)（为 niri 重写）→ 这个，移植到
-MangoWM。CLI、配置路径和内部实现仍然叫 `inir`：改名会把所有升级路径全部弄坏，所以名字留着没动。
+MangoWM。CLI、配置路径和内部实现都叫 `ilmango`。iNiR 时代的安装由迁移 037 接管，它会在旧路径上留下
+软链接，因此已有的快捷键和脚本仍然可用。
 为什么不直接 fork end-4？逻辑很简单 - 一个已经被移植过一次的项目，再移植一次要容易得多。
 打个比方，拿 Void Linux 来说。给它装上 systemd，它照样跑得好好的。
 拿 Arch Linux 把 systemd 抽掉，那你几乎得把整个软件包基础全换一遍。
@@ -76,8 +77,8 @@ MangoWM。CLI、配置路径和内部实现仍然叫 `inir`：改名会把所有
 
 配置刻意做成非破坏性的。mango 只读取一个文件（`~/.config/mango/config.conf`），并且不做任何合并，
 所以安装器绝不会覆盖你的合成器配置。它把外壳的快捷键和自启动放进
-`~/.config/mango/inir.conf`，再追加一行指向它的 `source-optional=`，完全不碰你的窗口管理。自启动
-是那个文件里的一行 `exec-once=inir run --daemon`，不是 systemd 单元。
+`~/.config/mango/ilmango.conf`，再追加一行指向它的 `source-optional=`，完全不碰你的窗口管理。自启动
+是那个文件里的一行 `exec-once=ilmango run --daemon`，不是 systemd 单元。
 
 > [!NOTE]
 > **niri 和 Hyprland 的代码仍留在代码树里。** `NiriService.qml`、`HyprlandData.qml` 以及
@@ -122,7 +123,7 @@ MangoWM。CLI、配置路径和内部实现仍然叫 `inir`：改名会把所有
 **两套面板家族**，用 <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd> 随时切换：
 
 - **Material ii** — 悬浮状态栏、侧边栏、程序坞，以及 8 种视觉风格（Material、Cards、Aurora、
-  iNiR、Angel、Regalia、ZZZ、Cookie Shapes）
+  Illogical-mango、Angel、Regalia、ZZZ、Cookie Shapes）
 - **Waffle** — Windows 11 风格的任务栏、开始菜单、操作中心、通知中心
 
 **自动配色。** 选一张壁纸，整个系统跟着走：外壳的 Material You 配色会传播到 GTK3/4、Qt、终端、
@@ -134,7 +135,7 @@ Firefox、Discord、Spicetify、Steam 和 SDDM。自带 Regalia、Gruvbox、Catp
 
 ### 配色与外观
 
-- **8 种视觉风格**：Material（实色）、Cards、Aurora（毛玻璃）、iNiR（TUI 风）、Angel（新野兽派）、Regalia（黑色工程机身、暖象牙色字迹、克制的香槟色五金）、ZZZ（海报色块）、Cookie Shapes（形状动态变形）
+- **8 种视觉风格**：Material（实色）、Cards、Aurora（毛玻璃）、Illogical-mango（TUI 风）、Angel（新野兽派）、Regalia（黑色工程机身、暖象牙色字迹、克制的香槟色五金）、ZZZ（海报色块）、Cookie Shapes（形状动态变形）
 - **从壁纸取动态配色**，经 Material You 传播到全系统
 - **10 个终端与 TUI 工具自动配色**：foot、kitty、alacritty、ghostty、wezterm、starship、fuzzel、btop、lazygit、yazi
 - **应用配色**：GTK3/4、Qt（经 plasma-integration 和 darkly）、Firefox（MaterialFox）、Discord/Vesktop（System24）、Zed、Spicetify、Steam、SDDM
@@ -186,7 +187,7 @@ Firefox、Discord、Spicetify、Steam 和 SDDM。自带 Regalia、Gruvbox、Catp
 
 - **图形化设置**：什么都能配，不用动文件
 - **GameMode**：全屏应用时自动关掉特效
-- **自动更新**：`inir update`，带回滚、迁移，并保留你的修改
+- **自动更新**：`ilmango update`，带回滚、迁移，并保留你的修改
 - **锁屏**与**会话界面**（注销/重启/关机/挂起）
 - **polkit 代理**、**屏幕键盘**、**自启动管理器**，底层是 mango 配置里的 `exec-once` 那行
 - **Kira**：可选的像素画吉祥物，在屏幕边缘游荡，会对你的操作有反应。默认关闭；约 32 MiB 的素材包在 `./setup` › Extras 里单独下载
@@ -203,21 +204,21 @@ Firefox、Discord、Spicetify、Steam 和 SDDM。自带 Regalia、Gruvbox、Catp
 ## 快速上手（安装器以后会换一个）
 
 ```bash
-git clone https://github.com/ItzWithTails/Illogical-mango.git
+git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
 ./setup install       # 交互式，每一步都会问
 ./setup install -y    # 全自动，不问任何问题
 ```
 
-安装器负责依赖、系统配置和配色。它把外壳的快捷键写进 `~/.config/mango/inir.conf`，并挂到你现有的
+安装器负责依赖、系统配置和配色。它把外壳的快捷键写进 `~/.config/mango/ilmango.conf`，并挂到你现有的
 mango 配置上，不碰你的窗口管理。之后重启 mango，或者执行 `mmsg dispatch reload_config`。
 
 ```bash
-inir run                        # 启动外壳
-inir settings                   # 打开设置界面
-inir logs                       # 看日志
-inir doctor                     # 自动诊断并修复
-inir update                     # 拉取 + 迁移 + 重启
+ilmango run                        # 启动外壳
+ilmango settings                   # 打开设置界面
+ilmango logs                       # 看日志
+ilmango doctor                     # 自动诊断并修复
+ilmango update                     # 拉取 + 迁移 + 重启
 ```
 
 其他入口：
@@ -287,10 +288,10 @@ Material You 的流程效果不错。
 ## 排查问题
 
 ```bash
-inir logs                       # 最近的运行时日志
-inir restart                    # 重启当前运行时
-inir repair                     # doctor + 重启 + 过滤后的日志检查
-inir doctor                     # 自动诊断并修复常见问题
+ilmango logs                       # 最近的运行时日志
+ilmango restart                    # 重启当前运行时
+ilmango repair                     # doctor + 重启 + 过滤后的日志检查
+ilmango doctor                     # 自动诊断并修复常见问题
 ./setup rollback                # 撤销上一次更新
 claude "帮帮我"                 # 如果你不想自己折腾。来吧，那 20 刀总得让它挣回来
 ```

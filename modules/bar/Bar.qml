@@ -292,15 +292,15 @@ Scope {
                             implicitHeight: Appearance.rounding.screenRounding
                             
                             readonly property bool isAurora: Appearance.auroraEverywhere
-                            readonly property bool isInir: Appearance.inirEverywhere
+                            readonly property bool isIlmango: Appearance.ilmangoEverywhere
                             readonly property bool isBottom: Config.options?.bar?.bottom ?? false
                             readonly property color solidColor: showBarBackground 
-                                ? (isInir ? Appearance.inir.colLayer0 
+                                ? (isIlmango ? Appearance.ilmango.colLayer0 
                                     : isAurora ? Appearance.aurora.colPopupSurface
                                     : Appearance.colors.colLayer0) 
                                 : "transparent"
                             
-                            // Left corner - solid for Material/Inir, blur for Aurora
+                            // Left corner - solid for Material/Ilmango, blur for Aurora
                             RoundCorner {
                                 id: leftCorner
                                 visible: !hugDecorators.isAurora
@@ -323,7 +323,7 @@ Scope {
                                 }
                             }
                             
-                            // Right corner - solid for Material/Inir
+                            // Right corner - solid for Material/Ilmango
                             RoundCorner {
                                 id: rightCorner
                                 visible: !hugDecorators.isAurora

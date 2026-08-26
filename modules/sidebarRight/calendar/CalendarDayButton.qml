@@ -26,7 +26,7 @@ RippleButton {
     buttonRadius: Appearance.regaliaEverywhere ? Appearance.regalia.controlRadius
         : Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
     // ZZZ today = confident accent "sticker" chip so onSticker text stays readable
     // (RippleButton's default zzz toggled bg is near-black chrome → dark-on-dark).
     colBackgroundToggled: Appearance.regaliaEverywhere ? Appearance.regalia.primaryPlate
@@ -55,15 +55,15 @@ RippleButton {
                     : Appearance.zzz.inkMuted)
                 : button.isHeader && (button.isToday == 1)
                 ? (Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                    : Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary)
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary)
                 : (button.isToday == 1)
                     ? (Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-                        : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary : Appearance.colors.colOnPrimary)
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary : Appearance.colors.colOnPrimary)
                     : (button.isToday == 0)
                         ? (Appearance.angelEverywhere ? Appearance.angel.colText
-                            : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1)
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1)
                         : (Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                            : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                             : Appearance.auroraEverywhere ? Appearance.colors.colSubtext
                             : Appearance.colors.colOutlineVariant)
 
@@ -97,9 +97,9 @@ RippleButton {
                                 ? (button.isToday == 1 ? Appearance.zzz.onSticker : Appearance.zzz.accent)
                                 : button.isToday == 1
                                 ? (Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-                                    : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary : Appearance.colors.colOnPrimary)
+                                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary : Appearance.colors.colOnPrimary)
                                 : (Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                                    : Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary)
+                                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary)
                             return [primary]
                         }
                         return []
@@ -135,9 +135,9 @@ RippleButton {
                 font.weight: Font.Bold
                 color: button.isToday == 1
                     ? (Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-                        : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary : Appearance.colors.colOnPrimary)
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary : Appearance.colors.colOnPrimary)
                     : (Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext)
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext)
             }
         }
     }

@@ -67,7 +67,7 @@ Singleton {
         if (YtMusic.isPlaying)
             return "mpv ytmusic youtube-music"
         const player = MprisController.activePlayer
-        return player?.desktopEntry || player?.identity || "__inir_music_player__"
+        return player?.desktopEntry || player?.identity || "__ilmango_music_player__"
     }
 
     function _afterSubscriptionChange(wasActive: bool): void {

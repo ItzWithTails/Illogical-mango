@@ -5,7 +5,7 @@ import Quickshell
 import qs.modules.common
 
 /**
- * Pill palette, mapped onto iNiR's generated Material scheme. Token names are
+ * Pill palette, mapped onto Illogical-mango's generated Material scheme. Token names are
  * kept exactly as the upstream pill chrome expects them (verm/cream/cardTop/…)
  * so the ported components bind without rewrites; only the sources change.
  *

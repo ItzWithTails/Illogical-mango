@@ -1,6 +1,6 @@
 # Compositor Integration
 
-iNiR is built for Niri. Secondary Hyprland support is maintained from the project's origins as a fork of end-4's Hyprland dots.
+Illogical-mango is built for Niri. Secondary Hyprland support is maintained from the project's origins as a fork of end-4's Hyprland dots.
 
 ## Detection
 
@@ -45,7 +45,7 @@ For commands (focus workspace, move window, etc.), a separate socket connection 
 
 ### Niri config management
 
-iNiR manages Niri's config through modular KDL files in `~/.config/niri/config.d/`:
+Illogical-mango manages Niri's config through modular KDL files in `~/.config/niri/config.d/`:
 
 | File | What it controls |
 |------|-----------------|

@@ -1,12 +1,12 @@
 # Audio and Media
 
-How audio control and media player integration work in iNiR.
+How audio control and media player integration work in Illogical-mango.
 
 ## Audio
 
 ### PipeWire integration
 
-iNiR controls audio through PipeWire via the Quickshell PipeWire module and `wpctl` (WirePlumber's CLI). This means it works with PipeWire out of the box, no PulseAudio compatibility layer needed.
+Illogical-mango controls audio through PipeWire via the Quickshell PipeWire module and `wpctl` (WirePlumber's CLI). This means it works with PipeWire out of the box, no PulseAudio compatibility layer needed.
 
 ### Volume control
 
@@ -26,22 +26,22 @@ The right sidebar (ii) and action center (waffle) include a per-app volume mixer
 
 ### EasyEffects
 
-If EasyEffects is installed, iNiR detects its virtual sink and controls the physical sink behind it instead. This means volume control works correctly whether EasyEffects is running or not. A toggle in the right sidebar/action center lets you enable/disable EasyEffects.
+If EasyEffects is installed, Illogical-mango detects its virtual sink and controls the physical sink behind it instead. This means volume control works correctly whether EasyEffects is running or not. A toggle in the right sidebar/action center lets you enable/disable EasyEffects.
 
 ### IPC
 
 ```bash
-inir audio volumeUp         # Increase volume
-inir audio volumeDown       # Decrease volume
-inir audio mute             # Toggle output mute
-inir audio micMute          # Toggle mic mute
+ilmango audio volumeUp         # Increase volume
+ilmango audio volumeDown       # Decrease volume
+ilmango audio mute             # Toggle output mute
+ilmango audio micMute          # Toggle mic mute
 ```
 
 ## Media players
 
 ### MPRIS support
 
-iNiR picks up any MPRIS-compatible media player automatically. Spotify, Firefox, mpv, VLC, Celluloid, Amberol, whatever speaks MPRIS shows up in the media controls.
+Illogical-mango picks up any MPRIS-compatible media player automatically. Spotify, Firefox, mpv, VLC, Celluloid, Amberol, whatever speaks MPRIS shows up in the media controls.
 
 The media player widget appears in:
 - The bar (compact now-playing indicator)
@@ -51,7 +51,7 @@ The media player widget appears in:
 
 ### Player prioritization
 
-When multiple players are active, iNiR picks the most relevant one:
+When multiple players are active, Illogical-mango picks the most relevant one:
 
 1. A player that's currently playing beats one that's paused
 2. The user's manually selected ("tracked") player beats auto-detection
@@ -61,7 +61,7 @@ When multiple players are active, iNiR picks the most relevant one:
 
 The left sidebar includes a full YT Music player. It uses mpv for playback and yt-dlp for stream extraction. Search, queue management, playlists, and playback controls all work from within the shell.
 
-When YT Music is playing via the sidebar AND a browser tab is also showing YT Music, iNiR deduplicates them in the media controls (you see one player, not two).
+When YT Music is playing via the sidebar AND a browser tab is also showing YT Music, Illogical-mango deduplicates them in the media controls (you see one player, not two).
 
 ### Media controls layouts
 

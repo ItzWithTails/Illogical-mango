@@ -9,8 +9,8 @@
 ## The Easy Way (Arch)
 
 ```bash
-git clone https://github.com/snowarch/inir.git
-cd inir
+git clone https://github.com/ItzWithTails/illogical-mango.git
+cd ilmango
 ./setup install
 ```
 
@@ -56,7 +56,7 @@ The bare minimum to not crash immediately:
 
 For everything else, check [PACKAGES.md](PACKAGES.md). It's organized by category so you can skip what you don't need.
 
-> **Note on quickshell package:** iNiR intentionally uses `quickshell` from official repos to avoid long AUR compile times and update-time build failures.
+> **Note on quickshell package:** Illogical-mango intentionally uses `quickshell` from official repos to avoid long AUR compile times and update-time build failures.
 >
 > **Runtime extras used by features:**
 > - `socat` for YTMusic IPC fallback control
@@ -69,10 +69,10 @@ For everything else, check [PACKAGES.md](PACKAGES.md). It's organized by categor
 > Settings › Mascot.
 >
 > The art pack and the shell have separate jobs. `snowarch/inir-mascot`
-> publishes the PNG/GIF files. iNiR ships the required
+> publishes the PNG/GIF files. Illogical-mango ships the required
 > `assets/images/mascot/manifest.json`, dialogue, pose pools, settings and
 > runtime behavior. Updating or reinstalling the art pack does not replace the
-> shell manifest; normal iNiR install/update paths provide it. Extras stages and
+> shell manifest; normal Illogical-mango install/update paths provide it. Extras stages and
 > verifies the complete archive before touching live assets, records the release
 > tag plus an installed-tree hash, and repairs missing or corrupt files during a
 > later `./setup update` without auto-installing the optional pack for new users.
@@ -84,7 +84,7 @@ For everything else, check [PACKAGES.md](PACKAGES.md). It's organized by categor
 ### 2. Clone the repo
 
 ```bash
-git clone https://github.com/snowarch/inir.git ~/.config/quickshell/inir
+git clone https://github.com/ItzWithTails/illogical-mango.git ~/.config/quickshell/ilmango
 ```
 
 ### 3. Copy the configs
@@ -94,17 +94,17 @@ cp -r dots/.config/* ~/.config/
 ```
 
 This gives you:
-- Niri config wired to the `inir` launcher
+- Niri config wired to the `ilmango` launcher
 - Theming templates for Material You colors
 - GTK settings
 - Fuzzel config
 
-### 4. Enable the iNiR user service
+### 4. Enable the Illogical-mango user service
 
 ```bash
-inir service install
-inir service enable
-inir service start
+ilmango service install
+ilmango service enable
+ilmango service start
 ```
 
 ### 5. Restart Niri
@@ -122,7 +122,7 @@ Or log out and back in.
 Check the logs:
 
 ```bash
-inir logs
+ilmango logs
 ```
 
 If everything went well, you should see:

@@ -1,0 +1,27 @@
+post_install() {
+  cat <<'EOF'
+Illogical-mango has been installed.
+
+Recommended next steps:
+  - Start the shell manually with: ilmango run
+  - Or enable the user service with:
+      systemctl --user enable --now ilmango.service
+
+Package-managed installs keep user config in:
+  ~/.config/illogical-impulse/config.json
+
+The packaged runtime lives in:
+  /usr/share/quickshell/ilmango
+EOF
+}
+
+post_upgrade() {
+  cat <<'EOF'
+Illogical-mango has been upgraded.
+
+Recommended next steps:
+  - Restart the shell with: ilmango restart
+  - Package-managed installs use pacman for updates.
+  - Runtime migrations, when needed, are applied by Illogical-mango's packaged lifecycle.
+EOF
+}

@@ -50,9 +50,9 @@ $notes
 
 ---
 
-Update: https://github.com/snowarch/iNiR?tab=readme-ov-file#update
-Fresh install: https://github.com/snowarch/iNiR?tab=readme-ov-file#install
-Full changelog: https://github.com/snowarch/iNiR/blob/main/CHANGELOG.md
+Update: https://github.com/ItzWithTails/illogical-mango?tab=readme-ov-file#update
+Fresh install: https://github.com/ItzWithTails/illogical-mango?tab=readme-ov-file#install
+Full changelog: https://github.com/ItzWithTails/illogical-mango/blob/main/CHANGELOG.md
 EOF
 }
 

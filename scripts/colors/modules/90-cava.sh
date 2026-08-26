@@ -12,8 +12,8 @@ CAVA_RESOLVE_SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../cava" && pwd)/re
 CAVA_CONFIG_DIR="$XDG_CONFIG_HOME/cava"
 CAVA_CONFIG="$CAVA_CONFIG_DIR/config"
 
-MARKER_BEGIN="# BEGIN inir-managed"
-MARKER_END="# END inir-managed"
+MARKER_BEGIN="# BEGIN ilmango-managed"
+MARKER_END="# END ilmango-managed"
 
 # Read a cava config value from appearance.cava
 cava_cfg() {
@@ -143,7 +143,7 @@ resolve_cava_input_source() {
   fi
   if [[ -z "${source:-}" ]]; then
     if pactl list sink-inputs 2>/dev/null | grep -q "^Sink Input #"; then
-      source="__inir_no_music__"
+      source="__ilmango_no_music__"
     else
       local default_sink
       default_sink=$(pactl get-default-sink 2>/dev/null)
@@ -270,10 +270,10 @@ apply_cava_config() {
     mv "$tmp" "$CAVA_CONFIG"
   else
     # Also handle legacy markers
-    local legacy_begin="# BEGIN inir-generated-colors"
+    local legacy_begin="# BEGIN ilmango-generated-colors"
     if grep -qF "$legacy_begin" "$CAVA_CONFIG"; then
       local tmp; tmp=$(mktemp)
-      awk -v begin="$legacy_begin" -v end="# END inir-generated-colors" -v block="$block" '
+      awk -v begin="$legacy_begin" -v end="# END ilmango-generated-colors" -v block="$block" '
         $0 == begin { skip=1; printed=0 }
         skip && $0 == end { skip=0; print block; printed=1; next }
         !skip { print }
@@ -299,7 +299,7 @@ strip_cava_config() {
   [[ -f "$CAVA_CONFIG" ]] || return 0
 
   local stripped=false
-  for marker in "$MARKER_BEGIN" "# BEGIN inir-generated-colors"; do
+  for marker in "$MARKER_BEGIN" "# BEGIN ilmango-generated-colors"; do
     if grep -qF "$marker" "$CAVA_CONFIG"; then
       local end_marker="${marker/BEGIN/END}"
       local tmp; tmp=$(mktemp)
@@ -312,7 +312,7 @@ strip_cava_config() {
       stripped=true
     fi
   done
-  $stripped && log_module "Stripped iNiR config from cava"
+  $stripped && log_module "Stripped Illogical-mango config from cava"
 }
 
 main() {

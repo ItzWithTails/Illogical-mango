@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Memory optimization environment for Quickshell/iNiR
+# Memory optimization environment for Quickshell/Illogical-mango
 #
 # Qt decodes wallpaper images in background threads. glibc malloc creates
 # per-thread arenas that retain freed memory instead of returning it to
@@ -19,8 +19,8 @@
 #
 # Usage:
 #   Source this before launching quickshell:
-#     source ~/.config/quickshell/inir/scripts/quickshell-env.sh
-#     inir run
+#     source ~/.config/quickshell/ilmango/scripts/quickshell-env.sh
+#     ilmango run
 #
 #   Or in niri config.kdl environment block:
 #     MALLOC_ARENA_MAX "2"

@@ -104,7 +104,7 @@ Scope {
         if (mode === "window") {
             Config.setNestedValue("settingsUi.overlayMode", false);
             GlobalStates.settingsOverlayOpen = false;
-            Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "settings-window"]);
+            Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "settings-window"]);
             return;
         }
         Config.setNestedValues({
@@ -582,14 +582,14 @@ Scope {
                 radius: Appearance.zzzEverywhere ? Appearance.zzz.panelRadius
                       : Appearance.regaliaEverywhere ? Appearance.regalia.panelRadius
                       : Appearance.angelEverywhere ? Appearance.angel.roundingLarge
-                      : Appearance.inirEverywhere ? Appearance.inir.roundingLarge
+                      : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingLarge
                       : Appearance.rounding.windowRounding
                 // Same contract as the rail overlay: backgroundOpacity lands on
                 // the fill alpha (solid) or the blur transparentize (glass),
                 // never on Item opacity, which children inherit.
                 color: Appearance.auroraEverywhere || Appearance.regaliaEverywhere ? "transparent"
                      : CF.ColorUtils.applyAlpha(
-                         Appearance.inirEverywhere ? Appearance.inir.colLayer0
+                         Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer0
                        : Appearance.zzzEverywhere ? Appearance.zzz.chrome
                        : Appearance.colors.colLayer0Base,
                          card.panelBgOpacity)
@@ -598,10 +598,10 @@ Scope {
                 // rail host draws the equivalent surface the same way.
                 border.width: Appearance.angelEverywhere ? Appearance.angel.panelBorderWidth
                             : Appearance.zzzEverywhere ? Appearance.zzz.borderThick
-                            : Appearance.inirEverywhere ? 1 : 0
+                            : Appearance.ilmangoEverywhere ? 1 : 0
                 border.color: Appearance.angelEverywhere ? Appearance.angel.colPanelBorder
                             : Appearance.zzzEverywhere ? Appearance.zzz.hairline
-                            : Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
                             : "transparent"
                 clip: true
 
@@ -650,7 +650,7 @@ Scope {
                     anchors.fill: parent
                     z: -1
                     radius: card.radius
-                    visible: Appearance.auroraEverywhere && !Appearance.inirEverywhere
+                    visible: Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
                     screenX: card.x
                     screenY: card.y
                     screenWidth: settingsPanel.width
@@ -661,7 +661,7 @@ Scope {
                     // the whole panel vanish over a fullscreen window.
                     fallbackColor: Appearance.effectsEnabled
                         ? "transparent" : Appearance.colors.colLayer0Base
-                    inirColor: Appearance.inir.colLayer0
+                    ilmangoColor: Appearance.ilmango.colLayer0
                     auroraTransparency: {
                         const base = Appearance.angelEverywhere
                             ? Appearance.angel.panelTransparentize
@@ -764,7 +764,7 @@ Scope {
                         visible: height > 0
                         radius: header.radius
                         color: Appearance.zzzEverywhere ? Appearance.zzz.tile
-                             : Appearance.inirEverywhere ? Qt.alpha(Appearance.inir.colLayer1, 1)
+                             : Appearance.ilmangoEverywhere ? Qt.alpha(Appearance.ilmango.colLayer1, 1)
                              : Qt.alpha(Appearance.colors.colLayer0Base, 1)
 
                         Image {
@@ -813,7 +813,7 @@ Scope {
                             radius: Appearance.zzzEverywhere
                                 ? Appearance.zzz.controlRadius : width / 2
                             color: Appearance.zzzEverywhere ? Appearance.zzz.chrome
-                                 : Appearance.inirEverywhere ? Qt.alpha(Appearance.inir.colLayer1, 1)
+                                 : Appearance.ilmangoEverywhere ? Qt.alpha(Appearance.ilmango.colLayer1, 1)
                                  : Qt.alpha(Appearance.colors.colLayer1, 1)
                             border.width: 2
                             border.color: SettingsMaterialPreset.accentColor
@@ -907,7 +907,7 @@ Scope {
                             text: root.currentMeta.icon ?? ""
                             rotation: root.currentMeta.iconRotation ?? 0
                             iconSize: 20
-                            color: Appearance.inirEverywhere ? Appearance.inir.colAccent
+                            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colAccent
                                  : Appearance.colors.colPrimary
                         }
 
@@ -971,15 +971,15 @@ Scope {
                             Layout.alignment: Qt.AlignVCenter
                             radius: Appearance.rounding.full
                             color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                                 : Appearance.inirEverywhere
-                                    ? (focusSearchField.activeFocus ? Appearance.inir.colLayer1 : Appearance.inir.colLayer0)
+                                 : Appearance.ilmangoEverywhere
+                                    ? (focusSearchField.activeFocus ? Appearance.ilmango.colLayer1 : Appearance.ilmango.colLayer0)
                                     : (focusSearchField.activeFocus ? Appearance.colors.colLayer1 : Appearance.colors.colLayer0)
                             border.width: focusSearchField.activeFocus ? 2
                                 : (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : 1)
                             border.color: focusSearchField.activeFocus
                                 ? Appearance.colors.colPrimary
                                 : (Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                                  : Appearance.inirEverywhere ? Appearance.inir.colBorderMuted
+                                  : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderMuted
                                   : Appearance.m3colors.m3outlineVariant)
 
                             Behavior on color {
@@ -1393,7 +1393,7 @@ Scope {
                                                         buttonRadius: Appearance.zzzEverywhere
                                                             ? Appearance.zzz.controlRadius
                                                             : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                                                            : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+                                                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
                                                             : Appearance.rounding.small
 
                                                         // Rows inside a card, not cards
@@ -1427,10 +1427,10 @@ Scope {
                                                                 color: Appearance.zzzEverywhere
                                                                         ? CF.ColorUtils.transparentize(Appearance.zzz.paperAlt, 0.10)
                                                                     : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                                                                    : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                                                                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                                                                     : CF.ColorUtils.applyAlpha(Appearance.colors.colPrimary, 0.20)
                                                                 colSymbol: Appearance.zzzEverywhere ? Appearance.zzz.accent
-                                                                    : Appearance.inirEverywhere ? Appearance.inir.colAccent
+                                                                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colAccent
                                                                     : Appearance.angelEverywhere ? Appearance.angel.colText
                                                                     : Appearance.colors.colPrimary
                                                                 // Rotation rides the whole medallion: the wrapper
@@ -2124,12 +2124,12 @@ Scope {
                     width: noResultsRow.implicitWidth + 26
                     height: 36
                     radius: Appearance.rounding.full
-                    color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                          : Appearance.zzzEverywhere ? Appearance.zzz.bg2
                          : Appearance.colors.colLayer1
                     border.width: 1
                     border.color: Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                        : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                         : Appearance.m3colors.m3outlineVariant
 
                     RowLayout {
@@ -2162,14 +2162,14 @@ Scope {
                     anchors.right: parent.right
                     anchors.rightMargin: 14
                     radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                          : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+                          : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
                           : Appearance.rounding.normal
-                    color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                          : Appearance.zzzEverywhere ? Appearance.zzz.bg2
                          : Appearance.colors.colLayer1
                     border.width: 1
                     border.color: Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                        : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                         : Appearance.m3colors.m3outlineVariant
 
                     ListView {
@@ -2207,7 +2207,7 @@ Scope {
 
                             width: resultsList.width
                             implicitHeight: 46
-                            buttonRadius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+                            buttonRadius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
                                         : Appearance.rounding.small
                             // A wash of the accent, not the accent container. The
                             // container pairs with an on-container ink this row

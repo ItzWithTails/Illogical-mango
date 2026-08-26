@@ -5,7 +5,7 @@ import Quickshell
 import qs.modules.common
 
 /**
- * The iNiR mascot, rendered per branding rules (crisp pixel-art scaling).
+ * The Illogical-mango mascot, rendered per branding rules (crisp pixel-art scaling).
  * Set `pose` to a catalog name from assets/images/mascot/PROMPTS.md,
  * e.g. "notifications-clear", "about-confident", "goodbye-wave".
  * Names listed in the manifest's animatedPoses render as looping GIFs.

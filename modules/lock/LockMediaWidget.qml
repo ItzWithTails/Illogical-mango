@@ -59,14 +59,14 @@ Item {
 
     property QtObject blendedColors: AdaptedMaterialScheme { color: root.artDominantColor }
 
-    // Inir uses fixed colors instead of adaptive
-    readonly property color jiraColText: Appearance.inir.colText
-    readonly property color jiraColTextSecondary: Appearance.inir.colTextSecondary
-    readonly property color jiraColPrimary: Appearance.inir.colPrimary
-    readonly property color jiraColLayer1: Appearance.inir.colLayer1
-    readonly property color jiraColLayer2: Appearance.inir.colLayer2
+    // Ilmango uses fixed colors instead of adaptive
+    readonly property color jiraColText: Appearance.ilmango.colText
+    readonly property color jiraColTextSecondary: Appearance.ilmango.colTextSecondary
+    readonly property color jiraColPrimary: Appearance.ilmango.colPrimary
+    readonly property color jiraColLayer1: Appearance.ilmango.colLayer1
+    readonly property color jiraColLayer2: Appearance.ilmango.colLayer2
 
-    StyledRectangularShadow { target: card; visible: Appearance.angelEverywhere || (!Appearance.inirEverywhere && !Appearance.auroraEverywhere) }
+    StyledRectangularShadow { target: card; visible: Appearance.angelEverywhere || (!Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere) }
 
     Rectangle {
         id: card
@@ -74,17 +74,17 @@ Item {
         width: parent.width - Appearance.sizes.elevationMargin
         implicitHeight: 130
         radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-            : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
         color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-             : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+             : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
              : Appearance.auroraEverywhere ? ColorUtils.transparentize(blendedColors?.colLayer0 ?? Appearance.colors.colLayer0, 0.7)
              : (blendedColors?.colLayer0 ?? Appearance.colors.colLayer0)
         border.width: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
             : Appearance.zzzEverywhere ? 1
-            : Appearance.inirEverywhere ? 1 : 0
+            : Appearance.ilmangoEverywhere ? 1 : 0
         border.color: Appearance.angelEverywhere ? Appearance.angel.colCardBorder
             : Appearance.zzzEverywhere ? Appearance.zzz.hairline
-            : Appearance.inirEverywhere ? Appearance.inir.colBorder : "transparent"
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent"
         Behavior on border.width {
             enabled: Appearance.animationsEnabled
             NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
@@ -108,15 +108,15 @@ Item {
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
             cache: false
-            opacity: Appearance.inirEverywhere ? 0.2 : (Appearance.auroraEverywhere ? 0.3 : 0.6)
+            opacity: Appearance.ilmangoEverywhere ? 0.2 : (Appearance.auroraEverywhere ? 0.3 : 0.6)
             visible: root.displayedArtFilePath !== ""
 
             layer.enabled: Appearance.effectsEnabled
             layer.effect: MultiEffect {
                 blurEnabled: true
-                blur: Appearance.inirEverywhere ? 0.5 : 0.4
+                blur: Appearance.ilmangoEverywhere ? 0.5 : 0.4
                 blurMax: 32
-                saturation: Appearance.inirEverywhere ? 0.1 : 0.4
+                saturation: Appearance.ilmangoEverywhere ? 0.1 : 0.4
             }
         }
 
@@ -142,7 +142,7 @@ Item {
             maxVisualizerValue: 1000
             smoothing: 2
             color: ColorUtils.transparentize(
-                Appearance.inirEverywhere ? root.jiraColPrimary : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary),
+                Appearance.ilmangoEverywhere ? root.jiraColPrimary : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary),
                 0.6
             )
         }
@@ -158,7 +158,7 @@ Item {
                 Layout.preferredWidth: 110
                 Layout.preferredHeight: 110
                 Layout.alignment: Qt.AlignVCenter
-                radius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
                 color: "transparent"
                 clip: true
 
@@ -167,7 +167,7 @@ Item {
                     maskSource: Rectangle {
                         width: 110
                         height: 110
-                        radius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                        radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
                     }
                 }
 
@@ -237,14 +237,14 @@ Item {
 
                 Rectangle {
                     anchors.fill: parent
-                    color: Appearance.inirEverywhere ? root.jiraColLayer2 : (blendedColors?.colLayer1 ?? Appearance.colors.colLayer1)
+                    color: Appearance.ilmangoEverywhere ? root.jiraColLayer2 : (blendedColors?.colLayer1 ?? Appearance.colors.colLayer1)
                     visible: !root.downloaded || coverArt.status !== Image.Ready
 
                     MaterialSymbol {
                         anchors.centerIn: parent
                         text: "music_note"
                         iconSize: 32
-                        color: Appearance.inirEverywhere ? root.jiraColTextSecondary : (blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
+                        color: Appearance.ilmangoEverywhere ? root.jiraColTextSecondary : (blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
                     }
                 }
             }
@@ -261,7 +261,7 @@ Item {
                     text: StringUtils.cleanMusicTitle(root.player?.trackTitle) || "—"
                     font.pixelSize: Appearance.font.pixelSize.normal
                     font.weight: Font.Medium
-                    color: Appearance.inirEverywhere ? root.jiraColText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                    color: Appearance.ilmangoEverywhere ? root.jiraColText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                     elide: Text.ElideRight
                     animateChange: true
                     animationDistanceX: 6
@@ -272,7 +272,7 @@ Item {
                     Layout.fillWidth: true
                     text: root.player?.trackArtist || ""
                     font.pixelSize: Appearance.font.pixelSize.smaller
-                    color: Appearance.inirEverywhere ? root.jiraColTextSecondary : (blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
+                    color: Appearance.ilmangoEverywhere ? root.jiraColTextSecondary : (blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
                     elide: Text.ElideRight
                     visible: text !== ""
                 }
@@ -291,9 +291,9 @@ Item {
                             configuration: StyledSlider.Configuration.Wavy
                             wavy: root.player?.isPlaying ?? false
                             animateWave: root.player?.isPlaying ?? false
-                            highlightColor: Appearance.inirEverywhere ? root.jiraColPrimary : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
-                            trackColor: Appearance.inirEverywhere ? Appearance.inir.colLayer2 : Appearance.zzzEverywhere ? Appearance.colors.colLayer2 : (blendedColors?.colSecondaryContainer ?? Appearance.colors.colSecondaryContainer)
-                            handleColor: Appearance.inirEverywhere ? root.jiraColPrimary : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
+                            highlightColor: Appearance.ilmangoEverywhere ? root.jiraColPrimary : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
+                            trackColor: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 : Appearance.zzzEverywhere ? Appearance.colors.colLayer2 : (blendedColors?.colSecondaryContainer ?? Appearance.colors.colSecondaryContainer)
+                            handleColor: Appearance.ilmangoEverywhere ? root.jiraColPrimary : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
                             value: root.player?.length > 0 ? root.player.position / root.player.length : 0
                             onMoved: root.player.position = value * root.player.length
                             scrollable: true
@@ -306,8 +306,8 @@ Item {
                         sourceComponent: StyledProgressBar {
                             wavy: root.player?.isPlaying ?? false
                             animateWave: root.player?.isPlaying ?? false
-                            highlightColor: Appearance.inirEverywhere ? root.jiraColPrimary : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
-                            trackColor: Appearance.inirEverywhere ? Appearance.inir.colLayer2 : Appearance.zzzEverywhere ? Appearance.colors.colLayer2 : (blendedColors?.colSecondaryContainer ?? Appearance.colors.colSecondaryContainer)
+                            highlightColor: Appearance.ilmangoEverywhere ? root.jiraColPrimary : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
+                            trackColor: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 : Appearance.zzzEverywhere ? Appearance.colors.colLayer2 : (blendedColors?.colSecondaryContainer ?? Appearance.colors.colSecondaryContainer)
                             value: root.player?.length > 0 ? root.player.position / root.player.length : 0
                         }
                     }
@@ -322,7 +322,7 @@ Item {
                         text: StringUtils.friendlyTimeForSeconds(root.player?.position ?? 0)
                         font.pixelSize: Appearance.font.pixelSize.smallest
                         font.family: Appearance.font.family.numbers
-                        color: Appearance.inirEverywhere ? root.jiraColText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                        color: Appearance.ilmangoEverywhere ? root.jiraColText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                     }
 
                     Item { Layout.fillWidth: true }
@@ -332,10 +332,10 @@ Item {
                         implicitWidth: 32
                         implicitHeight: 32
                         enabled: MprisController.canGoPrevious
-                        buttonRadius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                        buttonRadius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                         colBackground: "transparent"
-                        colBackgroundHover: Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover : ColorUtils.transparentize(blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
-                        colRipple: Appearance.inirEverywhere ? Appearance.inir.colLayer2Active : (blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
+                        colBackgroundHover: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover : ColorUtils.transparentize(blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
+                        colRipple: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active : (blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
                         onClicked: MprisController.previous()
 
                         contentItem: Item {
@@ -344,7 +344,7 @@ Item {
                                 text: "skip_previous"
                                 iconSize: 22
                                 fill: 1
-                                color: Appearance.inirEverywhere ? root.jiraColText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                                color: Appearance.ilmangoEverywhere ? root.jiraColText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                             }
                         }
                     }
@@ -353,25 +353,25 @@ Item {
                         id: playPauseButton
                         implicitWidth: 40
                         implicitHeight: 40
-                        buttonRadius: Appearance.inirEverywhere
-                            ? Appearance.inir.roundingSmall
+                        buttonRadius: Appearance.ilmangoEverywhere
+                            ? Appearance.ilmango.roundingSmall
                             : (root.player?.isPlaying ? Appearance.rounding.normal : Appearance.rounding.full)
-                        colBackground: Appearance.inirEverywhere
+                        colBackground: Appearance.ilmangoEverywhere
                             ? "transparent"
                             : Appearance.auroraEverywhere
                                 ? "transparent"
                                 : (root.player?.isPlaying
                                     ? (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
                                     : (blendedColors?.colSecondaryContainer ?? Appearance.colors.colSecondaryContainer))
-                        colBackgroundHover: Appearance.inirEverywhere
-                            ? Appearance.inir.colLayer2Hover
+                        colBackgroundHover: Appearance.ilmangoEverywhere
+                            ? Appearance.ilmango.colLayer2Hover
                             : Appearance.auroraEverywhere
                                 ? ColorUtils.transparentize(blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
                                 : (root.player?.isPlaying
                                     ? (blendedColors?.colPrimaryHover ?? Appearance.colors.colPrimaryHover)
                                     : (blendedColors?.colSecondaryContainerHover ?? Appearance.colors.colSecondaryContainerHover))
-                        colRipple: Appearance.inirEverywhere
-                            ? Appearance.inir.colLayer2Active
+                        colRipple: Appearance.ilmangoEverywhere
+                            ? Appearance.ilmango.colLayer2Active
                             : Appearance.auroraEverywhere
                                 ? (blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
                                 : (root.player?.isPlaying
@@ -380,7 +380,7 @@ Item {
                         onClicked: MprisController.togglePlaying()
 
                         Behavior on buttonRadius {
-                            enabled: Appearance.animationsEnabled && !Appearance.inirEverywhere
+                            enabled: Appearance.animationsEnabled && !Appearance.ilmangoEverywhere
                             NumberAnimation { duration: Appearance.animation.elementMoveFast.duration }
                         }
 
@@ -390,7 +390,7 @@ Item {
                                 text: root.player?.isPlaying ? "pause" : "play_arrow"
                                 iconSize: 24
                                 fill: 1
-                                color: Appearance.inirEverywhere
+                                color: Appearance.ilmangoEverywhere
                                     ? root.jiraColPrimary
                                     : Appearance.auroraEverywhere
                                         ? (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
@@ -410,10 +410,10 @@ Item {
                         implicitWidth: 32
                         implicitHeight: 32
                         enabled: MprisController.canGoNext
-                        buttonRadius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                        buttonRadius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                         colBackground: "transparent"
-                        colBackgroundHover: Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover : ColorUtils.transparentize(blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
-                        colRipple: Appearance.inirEverywhere ? Appearance.inir.colLayer2Active : (blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
+                        colBackgroundHover: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover : ColorUtils.transparentize(blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5)
+                        colRipple: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active : (blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
                         onClicked: MprisController.next()
 
                         contentItem: Item {
@@ -422,7 +422,7 @@ Item {
                                 text: "skip_next"
                                 iconSize: 22
                                 fill: 1
-                                color: Appearance.inirEverywhere ? root.jiraColText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                                color: Appearance.ilmangoEverywhere ? root.jiraColText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                             }
                         }
                     }
@@ -433,7 +433,7 @@ Item {
                         text: StringUtils.friendlyTimeForSeconds(root.player?.length ?? 0)
                         font.pixelSize: Appearance.font.pixelSize.smallest
                         font.family: Appearance.font.family.numbers
-                        color: Appearance.inirEverywhere ? root.jiraColText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+                        color: Appearance.ilmangoEverywhere ? root.jiraColText : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                     }
                 }
             }

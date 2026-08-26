@@ -41,31 +41,31 @@ Item {
     readonly property real sideCardHeight: Math.round(sideCardWidth * 0.64)
     readonly property real filmstripHeight: Math.max(112, Math.min(height * 0.18, 164))
     readonly property real panelRadius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-        : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
         : Appearance.rounding.normal
     readonly property real cardRadius: Appearance.angelEverywhere ? Appearance.angel.roundingLarge
-        : Appearance.inirEverywhere ? Appearance.inir.roundingLarge
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingLarge
         : Appearance.rounding.large
     readonly property color surfaceColor: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colLayer1
     readonly property color elevatedColor: Appearance.angelEverywhere ? Appearance.angel.colGlassPanel
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
         : Appearance.auroraEverywhere ? Appearance.aurora.colOverlay
         : Appearance.colors.colLayer2
     readonly property color baseColor: Appearance.angelEverywhere ? Appearance.angel.colGlassPanel
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer0
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer0
         : Appearance.auroraEverywhere ? Appearance.aurora.colOverlay
         : Appearance.colors.colLayer0
     readonly property color textColor: Appearance.angelEverywhere ? Appearance.angel.colText
-        : Appearance.inirEverywhere ? Appearance.inir.colText
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
         : Appearance.colors.colOnLayer1
     readonly property color subtleTextColor: Appearance.angelEverywhere ? Appearance.angel.colTextMuted
-        : Appearance.inirEverywhere ? Appearance.inir.colTextMuted
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextMuted
         : Appearance.colors.colSubtext
     readonly property color borderColor: Appearance.angelEverywhere ? Appearance.angel.colBorderSubtle
-        : Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
         : ColorUtils.applyAlpha(Appearance.colors.colOutlineVariant, 0.55)
     readonly property string helperText: searchField.activeFocus
         ? Translation.tr("Type to filter this folder")
@@ -537,9 +537,9 @@ Item {
         screenY: { const p = topPill.mapToGlobal(0, 0); return p.y }
         radius: Appearance.rounding.full
         fallbackColor: root.surfaceColor
-        inirColor: Appearance.inir.colLayer1
+        ilmangoColor: Appearance.ilmango.colLayer1
         auroraTransparency: Appearance.aurora.popupTransparentize
-        border.width: Appearance.inirEverywhere || Appearance.angelEverywhere ? 1 : 0
+        border.width: Appearance.ilmangoEverywhere || Appearance.angelEverywhere ? 1 : 0
         border.color: root.borderColor
         Behavior on opacity { enabled: Appearance.animationsEnabled; animation: NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }
 
@@ -621,9 +621,9 @@ Item {
             screenY: { const p = leftInfoPanel.mapToGlobal(0, 0); return p.y }
             radius: root.panelRadius
             fallbackColor: root.surfaceColor
-            inirColor: Appearance.inir.colLayer1
+            ilmangoColor: Appearance.ilmango.colLayer1
             auroraTransparency: Appearance.aurora.popupTransparentize
-            border.width: Appearance.inirEverywhere || Appearance.angelEverywhere ? 1 : 0
+            border.width: Appearance.ilmangoEverywhere || Appearance.angelEverywhere ? 1 : 0
             border.color: root.borderColor
             Behavior on opacity { enabled: Appearance.animationsEnabled; animation: NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }
 
@@ -712,9 +712,9 @@ Item {
             screenY: { const p = rightActionsPanel.mapToGlobal(0, 0); return p.y }
             radius: root.panelRadius
             fallbackColor: root.surfaceColor
-            inirColor: Appearance.inir.colLayer1
+            ilmangoColor: Appearance.ilmango.colLayer1
             auroraTransparency: Appearance.aurora.popupTransparentize
-            border.width: Appearance.inirEverywhere || Appearance.angelEverywhere ? 1 : 0
+            border.width: Appearance.ilmangoEverywhere || Appearance.angelEverywhere ? 1 : 0
             border.color: root.borderColor
             Behavior on opacity { enabled: Appearance.animationsEnabled; animation: NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }
 
@@ -1199,9 +1199,9 @@ Item {
         screenY: { const p = filmstripPanel.mapToGlobal(0, 0); return p.y }
         radius: root.panelRadius
         fallbackColor: root.surfaceColor
-        inirColor: Appearance.inir.colLayer1
+        ilmangoColor: Appearance.ilmango.colLayer1
         auroraTransparency: Appearance.aurora.popupTransparentize
-        border.width: Appearance.inirEverywhere || Appearance.angelEverywhere ? 1 : 0
+        border.width: Appearance.ilmangoEverywhere || Appearance.angelEverywhere ? 1 : 0
         border.color: root.borderColor
         Behavior on height { enabled: Appearance.animationsEnabled; animation: NumberAnimation { duration: Appearance.animation.elementMoveEnter.duration; easing.type: Appearance.animation.elementMoveEnter.type; easing.bezierCurve: Appearance.animation.elementMoveEnter.bezierCurve } }
 

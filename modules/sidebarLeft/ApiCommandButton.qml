@@ -12,21 +12,21 @@ GroupButton {
     baseWidth: contentItem.implicitWidth + horizontalPadding * 2
     clickedWidth: baseWidth + 14
     baseHeight: contentItem.implicitHeight + verticalPadding * 2
-    buttonRadius: down ? (Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.verysmall) : (Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.small)
+    buttonRadius: down ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.verysmall) : (Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.small)
 
     colBackground: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2 
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 
         : Appearance.auroraEverywhere ? "transparent" : Appearance.colors.colLayer2
     colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover 
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover 
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover : Appearance.colors.colLayer2Hover
     colBackgroundActive: Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active 
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active 
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive : Appearance.colors.colLayer2Active
 
     contentItem: StyledText {
         horizontalAlignment: Text.AlignHCenter
         text: buttonText
-        color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSurface
+        color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSurface
     }
 }

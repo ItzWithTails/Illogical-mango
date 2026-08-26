@@ -1,4 +1,4 @@
-## iNiR Wiki
+## Illogical-mango Wiki
 
 ### Start
 - [Home](Home)

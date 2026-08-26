@@ -6,7 +6,7 @@ import qs.modules.common
 import qs.modules.common.widgets
 
 // Compact tooltip shape: subtle outline, very small radius, and the plate grows
-// from nothing instead of scaling. Colours come from iNiR's generated palette.
+// from nothing instead of scaling. Colours come from Illogical-mango's generated palette.
 PopupToolTip {
     id: root
 

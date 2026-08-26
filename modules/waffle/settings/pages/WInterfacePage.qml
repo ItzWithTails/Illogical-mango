@@ -748,7 +748,7 @@ WSettingsPage {
             label: Translation.tr("System + microphone")
             icon: root.audioMixAvailable ? "speaker-settings" : "info"
             description: root.audioMixAvailable
-                ? Translation.tr("iNiR combines system audio and microphone automatically. The temporary audio route is removed when recording ends")
+                ? Translation.tr("Illogical-mango combines system audio and microphone automatically. The temporary audio route is removed when recording ends")
                 : Translation.tr("System and microphone audio cannot be combined on this setup. Recording will continue with whichever source is available")
         }
 

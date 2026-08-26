@@ -31,7 +31,7 @@ OUTPUT = REPO_ROOT / "scripts" / "lib" / "ipc-registry.sh"
 # Targets under this IPC.md heading are waffle-only.
 WAFFLE_SECTION_HEADING = "## Waffle-Specific Targets"
 
-# Headings under this section are top-level `inir` CLI commands, NOT IPC targets,
+# Headings under this section are top-level `ilmango` CLI commands, NOT IPC targets,
 # so they must not be parsed as IpcHandler targets (avoids spurious warnings).
 STANDALONE_SECTION_HEADING = "## Standalone Commands"
 

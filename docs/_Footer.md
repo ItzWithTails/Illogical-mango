@@ -1,1 +1,1 @@
-iNiR documentation. `main` is stable. `prerelease` is development.
+Illogical-mango documentation. `main` is stable. `prerelease` is development.

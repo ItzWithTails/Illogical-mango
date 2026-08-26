@@ -14,21 +14,21 @@ Item {
 
     // Style tokens (5-style support)
     readonly property color colText: Appearance.angelEverywhere ? Appearance.angel.colText
-        : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
     readonly property color colTextSecondary: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
     readonly property color colCard: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer0
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer0
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colLayer0
     readonly property color colBorder: Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-        : Appearance.inirEverywhere ? Appearance.inir.colBorder : Appearance.colors.colLayer0Border
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : Appearance.colors.colLayer0Border
     readonly property int borderWidth: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
-        : Appearance.inirEverywhere ? 1 : (Appearance.auroraEverywhere ? 0 : 1)
+        : Appearance.ilmangoEverywhere ? 1 : (Appearance.auroraEverywhere ? 0 : 1)
     readonly property real radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-        : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
     readonly property color colPrimary: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary
 
     // Word count helper
     readonly property int wordCount: textArea.text.trim().length > 0
@@ -95,7 +95,7 @@ Item {
                 implicitHeight: 22
                 radius: 11
                 color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                    : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                     : Appearance.colors.colSecondaryContainer
 
                 RowLayout {
@@ -108,7 +108,7 @@ Item {
                         font.pixelSize: Appearance.font.pixelSize.smallest
                         font.family: Appearance.font.family.numbers
                         color: Appearance.angelEverywhere ? Appearance.angel.colText
-                            : Appearance.inirEverywhere ? Appearance.inir.colText
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                             : Appearance.colors.colOnSecondaryContainer
                     }
                 }
@@ -144,11 +144,11 @@ Item {
                             radius: 13
                             color: active
                                 ? (Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                                    : Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                                     : Appearance.colors.colPrimary)
                                 : (tabMA.containsMouse
                                     ? (Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                                        : Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover
+                                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
                                         : Appearance.colors.colLayer1Hover)
                                     : "transparent")
                             Behavior on color { enabled: Appearance.animationsEnabled; ColorAnimation { duration: Appearance.animation.elementMoveFast.duration } }
@@ -165,7 +165,7 @@ Item {
                                     font.weight: tabPill.active ? Font.Medium : Font.Normal
                                     color: tabPill.active
                                         ? (Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-                                            : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary
+                                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary
                                             : Appearance.colors.colOnPrimary)
                                         : root.colTextSecondary
                                     elide: Text.ElideRight
@@ -187,7 +187,7 @@ Item {
                                     iconSize: 12
                                     color: tabPill.active
                                         ? (Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-                                            : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary
+                                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary
                                             : Appearance.colors.colOnPrimary)
                                         : root.colTextSecondary
 
@@ -267,13 +267,13 @@ Item {
             Layout.fillHeight: true
             radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal : Appearance.rounding.normal
             color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                : Appearance.inirEverywhere ? Appearance.inir.colLayer0
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer0
                 : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                 : Appearance.colors.colLayer0
             border.width: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
-                : Appearance.inirEverywhere ? 1 : (Appearance.auroraEverywhere ? 0 : 1)
+                : Appearance.ilmangoEverywhere ? 1 : (Appearance.auroraEverywhere ? 0 : 1)
             border.color: Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                : Appearance.inirEverywhere ? Appearance.inir.colBorder : Appearance.colors.colLayer0Border
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : Appearance.colors.colLayer0Border
             clip: true
 
             ScrollView {
@@ -288,16 +288,16 @@ Item {
                     width: scrollView.availableWidth
                     wrapMode: TextArea.Wrap
                     renderType: Text.NativeRendering
-                    font.pixelSize: Appearance.inirEverywhere ? Appearance.font.pixelSize.smaller : Appearance.font.pixelSize.small
-                    color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer0
+                    font.pixelSize: Appearance.ilmangoEverywhere ? Appearance.font.pixelSize.smaller : Appearance.font.pixelSize.small
+                    color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer0
                     selectionColor: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                        : Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                         : Appearance.colors.colSecondaryContainer
                     selectedTextColor: Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-                        : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary
                         : Appearance.colors.colOnSecondaryContainer
                     placeholderText: Translation.tr("Write your notes here...")
-                    placeholderTextColor: Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colOutline
+                    placeholderTextColor: Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colOutline
                     Component.onCompleted: text = Notepad.text
                     selectByMouse: true
                     persistentSelection: true
@@ -388,7 +388,7 @@ Item {
                 text: "check"
                 iconSize: 14
                 color: Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-                    : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary
                     : Appearance.colors.colOnPrimary
             }
 
@@ -396,7 +396,7 @@ Item {
                 text: Translation.tr("Copied!")
                 font.pixelSize: Appearance.font.pixelSize.smaller
                 color: Appearance.angelEverywhere ? Appearance.angel.colOnPrimary
-                    : Appearance.inirEverywhere ? Appearance.inir.colOnPrimary
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary
                     : Appearance.colors.colOnPrimary
             }
         }
@@ -425,20 +425,20 @@ Item {
         Rectangle {
             anchors.fill: parent
             radius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
             color: {
                 if (!toolBtn.enabled) return "transparent"
                 if (toolBtnMA.containsPress)
                     return toolBtn.destructive
                         ? ColorUtils.transparentize(Appearance.colors.colError, 0.7)
                         : (Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-                         : Appearance.inirEverywhere ? Appearance.inir.colLayer1Active
+                         : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Active
                          : Appearance.colors.colLayer1Active)
                 if (toolBtnMA.containsMouse)
                     return toolBtn.destructive
                         ? ColorUtils.transparentize(Appearance.colors.colError, 0.85)
                         : (Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                         : Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover
+                         : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
                          : Appearance.colors.colLayer1Hover)
                 return "transparent"
             }

@@ -1,4 +1,4 @@
-# Install dependencies for iNiR on Arch-based systems
+# Install dependencies for Illogical-mango on Arch-based systems
 # This script is meant to be sourced, not run directly.
 
 # shellcheck shell=bash
@@ -170,14 +170,14 @@ install_pkgbuild_deps() {
 }
 
 # Install from each PKGBUILD
-for pkgdir in ./sdata/dist-arch/inir-*/; do
+for pkgdir in ./sdata/dist-arch/ilmango-*/; do
   # Check group flags
   pkgname=$(basename "$pkgdir")
   case "$pkgname" in
-    inir-audio) $INSTALL_AUDIO || continue ;;
-    inir-toolkit) $INSTALL_TOOLKIT || continue ;;
-    inir-screencapture) $INSTALL_SCREENCAPTURE || continue ;;
-    inir-fonts) $INSTALL_FONTS || continue ;;
+    ilmango-audio) $INSTALL_AUDIO || continue ;;
+    ilmango-toolkit) $INSTALL_TOOLKIT || continue ;;
+    ilmango-screencapture) $INSTALL_SCREENCAPTURE || continue ;;
+    ilmango-fonts) $INSTALL_FONTS || continue ;;
   esac
   
   v install_pkgbuild_deps "$pkgdir"
@@ -236,20 +236,20 @@ _qs_shell_found=false
 for _qs_pkg in "${_qs_shell_conflicts[@]}"; do
   if pacman -Qi "$_qs_pkg" &>/dev/null 2>&1; then
     _qs_shell_found=true
-    log_warning "$_qs_pkg is installed and conflicts with iNiR"
+    log_warning "$_qs_pkg is installed and conflicts with Illogical-mango"
 
     # Stop related services before removal
     systemctl --user stop "${_qs_pkg}.service" 2>/dev/null || true
     systemctl --user disable "${_qs_pkg}.service" 2>/dev/null || true
 
     if $ask; then
-      if tui_confirm "Remove $_qs_pkg? (required for iNiR)"; then
+      if tui_confirm "Remove $_qs_pkg? (required for Illogical-mango)"; then
         log_info "Removing $_qs_pkg..."
         v pkg_sudo pacman -Rdd --noconfirm "$_qs_pkg" 2>/dev/null \
           || v pkg_sudo pacman -R --noconfirm "$_qs_pkg" \
           || log_warning "Could not remove $_qs_pkg — install may fail"
       else
-        log_warning "Keeping $_qs_pkg — iNiR may not work correctly"
+        log_warning "Keeping $_qs_pkg — Illogical-mango may not work correctly"
       fi
     else
       log_info "Non-interactive: removing $_qs_pkg"
@@ -412,7 +412,7 @@ if $INSTALL_FONTS; then
 fi
 
 if $INSTALL_AUDIO; then
-  : # cava moved to inir-audio PKGBUILD
+  : # cava moved to ilmango-audio PKGBUILD
 fi
 
 if $INSTALL_TOOLKIT; then
@@ -476,16 +476,16 @@ v install-python-packages
 
 #####################################################################################
 # Register dependencies with pacman via meta-package
-# This prevents "clean orphans" from removing iNiR's deps.
+# This prevents "clean orphans" from removing Illogical-mango's deps.
 # The meta-package contains no files — only dependency declarations.
 #####################################################################################
 tui_info "Registering dependencies with pacman..."
 
-_meta_dir="./sdata/dist-arch/inir-deps"
+_meta_dir="./sdata/dist-arch/ilmango-deps"
 if [[ -f "$_meta_dir/PKGBUILD" ]]; then
   # Update pkgver from VERSION file
-  _inir_ver="$(cat ./VERSION 2>/dev/null || echo '2.29.2')"
-  sed -i "s/^pkgver=.*/pkgver=${_inir_ver}/" "$_meta_dir/PKGBUILD"
+  _ilmango_ver="$(cat ./VERSION 2>/dev/null || echo '2.29.2')"
+  sed -i "s/^pkgver=.*/pkgver=${_ilmango_ver}/" "$_meta_dir/PKGBUILD"
 
   (
     cd "$_meta_dir"
@@ -497,12 +497,12 @@ if [[ -f "$_meta_dir/PKGBUILD" ]]; then
       local_pkg=(*.pkg.tar.zst)
       if [[ -f "${local_pkg[0]}" ]]; then
         if pkg_sudo pacman -U --noconfirm --needed "${local_pkg[0]}" 2>/dev/null; then
-          log_success "Meta-package inir-deps registered — orphan cleaner will skip iNiR deps"
+          log_success "Meta-package ilmango-deps registered — orphan cleaner will skip Illogical-mango deps"
         else
           # Some deps might be AUR-only and not satisfy pacman's check.
           # Fall back to installing without dep verification.
           pkg_sudo pacman -Udd --noconfirm "${local_pkg[0]}" 2>/dev/null && \
-            log_success "Meta-package inir-deps registered (forced)" || \
+            log_success "Meta-package ilmango-deps registered (forced)" || \
             log_warning "Could not register meta-package — orphan protection unavailable"
         fi
         rm -f "${local_pkg[@]}" 2>/dev/null
@@ -514,7 +514,7 @@ if [[ -f "$_meta_dir/PKGBUILD" ]]; then
 else
   log_warning "Meta-package PKGBUILD not found at $_meta_dir"
 fi
-unset _meta_dir _inir_ver
+unset _meta_dir _ilmango_ver
 
 #####################################################################################
 # Post-install: Check for Qt/Quickshell ABI mismatch

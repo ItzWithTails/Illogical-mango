@@ -54,12 +54,12 @@ Item {
     
     readonly property bool zzzEverywhere: Appearance.zzzEverywhere
     readonly property bool regaliaEverywhere: Appearance.regaliaEverywhere
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     readonly property bool angelEverywhere: Appearance.angelEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
     
     readonly property string wallpaperUrl: Wallpapers.effectiveWallpaperUrl
-    readonly property bool useWallpaperBackdrop: root.auroraEverywhere && !root.inirEverywhere && !Appearance.gameModeMinimal && root.wallpaperUrl.length > 0
+    readonly property bool useWallpaperBackdrop: root.auroraEverywhere && !root.ilmangoEverywhere && !Appearance.gameModeMinimal && root.wallpaperUrl.length > 0
     
     ColorQuantizer {
         id: wallpaperColorQuantizer
@@ -76,7 +76,7 @@ Item {
     // Shadow
     StyledRectangularShadow {
         target: background
-        visible: !root.zzzEverywhere && (Appearance.angelEverywhere || (!root.inirEverywhere && !root.auroraEverywhere)) && !Appearance.gameModeMinimal
+        visible: !root.zzzEverywhere && (Appearance.angelEverywhere || (!root.ilmangoEverywhere && !root.auroraEverywhere)) && !Appearance.gameModeMinimal
     }
 
     Rectangle {
@@ -88,7 +88,7 @@ Item {
 
         color: root.zzzEverywhere ? Appearance.zzz.bg0
              : root.regaliaEverywhere ? "transparent"
-             : root.inirEverywhere ? Appearance.inir.colLayer0
+             : root.ilmangoEverywhere ? Appearance.ilmango.colLayer0
              : root.auroraEverywhere ? ColorUtils.applyAlpha((root.blendedColors?.colLayer0 ?? Appearance.colors.colLayer0), 1)
              : Appearance.colors.colLayer0
         Behavior on color {
@@ -98,13 +98,13 @@ Item {
         radius: root.zzzEverywhere ? 0
             : root.regaliaEverywhere ? Appearance.regalia.panelRadius
             : root.angelEverywhere ? Appearance.angel.roundingLarge
-            : root.inirEverywhere ? Appearance.inir.roundingLarge
+            : root.ilmangoEverywhere ? Appearance.ilmango.roundingLarge
             : Appearance.rounding.large
 
-        border.width: root.regaliaEverywhere || root.zzzEverywhere ? 0 : (root.inirEverywhere ? 1 : (root.auroraEverywhere ? 1 : 1))
+        border.width: root.regaliaEverywhere || root.zzzEverywhere ? 0 : (root.ilmangoEverywhere ? 1 : (root.auroraEverywhere ? 1 : 1))
         border.color: root.zzzEverywhere || root.regaliaEverywhere ? "transparent"
                     : root.angelEverywhere ? Appearance.angel.colBorder
-                    : root.inirEverywhere ? Appearance.inir.colBorder
+                    : root.ilmangoEverywhere ? Appearance.ilmango.colBorder
                     : root.auroraEverywhere ? Appearance.aurora.colTooltipBorder
                     : Appearance.colors.colLayer0Border
 
@@ -171,7 +171,7 @@ Item {
             sourceSize.height: root.screenHeight
             asynchronous: true
 
-            layer.enabled: Appearance.effectsEnabled && root.auroraEverywhere && !root.inirEverywhere
+            layer.enabled: Appearance.effectsEnabled && root.auroraEverywhere && !root.ilmangoEverywhere
             layer.effect: MultiEffect {
                 source: blurredWallpaper
                 anchors.fill: source

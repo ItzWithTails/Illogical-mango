@@ -59,12 +59,14 @@ Wayland → GPU
 - **コードを編集せずに設定できる。** すべては単一の `config.json` の上に載った GUI の設定項目
   です。見た目や挙動を変えるのに QML を触る必要は一度もありません。
 - **まともなインストールとアップグレードの導線。** `./setup` が依存関係とシステム設定を面倒
-  みて、`inir update` が pull し、スキーマのマイグレーションを走らせ、あなたの変更を保ったまま、
+  みて、`ilmango update` が pull し、スキーマのマイグレーションを走らせ、あなたの変更を保ったまま、
   ロールバックもできます。
 
 **系譜。** [end-4 の illogical-impulse](https://github.com/end-4/dots-hyprland)（Hyprland の
 dotfiles）→ [snowarch の iNiR](https://github.com/snowarch/iNiR)（niri 向けに書き直し）→ これ、
-MangoWM に移植したもの。CLI も設定パスも内部も、いまだに `inir` という名前のままです。改名すると
+MangoWM に移植したもの。CLI も設定パスも内部も `ilmango` という名前です。iNiR 時代のインストールは
+マイグレーション 037 が引き継ぎ、旧パスにシンボリックリンクを残すので、既存のキーバインドや
+スクリプトはそのまま動きます。
 アップグレードの経路が軒並み壊れるので、名前はそのままにしました。
 なぜ end-4 を直接フォークしなかったのか？理屈は単純です - 一度移植された経験のあるプロジェクト
 は、もう一度移植するのが楽なのです。
@@ -85,8 +87,8 @@ Arch Linux から systemd をもぎ取ったら、パッケージ基盤をほぼ
 設定はあえて非破壊的にしてあります。mango はファイルをちょうど 1 つ
 （`~/.config/mango/config.conf`）だけ読み、マージは一切しません。ですからインストーラがあなたの
 コンポジタ設定を上書きすることはありません。シェルのキーバインドと自動起動は
-`~/.config/mango/inir.conf` に置き、そこを指す `source-optional=` を 1 行追記するだけで、
-ウィンドウ管理には触れません。自動起動はそのファイル内の `exec-once=inir run --daemon` の行で
+`~/.config/mango/ilmango.conf` に置き、そこを指す `source-optional=` を 1 行追記するだけで、
+ウィンドウ管理には触れません。自動起動はそのファイル内の `exec-once=ilmango run --daemon` の行で
 あって、systemd ユニットではありません。
 
 > [!NOTE]
@@ -134,7 +136,7 @@ Arch Linux から systemd をもぎ取ったら、パッケージ基盤をほぼ
 **パネルファミリーが 2 つ**、<kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd> で随時切り替え:
 
 - **Material ii** — フローティングバー、サイドバー、ドック、そして 8 種の視覚スタイル
-  （Material、Cards、Aurora、iNiR、Angel、Regalia、ZZZ、Cookie Shapes）
+  （Material、Cards、Aurora、Illogical-mango、Angel、Regalia、ZZZ、Cookie Shapes）
 - **Waffle** — Windows 11 風のタスクバー、スタートメニュー、アクションセンター、通知センター
 
 **自動テーマ化。** 壁紙を選べばシステム全体がそれに追従します。シェルの Material You カラーが
@@ -146,7 +148,7 @@ Catppuccin、Rosé Pine のプリセット同梱、自作もできます。
 
 ### テーマと外観
 
-- **8 種の視覚スタイル**: Material（ベタ塗り）、Cards、Aurora（すりガラス）、iNiR（TUI 風）、Angel（ネオブルータリズム）、Regalia（黒い工学的シャーシ、温かみのあるアイボリーの文字、抑えたシャンパン色の金具）、ZZZ（ポスター調の板）、Cookie Shapes（形状がアニメーションで変形）
+- **8 種の視覚スタイル**: Material（ベタ塗り）、Cards、Aurora（すりガラス）、Illogical-mango（TUI 風）、Angel（ネオブルータリズム）、Regalia（黒い工学的シャーシ、温かみのあるアイボリーの文字、抑えたシャンパン色の金具）、ZZZ（ポスター調の板）、Cookie Shapes（形状がアニメーションで変形）
 - **壁紙からの動的な配色**を Material You 経由でシステム全体へ
 - **10 個のターミナル・TUI ツールを自動テーマ化**: foot、kitty、alacritty、ghostty、wezterm、starship、fuzzel、btop、lazygit、yazi
 - **アプリのテーマ化**: GTK3/4、Qt（plasma-integration と darkly 経由）、Firefox（MaterialFox）、Discord/Vesktop（System24）、Zed、Spicetify、Steam、SDDM
@@ -198,7 +200,7 @@ Catppuccin、Rosé Pine のプリセット同梱、自作もできます。
 
 - **GUI 設定**: ファイルを触らずに何でも設定できる
 - **GameMode**: 全画面アプリのときエフェクトを自動で無効化
-- **自動更新**: `inir update`。ロールバック、マイグレーション、ユーザ変更の保持つき
+- **自動更新**: `ilmango update`。ロールバック、マイグレーション、ユーザ変更の保持つき
 - **ロック画面**と**セッション画面**（ログアウト／再起動／シャットダウン／サスペンド）
 - **polkit エージェント**、**スクリーンキーボード**、**自動起動マネージャ**（mango 設定の `exec-once` の行が土台）
 - **Kira**: 任意で有効にするドット絵のマスコット。画面の端をうろつき、あなたの操作に反応します。既定では無効。約 32 MiB の素材パックは `./setup` › Extras から別途ダウンロード
@@ -215,22 +217,22 @@ Catppuccin、Rosé Pine のプリセット同梱、自作もできます。
 ## クイックスタート（インストーラは将来別のものになります）
 
 ```bash
-git clone https://github.com/ItzWithTails/Illogical-mango.git
+git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
 ./setup install       # 対話式。各ステップの前に確認します
 ./setup install -y    # 全自動。何も訊きません
 ```
 
 インストーラが依存関係、システム設定、テーマ化を引き受けます。シェルのキーバインドを
-`~/.config/mango/inir.conf` に書き、既存の mango 設定へ繋ぎ込みますが、ウィンドウ管理には
+`~/.config/mango/ilmango.conf` に書き、既存の mango 設定へ繋ぎ込みますが、ウィンドウ管理には
 触れません。あとは mango を再起動するか、`mmsg dispatch reload_config` を実行してください。
 
 ```bash
-inir run                        # シェルを起動
-inir settings                   # 設定 GUI を開く
-inir logs                       # ログを見る
-inir doctor                     # 自動診断と修復
-inir update                     # pull + マイグレーション + 再起動
+ilmango run                        # シェルを起動
+ilmango settings                   # 設定 GUI を開く
+ilmango logs                       # ログを見る
+ilmango doctor                     # 自動診断と修復
+ilmango update                     # pull + マイグレーション + 再起動
 ```
 
 ほかの入り口:
@@ -302,10 +304,10 @@ sudo make install       # ホームではなくシステム全体へ
 ## トラブルシューティング
 
 ```bash
-inir logs                       # 直近のランタイムログ
-inir restart                    # 動作中のランタイムを再起動
-inir repair                     # doctor + 再起動 + ログの絞り込み確認
-inir doctor                     # よくある問題の自動診断と修復
+ilmango logs                       # 直近のランタイムログ
+ilmango restart                    # 動作中のランタイムを再起動
+ilmango repair                     # doctor + 再起動 + ログの絞り込み確認
+ilmango doctor                     # よくある問題の自動診断と修復
 ./setup rollback                # 直前の更新を取り消す
 claude "助けてください"          # 自分で調べる気がないとき。まあ、20 ドル分は働いてもらわないと
 ```

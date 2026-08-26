@@ -3,16 +3,28 @@ BINDIR = $(PREFIX)/bin
 SHAREDIR = $(PREFIX)/share
 APPLICATIONS_DIR = $(SHAREDIR)/applications
 ICON_DIR = $(SHAREDIR)/icons/hicolor/scalable/apps
-SHELL_INSTALL_DIR = $(SHAREDIR)/quickshell/inir
-DOC_DIR = $(SHAREDIR)/doc/inir-shell
+SHELL_INSTALL_DIR = $(SHAREDIR)/quickshell/ilmango
+DOC_DIR = $(SHAREDIR)/doc/ilmango-shell
 SYSTEMD_USER_DIR ?= $(PREFIX)/lib/systemd/user
 
-.PHONY: all build test-local install install-bin install-shell install-systemd install-icon install-desktop install-docs uninstall uninstall-bin uninstall-shell uninstall-systemd uninstall-icon uninstall-desktop uninstall-docs
+GO ?= go
+INSTALLER_BIN = ilmango-installer
+
+.PHONY: all build installer installer-test test-local install install-installer install-bin install-shell install-systemd install-icon install-desktop install-docs uninstall uninstall-bin uninstall-shell uninstall-systemd uninstall-icon uninstall-desktop uninstall-docs
 
 all: build
 
+# The Go installer. Built on demand rather than as part of `build`, so the
+# shell-only workflow keeps working on machines without a Go toolchain.
+installer:
+	@$(GO) build -o $(INSTALLER_BIN) ./cmd/ilmango-installer
+
+installer-test:
+	@$(GO) vet ./cmd/... ./internal/...
+	@$(GO) test ./cmd/... ./internal/...
+
 build:
-	@chmod +x scripts/inir
+	@chmod +x scripts/ilmango
 	@chmod +x scripts/test-local-distribution.sh
 	@chmod +x setup
 	@find scripts -type f \( -name "*.sh" -o -name "*.fish" -o -name "*.py" \) -exec chmod +x {} +
@@ -21,7 +33,7 @@ test-local: build
 	@bash scripts/test-local-distribution.sh
 
 install-bin:
-	@install -Dm755 scripts/inir $(BINDIR)/inir
+	@install -Dm755 scripts/ilmango $(BINDIR)/ilmango
 
 install-shell:
 	@mkdir -p $(SHELL_INSTALL_DIR)
@@ -53,18 +65,18 @@ install-shell:
 
 install-systemd:
 	@mkdir -p $(SYSTEMD_USER_DIR)
-	@sed -e 's|^ExecStart=.*|ExecStart=$(BINDIR)/inir run --session|' \
-		-e 's|^ExecStopPost=-.*|ExecStopPost=-$(BINDIR)/inir cleanup-orphans|' \
-		assets/systemd/inir.service > $(SYSTEMD_USER_DIR)/inir.service
-	@chmod 644 $(SYSTEMD_USER_DIR)/inir.service
+	@sed -e 's|^ExecStart=.*|ExecStart=$(BINDIR)/ilmango run --session|' \
+		-e 's|^ExecStopPost=-.*|ExecStopPost=-$(BINDIR)/ilmango cleanup-orphans|' \
+		assets/systemd/ilmango.service > $(SYSTEMD_USER_DIR)/ilmango.service
+	@chmod 644 $(SYSTEMD_USER_DIR)/ilmango.service
 
 install-icon:
-	@install -Dm644 assets/icons/desktop-symbolic.svg $(ICON_DIR)/inir.svg
+	@install -Dm644 assets/icons/desktop-symbolic.svg $(ICON_DIR)/ilmango.svg
 	@gtk-update-icon-cache -q $(SHAREDIR)/icons/hicolor 2>/dev/null || true
 
 install-desktop:
-	@install -Dm644 assets/applications/inir.desktop $(APPLICATIONS_DIR)/inir.desktop
-	@install -Dm644 assets/applications/inir-settings.desktop $(APPLICATIONS_DIR)/inir-settings.desktop
+	@install -Dm644 assets/applications/ilmango.desktop $(APPLICATIONS_DIR)/ilmango.desktop
+	@install -Dm644 assets/applications/ilmango-settings.desktop $(APPLICATIONS_DIR)/ilmango-settings.desktop
 	@update-desktop-database -q $(APPLICATIONS_DIR) 2>/dev/null || true
 
 install-docs:
@@ -72,23 +84,26 @@ install-docs:
 	@install -Dm644 docs/SETUP.md $(DOC_DIR)/SETUP.md
 	@install -Dm644 docs/IPC.md $(DOC_DIR)/IPC.md
 
+install-installer: installer
+	@install -Dm755 $(INSTALLER_BIN) $(BINDIR)/ilmango-installer
+
 install: build install-bin install-shell install-systemd install-icon install-desktop install-docs
 
 uninstall-bin:
-	@rm -f $(BINDIR)/inir
+	@rm -f $(BINDIR)/ilmango $(BINDIR)/ilmango-installer
 
 uninstall-shell:
 	@rm -rf $(SHELL_INSTALL_DIR)
 
 uninstall-systemd:
-	@rm -f $(SYSTEMD_USER_DIR)/inir.service
+	@rm -f $(SYSTEMD_USER_DIR)/ilmango.service
 
 uninstall-icon:
-	@rm -f $(ICON_DIR)/inir.svg
+	@rm -f $(ICON_DIR)/ilmango.svg
 	@gtk-update-icon-cache -q $(SHAREDIR)/icons/hicolor 2>/dev/null || true
 
 uninstall-desktop:
-	@rm -f $(APPLICATIONS_DIR)/inir.desktop $(APPLICATIONS_DIR)/inir-settings.desktop
+	@rm -f $(APPLICATIONS_DIR)/ilmango.desktop $(APPLICATIONS_DIR)/ilmango-settings.desktop
 	@update-desktop-database -q $(APPLICATIONS_DIR) 2>/dev/null || true
 
 uninstall-docs:

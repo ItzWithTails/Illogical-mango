@@ -33,17 +33,17 @@ Item {
         addToPlaylistPopup.open() 
     }
 
-    readonly property color colText: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer0
-    readonly property color colTextSecondary: Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
-    readonly property color colPrimary: Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary
-    readonly property color colSurface: Appearance.angelEverywhere ? Appearance.angel.colGlassCard : Appearance.inirEverywhere ? Appearance.inir.colLayer1 : Appearance.auroraEverywhere ? "transparent" : Appearance.colors.colLayer1
-    readonly property color colSurfaceHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover : Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover : Appearance.colors.colLayer1Hover
-    readonly property color colLayer2: Appearance.angelEverywhere ? Appearance.angel.colGlassElevated : Appearance.inirEverywhere ? Appearance.inir.colLayer2 : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface : Appearance.colors.colLayer2
-    readonly property color colLayer2Hover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover : Appearance.colors.colLayer2Hover
-    readonly property color colBorder: Appearance.angelEverywhere ? Appearance.angel.colCardBorder : Appearance.inirEverywhere ? Appearance.inir.colBorder : "transparent"
-    readonly property int borderWidth: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : Appearance.inirEverywhere ? 1 : 0
-    readonly property real radiusSmall: Appearance.angelEverywhere ? Appearance.angel.roundingSmall : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
-    readonly property real radiusNormal: Appearance.angelEverywhere ? Appearance.angel.roundingNormal : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+    readonly property color colText: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer0
+    readonly property color colTextSecondary: Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
+    readonly property color colPrimary: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary
+    readonly property color colSurface: Appearance.angelEverywhere ? Appearance.angel.colGlassCard : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1 : Appearance.auroraEverywhere ? "transparent" : Appearance.colors.colLayer1
+    readonly property color colSurfaceHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover : Appearance.colors.colLayer1Hover
+    readonly property color colLayer2: Appearance.angelEverywhere ? Appearance.angel.colGlassElevated : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface : Appearance.colors.colLayer2
+    readonly property color colLayer2Hover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover : Appearance.colors.colLayer2Hover
+    readonly property color colBorder: Appearance.angelEverywhere ? Appearance.angel.colCardBorder : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent"
+    readonly property int borderWidth: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : Appearance.ilmangoEverywhere ? 1 : 0
+    readonly property real radiusSmall: Appearance.angelEverywhere ? Appearance.angel.roundingSmall : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
+    readonly property real radiusNormal: Appearance.angelEverywhere ? Appearance.angel.roundingNormal : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
 
     component YtActionChip: RippleButton {
         id: chipRoot
@@ -311,7 +311,7 @@ Item {
         }
 
         background: Rectangle {
-            color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                  : Appearance.auroraEverywhere ? Appearance.colors.colLayer1Base
                  : Appearance.colors.colLayer1
             radius: root.radiusNormal
@@ -645,7 +645,7 @@ Item {
         onClosed: { if (YtMusic.oauthSetupActive) YtMusic.cancelOAuthSetup() }
 
         background: Rectangle {
-            color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                  : Appearance.auroraEverywhere ? Appearance.colors.colLayer1Base
                  : Appearance.colors.colLayer1
             radius: root.radiusNormal
@@ -845,7 +845,7 @@ Item {
         property var targetItem: null
 
         background: Rectangle { 
-            color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                  : Appearance.auroraEverywhere ? Appearance.colors.colLayer1Base
                  : Appearance.colors.colLayer1
             radius: root.radiusNormal
@@ -922,7 +922,7 @@ Item {
         modal: true
         dim: true
         background: Rectangle { 
-            color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                  : Appearance.auroraEverywhere ? Appearance.colors.colLayer1Base
                  : Appearance.colors.colLayer1
             radius: root.radiusNormal
@@ -978,7 +978,7 @@ Item {
         modal: true
         dim: true
         background: Rectangle {
-            color: Appearance.inirEverywhere ? Appearance.inir.colLayer2
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                  : Appearance.auroraEverywhere ? Appearance.colors.colLayer1Base
                  : Appearance.colors.colLayer1
             radius: root.radiusNormal
@@ -1037,7 +1037,7 @@ Item {
         Rectangle {
             Layout.fillWidth: true
             implicitHeight: 42
-            radius: Appearance.inirEverywhere ? root.radiusSmall : Appearance.rounding.full
+            radius: Appearance.ilmangoEverywhere ? root.radiusSmall : Appearance.rounding.full
             color: root.colLayer2
             border.width: root.borderWidth
             border.color: root.colBorder
@@ -1611,7 +1611,7 @@ Item {
                         Layout.fillWidth: true
                         height: 1
                         color: root.colBorder
-                        visible: Appearance.inirEverywhere
+                        visible: Appearance.ilmangoEverywhere
                     }
                 }
 

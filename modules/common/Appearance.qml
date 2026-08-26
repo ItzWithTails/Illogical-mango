@@ -15,7 +15,7 @@ Singleton {
     property QtObject animation
     property QtObject animationCurves
     property QtObject aurora
-    property QtObject inir
+    property QtObject ilmango
     property QtObject angel
     property QtObject regalia
     property QtObject zzz
@@ -75,7 +75,7 @@ Singleton {
     readonly property string globalStyle: Config?.options?.appearance?.globalStyle ?? "material"
     readonly property string iiMotionProfile: Config?.options?.appearance?.iiMotionProfile ?? "classic"
     readonly property bool contextualMotionProfile: iiMotionProfile === "contextual"
-    readonly property bool inirEverywhere: globalStyle === "inir"
+    readonly property bool ilmangoEverywhere: globalStyle === "ilmango"
     // angelEverywhere - flagship neo-brutalism glass style (superset of aurora)
     readonly property bool angelEverywhere: globalStyle === "angel"
     // auroraEverywhere controls blur/glass backgrounds — angel inherits aurora blur
@@ -218,7 +218,7 @@ Singleton {
     }
 
     // Style-aware hover/active fills. One source of truth so every component's hover matches the
-    // active global style instead of re-implementing the zzz/angel/inir/aurora/material ternary.
+    // active global style instead of re-implementing the zzz/angel/ilmango/aurora/material ternary.
     // zzz promotes one fill step (paper -> paperAlt) instead of a translucent mix, per its
     // separate-by-fill doctrine (was missing here; components used to hardcode zzz.paperAlt).
     // Cookie promotes one tonal step, like zzz: Expressive stacks plates, so a
@@ -228,23 +228,23 @@ Singleton {
         : cookieEverywhere ? cookie.bg2
         : zzzEverywhere ? zzz.paperAlt
         : angelEverywhere ? angel.colGlassCardHover
-        : inirEverywhere ? inir.colLayer1Hover
+        : ilmangoEverywhere ? ilmango.colLayer1Hover
         : auroraEverywhere ? aurora.colSubSurfaceHover
         : colors.colLayer1Hover
     readonly property color colLayer2Hover: regaliaEverywhere ? regalia.chassis3
         : cookieEverywhere ? cookie.bg3
         : zzzEverywhere ? zzz.bg3
         : angelEverywhere ? angel.colGlassElevatedHover
-        : inirEverywhere ? inir.colLayer2Hover
+        : ilmangoEverywhere ? ilmango.colLayer2Hover
         : auroraEverywhere ? aurora.colElevatedSurfaceHover
         : colors.colLayer2Hover
     // Active/pressed fills — did not exist at top level before, so click feedback
-    // (RippleButton etc.) read straight from raw `colors.*`, skipping inir/zzz entirely.
+    // (RippleButton etc.) read straight from raw `colors.*`, skipping ilmango/zzz entirely.
     readonly property color colLayer1Active: regaliaEverywhere ? regalia.pressPlate
         : cookieEverywhere ? cookie.bg3
         : zzzEverywhere ? zzz.bg3
         : angelEverywhere ? angel.colGlassCardActive
-        : inirEverywhere ? inir.colLayer1Active
+        : ilmangoEverywhere ? ilmango.colLayer1Active
         : auroraEverywhere ? aurora.colSubSurfaceActive
         : colors.colLayer1Active
 
@@ -602,11 +602,11 @@ Singleton {
     readonly property var _themeMeta: activeThemePreset.meta || {}
     
     // Font Strategy:
-    // 1. Inir style -> Always Monospace (TUI feel)
+    // 1. Ilmango style -> Always Monospace (TUI feel)
     // 2. Theme requests mono (Matrix, Vesper) -> Monospace
     // 3. Theme requests serif (Angel) -> Serif (if mapped)
     // 4. Default -> Config Main Font
-    readonly property bool _forceMono: globalStyle === "inir" || _themeMeta.fontStyle === "mono"
+    readonly property bool _forceMono: globalStyle === "ilmango" || _themeMeta.fontStyle === "mono"
     readonly property string _angelFont: "Oxanium"
     readonly property bool _useAngelFont: globalStyle === "angel"
     readonly property string _regaliaFont: "Space Grotesk"
@@ -908,8 +908,8 @@ Singleton {
         readonly property real popupSurfaceTransparentize: popupTransparentize
     }
 
-    inir: QtObject {
-        // Inir style - Elegant terminal UI aesthetic
+    ilmango: QtObject {
+        // Ilmango style - Elegant terminal UI aesthetic
         
         // ═══════════════════════════════════════════════════════════════
         // LAYER SYSTEM

@@ -108,7 +108,7 @@ ContentPage {
     // Global style detection
     readonly property string currentGlobalStyle: Config.options?.appearance?.globalStyle ?? "material"
     readonly property bool isAurora: currentGlobalStyle === "aurora"
-    readonly property bool isInir: currentGlobalStyle === "inir"
+    readonly property bool isIlmango: currentGlobalStyle === "ilmango"
     readonly property bool isCards: currentGlobalStyle === "cards"
     readonly property bool isMaterial: currentGlobalStyle === "material"
     readonly property bool isAngel: currentGlobalStyle === "angel"
@@ -1036,7 +1036,7 @@ ContentPage {
                         checked: Config.options?.bar?.pill?.toasts ?? true
                         onCheckedChanged: Config.setNestedValue("bar.pill.toasts", checked)
                         StyledToolTip {
-                            text: Translation.tr("Notifications take over the resting pill. Off shows iNiR's regular notification popups instead.")
+                            text: Translation.tr("Notifications take over the resting pill. Off shows Illogical-mango's regular notification popups instead.")
                         }
                     }
                     SettingsSwitch {
@@ -1045,7 +1045,7 @@ ContentPage {
                         checked: Config.options?.bar?.pill?.osd ?? true
                         onCheckedChanged: Config.setNestedValue("bar.pill.osd", checked)
                         StyledToolTip {
-                            text: Translation.tr("Volume, brightness and mic changes flash on the pill. Off shows iNiR's regular on-screen display instead.")
+                            text: Translation.tr("Volume, brightness and mic changes flash on the pill. Off shows Illogical-mango's regular on-screen display instead.")
                         }
                     }
                 }
@@ -1238,7 +1238,7 @@ ContentPage {
                         checked: Config.options?.bar?.pill?.surfaces?.recorder ?? false
                         onCheckedChanged: Config.setNestedValue("bar.pill.surfaces.recorder", checked)
                         StyledToolTip {
-                            text: Translation.tr("Show the screen recorder icon. The surface stays reachable via 'inir pill open recorder' either way.")
+                            text: Translation.tr("Show the screen recorder icon. The surface stays reachable via 'ilmango pill open recorder' either way.")
                         }
                     }
                 }
@@ -1257,8 +1257,8 @@ ContentPage {
                     { key: "battery", icon: "battery_5_bar", label: Translation.tr("Battery"), tip: Translation.tr("Charge percentage. Opens the battery surface.") },
                     { key: "inbox", icon: "inbox", label: Translation.tr("Inbox"), tip: Translation.tr("Notification inbox with unread dot. Opens the link surface.") },
                     { key: "mixer", icon: "tune", label: Translation.tr("Mixer"), tip: Translation.tr("Opens the volume/brightness fader surface.") },
-                    { key: "sidebars", icon: "view_sidebar", label: Translation.tr("Sidebar shortcuts"), tip: Translation.tr("The two icons that open iNiR's left and right sidebars.") },
-                    { key: "power", icon: "power_settings_new", label: Translation.tr("Power"), tip: Translation.tr("Opens the session surface. Still reachable via 'inir pill open power'.") }
+                    { key: "sidebars", icon: "view_sidebar", label: Translation.tr("Sidebar shortcuts"), tip: Translation.tr("The two icons that open Illogical-mango's left and right sidebars.") },
+                    { key: "power", icon: "power_settings_new", label: Translation.tr("Power"), tip: Translation.tr("Opens the session surface. Still reachable via 'ilmango pill open power'.") }
                 ]
 
                 Repeater {

@@ -16,7 +16,7 @@ WSettingsPage {
     settingsPageIndex: 12
     pageTitle: Translation.tr("Autostart")
     pageIcon: "power"
-    pageDescription: Translation.tr("Apps that start with iNiR")
+    pageDescription: Translation.tr("Apps that start with Illogical-mango")
 
     // ── Helpers ──────────────────────────────────────────────────────────
 
@@ -77,8 +77,8 @@ WSettingsPage {
             Layout.fillWidth: true
             wrapMode: Text.Wrap
             text: Autostart.startupFilePath.length > 0
-                ? Translation.tr("iNiR couldn't find %1. Re-run the installer to restore it.").arg(Autostart.startupFilePath)
-                : Translation.tr("iNiR couldn't locate your niri startup config.")
+                ? Translation.tr("Illogical-mango couldn't find %1. Re-run the installer to restore it.").arg(Autostart.startupFilePath)
+                : Translation.tr("Illogical-mango couldn't locate your niri startup config.")
             font.pixelSize: Looks.font.pixelSize.small
             color: Looks.colors.subfg
         }
@@ -98,7 +98,7 @@ WSettingsPage {
             WText {
                 Layout.fillWidth: true
                 wrapMode: Text.Wrap
-                text: Translation.tr("Apps and commands here are written to niri's startup file and launched by niri at login — iNiR doesn't start them itself, so they keep running even if the shell restarts.")
+                text: Translation.tr("Apps and commands here are written to niri's startup file and launched by niri at login — Illogical-mango doesn't start them itself, so they keep running even if the shell restarts.")
                 font.pixelSize: Looks.font.pixelSize.small
                 color: Looks.colors.fg
             }

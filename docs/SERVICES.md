@@ -2,7 +2,7 @@
 
 70+ QML singletons that handle everything that isn't pure UI. Each service is registered in `services/qmldir` (or `services/deferred/qmldir`) and available as a singleton import everywhere.
 
-> Only some services expose an IPC handler. The real IPC targets are listed where they exist; if a service has no `IPC target:` note, it has no `IpcHandler` and is not callable from the `inir` CLI. To regenerate the authoritative list: `grep -rl IpcHandler services/ | xargs grep -oP 'target:\s*"\K[^"]+'`.
+> Only some services expose an IPC handler. The real IPC targets are listed where they exist; if a service has no `IPC target:` note, it has no `IpcHandler` and is not callable from the `ilmango` CLI. To regenerate the authoritative list: `grep -rl IpcHandler services/ | xargs grep -oP 'target:\s*"\K[^"]+'`.
 
 ## Compositor
 
@@ -114,7 +114,7 @@
 |---------|-------------|
 | **TimerService** | Pomodoro timer with persistent state. |
 | **Updates** | System update checker (Arch only, uses `checkupdates`). |
-| **ShellUpdates** | iNiR update checker. Git-based, tracks commits behind remote. IPC target: `shellUpdate`. |
+| **ShellUpdates** | Illogical-mango update checker. Git-based, tracks commits behind remote. IPC target: `shellUpdate`. |
 | **Ydotool** | Virtual keyboard input for on-screen keyboard. |
 | **LatexRenderer** | LaTeX math rendering via MicroTeX. |
 | **Translation** | i18n string lookup. Auto language detection, 15 languages. |

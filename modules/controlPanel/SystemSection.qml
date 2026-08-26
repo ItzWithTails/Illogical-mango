@@ -15,7 +15,7 @@ PanelSurface {
     Layout.fillWidth: true
     implicitHeight: statsRow.implicitHeight + 12
     elevation: 1
-    radiusOverride: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.small
+    radiusOverride: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.small
 
     readonly property bool compactMode: Config.options?.controlPanel?.compactMode ?? true
     // zzz: el placa tiene esquinas redondeadas (panelRadius); el contenido debe
@@ -26,7 +26,7 @@ PanelSurface {
         ? Appearance.zzz.panelRadius : (root.compactMode ? 5 : 6)
     readonly property real _contentVPad: root.compactMode ? 5 : 6
 
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
 
     AngelPartialBorder { targetRadius: root.radiusOverride; coverage: 0.45; visible: Appearance.angelEverywhere }
@@ -47,7 +47,7 @@ PanelSurface {
             value: (ResourceUsage.cpuUsage ?? 0) * 100
             barColor: ((ResourceUsage.cpuUsage ?? 0) * 100) > 80 ? Appearance.colors.colError
                     : (Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                    : root.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary)
+                    : root.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary)
         }
 
         // RAM
@@ -57,7 +57,7 @@ PanelSurface {
             value: (ResourceUsage.memoryUsedPercentage ?? 0) * 100
             barColor: (ResourceUsage.memoryUsedPercentage ?? 0) > 0.85 ? Appearance.colors.colError
                     : (Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                    : root.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary)
+                    : root.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary)
         }
 
         // Battery (if available)
@@ -71,7 +71,7 @@ PanelSurface {
                 barColor: (Battery.percentage ?? 0) * 100 < 20 ? Appearance.colors.colError
                         : Battery.charging ? Appearance.colors.colSuccess
                         : (Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                        : root.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary)
+                        : root.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary)
             }
         }
     }
@@ -81,7 +81,7 @@ PanelSurface {
         property string label
         property real value: 0
         property color barColor: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-            : root.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary
+            : root.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary
 
         spacing: 2
 
@@ -91,7 +91,7 @@ PanelSurface {
                 text: bar.label
                 font.pixelSize: Appearance.font.pixelSize.smallest
                 color: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                     : root.inirEverywhere ? Appearance.inir.colTextSecondary
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                      : root.auroraEverywhere ? Appearance.colors.colOnSurfaceVariant
                      : Appearance.colors.colSubtext
             }
@@ -101,7 +101,7 @@ PanelSurface {
                 font.pixelSize: Appearance.font.pixelSize.smallest
                 font.family: Appearance.font.family.numbers
                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                     : root.inirEverywhere ? Appearance.inir.colText
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colText
                      : root.auroraEverywhere ? Appearance.colors.colOnSurface
                      : Appearance.colors.colOnLayer1
             }
@@ -117,7 +117,7 @@ PanelSurface {
                 visible: !Appearance.zzzEverywhere
                 radius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall : 2
                 color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                     : root.inirEverywhere ? Appearance.inir.colLayer2
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                      : root.auroraEverywhere ? ColorUtils.transparentize(Appearance.aurora.colSubSurface, 0.5)
                      : Appearance.colors.colLayer2
 

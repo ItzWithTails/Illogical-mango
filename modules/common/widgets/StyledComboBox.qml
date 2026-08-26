@@ -17,7 +17,7 @@ ComboBox {
     property real baseHeight: Appearance.regaliaEverywhere ? Appearance.regalia.controlHeight : 38
     property real radius: Appearance.regaliaEverywhere ? Appearance.regalia.roundSmall
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
         : Appearance.rounding.small
 
     hoverEnabled: true
@@ -25,47 +25,47 @@ ComboBox {
 
     readonly property color _bgColor: Appearance.regaliaEverywhere ? Appearance.regalia.controlPlate
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colLayer2
     readonly property color _bgHoverColor: Appearance.regaliaEverywhere ? Appearance.regalia.controlPlateHover
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
         : Appearance.colors.colLayer2Hover
     readonly property color _bgActiveColor: Appearance.regaliaEverywhere ? Appearance.regalia.controlPlateActive
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Active
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Active
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
         : Appearance.colors.colLayer2Active
     readonly property color _textColor: Appearance.regaliaEverywhere ? Appearance.regalia.onColor
         : Appearance.angelEverywhere ? Appearance.angel.colText
-        : Appearance.inirEverywhere ? Appearance.inir.colText
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
         : Appearance.colors.colOnLayer2
     readonly property color _subtextColor: Appearance.regaliaEverywhere ? Appearance.regalia.onMuted
         : Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
         : Appearance.colors.colSubtext
     readonly property color _borderColor: Appearance.angelEverywhere ? Appearance.angel.colBorder
-        : Appearance.inirEverywhere ? Appearance.inir.colBorder
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
         : "transparent"
-    readonly property real _borderWidth: (Appearance.angelEverywhere || Appearance.inirEverywhere) ? 1 : 0
+    readonly property real _borderWidth: (Appearance.angelEverywhere || Appearance.ilmangoEverywhere) ? 1 : 0
     readonly property color _popupColor: Appearance.regaliaEverywhere ? Appearance.regalia.bg2
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
         : Appearance.colors.colLayer3Base
     readonly property color _popupBorderColor: Appearance.regaliaEverywhere ? "transparent"
         : Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-        : Appearance.inirEverywhere ? Appearance.inir.colBorder
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
         : Appearance.auroraEverywhere ? Appearance.aurora.colPopupBorder
         : Appearance.colors.colLayer0Border
     // Dropdown row hover/selected — matched to _popupColor's own layer (Layer3, or
-    // inir's Layer2). The angel/aurora "glass card" tokens used here previously were
+    // ilmango's Layer2). The angel/aurora "glass card" tokens used here previously were
     // tuned for card surfaces, not this opaque popup, and read as barely-there.
     readonly property color _popupHoverColor: Appearance.regaliaEverywhere ? Appearance.regalia.controlPlateHover
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
         : Appearance.colors.colLayer3Hover
     readonly property color _selectedColor: Appearance.regaliaEverywhere ? Appearance.regalia.primaryPlate
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimaryContainer
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryContainer
         : Appearance.colors.colPrimaryContainer
 
     background: Rectangle {
@@ -78,7 +78,7 @@ ComboBox {
         border.width: root._borderWidth
         border.color: root.activeFocus
             ? (Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                : Appearance.inirEverywhere ? Appearance.inir.colBorderFocus
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderFocus
                 : root._borderColor)
             : root._borderColor
 
@@ -227,7 +227,7 @@ ComboBox {
         background: Rectangle {
             radius: Appearance.regaliaEverywhere ? Appearance.regalia.roundSmall
                 : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
                 : Appearance.rounding.unsharpenmore
             color: Appearance.regaliaEverywhere ? "transparent"
                 : delegateItem.index === root.currentIndex ? root._selectedColor

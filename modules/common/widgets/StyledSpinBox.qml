@@ -31,7 +31,7 @@ SpinBox {
     background: Rectangle {
         color: Appearance.regaliaEverywhere ? "transparent"
             : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-            : Appearance.inirEverywhere ? Appearance.inir.colLayer2 : Appearance.colors.colLayer2
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 : Appearance.colors.colLayer2
         radius: root.radius
 
         RegaliaControlFace {

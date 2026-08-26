@@ -8,7 +8,7 @@ import qs.modules.common
 /**
  * Display-device facade for the pill's mixer surface.
  *
- * Upstream shelled out to ddcutil and nvibrant directly. iNiR's Brightness
+ * Upstream shelled out to ddcutil and nvibrant directly. Illogical-mango's Brightness
  * service already owns both the DDC monitors and the internal backlight, so
  * this exposes its live BrightnessMonitor objects instead of spawning a second
  * set of processes that would fight over the same i2c buses. Faders bind
@@ -19,7 +19,7 @@ import qs.modules.common
  * value has been read, never showing a made-up default.
  *
  * Digital vibrance has no counterpart here (it needs nvibrant, an nvidia-only
- * dependency iNiR does not declare) and the mixer's vibrance fader is removed
+ * dependency Illogical-mango does not declare) and the mixer's vibrance fader is removed
  * rather than silently no-op'd.
  */
 Singleton {

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [[ -n "${INIR_VENV:-}" ]]; then
-    _ii_venv="$(eval echo "$INIR_VENV")"
+if [[ -n "${ILMANGO_VENV:-}" ]]; then
+    _ii_venv="$(eval echo "$ILMANGO_VENV")"
 elif [[ -n "${ILLOGICAL_IMPULSE_VIRTUAL_ENV:-}" ]]; then
     _ii_venv="$(eval echo "$ILLOGICAL_IMPULSE_VIRTUAL_ENV")"
 else

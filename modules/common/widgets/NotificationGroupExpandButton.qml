@@ -20,8 +20,8 @@ RippleButton { // Expand button
         ? (expanded ? Appearance.zzz.sticker : Appearance.zzz.paperAlt)
         : Appearance.angelEverywhere
         ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere 
-        ? Appearance.inir.colLayer2Hover
+        : Appearance.ilmangoEverywhere 
+        ? Appearance.ilmango.colLayer2Hover
         : Appearance.auroraEverywhere 
         ? Appearance.aurora.colSubSurface
         : ColorUtils.mix(Appearance?.colors.colLayer2, Appearance?.colors.colLayer2Hover, 0.5)
@@ -29,8 +29,8 @@ RippleButton { // Expand button
         ? (expanded ? ColorUtils.applyAlpha(Appearance.zzz.sticker, 0.88) : ColorUtils.mix(Appearance.zzz.paperAlt, Appearance.zzz.signal, 0.92))
         : Appearance.angelEverywhere
         ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere 
-        ? Appearance.inir.colLayer3Hover
+        : Appearance.ilmangoEverywhere 
+        ? Appearance.ilmango.colLayer3Hover
         : Appearance.auroraEverywhere 
         ? Appearance.aurora.colSubSurfaceHover
         : Appearance.colors.colLayer2Hover
@@ -38,8 +38,8 @@ RippleButton { // Expand button
         ? ColorUtils.applyAlpha(Appearance.zzz.accent, 0.28)
         : Appearance.angelEverywhere
         ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere 
-        ? Appearance.inir.colLayer3Active
+        : Appearance.ilmangoEverywhere 
+        ? Appearance.ilmango.colLayer3Active
         : Appearance.auroraEverywhere 
         ? Appearance.aurora.colSubSurfaceActive
         : Appearance.colors.colLayer2Active

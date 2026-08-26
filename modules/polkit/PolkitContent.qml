@@ -15,21 +15,21 @@ Item {
         ? Appearance.cookie.secondaryFace
         : Appearance.zzzEverywhere ? Appearance.zzz.paperAlt
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colLayer2
     readonly property color authBorder: Appearance.cookieEverywhere
         ? Appearance.cookie.borderColor
         : Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong
         : Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-        : Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
         : Appearance.auroraEverywhere ? Appearance.aurora.colPopupBorder
         : Appearance.colors.colOutlineVariant
     readonly property int authRadius: Appearance.cookieEverywhere
         ? Appearance.cookie.roundNormal
         : Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
         : Appearance.rounding.small
 
     Keys.onPressed: event => {

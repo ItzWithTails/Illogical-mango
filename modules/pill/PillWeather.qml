@@ -26,7 +26,7 @@ Singleton {
     readonly property int humidity: parseInt(Weather.data?.humidity ?? "0")
 
     /**
-     * The calendar's forecast strip wants {day, code, temp}; iNiR stores
+     * The calendar's forecast strip wants {day, code, temp}; Illogical-mango stores
      * {dayName, code, hi, lo, hiVal} under data.forecast. Reshape rather than
      * touching either side.
      */
@@ -63,7 +63,7 @@ Singleton {
         return "cloud";
     }
 
-    /** iNiR already owns the localized description table; don't duplicate it. */
+    /** Illogical-mango already owns the localized description table; don't duplicate it. */
     function labelFor(code) {
         return Weather.describeWeather(code);
     }

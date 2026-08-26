@@ -27,7 +27,7 @@ Item {
 
     Loader {
         active: root.enableShadow && !root.transparent && !Appearance.zzzEverywhere
-            && (Appearance.angelEverywhere || (!Appearance.inirEverywhere && !Appearance.auroraEverywhere))
+            && (Appearance.angelEverywhere || (!Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere))
         anchors.fill: background
         sourceComponent: StyledRectangularShadow {
             target: background
@@ -49,21 +49,21 @@ Item {
         anchors.fill: parent
         visible: !root.transparent && !Appearance.regaliaEverywhere
         fallbackColor: Appearance.zzzEverywhere ? "transparent" : Appearance.colors.colSurfaceContainer
-        inirColor: Appearance.inir.colLayer2
+        ilmangoColor: Appearance.ilmango.colLayer2
         auroraTransparency: Appearance.aurora.overlayTransparentize
         screenX: root.screenX
         screenY: root.screenY
         screenWidth: Quickshell.screens[0]?.width ?? 1920
         screenHeight: Quickshell.screens[0]?.height ?? 1080
         border.width: Appearance.zzzEverywhere ? 0
-            : (Appearance.angelEverywhere || Appearance.inirEverywhere || Appearance.auroraEverywhere) ? 1 : 0
+            : (Appearance.angelEverywhere || Appearance.ilmangoEverywhere || Appearance.auroraEverywhere) ? 1 : 0
         Behavior on border.width {
             enabled: Appearance.animationsEnabled
             NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
         }
         border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong
             : Appearance.angelEverywhere ? Appearance.angel.colBorder
-            : Appearance.inirEverywhere ? Appearance.inir.colBorder 
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder 
             : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder : "transparent"
         Behavior on border.color {
             enabled: Appearance.animationsEnabled
@@ -74,7 +74,7 @@ Item {
         radius: Appearance.regaliaEverywhere ? Appearance.regalia.roundNormal
             : Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
             : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-            : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : (height / 2)
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : (height / 2)
         Behavior on radius {
             enabled: Appearance.animationsEnabled
             NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }

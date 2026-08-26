@@ -1,46 +1,46 @@
-# Uninstall command for iNiR
-# Safely removes iNiR while preserving user data and shared resources
+# Uninstall command for Illogical-mango
+# Safely removes Illogical-mango while preserving user data and shared resources
 # This script is meant to be sourced.
 
 # shellcheck shell=bash
 
-INIR_CONFIG_DIR="${DOTS_CORE_CONFDIR:-${XDG_CONFIG_HOME}/inir}"
+ILMANGO_CONFIG_DIR="${DOTS_CORE_CONFDIR:-${XDG_CONFIG_HOME}/ilmango}"
 
 ###############################################################################
-# Configuration - What iNiR installs/manages
+# Configuration - What Illogical-mango installs/manages
 ###############################################################################
 
 # Categories of files:
-# - inir_only: Files created exclusively by iNiR, safe to remove
+# - ilmango_only: Files created exclusively by Illogical-mango, safe to remove
 # - shared: Files that may be used by other apps, ask before removing
 # - user_data: User's personal data, preserve by default
 
-# iNiR-exclusive files (safe to remove)
-declare -A INIR_ONLY_PATHS=(
-    ["${XDG_CONFIG_HOME}/quickshell/inir"]="iNiR shell configuration"
-    ["${INIR_CONFIG_DIR}"]="iNiR user preferences"
-    ["${XDG_STATE_HOME}/quickshell/user"]="iNiR state (notifications, todo)"
-    ["${XDG_CACHE_HOME}/quickshell/inir"]="iNiR cache"
-    ["${XDG_BIN_HOME}/inir"]="iNiR launcher"
-    ["${HOME}/.local/bin/inir_super_overview_daemon.py"]="iNiR super daemon"
-    ["${XDG_CONFIG_HOME}/systemd/user/inir.service"]="iNiR user service"
-    ["${XDG_CONFIG_HOME}/systemd/user/inir-super-overview.service"]="iNiR daemon service"
-    ["${XDG_CONFIG_HOME}/vesktop/themes/system24.theme.css"]="iNiR Vesktop theme"
-    ["${XDG_CONFIG_HOME}/vesktop/themes/ii-colors.css"]="iNiR Vesktop colors"
-    ["${XDG_CONFIG_HOME}/Vesktop/themes/system24.theme.css"]="iNiR Vesktop theme (alt)"
-    ["${XDG_CONFIG_HOME}/Vesktop/themes/ii-colors.css"]="iNiR Vesktop colors (alt)"
-    ["${XDG_DATA_HOME}/applications/inir.desktop"]="iNiR desktop entry"
-    ["${XDG_DATA_HOME}/applications/inir-settings.desktop"]="iNiR settings desktop entry"
-    ["${XDG_DATA_HOME}/icons/hicolor/scalable/apps/inir.svg"]="iNiR launcher icon"
-    ["${HOME}/.local/bin/sync-pixel-sddm.py"]="iNiR SDDM theme sync helper"
+# Illogical-mango-exclusive files (safe to remove)
+declare -A ILMANGO_ONLY_PATHS=(
+    ["${XDG_CONFIG_HOME}/quickshell/ilmango"]="Illogical-mango shell configuration"
+    ["${ILMANGO_CONFIG_DIR}"]="Illogical-mango user preferences"
+    ["${XDG_STATE_HOME}/quickshell/user"]="Illogical-mango state (notifications, todo)"
+    ["${XDG_CACHE_HOME}/quickshell/ilmango"]="Illogical-mango cache"
+    ["${XDG_BIN_HOME}/ilmango"]="Illogical-mango launcher"
+    ["${HOME}/.local/bin/ilmango_super_overview_daemon.py"]="Illogical-mango super daemon"
+    ["${XDG_CONFIG_HOME}/systemd/user/ilmango.service"]="Illogical-mango user service"
+    ["${XDG_CONFIG_HOME}/systemd/user/ilmango-super-overview.service"]="Illogical-mango daemon service"
+    ["${XDG_CONFIG_HOME}/vesktop/themes/system24.theme.css"]="Illogical-mango Vesktop theme"
+    ["${XDG_CONFIG_HOME}/vesktop/themes/ii-colors.css"]="Illogical-mango Vesktop colors"
+    ["${XDG_CONFIG_HOME}/Vesktop/themes/system24.theme.css"]="Illogical-mango Vesktop theme (alt)"
+    ["${XDG_CONFIG_HOME}/Vesktop/themes/ii-colors.css"]="Illogical-mango Vesktop colors (alt)"
+    ["${XDG_DATA_HOME}/applications/ilmango.desktop"]="Illogical-mango desktop entry"
+    ["${XDG_DATA_HOME}/applications/ilmango-settings.desktop"]="Illogical-mango settings desktop entry"
+    ["${XDG_DATA_HOME}/icons/hicolor/scalable/apps/ilmango.svg"]="Illogical-mango launcher icon"
+    ["${HOME}/.local/bin/sync-pixel-sddm.py"]="Illogical-mango SDDM theme sync helper"
 )
 
 # Shared configs - may be used by other apps or user customizations
 # Format: path -> "description|app_command|critical_level"
-# critical_level: essential (user likely needs), optional (can remove), inir_default (iNiR created)
+# critical_level: essential (user likely needs), optional (can remove), ilmango_default (Illogical-mango created)
 declare -A SHARED_PATHS=(
     ["${XDG_CONFIG_HOME}/niri/config.kdl"]="Niri compositor config|niri|essential"
-    ["${XDG_CONFIG_HOME}/matugen"]="iNiR theming templates|python3|optional"
+    ["${XDG_CONFIG_HOME}/matugen"]="Illogical-mango theming templates|python3|optional"
     ["${XDG_CONFIG_HOME}/fuzzel"]="Fuzzel launcher config|fuzzel|optional"
     ["${XDG_CONFIG_HOME}/Kvantum"]="Kvantum Qt theme|kvantummanager|optional"
     ["${XDG_CONFIG_HOME}/kdeglobals"]="KDE global settings||optional"
@@ -48,7 +48,7 @@ declare -A SHARED_PATHS=(
     ["${XDG_CONFIG_HOME}/gtk-3.0/gtk.css"]="GTK3 custom styles||optional"
     ["${XDG_CONFIG_HOME}/gtk-4.0/gtk.css"]="GTK4 custom styles||optional"
     ["${XDG_CONFIG_HOME}/fontconfig"]="Font configuration||essential"
-    ["${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes/Darkly.colors"]="Darkly color scheme||inir_default"
+    ["${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes/Darkly.colors"]="Darkly color scheme||ilmango_default"
 )
 
 # Quickshell state that may be shared with other quickshell configs
@@ -57,11 +57,11 @@ declare -A QUICKSHELL_SHARED=(
     ["${XDG_STATE_HOME}/quickshell/themes"]="Generated themes"
 )
 
-# Packages that iNiR may have installed - with usage context
+# Packages that Illogical-mango may have installed - with usage context
 # Format: command -> "package_name|description|shared_usage"
-# shared_usage: inir_only, compositor, system_tool, optional_tool
-declare -A INIR_PACKAGES=(
-    ["qs"]="quickshell|Shell framework|inir_only"
+# shared_usage: ilmango_only, compositor, system_tool, optional_tool
+declare -A ILMANGO_PACKAGES=(
+    ["qs"]="quickshell|Shell framework|ilmango_only"
     ["niri"]="niri|Wayland compositor|compositor"
     ["cliphist"]="cliphist|Clipboard history|system_tool"
     ["fuzzel"]="fuzzel|Application launcher|system_tool"
@@ -87,7 +87,7 @@ has_other_quickshell_configs() {
     if [[ -d "$qs_dir" ]]; then
         local other_configs
         other_configs=$(find "$qs_dir" -mindepth 2 -maxdepth 2 -type f -name "shell.qml" \
-            ! -path "${qs_dir}/inir/shell.qml" \
+            ! -path "${qs_dir}/ilmango/shell.qml" \
             ! -path "${qs_dir}/ii/shell.qml" 2>/dev/null | wc -l)
         [[ "$other_configs" -gt 0 ]]
     else
@@ -117,13 +117,13 @@ has_other_niri_usage() {
     [[ $niri_refs -gt 0 ]]
 }
 
-# Check if niri config has iNiR-specific content or is user-customized
-niri_config_is_inir_default() {
+# Check if niri config has Illogical-mango-specific content or is user-customized
+niri_config_is_ilmango_default() {
     local config="${XDG_CONFIG_HOME}/niri/config.kdl"
-    [[ -f "$config" ]] && grep -qE 'spawn-at-startup "([^"]*/)?inir" "start"|spawn-at-startup "qs" "-c" "inir"|quickshell:iiBackdrop' "$config" 2>/dev/null
+    [[ -f "$config" ]] && grep -qE 'spawn-at-startup "([^"]*/)?ilmango" "start"|spawn-at-startup "qs" "-c" "ilmango"|quickshell:iiBackdrop' "$config" 2>/dev/null
 }
 
-# Check if niri config has user customizations beyond iNiR defaults
+# Check if niri config has user customizations beyond Illogical-mango defaults
 niri_config_has_user_customizations() {
     local config="${XDG_CONFIG_HOME}/niri/config.kdl"
     [[ ! -f "$config" ]] && return 1
@@ -142,8 +142,8 @@ niri_config_has_user_customizations() {
         grep -qi "$marker" "$config" 2>/dev/null && return 0
     done
     
-    # Check if file was modified after iNiR install
-    local install_marker="${INIR_CONFIG_DIR}/installed_true"
+    # Check if file was modified after Illogical-mango install
+    local install_marker="${ILMANGO_CONFIG_DIR}/installed_true"
     if [[ -f "$install_marker" && -f "$config" ]]; then
         [[ "$config" -nt "$install_marker" ]] && return 0
     fi
@@ -224,15 +224,15 @@ package_has_dependents() {
 # Determine if a package is safe to suggest removal
 get_package_removal_safety() {
     local cmd="$1"
-    local meta="${INIR_PACKAGES[$cmd]}"
+    local meta="${ILMANGO_PACKAGES[$cmd]}"
     
     [[ -z "$meta" ]] && echo "unknown" && return
     
     IFS='|' read -r pkg_name pkg_desc pkg_usage <<< "$meta"
     
     case "$pkg_usage" in
-        inir_only)
-            # Only used by iNiR - safe to remove if no other qs configs
+        ilmango_only)
+            # Only used by Illogical-mango - safe to remove if no other qs configs
             if has_other_quickshell_configs; then
                 echo "keep_qs"
             else
@@ -272,30 +272,30 @@ get_package_removal_safety() {
 ###############################################################################
 
 uninstall_stop_services() {
-    tui_info "Stopping iNiR services..."
+    tui_info "Stopping Illogical-mango services..."
 
-    # Stop quickshell inir config
-    local runtime_target="${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/inir"
+    # Stop quickshell ilmango config
+    local runtime_target="${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/ilmango"
     qs -p "$runtime_target" kill 2>/dev/null || true
 
     # Stop super daemon if running
     if command -v systemctl &>/dev/null && [[ -d /run/systemd/system ]]; then
         # Stop the service
-        systemctl --user stop inir.service 2>/dev/null || true
+        systemctl --user stop ilmango.service 2>/dev/null || true
         # Remove all wants links (compositor-specific and legacy graphical-session)
         local _sd_user="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
         for _wd in "$_sd_user"/*.wants; do
             [[ -d "$_wd" ]] || continue
-            rm -f "$_wd/inir.service" 2>/dev/null || true
+            rm -f "$_wd/ilmango.service" 2>/dev/null || true
         done
         # Also try legacy disable in case old [Install] symlinks exist
-        systemctl --user disable inir.service 2>/dev/null || true
-        systemctl --user reset-failed inir.service 2>/dev/null || true
+        systemctl --user disable ilmango.service 2>/dev/null || true
+        systemctl --user reset-failed ilmango.service 2>/dev/null || true
 
-        if systemctl --user is-active inir-super-overview.service &>/dev/null; then
-            systemctl --user disable --now inir-super-overview.service 2>/dev/null || true
+        if systemctl --user is-active ilmango-super-overview.service &>/dev/null; then
+            systemctl --user disable --now ilmango-super-overview.service 2>/dev/null || true
         fi
-        systemctl --user reset-failed inir-super-overview.service 2>/dev/null || true
+        systemctl --user reset-failed ilmango-super-overview.service 2>/dev/null || true
     fi
 
     tui_success "Services stopped"
@@ -308,18 +308,18 @@ uninstall_reload_user_systemd() {
 }
 
 uninstall_create_backup() {
-    local backup_dir="${HOME}/.local/share/inir-uninstall-backup-$(date +%Y%m%d-%H%M%S)"
+    local backup_dir="${HOME}/.local/share/ilmango-uninstall-backup-$(date +%Y%m%d-%H%M%S)"
 
     tui_info "Creating backup before uninstall..." >&2
     mkdir -p "$backup_dir"
 
-    # Backup iNiR-specific files
-    if [[ -d "${XDG_CONFIG_HOME}/quickshell/inir" ]]; then
-        cp -r "${XDG_CONFIG_HOME}/quickshell/inir" "$backup_dir/quickshell-inir"
+    # Backup Illogical-mango-specific files
+    if [[ -d "${XDG_CONFIG_HOME}/quickshell/ilmango" ]]; then
+        cp -r "${XDG_CONFIG_HOME}/quickshell/ilmango" "$backup_dir/quickshell-ilmango"
     fi
 
-    if [[ -d "${INIR_CONFIG_DIR}" ]]; then
-        cp -r "${INIR_CONFIG_DIR}" "$backup_dir/$(basename "$INIR_CONFIG_DIR")"
+    if [[ -d "${ILMANGO_CONFIG_DIR}" ]]; then
+        cp -r "${ILMANGO_CONFIG_DIR}" "$backup_dir/$(basename "$ILMANGO_CONFIG_DIR")"
     fi
 
     # Backup niri config
@@ -336,16 +336,16 @@ uninstall_create_backup() {
     echo "$backup_dir"
 }
 
-uninstall_remove_inir_only() {
+uninstall_remove_ilmango_only() {
     local removed=0
     local _start=$SECONDS
 
-    tui_info "Removing iNiR-exclusive files..."
+    tui_info "Removing Illogical-mango-exclusive files..."
     echo ""
 
     # Pre-count existing items for N/M progress display
     local total=0
-    for path in "${!INIR_ONLY_PATHS[@]}"; do
+    for path in "${!ILMANGO_ONLY_PATHS[@]}"; do
         local ep
         ep=$(eval echo "$path")
         [[ -e "$ep" ]] && ((total++))
@@ -355,10 +355,10 @@ uninstall_remove_inir_only() {
         echo -e "  ${STY_FAINT}Nothing to remove — already clean.${STY_RST}"
     else
         local idx=0
-        for path in "${!INIR_ONLY_PATHS[@]}"; do
+        for path in "${!ILMANGO_ONLY_PATHS[@]}"; do
             local ep
             ep=$(eval echo "$path")
-            local desc="${INIR_ONLY_PATHS[$path]}"
+            local desc="${ILMANGO_ONLY_PATHS[$path]}"
 
             if [[ -d "$ep" ]]; then
                 ((idx++))
@@ -381,7 +381,7 @@ uninstall_remove_inir_only() {
 
     echo ""
     local _elapsed=$(( SECONDS - _start ))
-    tui_success "Removed $removed iNiR-exclusive item(s)  (${_elapsed}s)"
+    tui_success "Removed $removed Illogical-mango-exclusive item(s)  (${_elapsed}s)"
 }
 
 uninstall_handle_shared_configs() {
@@ -428,12 +428,12 @@ uninstall_handle_shared_configs() {
                     reason="has custom changes"
                 else
                     rec="remove"
-                    reason="app not found, iNiR default"
+                    reason="app not found, Illogical-mango default"
                 fi
                 ;;
-            inir_default)
+            ilmango_default)
                 rec="remove"
-                reason="created by iNiR"
+                reason="created by Illogical-mango"
                 ;;
         esac
 
@@ -551,7 +551,7 @@ uninstall_handle_shared_configs() {
             local rec="${_rec[$ep]}"
             local reason="${_reason[$ep]}"
             local level="${_level[$ep]}"
-            if [[ "$level" == "inir_default" ]]; then
+            if [[ "$level" == "ilmango_default" ]]; then
                 [[ -d "$ep" ]] && rm -rf "$ep" || rm -f "$ep"
                 echo -e "  ${STY_RED}✗${STY_RST} Removed: $desc ($reason)"
                 ((removed++))
@@ -640,8 +640,8 @@ uninstall_show_manual_steps() {
     echo -e "  ${STY_YELLOW}•${STY_RST} SDDM theme: /usr/share/sddm/themes/ii-pixel"
     echo -e "    ${STY_FAINT}Used by: SDDM login screen${STY_RST}"
     echo ""
-    echo -e "  ${STY_YELLOW}•${STY_RST} SDDM theme drop-in: /etc/sddm.conf.d/99-inir-theme.conf"
-    echo -e "    ${STY_FAINT}Used by: sets Current=ii-pixel (legacy path: /etc/sddm.conf.d/inir-theme.conf)${STY_RST}"
+    echo -e "  ${STY_YELLOW}•${STY_RST} SDDM theme drop-in: /etc/sddm.conf.d/99-ilmango-theme.conf"
+    echo -e "    ${STY_FAINT}Used by: sets Current=ii-pixel (legacy path: /etc/sddm.conf.d/ilmango-theme.conf)${STY_RST}"
     echo ""
 
     if $ask && tui_confirm "Show commands to revert these changes?" "no"; then
@@ -661,7 +661,7 @@ uninstall_show_manual_steps() {
         echo -e "  sudo rm -rf /usr/share/sddm/themes/ii-pixel"
         echo ""
         echo -e "  ${STY_CYAN}# Remove SDDM theme config drop-in${STY_RST}"
-        echo -e "  sudo rm -f /etc/sddm.conf.d/99-inir-theme.conf /etc/sddm.conf.d/inir-theme.conf"
+        echo -e "  sudo rm -f /etc/sddm.conf.d/99-ilmango-theme.conf /etc/sddm.conf.d/ilmango-theme.conf"
         echo ""
     fi
 }
@@ -670,7 +670,7 @@ uninstall_show_packages() {
     echo ""
     tui_subtitle "Installed packages"
     echo ""
-    echo -e "${STY_FAINT}iNiR may have installed these packages. Review before removing.${STY_RST}"
+    echo -e "${STY_FAINT}Illogical-mango may have installed these packages. Review before removing.${STY_RST}"
     echo ""
 
     # Detect distro
@@ -685,11 +685,11 @@ uninstall_show_packages() {
     echo -e "${STY_CYAN}Package analysis:${STY_RST}"
     echo ""
 
-    for cmd in "${!INIR_PACKAGES[@]}"; do
+    for cmd in "${!ILMANGO_PACKAGES[@]}"; do
         # Skip if not installed
         command -v "$cmd" &>/dev/null || continue
 
-        local meta="${INIR_PACKAGES[$cmd]}"
+        local meta="${ILMANGO_PACKAGES[$cmd]}"
         IFS='|' read -r pkg_name pkg_desc pkg_usage <<< "$meta"
         
         local safety=$(get_package_removal_safety "$cmd")
@@ -698,7 +698,7 @@ uninstall_show_packages() {
             safe)
                 safe_to_remove+=("$pkg_name")
                 echo -e "  ${STY_GREEN}✓${STY_RST} $pkg_name - $pkg_desc"
-                echo -e "    ${STY_FAINT}Safe to remove (only used by iNiR)${STY_RST}"
+                echo -e "    ${STY_FAINT}Safe to remove (only used by Illogical-mango)${STY_RST}"
                 ;;
             ask)
                 ask_before_remove+=("$pkg_name")
@@ -813,7 +813,7 @@ run_uninstall() {
     local update_strategy
     local package_name
     echo ""
-    tui_title "iNiR Uninstaller"
+    tui_title "Illogical-mango Uninstaller"
     echo ""
 
     # Safety: if no TTY available, force non-interactive safe mode
@@ -826,11 +826,11 @@ run_uninstall() {
     fi
 
     # Check if installed
-    if [[ ! -f "${INIR_CONFIG_DIR}/installed_true" ]] && \
-       [[ ! -d "${XDG_CONFIG_HOME}/quickshell/inir" ]] && \
-       [[ ! -f "${INIR_CONFIG_DIR}/version.json" ]] && \
-       [[ ! -f "${XDG_BIN_HOME}/inir" ]]; then
-        tui_warn "iNiR does not appear to be installed"
+    if [[ ! -f "${ILMANGO_CONFIG_DIR}/installed_true" ]] && \
+       [[ ! -d "${XDG_CONFIG_HOME}/quickshell/ilmango" ]] && \
+       [[ ! -f "${ILMANGO_CONFIG_DIR}/version.json" ]] && \
+       [[ ! -f "${XDG_BIN_HOME}/ilmango" ]]; then
+        tui_warn "Illogical-mango does not appear to be installed"
         return 1
     fi
 
@@ -862,7 +862,7 @@ run_uninstall() {
     # Warning
     echo -e "${STY_RED}${STY_BOLD}⚠ WARNING${STY_RST}"
     echo ""
-    echo "This will remove iNiR from your system."
+    echo "This will remove Illogical-mango from your system."
     echo ""
     
     if [[ ${#warnings[@]} -gt 0 ]]; then
@@ -874,7 +874,7 @@ run_uninstall() {
     fi
     
     echo -e "${STY_FAINT}What will happen:${STY_RST}"
-    echo "  • iNiR shell configuration will be removed"
+    echo "  • Illogical-mango shell configuration will be removed"
     if is_running_niri_session; then
         echo -e "  • ${STY_YELLOW}Your Niri session will continue (without the shell UI)${STY_RST}"
         echo -e "  • ${STY_YELLOW}Niri config will be preserved (you're using it!)${STY_RST}"
@@ -912,8 +912,8 @@ run_uninstall() {
     # Stop services
     uninstall_stop_services
 
-    # Remove iNiR-exclusive files (always safe)
-    uninstall_remove_inir_only
+    # Remove Illogical-mango-exclusive files (always safe)
+    uninstall_remove_ilmango_only
     uninstall_reload_user_systemd
 
     # Handle shared configs (ask user)
@@ -951,11 +951,11 @@ EOF
     echo -e "  $backup_dir"
     echo ""
     echo -e "${STY_FAINT}To restore from backup:${STY_RST}"
-    echo -e "  cp -r $backup_dir/quickshell-inir ${XDG_CONFIG_HOME}/quickshell/inir"
+    echo -e "  cp -r $backup_dir/quickshell-ilmango ${XDG_CONFIG_HOME}/quickshell/ilmango"
     echo ""
     local _total_elapsed=$(( SECONDS - _uninstall_start ))
-    echo -e "${STY_FAINT}To reinstall iNiR:${STY_RST}"
-    echo -e "  git clone https://github.com/snowarch/inir.git && cd inir && ./setup install"
+    echo -e "${STY_FAINT}To reinstall Illogical-mango:${STY_RST}"
+    echo -e "  git clone https://github.com/ItzWithTails/illogical-mango.git && cd ilmango && ./setup install"
     echo ""
     echo -e "${STY_FAINT}Total time: ${_total_elapsed}s${STY_RST}"
     echo ""
@@ -967,11 +967,11 @@ EOF
 
 run_uninstall_quick() {
     echo ""
-    tui_title "iNiR Quick Uninstall"
+    tui_title "Illogical-mango Quick Uninstall"
     echo ""
 
     echo -e "${STY_YELLOW}Quick uninstall will:${STY_RST}"
-    echo "  • Remove iNiR-exclusive files only"
+    echo "  • Remove Illogical-mango-exclusive files only"
     echo "  • Keep all shared configs (Niri, themes, etc.)"
     echo "  • Keep all system packages"
     echo "  • Create a backup first"
@@ -989,13 +989,13 @@ run_uninstall_quick() {
     # Stop services
     uninstall_stop_services
 
-    # Remove only iNiR-exclusive files
+    # Remove only Illogical-mango-exclusive files
     ask=false  # Disable prompts for shared configs
-    uninstall_remove_inir_only
+    uninstall_remove_ilmango_only
     uninstall_reload_user_systemd
 
     echo ""
-    tui_success "iNiR removed. All shared configs and packages preserved."
+    tui_success "Illogical-mango removed. All shared configs and packages preserved."
     echo ""
     echo -e "${STY_CYAN}Backup:${STY_RST} $backup_dir"
     echo ""

@@ -6,11 +6,11 @@ body:
     attributes:
       value: |
         Check the documentation first:
-        - [Installation](https://github.com/snowarch/inir/wiki/INSTALL)
-        - [Setup & Maintenance](https://github.com/snowarch/inir/wiki/SETUP)
-        - [Keybindings](https://github.com/snowarch/inir/wiki/KEYBINDS)
-        - [IPC Reference](https://github.com/snowarch/inir/wiki/IPC)
-        - [Limitations](https://github.com/snowarch/inir/wiki/LIMITATIONS)
+        - [Installation](https://github.com/ItzWithTails/illogical-mango/wiki/INSTALL)
+        - [Setup & Maintenance](https://github.com/ItzWithTails/illogical-mango/wiki/SETUP)
+        - [Keybindings](https://github.com/ItzWithTails/illogical-mango/wiki/KEYBINDS)
+        - [IPC Reference](https://github.com/ItzWithTails/illogical-mango/wiki/IPC)
+        - [Limitations](https://github.com/ItzWithTails/illogical-mango/wiki/LIMITATIONS)
 
   - type: textarea
     id: question
@@ -32,7 +32,7 @@ body:
     id: version
     attributes:
       label: Version
-      description: Output of cat ~/.config/quickshell/inir/VERSION
+      description: Output of cat ~/.config/quickshell/ilmango/VERSION
       placeholder: 2.11.11
     validations:
       required: true

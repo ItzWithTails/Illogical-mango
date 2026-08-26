@@ -256,7 +256,7 @@ Singleton {
         id: transcribeProc
         running: false
         environment: ({
-            "INIR_VOICE_API_KEY": root._providerKey(root.activeProvider),
+            "ILMANGO_VOICE_API_KEY": root._providerKey(root.activeProvider),
         })
         command: {
             const provider = root.activeProvider

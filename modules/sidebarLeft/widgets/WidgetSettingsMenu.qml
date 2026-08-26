@@ -133,11 +133,11 @@ Loader {
             implicitHeight: contentCol.implicitHeight + 24
 
             fallbackColor: Appearance.colors.colSurfaceContainer
-            inirColor: Appearance.inir.colLayer2
+            ilmangoColor: Appearance.ilmango.colLayer2
             auroraTransparency: Appearance.aurora.popupTransparentize
-            radius: Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+            radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
             border.width: 1
-            border.color: Appearance.inirEverywhere ? Appearance.inir.colBorder : Appearance.colors.colOutlineVariant
+            border.color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : Appearance.colors.colOutlineVariant
             opacity: Appearance.motion.popupReveal.enableFade ? (shown ? 1 : 0) : 1
             scale: shown ? 1
                 : (Appearance.motion.popupReveal.enableScale

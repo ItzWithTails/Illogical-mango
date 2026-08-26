@@ -128,17 +128,17 @@ PopupWindow {
 
             color: Appearance.zzzEverywhere ? Appearance.zzz.bg1
                 : Appearance.angelEverywhere ? Appearance.angel.colGlassPopup
-                : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                 : Appearance.colors.colLayer0
             radius: Appearance.zzzEverywhere ? Appearance.zzz.cornerRadius
                 : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                : Appearance.inirEverywhere ? Appearance.inir.roundingLarge : Appearance.rounding.windowRounding
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingLarge : Appearance.rounding.windowRounding
             Behavior on color { enabled: Appearance.animationsEnabled; ColorAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve } }
             Behavior on radius { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementResize.duration; easing.type: Appearance.animation.elementResize.type; easing.bezierCurve: Appearance.animation.elementResize.bezierCurve } }
             border.width: Appearance.zzzEverywhere ? 0 : 1
             border.color: Appearance.zzzEverywhere ? "transparent"
                 : Appearance.angelEverywhere ? Appearance.angel.colBorder
-                : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                 : Appearance.colors.colLayer0Border
             Behavior on border.width {
                 enabled: Appearance.animationsEnabled

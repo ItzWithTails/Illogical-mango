@@ -149,10 +149,10 @@ Item {
     property real screenHeight: 1080
     readonly property bool _widgetBlurAvailable: Appearance.effectsEnabled
         && (Appearance.angelEverywhere
-            || (Appearance.auroraEverywhere && !Appearance.inirEverywhere)
+            || (Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere)
             || (!Appearance.zzzEverywhere && !Appearance.cookieEverywhere
                 && !Appearance.angelEverywhere && !Appearance.auroraEverywhere
-                && !Appearance.inirEverywhere
+                && !Appearance.ilmangoEverywhere
                 && (Config.options?.background?.widgets?.style ?? "panel") === "island"
                 && (Config.options?.appearance?.island?.glass ?? true)
                 && (Config.options?.appearance?.island?.opacity ?? 1) < 0.999))
@@ -246,7 +246,7 @@ Item {
         backdropScreenHeight: root.screenHeight
         radiusOverride: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
             : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-            : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
             : Appearance.rounding.normal
         // No frameLabel: the header right below already titles the panel; the
         // corner tape label overlapped it (registration marks alone suffice).
@@ -340,7 +340,7 @@ Item {
                             GlobalStates.settingsOverlayRequestedPage = 14
                             GlobalStates.settingsOverlayOpen = true
                         } else {
-                            Quickshell.execDetached(["/usr/bin/env", "QS_SETTINGS_PAGE=14", Quickshell.shellPath("scripts/inir"), "settings-window"])
+                            Quickshell.execDetached(["/usr/bin/env", "QS_SETTINGS_PAGE=14", Quickshell.shellPath("scripts/ilmango"), "settings-window"])
                         }
                     }
                     cancelAction: () => {}
@@ -714,7 +714,7 @@ Item {
                     }
                     StyledText {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: "~/.config/inir/widgets/"
+                        text: "~/.config/ilmango/widgets/"
                         color: ColorUtils.applyAlpha(Appearance.colors.colOnLayer1, 0.48)
                         font.pixelSize: Appearance.font.pixelSize.smaller
                         font.family: Appearance.font.family.monospace
@@ -1109,7 +1109,7 @@ Item {
                     }
 
                     // Blur toggle (only meaningful when current style supports blur —
-                    // aurora / angel. Hidden on material/inir to avoid a no-op control.)
+                    // aurora / angel. Hidden on material/ilmango to avoid a no-op control.)
                     RowLayout {
                         width: parent.width
                         spacing: 8

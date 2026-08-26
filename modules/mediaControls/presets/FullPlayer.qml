@@ -47,7 +47,7 @@ Item {
     StyledRectangularShadow {
         target: card
         visible: !Appearance.zzzEverywhere
-            && (Appearance.angelEverywhere || (!Appearance.inirEverywhere && !Appearance.auroraEverywhere))
+            && (Appearance.angelEverywhere || (!Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere))
     }
 
     Rectangle {
@@ -56,14 +56,14 @@ Item {
         width: parent.width - Appearance.sizes.elevationMargin
         height: parent.height - Appearance.sizes.elevationMargin
         radius: Appearance.zzzEverywhere ? Appearance.zzz.panelRadius
-            : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : root.radius
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : root.radius
         color: Appearance.zzzEverywhere ? Appearance.zzz.paper
-             : Appearance.inirEverywhere ? playerBase.inirLayer1
+             : Appearance.ilmangoEverywhere ? playerBase.ilmangoLayer1
              : Appearance.auroraEverywhere ? "transparent"
              : (blendedColors?.colLayer0 ?? Appearance.colors.colLayer0)
-        border.width: Appearance.zzzEverywhere ? Appearance.zzz.borderThick : Appearance.inirEverywhere || Appearance.auroraEverywhere ? 1 : 0
+        border.width: Appearance.zzzEverywhere ? Appearance.zzz.borderThick : Appearance.ilmangoEverywhere || Appearance.auroraEverywhere ? 1 : 0
         border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong
-                    : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                     : Appearance.auroraEverywhere ? Appearance.aurora.colTooltipBorder
                     : "transparent"
         // Organic morph on style/shape switch (organic-transitions)
@@ -90,7 +90,7 @@ Item {
             y: -root.screenY - (card.y + (root.height - card.height) / 2)
             width: Quickshell.screens[0]?.width ?? 1920
             height: Quickshell.screens[0]?.height ?? 1080
-            visible: Appearance.auroraEverywhere && !Appearance.inirEverywhere && !Appearance.zzzEverywhere
+            visible: Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere && !Appearance.zzzEverywhere
             source: visible ? Wallpapers.effectiveWallpaperUrl : ""
             fillMode: Image.PreserveAspectCrop
             cache: true
@@ -100,7 +100,7 @@ Item {
             mipmap: true
             asynchronous: true
 
-            layer.enabled: Appearance.effectsEnabled && Appearance.auroraEverywhere && !Appearance.inirEverywhere
+            layer.enabled: Appearance.effectsEnabled && Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere
             layer.effect: MultiEffect {
                 source: auroraWallpaper
                 anchors.fill: source
@@ -116,7 +116,7 @@ Item {
         // Aurora tint overlay
         Rectangle {
             anchors.fill: parent
-            visible: Appearance.auroraEverywhere && !Appearance.inirEverywhere && !Appearance.zzzEverywhere
+            visible: Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere && !Appearance.zzzEverywhere
             color: Appearance.angelEverywhere
                 ? ColorUtils.transparentize(blendedColors?.colLayer0 ?? Appearance.colors.colLayer0Base, Appearance.angel.overlayOpacity)
                 : ColorUtils.transparentize(blendedColors?.colLayer0 ?? Appearance.colors.colLayer0Base, Appearance.aurora.popupTransparentize)
@@ -131,22 +131,22 @@ Item {
             cache: false
             smooth: true
             mipmap: true
-            opacity: Appearance.zzzEverywhere ? 0.24 : Appearance.inirEverywhere ? 0.15 : (Appearance.auroraEverywhere ? 0.2 : 0.5)
+            opacity: Appearance.zzzEverywhere ? 0.24 : Appearance.ilmangoEverywhere ? 0.15 : (Appearance.auroraEverywhere ? 0.2 : 0.5)
             visible: playerBase.displayedArtFilePath !== ""
 
             layer.enabled: Appearance.effectsEnabled
             layer.effect: MultiEffect {
                 blurEnabled: true
-                blur: Appearance.inirEverywhere ? 0.3 : 0.15
+                blur: Appearance.ilmangoEverywhere ? 0.3 : 0.15
                 blurMax: 16
-                saturation: Appearance.inirEverywhere ? 0.1 : 0.3
+                saturation: Appearance.ilmangoEverywhere ? 0.1 : 0.3
             }
         }
 
         // Gradient overlay for Material
         Rectangle {
             anchors.fill: parent
-            visible: !Appearance.zzzEverywhere && !Appearance.inirEverywhere && !Appearance.auroraEverywhere
+            visible: !Appearance.zzzEverywhere && !Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere
             gradient: Gradient {
                 orientation: Gradient.Horizontal
                 GradientStop { position: 0.0; color: "transparent" }
@@ -204,16 +204,16 @@ Item {
                 downloaded: playerBase.downloaded
                 slideDirection: playerBase.slideDirection
                 artRadius: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
-                    : Appearance.inirEverywhere
-                    ? Appearance.inir.roundingSmall
+                    : Appearance.ilmangoEverywhere
+                    ? Appearance.ilmango.roundingSmall
                     : Appearance.rounding.small
                 placeholderColor: Appearance.zzzEverywhere ? Appearance.zzz.paperAlt
-                    : Appearance.inirEverywhere
-                    ? playerBase.inirLayer2
+                    : Appearance.ilmangoEverywhere
+                    ? playerBase.ilmangoLayer2
                     : (blendedColors?.colLayer1 ?? Appearance.colors.colLayer1)
                 iconColor: Appearance.zzzEverywhere ? Appearance.zzz.inkMuted
-                    : Appearance.inirEverywhere
-                    ? playerBase.inirTextSecondary
+                    : Appearance.ilmangoEverywhere
+                    ? playerBase.ilmangoTextSecondary
                     : (blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
             }
 
@@ -231,8 +231,8 @@ Item {
                     font.weight: Appearance.zzzEverywhere ? Font.Black : Font.Medium
                     font.italic: Appearance.zzzEverywhere
                     color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                        : Appearance.inirEverywhere
-                        ? playerBase.inirText
+                        : Appearance.ilmangoEverywhere
+                        ? playerBase.ilmangoText
                         : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                     Behavior on color {
                         enabled: Appearance.animationsEnabled
@@ -249,8 +249,8 @@ Item {
                     text: playerBase.effectiveArtist || ""
                     font.pixelSize: Appearance.font.pixelSize.small
                     color: Appearance.zzzEverywhere ? Appearance.zzz.inkMuted
-                        : Appearance.inirEverywhere
-                        ? playerBase.inirTextSecondary
+                        : Appearance.ilmangoEverywhere
+                        ? playerBase.ilmangoTextSecondary
                         : (blendedColors?.colSubtext ?? Appearance.colors.colSubtext)
                     Behavior on color {
                         enabled: Appearance.animationsEnabled
@@ -271,14 +271,14 @@ Item {
                     canSeek: playerBase.effectiveCanSeek
                     isPlaying: playerBase.effectiveIsPlaying
                     highlightColor: Appearance.zzzEverywhere ? (blendedColors?.colPrimary ?? Appearance.zzz.accent)
-                        : Appearance.inirEverywhere
-                        ? playerBase.inirPrimary
+                        : Appearance.ilmangoEverywhere
+                        ? playerBase.ilmangoPrimary
                         : Appearance.auroraEverywhere
                             ? Appearance.colors.colPrimary
                             : (blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
                     trackColor: Appearance.zzzEverywhere ? Appearance.zzz.metricTrack
-                        : Appearance.inirEverywhere
-                        ? playerBase.inirLayer2
+                        : Appearance.ilmangoEverywhere
+                        ? playerBase.ilmangoLayer2
                         : Appearance.auroraEverywhere
                             ? Appearance.aurora.colElevatedSurface
                             : (blendedColors?.colSecondaryContainer ?? Appearance.colors.colSecondaryContainer)
@@ -295,8 +295,8 @@ Item {
                         font.pixelSize: Appearance.font.pixelSize.smallest
                         font.family: Appearance.font.family.numbers
                         color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                            : Appearance.inirEverywhere
-                            ? playerBase.inirText
+                            : Appearance.ilmangoEverywhere
+                            ? playerBase.ilmangoText
                             : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                         Behavior on color {
                             enabled: Appearance.animationsEnabled
@@ -311,32 +311,32 @@ Item {
                         canGoNext: playerBase.effectiveCanGoNext
                         isPlaying: playerBase.effectiveIsPlaying
                         buttonRadius: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
-                            : Appearance.inirEverywhere
-                            ? Appearance.inir.roundingSmall
+                            : Appearance.ilmangoEverywhere
+                            ? Appearance.ilmango.roundingSmall
                             : Appearance.rounding.full
                         buttonHoverColor: Appearance.zzzEverywhere ? Appearance.zzz.paperAlt
-                            : Appearance.inirEverywhere
-                            ? Appearance.inir.colLayer2Hover
+                            : Appearance.ilmangoEverywhere
+                            ? Appearance.ilmango.colLayer2Hover
                             : Appearance.auroraEverywhere
                                 ? Appearance.aurora.colSubSurface
                                 : ColorUtils.transparentize(
                                     blendedColors?.colLayer1 ?? Appearance.colors.colLayer1, 0.5
                                 )
                         buttonRippleColor: Appearance.zzzEverywhere ? ColorUtils.applyAlpha(Appearance.zzz.accent, 0.28)
-                            : Appearance.inirEverywhere
-                            ? Appearance.inir.colLayer2Active
+                            : Appearance.ilmangoEverywhere
+                            ? Appearance.ilmango.colLayer2Active
                             : Appearance.auroraEverywhere
                                 ? Appearance.aurora.colSubSurfaceActive
                                 : (blendedColors?.colLayer1Active ?? Appearance.colors.colLayer1Active)
                         iconColor: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                            : Appearance.inirEverywhere
-                            ? playerBase.inirText
+                            : Appearance.ilmangoEverywhere
+                            ? playerBase.ilmangoText
                             : Appearance.auroraEverywhere
                                 ? Appearance.colors.colOnLayer0
                                 : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                         playIconColor: Appearance.zzzEverywhere ? (blendedColors?.colPrimary ?? Appearance.zzz.accent)
-                            : Appearance.inirEverywhere
-                            ? playerBase.inirPrimary
+                            : Appearance.ilmangoEverywhere
+                            ? playerBase.ilmangoPrimary
                             : Appearance.auroraEverywhere
                                 ? Appearance.colors.colOnLayer0
                                 : Appearance.colors.colOnLayer1
@@ -352,8 +352,8 @@ Item {
                         font.pixelSize: Appearance.font.pixelSize.smallest
                         font.family: Appearance.font.family.numbers
                         color: Appearance.zzzEverywhere ? Appearance.zzz.ink
-                            : Appearance.inirEverywhere
-                            ? playerBase.inirText
+                            : Appearance.ilmangoEverywhere
+                            ? playerBase.ilmangoText
                             : (blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
                         Behavior on color {
                             enabled: Appearance.animationsEnabled

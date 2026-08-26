@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Illogical-mango Shell
+Comment=Illogical-mango desktop shell session
+Exec=ilmango service restart
+Icon=ilmango
+Terminal=false
+NoDisplay=true
+Categories=System;

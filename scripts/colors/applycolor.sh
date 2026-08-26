@@ -52,7 +52,7 @@ main() {
 
   local cpu_count max_jobs running failed
   cpu_count="$(nproc 2>/dev/null || printf '4')"
-  max_jobs="${INIR_THEME_MAX_JOBS:-$((cpu_count / 2))}"
+  max_jobs="${ILMANGO_THEME_MAX_JOBS:-$((cpu_count / 2))}"
   [[ "$max_jobs" =~ ^[0-9]+$ ]] || max_jobs=2
   (( max_jobs < 2 )) && max_jobs=2
   (( max_jobs > 4 )) && max_jobs=4

@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	common "inir/scripts/colors/themegencommon"
+	common "ilmango/scripts/colors/themegencommon"
 	"os"
 	"path/filepath"
 )
@@ -45,7 +45,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-	outputPath := filepath.Join(outputDir, "inir.json")
+	outputPath := filepath.Join(outputDir, "ilmango.json")
 	data, err := json.MarshalIndent(theme, "", "  ")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

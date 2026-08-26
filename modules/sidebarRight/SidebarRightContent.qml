@@ -126,7 +126,7 @@ Item {
         _log("[SidebarRight] Opening new settings window via IPC");
         GlobalStates.sidebarRightOpen = false;
         Qt.callLater(() => {
-            Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "settings"]);
+            Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "settings"]);
         })
     }
 
@@ -427,7 +427,7 @@ Item {
         readonly property bool regaliaEverywhere: surfaceDialect === "regalia"
         readonly property bool angelEverywhere: surfaceDialect === "angel"
         readonly property bool auroraEverywhere: surfaceDialect === "aurora" || angelEverywhere
-        readonly property bool inirEverywhere: surfaceDialect === "inir"
+        readonly property bool ilmangoEverywhere: surfaceDialect === "ilmango"
         readonly property bool gameModeMinimal: Appearance.gameModeMinimal
         readonly property string wallpaperUrl: {
             const _dep1 = WallpaperListener.multiMonitorEnabled
@@ -437,7 +437,7 @@ Item {
         }
         readonly property bool useWallpaperBackdrop: root.panelVisible
             && auroraEverywhere
-            && !inirEverywhere
+            && !ilmangoEverywhere
             && !gameModeMinimal
             && wallpaperUrl.length > 0
 
@@ -456,19 +456,19 @@ Item {
         color: (gameModeMinimal || islandStyle) ? "transparent"
             : zzzEverywhere ? Appearance.zzz.chrome
             : regaliaEverywhere ? "transparent"
-            : inirEverywhere ? (cardStyle ? Appearance.inir.colLayer1 : Appearance.inir.colLayer0)
+            : ilmangoEverywhere ? (cardStyle ? Appearance.ilmango.colLayer1 : Appearance.ilmango.colLayer0)
             : auroraEverywhere ? ColorUtils.applyAlpha((blendedColors?.colLayer0 ?? Appearance.colors.colLayer0), 1)
             : (cardStyle ? Appearance.colors.colLayer1 : Appearance.colors.colLayer0)
         border.width: (gameModeMinimal || islandStyle || regaliaEverywhere) ? 0 : (zzzEverywhere ? 1 : (angelEverywhere ? Appearance.angel.panelBorderWidth : 1))
         border.color: regaliaEverywhere ? "transparent"
             : zzzEverywhere ? Appearance.zzz.hairline
             : angelEverywhere ? Appearance.angel.colPanelBorder
-            : inirEverywhere ? Appearance.inir.colBorder
+            : ilmangoEverywhere ? Appearance.ilmango.colBorder
             : Appearance.colors.colLayer0Border
         radius: zzzEverywhere ? Appearance.zzz.panelRadius
             : regaliaEverywhere ? Appearance.regalia.panelRadius
             : angelEverywhere ? Appearance.angel.roundingNormal
-            : inirEverywhere ? (cardStyle ? Appearance.inir.roundingLarge : Appearance.inir.roundingNormal)
+            : ilmangoEverywhere ? (cardStyle ? Appearance.ilmango.roundingLarge : Appearance.ilmango.roundingNormal)
             : cardStyle ? Appearance.rounding.normal : (Appearance.rounding.screenRounding - Appearance.sizes.hyprlandGapsOut + 1)
 
         Behavior on radius {
@@ -688,7 +688,7 @@ Item {
                         anchors.rightMargin: 12
                         height: 3
                         radius: 1.5
-                        color: Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary
+                        color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary
                         opacity: sectionLoader.isDropTarget && root.sectionHoverIndex < root.sectionDragIndex ? 0.85 : 0
                         visible: opacity > 0
                         z: 10
@@ -701,7 +701,7 @@ Item {
                         anchors.rightMargin: 12
                         height: 3
                         radius: 1.5
-                        color: Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary
+                        color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary
                         opacity: sectionLoader.isDropTarget && root.sectionHoverIndex > root.sectionDragIndex ? 0.85 : 0
                         visible: opacity > 0
                         z: 10
@@ -718,18 +718,18 @@ Item {
                         width: 30
                         height: 22
                         z: 20
-                        radius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.verysmall
+                        radius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.verysmall
                         color: sectionHandleArea.containsMouse || sectionLoader.isBeingDragged
-                            ? (Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover : Appearance.colors.colLayer1Hover)
-                            : (Appearance.inirEverywhere ? Appearance.inir.colLayer1 : Appearance.colors.colLayer1)
-                        border.width: Appearance.inirEverywhere ? 1 : 0
-                        border.color: Appearance.inirEverywhere ? Appearance.inir.colBorder : "transparent"
+                            ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover : Appearance.colors.colLayer1Hover)
+                            : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1 : Appearance.colors.colLayer1)
+                        border.width: Appearance.ilmangoEverywhere ? 1 : 0
+                        border.color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent"
 
                         MaterialSymbol {
                             anchors.centerIn: parent
                             text: "drag_indicator"
                             iconSize: 14
-                            color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+                            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
                         }
 
                         MouseArea {
@@ -772,12 +772,12 @@ Item {
                         z: 22
                         radius: height / 2
                         color: resizeHandleArea.containsMouse || sectionLoader.isBeingResized
-                            ? (Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimaryContainer)
-                            : (Appearance.inirEverywhere ? Appearance.inir.colLayer1 : Appearance.colors.colLayer2)
+                            ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimaryContainer)
+                            : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1 : Appearance.colors.colLayer2)
                         border.width: 1
                         border.color: sectionLoader.isBeingResized
-                            ? (Appearance.inirEverywhere ? Appearance.inir.colBorderAccent : Appearance.colors.colPrimary)
-                            : (Appearance.inirEverywhere ? Appearance.inir.colBorder : Appearance.colors.colOutlineVariant)
+                            ? (Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderAccent : Appearance.colors.colPrimary)
+                            : (Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : Appearance.colors.colOutlineVariant)
 
                         Row {
                             anchors.centerIn: parent
@@ -786,13 +786,13 @@ Item {
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: "height"
                                 iconSize: 12
-                                color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer2
+                                color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer2
                             }
                             StyledText {
                                 anchors.verticalCenter: parent.verticalCenter
                                 text: Math.round(root.sectionWeight(sectionLoader.modelData) * 50) + "%"
                                 font.pixelSize: Appearance.font.pixelSize.smallest
-                                color: Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer2
+                                color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer2
                             }
                         }
 

@@ -1,6 +1,6 @@
 # Panel Families
 
-iNiR has two completely separate UI families that share the same services and config backend. Switch between them at runtime with `Super+Shift+W`.
+Illogical-mango has two completely separate UI families that share the same services and config backend. Switch between them at runtime with `Super+Shift+W`.
 
 ## Material ii
 
@@ -13,16 +13,16 @@ The default family. Material Design language with six style variants that form a
 | **material** | Clean Google-standard Material 3. Solid surfaces, standard elevation. The baseline. |
 | **cards** | Material variant with a card-based layout. Same colors, different structure. |
 | **aurora** | Professional glass transparency. Blur-backed surfaces, frosted panels. |
-| **inir** | TUI-inspired elegance. Border and text hierarchy, muted tones, monospace accents. |
+| **ilmango** | TUI-inspired elegance. Border and text hierarchy, muted tones, monospace accents. |
 | **angel** | The flagship. Neo-brutalism meets glass. Offset shadows, partial borders, inset glow, warm golden palette. |
 | **zzz** | Zenless Zone Zero poster UI: wallpaper-generated signal colors, black console surfaces, technical grid frames, cut-corner plates, sticker badges, segmented metrics, halftone texture, and Oxanium type. |
 
-Style dispatch priority: **zzz > angel > inir > aurora > material**. This means if you're checking which style to apply, check zzz first:
+Style dispatch priority: **zzz > angel > ilmango > aurora > material**. This means if you're checking which style to apply, check zzz first:
 
 ```qml
 color: Appearance.zzzEverywhere ? Appearance.colors.colLayer1
      : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-     : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+     : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
      : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
      : Appearance.colors.colLayer1
 ```

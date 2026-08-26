@@ -68,7 +68,7 @@ WSettingsPage {
         WSettingsSwitch {
             label: Translation.tr("Show mascot illustration")
             icon: "image"
-            description: Translation.tr("Show the iNiR mascot in About, empty states and other shell surfaces")
+            description: Translation.tr("Show the Illogical-mango mascot in About, empty states and other shell surfaces")
             checked: Config.options?.mascot?.enable ?? false
             onCheckedChanged: Config.setNestedValue("mascot.enable", checked)
         }
@@ -241,14 +241,14 @@ WSettingsPage {
             label: Translation.tr("Unleash chaos")
             icon: "flash-on"
             enabled: Config.options?.mascot?.chaos?.enable ?? false
-            onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "romp"])
+            onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "romp"])
         }
 
         WSettingsButton {
             label: Translation.tr("Tidy up")
             description: Translation.tr("Every displaced widget returns home")
             icon: "delete"
-            onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "tidy"])
+            onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "tidy"])
         }
 
         WSettingsSwitch {
@@ -309,13 +309,13 @@ WSettingsPage {
             label: Translation.tr("Peek now")
             description: Translation.tr("Try her right now instead of waiting for the interval")
             icon: "wand"
-            onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "poke"])
+            onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "poke"])
         }
 
         WSettingsButton {
             label: Translation.tr("Send her away")
             icon: "eye-off"
-            onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "hide"])
+            onClicked: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "hide"])
         }
 
         WSettingsSwitch {
@@ -522,7 +522,7 @@ WSettingsPage {
                             Qt.openUrlExternally(Directories.shellConfigPath)
                             break
                         case "shortcuts":
-                            Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "cheatsheet", "toggle"])
+                            Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "cheatsheet", "toggle"])
                             break
                         }
                     }

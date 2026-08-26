@@ -6,39 +6,39 @@ import qs.modules.common.functions
 
 QtObject {
     readonly property bool angelStyle: Appearance.angelEverywhere
-    readonly property bool inirStyle: Appearance.inirEverywhere
+    readonly property bool ilmangoStyle: Appearance.ilmangoEverywhere
     readonly property bool auroraStyle: Appearance.auroraEverywhere && !angelStyle
-    readonly property bool neutralDialect: angelStyle || inirStyle || auroraStyle
+    readonly property bool neutralDialect: angelStyle || ilmangoStyle || auroraStyle
 
     readonly property color surface: angelStyle ? Appearance.angel.colGlassPanel
-        : inirStyle ? Appearance.inir.colLayer0
+        : ilmangoStyle ? Appearance.ilmango.colLayer0
         : auroraStyle ? Appearance.aurora.colOverlay
         : Appearance.colors.colLayer0
     readonly property color surfaceContainerLow: angelStyle ? Appearance.angel.colGlassCard
-        : inirStyle ? Appearance.inir.colLayer1
+        : ilmangoStyle ? Appearance.ilmango.colLayer1
         : auroraStyle ? Appearance.aurora.colSubSurface
         : Appearance.colors.colSurfaceContainerLow
     readonly property color surfaceContainer: angelStyle ? Appearance.angel.colGlassCard
-        : inirStyle ? Appearance.inir.colLayer2
+        : ilmangoStyle ? Appearance.ilmango.colLayer2
         : auroraStyle ? Appearance.aurora.colSubSurface
         : Appearance.colors.colSurfaceContainer
     readonly property color surfaceContainerHigh: angelStyle ? Appearance.angel.colGlassElevated
-        : inirStyle ? Appearance.inir.colLayer3
+        : ilmangoStyle ? Appearance.ilmango.colLayer3
         : auroraStyle ? Appearance.aurora.colElevatedSurface
         : Appearance.colors.colSurfaceContainerHigh
     readonly property color surfaceContainerHighest: surfaceContainerHigh
     readonly property color _surfaceForegroundCandidate: angelStyle ? Appearance.angel.colText
-        : inirStyle ? Appearance.inir.colText
+        : ilmangoStyle ? Appearance.ilmango.colText
         : Appearance.colors.colOnSurface
     readonly property color surfaceForeground: ColorUtils.ensureReadable(
         _surfaceForegroundCandidate, surface, 4.5)
     readonly property color _surfaceVariantForegroundCandidate: angelStyle ? Appearance.angel.colTextSecondary
-        : inirStyle ? Appearance.inir.colTextSecondary
+        : ilmangoStyle ? Appearance.ilmango.colTextSecondary
         : Appearance.colors.colOnSurfaceVariant
     readonly property color surfaceVariantForeground: ColorUtils.ensureReadable(
         _surfaceVariantForegroundCandidate, surfaceContainer, 3.0)
     readonly property color outlineVariant: angelStyle ? Appearance.angel.colCardBorder
-        : inirStyle ? Appearance.inir.colBorder
+        : ilmangoStyle ? Appearance.ilmango.colBorder
         : auroraStyle ? Appearance.aurora.colTooltipBorder
         : Appearance.colors.colOutlineVariant
     readonly property color primary: Appearance.colors.colPrimary

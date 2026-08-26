@@ -127,17 +127,17 @@ RippleButton {
     rightInset: 2
 
     buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall
         : Appearance.rounding.small
     cookieMorphing: true
 
     colBackground: "transparent"
     colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colLayer1Hover
     colRipple: Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer1Active
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Active
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceActive
         : Appearance.colors.colLayer1Active
 
@@ -388,7 +388,7 @@ RippleButton {
                         anchors.fill: desat
                         source: desat
                         color: ColorUtils.transparentize(
-                            Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colPrimary, 0.9)
+                            Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colPrimary, 0.9)
                     }
                 }
             }
@@ -443,12 +443,12 @@ RippleButton {
                             color: isFocused
                                 ? (Appearance.zzzEverywhere ? Appearance.zzz.accent
                                 : Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                                : Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                                 : Appearance.colors.colPrimary)
                                 : ColorUtils.transparentize(
                                     Appearance.zzzEverywhere ? Appearance.zzz.inkMuted
                                     : Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                                    : Appearance.inirEverywhere ? Appearance.inir.colText
+                                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                                     : Appearance.colors.colOnLayer0, 0.5)
 
                             Behavior on implicitWidth {
@@ -477,7 +477,7 @@ RippleButton {
                         color: ColorUtils.transparentize(
                             Appearance.zzzEverywhere ? Appearance.zzz.inkMuted
                             : Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                            : Appearance.inirEverywhere ? Appearance.inir.colText
+                            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                             : Appearance.colors.colOnLayer0, 0.5)
 
                         Behavior on opacity {
@@ -497,7 +497,7 @@ RippleButton {
         sourceComponent: Rectangle {
             width: root.vertical ? (root.barSize / 2.5) : 1
             height: root.vertical ? 1 : (root.barSize / 2.5)
-            color: Appearance.inirEverywhere ? Appearance.inir.colBorderSubtle
+            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorderSubtle
                  : Appearance.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colOnLayer0, 0.7)
                  : Appearance.colors.colOutlineVariant
         }

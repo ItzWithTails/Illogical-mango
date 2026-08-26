@@ -19,7 +19,7 @@ PanelSurface {
     }
     readonly property bool compactMode: Config.options?.controlPanel?.compactMode ?? true
     
-    readonly property bool inirEverywhere: Appearance.inirEverywhere
+    readonly property bool ilmangoEverywhere: Appearance.ilmangoEverywhere
     readonly property bool auroraEverywhere: Appearance.auroraEverywhere
     readonly property bool hideLocation: Config.options?.waffles?.widgetsPanel?.weatherHideLocation ?? false
     readonly property string weatherDescription: Weather.describeWeather(Weather.data?.wCode ?? "113")
@@ -27,7 +27,7 @@ PanelSurface {
     readonly property string secondaryText: locationText || root.weatherDescription
 
     elevation: 1
-    radiusOverride: inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+    radiusOverride: ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
 
     AngelPartialBorder { targetRadius: root.radiusOverride; coverage: 0.45; visible: Appearance.angelEverywhere }
 
@@ -45,7 +45,7 @@ PanelSurface {
                 text: Icons.getWeatherIcon(Weather.data?.wCode, Weather.isNightNow()) ?? "cloud"
                 iconSize: root.compactMode ? 26 : 32
                 color: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-                     : root.inirEverywhere ? Appearance.inir.colPrimary
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                      : root.auroraEverywhere ? Appearance.colors.colPrimary
                      : Appearance.colors.colPrimary
                 Layout.alignment: Qt.AlignVCenter
@@ -57,7 +57,7 @@ PanelSurface {
                 font.weight: Font.Medium
                 font.family: Appearance.font.family.numbers
                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                     : root.inirEverywhere ? Appearance.inir.colText
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colText
                      : root.auroraEverywhere ? Appearance.colors.colOnSurface
                      : Appearance.colors.colOnLayer1
                 Layout.alignment: Qt.AlignVCenter
@@ -71,10 +71,10 @@ PanelSurface {
                 implicitWidth: root.compactMode ? 24 : 28
                 implicitHeight: root.compactMode ? 24 : 28
                 buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                    : root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                    : root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                 colBackground: "transparent"
                 colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                    : root.inirEverywhere ? Appearance.inir.colLayer2Hover
+                    : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                     : root.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
                     : Appearance.colors.colLayer2Hover
                 onClicked: Config.setNestedValue("waffles.widgetsPanel.weatherHideLocation", !root.hideLocation)
@@ -83,7 +83,7 @@ PanelSurface {
                     text: root.hideLocation ? "visibility_off" : "visibility"
                     iconSize: root.compactMode ? 14 : 16
                     color: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                         : root.inirEverywhere ? Appearance.inir.colTextSecondary
+                         : root.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                          : root.auroraEverywhere ? Appearance.colors.colOnSurfaceVariant
                          : Appearance.colors.colSubtext
                     opacity: root.hideLocation ? 1 : 0.7
@@ -95,10 +95,10 @@ PanelSurface {
                 implicitWidth: root.compactMode ? 24 : 28
                 implicitHeight: root.compactMode ? 24 : 28
                 buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-                    : root.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                    : root.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                 colBackground: "transparent"
                 colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                    : root.inirEverywhere ? Appearance.inir.colLayer2Hover
+                    : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                     : root.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
                     : Appearance.colors.colLayer2Hover
                 onClicked: Weather.forceRefresh()
@@ -107,7 +107,7 @@ PanelSurface {
                     text: "refresh"
                     iconSize: root.compactMode ? 14 : 16
                     color: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                         : root.inirEverywhere ? Appearance.inir.colTextSecondary
+                         : root.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                          : root.auroraEverywhere ? Appearance.colors.colOnSurfaceVariant
                          : Appearance.colors.colSubtext
                 }
@@ -121,7 +121,7 @@ PanelSurface {
             text: root.secondaryText
             font.pixelSize: root.hideLocation ? Appearance.font.pixelSize.small : Appearance.font.pixelSize.smallest
             color: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                 : root.inirEverywhere ? Appearance.inir.colTextSecondary
+                 : root.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                  : root.auroraEverywhere ? Appearance.colors.colOnSurfaceVariant
                  : Appearance.colors.colSubtext
             elide: Text.ElideRight

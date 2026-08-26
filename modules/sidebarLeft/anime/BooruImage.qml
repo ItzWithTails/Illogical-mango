@@ -120,7 +120,7 @@ Button {
         implicitWidth: root.rowHeight * modelData.aspect_ratio
         implicitHeight: root.rowHeight
         radius: imageRadius
-        color: root.showBackground ? (Appearance.angelEverywhere ? Appearance.angel.colGlassCard : Appearance.inirEverywhere ? Appearance.inir.colLayer2 : (Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface : Appearance.colors.colLayer2)) : "transparent"
+        color: root.showBackground ? (Appearance.angelEverywhere ? Appearance.angel.colGlassCard : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 : (Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface : Appearance.colors.colLayer2)) : "transparent"
     }
 
     contentItem: Item {

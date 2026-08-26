@@ -201,7 +201,7 @@ ContentPage {
                 onCheckedChanged: root.setCavaValue(
                     "appearance.wallpaperTheming.enableCava", checked, true)
                 StyledToolTip {
-                    text: Translation.tr("Manage the external ~/.config/cava/config block. Internal iNiR visualizers use the options below whether this switch is on or off.")
+                    text: Translation.tr("Manage the external ~/.config/cava/config block. Internal Illogical-mango visualizers use the options below whether this switch is on or off.")
                 }
             }
 

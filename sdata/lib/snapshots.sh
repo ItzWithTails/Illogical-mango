@@ -1,4 +1,4 @@
-# Snapshot system for iNiR
+# Snapshot system for Illogical-mango
 # Time-machine style backups before updates
 # This script is meant to be sourced.
 
@@ -6,12 +6,12 @@
 
 SNAPSHOTS_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/quickshell/snapshots"
 MAX_SNAPSHOTS=10
-INIR_CONFIG_DIR="${DOTS_CORE_CONFDIR:-${XDG_CONFIG_HOME}/illogical-impulse}"
+ILMANGO_CONFIG_DIR="${DOTS_CORE_CONFDIR:-${XDG_CONFIG_HOME}/illogical-impulse}"
 
 # Paths to snapshot
 SNAPSHOT_PATHS=(
-    "${XDG_CONFIG_HOME}/quickshell/inir"
-    "${INIR_CONFIG_DIR}/config.json"
+    "${XDG_CONFIG_HOME}/quickshell/ilmango"
+    "${ILMANGO_CONFIG_DIR}/config.json"
     "${XDG_CONFIG_HOME}/niri/config.kdl"
     "${XDG_STATE_HOME:-$HOME/.local/state}/quickshell/user/desktop-items.json"
 )
@@ -33,8 +33,8 @@ create_snapshot() {
     mkdir -p "$snapshot_dir"
     
     # Copy QML code
-    if [[ -d "${XDG_CONFIG_HOME}/quickshell/inir" ]]; then
-        rsync -a --exclude='.inir-manifest' "${XDG_CONFIG_HOME}/quickshell/inir/" "${snapshot_dir}/inir/"
+    if [[ -d "${XDG_CONFIG_HOME}/quickshell/ilmango" ]]; then
+        rsync -a --exclude='.ilmango-manifest' "${XDG_CONFIG_HOME}/quickshell/ilmango/" "${snapshot_dir}/ilmango/"
     fi
 
     if [[ -d "${XDG_CONFIG_HOME}/quickshell/ii" ]]; then
@@ -42,8 +42,8 @@ create_snapshot() {
     fi
     
     # Copy user config
-    if [[ -f "${INIR_CONFIG_DIR}/config.json" ]]; then
-        cp "${INIR_CONFIG_DIR}/config.json" "${snapshot_dir}/"
+    if [[ -f "${ILMANGO_CONFIG_DIR}/config.json" ]]; then
+        cp "${ILMANGO_CONFIG_DIR}/config.json" "${snapshot_dir}/"
     fi
     
     # Copy niri config
@@ -52,8 +52,8 @@ create_snapshot() {
     fi
     
     # Copy migrations state
-    if [[ -f "${INIR_CONFIG_DIR}/migrations.json" ]]; then
-        cp "${INIR_CONFIG_DIR}/migrations.json" "${snapshot_dir}/"
+    if [[ -f "${ILMANGO_CONFIG_DIR}/migrations.json" ]]; then
+        cp "${ILMANGO_CONFIG_DIR}/migrations.json" "${snapshot_dir}/"
     fi
 
     # Copy managed desktop-item state. It lives in XDG state, not the config
@@ -154,23 +154,23 @@ restore_snapshot() {
     echo -e "${STY_CYAN}Restoring snapshot: ${snapshot_id}${STY_RST}"
     
     # Stop shell
-    local runtime_target="${XDG_CONFIG_HOME}/quickshell/inir"
+    local runtime_target="${XDG_CONFIG_HOME}/quickshell/ilmango"
     qs -p "$runtime_target" kill &>/dev/null || true
     
     # Restore QML code
-    if [[ -d "${snapshot_dir}/inir" ]]; then
+    if [[ -d "${snapshot_dir}/ilmango" ]]; then
         log_info "Restoring QML code..."
-        rsync -a --delete "${snapshot_dir}/inir/" "${XDG_CONFIG_HOME}/quickshell/inir/"
+        rsync -a --delete "${snapshot_dir}/ilmango/" "${XDG_CONFIG_HOME}/quickshell/ilmango/"
     elif [[ -d "${snapshot_dir}/ii" ]]; then
         log_info "Restoring QML code..."
-        rsync -a --delete "${snapshot_dir}/ii/" "${XDG_CONFIG_HOME}/quickshell/inir/"
+        rsync -a --delete "${snapshot_dir}/ii/" "${XDG_CONFIG_HOME}/quickshell/ilmango/"
     fi
     
     # Restore user config
     if [[ -f "${snapshot_dir}/config.json" ]]; then
         log_info "Restoring user config..."
-        mkdir -p "${INIR_CONFIG_DIR}"
-        cp "${snapshot_dir}/config.json" "${INIR_CONFIG_DIR}/"
+        mkdir -p "${ILMANGO_CONFIG_DIR}"
+        cp "${snapshot_dir}/config.json" "${ILMANGO_CONFIG_DIR}/"
     fi
     
     # Restore niri config
@@ -181,8 +181,8 @@ restore_snapshot() {
     
     # Restore migrations state
     if [[ -f "${snapshot_dir}/migrations.json" ]]; then
-        mkdir -p "${INIR_CONFIG_DIR}"
-        cp "${snapshot_dir}/migrations.json" "${INIR_CONFIG_DIR}/"
+        mkdir -p "${ILMANGO_CONFIG_DIR}"
+        cp "${snapshot_dir}/migrations.json" "${ILMANGO_CONFIG_DIR}/"
     fi
 
     if [[ -f "${snapshot_dir}/desktop-items.json" ]]; then
@@ -217,7 +217,7 @@ restore_snapshot() {
         tui_success "Snapshot restored and shell restarted"
     else
         tui_warn "Not in graphical session - shell restart skipped"
-        tui_info "Run: inir start (in your Niri session)"
+        tui_info "Run: ilmango start (in your Niri session)"
         tui_success "Snapshot restored"
     fi
 }

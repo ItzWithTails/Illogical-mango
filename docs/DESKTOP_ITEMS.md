@@ -7,7 +7,7 @@ deleting the original target. One click selects it; double click opens it.
 Applications dragged from Overview search or All Apps carry only their
 installed desktop-entry ID through a native desktop drag. The drop is resolved
 by the desktop surface under the pointer, so mixed-resolution monitor layouts
-use that output's own work area and grid. iNiR resolves the ID through its
+use that output's own work area and grid. Illogical-mango resolves the ID through its
 normal launcher path and never executes a dropped `.desktop` file directly.
 Overview releases only its input region during the drag; canceling it restores
 normal Overview interaction and creates no desktop item.
@@ -42,7 +42,7 @@ widget's existing action.
 Missing targets stay visible with a broken-state marker. For file and folder
 references, **Locate target** opens the target's parent folder. Missing
 application references are repaired with **Edit destination**. **Remove from desktop** only
-removes iNiR's reference. It never deletes the application or file. The latest
+removes Illogical-mango's reference. It never deletes the application or file. The latest
 removal can be restored with **Undo remove**.
 
 Desktop items are stored in:

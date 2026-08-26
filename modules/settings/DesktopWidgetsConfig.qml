@@ -64,10 +64,10 @@ ContentPage {
     readonly property string _japanesePath: "background.widgets.japaneseTypography"
     readonly property bool _widgetBlurAvailable: Appearance.effectsEnabled
         && (Appearance.angelEverywhere
-            || (Appearance.auroraEverywhere && !Appearance.inirEverywhere)
+            || (Appearance.auroraEverywhere && !Appearance.ilmangoEverywhere)
             || (!Appearance.zzzEverywhere && !Appearance.cookieEverywhere
                 && !Appearance.angelEverywhere && !Appearance.auroraEverywhere
-                && !Appearance.inirEverywhere
+                && !Appearance.ilmangoEverywhere
                 && (Config.options?.background?.widgets?.style ?? "panel") === "island"
                 && (Config.options?.appearance?.island?.glass ?? true)
                 && (Config.options?.appearance?.island?.opacity ?? 1) < 0.999))
@@ -4749,7 +4749,7 @@ ContentPage {
             // Description
             StyledText {
                 Layout.fillWidth: true
-                text: Translation.tr("QML widgets you create or install. Place widget folders in ~/.config/inir/widgets/ — each needs a widget.json manifest and a .qml file.")
+                text: Translation.tr("QML widgets you create or install. Place widget folders in ~/.config/ilmango/widgets/ — each needs a widget.json manifest and a .qml file.")
                 color: Appearance.colors.colSubtext
                 font.pixelSize: Appearance.font.pixelSize.small
                 wrapMode: Text.WordWrap

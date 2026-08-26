@@ -21,7 +21,7 @@ Item {
 
     property bool hovered: mouseArea.containsMouse || forceHovered
 
-    // iNiR's motion tokens expose `type` + `bezierCurve`; upstream read a
+    // Illogical-mango's motion tokens expose `type` + `bezierCurve`; upstream read a
     // non-existent `easing`, which left the curve undefined.
     Behavior on implicitWidth {
         NumberAnimation {

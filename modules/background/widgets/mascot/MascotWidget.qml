@@ -775,7 +775,7 @@ AbstractBackgroundWidget {
         enabled: !GlobalStates.widgetEditMode && sprite.visible
         onTapped: {
             if (root.customPath.length > 0) {
-                Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "poke"])
+                Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "poke"])
             } else {
                 root._reactToClick()
             }

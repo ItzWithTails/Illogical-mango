@@ -17,18 +17,18 @@ Item {
 
     // Style tokens
     readonly property color colText: Appearance.angelEverywhere ? Appearance.angel.colText
-        : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
     readonly property color colTextSecondary: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-        : Appearance.inirEverywhere ? Appearance.inir.colTextSecondary : Appearance.colors.colSubtext
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary : Appearance.colors.colSubtext
     readonly property color colBg: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer0
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer0
         : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
         : Appearance.colors.colLayer0
     readonly property color colBorder: Appearance.angelEverywhere ? Appearance.angel.colBorder
-        : Appearance.inirEverywhere ? Appearance.inir.colBorder : Appearance.colors.colLayer0Border
-    readonly property int borderWidth: (Appearance.angelEverywhere || Appearance.inirEverywhere) ? 1 : (Appearance.auroraEverywhere ? 0 : 1)
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : Appearance.colors.colLayer0Border
+    readonly property int borderWidth: (Appearance.angelEverywhere || Appearance.ilmangoEverywhere) ? 1 : (Appearance.auroraEverywhere ? 0 : 1)
     readonly property real radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-        : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
 
     ColumnLayout {
         anchors.fill: parent
@@ -51,7 +51,7 @@ Item {
                 buttonRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall : 14
                 colBackground: "transparent"
                 colBackgroundHover: Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-                    : Appearance.inirEverywhere ? Appearance.inir.colLayer1Hover
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1Hover
                     : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                     : Appearance.colors.colLayer1Hover
                 onClicked: ResourceUsage.ensureRunning()
@@ -223,7 +223,7 @@ Item {
                 anchors.fill: parent
                 radius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall : 4
                 color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                    : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                     : Appearance.auroraEverywhere ? ColorUtils.transparentize(Appearance.colors.colLayer1, 0.5)
                     : Appearance.colors.colLayer1
             }
@@ -250,7 +250,7 @@ Item {
             value: progressValue
             highlightColor: progressColor
             trackColor: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                : Appearance.inirEverywhere ? Appearance.inir.colLayer2
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                 : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                 : Appearance.colors.colSecondaryContainer
         }

@@ -102,7 +102,7 @@ Scope {
     property bool _nativeHostMapped: true
     property bool _resumeRearmPending: false
     readonly property int contentIdleUnloadMs: {
-        const override = Number(Quickshell.env("INIR_SIDEBAR_IDLE_UNLOAD_MS"))
+        const override = Number(Quickshell.env("ILMANGO_SIDEBAR_IDLE_UNLOAD_MS"))
         return Number.isFinite(override) && override >= 250
             ? Math.round(override) : 300000
     }

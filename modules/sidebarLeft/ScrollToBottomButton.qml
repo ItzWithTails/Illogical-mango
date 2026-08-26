@@ -34,13 +34,13 @@ RippleButton {
     rippleEnabled: !root.compact
 
     colBackground: root.compact ? Appearance.colors.colLayer1
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimary : Appearance.colors.colSecondary
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary : Appearance.colors.colSecondary
     colBackgroundHover: root.compact ? Appearance.colors.colLayer1
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimaryHover : Appearance.colors.colSecondaryHover
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryHover : Appearance.colors.colSecondaryHover
     colRipple: root.compact ? Appearance.colors.colLayer1Active
-        : Appearance.inirEverywhere ? Appearance.inir.colPrimaryActive : Appearance.colors.colSecondaryActive
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimaryActive : Appearance.colors.colSecondaryActive
     buttonRadius: root.compact ? Appearance.rounding.small
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.verysmall
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.verysmall
 
     downAction: () => {
         target.positionViewAtEnd()
@@ -67,13 +67,13 @@ RippleButton {
                 anchors.verticalCenter: parent.verticalCenter
                 text: "arrow_downward"
                 iconSize: Appearance.font.pixelSize.larger
-                color: Appearance.inirEverywhere ? Appearance.inir.colOnPrimary : Appearance.colors.colOnSecondary
+                color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary : Appearance.colors.colOnSecondary
             }
             StyledText {
                 anchors.verticalCenter: parent.verticalCenter
                 text: Translation.tr("Scroll to Bottom")
                 font.pixelSize: Appearance.font.pixelSize.smallie
-                color: Appearance.inirEverywhere ? Appearance.inir.colOnPrimary : Appearance.colors.colOnSecondary
+                color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colOnPrimary : Appearance.colors.colOnSecondary
                 verticalAlignment: Text.AlignVCenter
             }
         }

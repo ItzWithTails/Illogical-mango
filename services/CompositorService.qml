@@ -573,7 +573,7 @@ Singleton {
 
     // ========== KEYBOARD LAYOUT ==========
     //
-    // This used to live in NiriService, which meant `inir keyboard
+    // This used to live in NiriService, which meant `ilmango keyboard
     // getCurrentLayout` answered with an empty string on every other
     // compositor. It belongs here, where each backend can be asked in turn.
 

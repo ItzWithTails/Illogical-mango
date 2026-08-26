@@ -27,9 +27,9 @@ Item {
         color: root.themeSourceColor
     }
 
-    readonly property color ink: Appearance.zzzEverywhere ? Appearance.zzz.ink : Appearance.inirEverywhere ? playerBase.inirText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
+    readonly property color ink: Appearance.zzzEverywhere ? Appearance.zzz.ink : Appearance.ilmangoEverywhere ? playerBase.ilmangoText : (root.blendedColors?.colOnLayer0 ?? Appearance.colors.colOnLayer0)
     readonly property color accent: Appearance.zzzEverywhere ? Appearance.zzz.accent
-        : Appearance.inirEverywhere ? playerBase.inirPrimary
+        : Appearance.ilmangoEverywhere ? playerBase.ilmangoPrimary
         : root.themeSourceColor
 
     readonly property string vizType: Config.getNestedValue("background.widgets.mediaControls.visualizerType", "wave")
@@ -37,7 +37,7 @@ Item {
 
     StyledRectangularShadow {
         target: card
-        visible: !Appearance.zzzEverywhere && (Appearance.angelEverywhere || (!Appearance.inirEverywhere && !Appearance.auroraEverywhere))
+        visible: !Appearance.zzzEverywhere && (Appearance.angelEverywhere || (!Appearance.ilmangoEverywhere && !Appearance.auroraEverywhere))
     }
 
     Rectangle {
@@ -45,8 +45,8 @@ Item {
         anchors.centerIn: parent
         width: parent.width - Appearance.sizes.elevationMargin
         height: parent.height - Appearance.sizes.elevationMargin
-        radius: Appearance.zzzEverywhere ? Appearance.zzz.panelRadius : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : root.radius
-        color: Appearance.zzzEverywhere ? Appearance.zzz.paper : Appearance.inirEverywhere ? playerBase.inirLayer1 : (root.blendedColors?.colLayer0 ?? Appearance.colors.colLayer0)
+        radius: Appearance.zzzEverywhere ? Appearance.zzz.panelRadius : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : root.radius
+        color: Appearance.zzzEverywhere ? Appearance.zzz.paper : Appearance.ilmangoEverywhere ? playerBase.ilmangoLayer1 : (root.blendedColors?.colLayer0 ?? Appearance.colors.colLayer0)
         border.width: Appearance.zzzEverywhere ? Appearance.zzz.borderThick : 0
         border.color: Appearance.zzzEverywhere ? Appearance.zzz.hairlineStrong : "transparent"
         clip: true
@@ -173,7 +173,7 @@ Item {
             lineSpacing: 12
             baseSize: Appearance.font.pixelSize.large
             activeScale: 1.22
-            activeColor: Appearance.zzzEverywhere ? (root.blendedColors?.colPrimary ?? Appearance.zzz.accent) : Appearance.inirEverywhere ? playerBase.inirPrimary : (root.blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
+            activeColor: Appearance.zzzEverywhere ? (root.blendedColors?.colPrimary ?? Appearance.zzz.accent) : Appearance.ilmangoEverywhere ? playerBase.ilmangoPrimary : (root.blendedColors?.colPrimary ?? Appearance.colors.colPrimary)
             textColor: ColorUtils.applyAlpha(root.ink, 0.75)
             indicatorColor: root.blendedColors?.colPrimaryContainer ?? Appearance.colors.colPrimaryContainer
         }

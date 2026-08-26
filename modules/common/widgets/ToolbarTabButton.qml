@@ -14,13 +14,13 @@ RippleButton {
     horizontalPadding: 10
 
     implicitHeight: Appearance.regaliaEverywhere ? Appearance.regalia.compactControlHeight
-        : Appearance.zzzEverywhere ? 32 : (Appearance.inirEverywhere || Appearance.angelEverywhere) ? 32 : 40
+        : Appearance.zzzEverywhere ? 32 : (Appearance.ilmangoEverywhere || Appearance.angelEverywhere) ? 32 : 40
     readonly property real _iconOnlyImplicitWidth: icon.implicitWidth + horizontalPadding * 2
     implicitWidth: root.showLabel ? (implicitContentWidth + horizontalPadding * 2) : root._iconOnlyImplicitWidth
     buttonRadius: Appearance.regaliaEverywhere ? Appearance.regalia.roundSmall
         : Appearance.zzzEverywhere ? Appearance.zzz.controlRadius
         : Appearance.angelEverywhere ? Appearance.angel.roundingSmall
-        : Appearance.inirEverywhere ? Appearance.inir.roundingSmall : height / 2
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : height / 2
 
     // The selected tab used to get a cookie badge behind the GLYPH only, so the
     // label sat outside the face and the tab read as two disconnected pieces.
@@ -39,12 +39,12 @@ RippleButton {
         : Appearance.regaliaEverywhere ? Appearance.regalia.controlPlateHover
         : Appearance.zzzEverywhere ? ColorUtils.applyAlpha(Appearance.zzz.contrastPlate, 0.14)
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardHover
-        : Appearance.inirEverywhere ? ColorUtils.transparentize(Appearance.inir.colText, 0.92)
+        : Appearance.ilmangoEverywhere ? ColorUtils.transparentize(Appearance.ilmango.colText, 0.92)
         : ColorUtils.transparentize(Appearance.colors.colOnSurface, 0.95)
     colRipple: current ? "transparent" 
         : Appearance.zzzEverywhere ? ColorUtils.applyAlpha(Appearance.zzz.accent, 0.16)
         : Appearance.angelEverywhere ? Appearance.angel.colGlassCardActive
-        : Appearance.inirEverywhere ? ColorUtils.transparentize(Appearance.inir.colText, 0.85)
+        : Appearance.ilmangoEverywhere ? ColorUtils.transparentize(Appearance.ilmango.colText, 0.85)
         : ColorUtils.transparentize(Appearance.colors.colOnSurface, 0.95)
 
     contentItem: Row {
@@ -71,8 +71,8 @@ RippleButton {
                 ? Appearance.colors.colOnPrimaryContainer
                 : Appearance.angelEverywhere
                 ? (root.current ? Appearance.angel.colOnPrimary : Appearance.angel.colText)
-                : Appearance.inirEverywhere
-                ? (root.current ? Appearance.inir.colOnPrimary : Appearance.inir.colText)
+                : Appearance.ilmangoEverywhere
+                ? (root.current ? Appearance.ilmango.colOnPrimary : Appearance.ilmango.colText)
                 : Appearance.colors.colOnSurface
         }
         Item {
@@ -112,8 +112,8 @@ RippleButton {
                     ? Appearance.colors.colOnPrimaryContainer
                     : Appearance.angelEverywhere
                     ? (root.current ? Appearance.angel.colOnPrimary : Appearance.angel.colText)
-                    : Appearance.inirEverywhere
-                    ? (root.current ? Appearance.inir.colOnPrimary : Appearance.inir.colText)
+                    : Appearance.ilmangoEverywhere
+                    ? (root.current ? Appearance.ilmango.colOnPrimary : Appearance.ilmango.colText)
                     : Appearance.colors.colOnSurface
             }
         }

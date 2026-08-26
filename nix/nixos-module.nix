@@ -2,7 +2,7 @@
 
 let
   common = import ./module-common.nix { inherit lib pkgs; };
-  cfg = config.programs.inir;
+  cfg = config.programs.ilmango;
   wantedUnit = common.compositorUnit cfg.service.compositor;
 in
 {
@@ -11,8 +11,8 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [ cfg.package ];
 
-    systemd.user.services.inir = lib.mkIf cfg.service.enable {
-      description = "iNiR shell";
+    systemd.user.services.ilmango = lib.mkIf cfg.service.enable {
+      description = "Illogical-mango shell";
       wantedBy = lib.optional (wantedUnit != null) wantedUnit;
       partOf = [ "graphical-session.target" ];
       after = [ "graphical-session.target" ];

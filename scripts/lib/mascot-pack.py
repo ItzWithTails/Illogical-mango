@@ -2,7 +2,7 @@
 """Validate, extract and fingerprint optional Kira art packs.
 
 This helper is intentionally independent from QML. The art release owns only
-flat inir-mascot-*.png|gif files; iNiR owns manifest.json and behavior.
+flat inir-mascot-*.png|gif files; Illogical-mango owns manifest.json and behavior.
 """
 
 from __future__ import annotations

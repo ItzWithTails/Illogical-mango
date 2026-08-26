@@ -17,7 +17,7 @@ Singleton {
 
     signal wallpaperBlurTransitionRequested(var targetMonitors, int durationMs)
 
-    readonly property bool _debugWallpaperUrls: (Quickshell.env("INIR_DEBUG_WALLPAPER_URLS") ?? "") === "1"
+    readonly property bool _debugWallpaperUrls: (Quickshell.env("ILMANGO_DEBUG_WALLPAPER_URLS") ?? "") === "1"
 
     // Suppression flag: prevents ThemeService from firing a duplicate
     // switchwall.sh run while a direct apply() is already in progress.
@@ -919,7 +919,7 @@ Singleton {
         thumbgenDebounce.restart()
     }
 
-    // A still frame owned by iNiR, not the shared freedesktop thumbnail cache.
+    // A still frame owned by Illogical-mango, not the shared freedesktop thumbnail cache.
     // Both write to ~/.cache/thumbnails/<size>/<md5>.png, and the desktop's own
     // video thumbnailer decorates its output with a film-strip border — whoever
     // wrote first won, so a surface that wants a clean frame could not rely on
@@ -1013,8 +1013,8 @@ Singleton {
         property string directory
         property string _size: ""
         environment: ({
-            "INIR_VENV": Quickshell.env("INIR_VENV") || Quickshell.env("HOME") + "/.local/state/quickshell/.venv",
-            "ILLOGICAL_IMPULSE_VIRTUAL_ENV": Quickshell.env("INIR_VENV") || Quickshell.env("HOME") + "/.local/state/quickshell/.venv"
+            "ILMANGO_VENV": Quickshell.env("ILMANGO_VENV") || Quickshell.env("HOME") + "/.local/state/quickshell/.venv",
+            "ILLOGICAL_IMPULSE_VIRTUAL_ENV": Quickshell.env("ILMANGO_VENV") || Quickshell.env("HOME") + "/.local/state/quickshell/.venv"
         })
         stdout: SplitParser {
             onRead: data => {

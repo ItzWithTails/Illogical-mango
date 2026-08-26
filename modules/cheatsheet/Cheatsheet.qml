@@ -133,23 +133,23 @@ Scope {
             anchors.centerIn: parent
             color: Appearance.zzzEverywhere ? Appearance.zzz.bg0
                  : Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                 : Appearance.inirEverywhere ? Appearance.inir.colLayer0
+                 : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer0
                  : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                  : Appearance.colors.colLayer0
             border.width: Appearance.zzzEverywhere ? 1
                         : Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
-                        : Appearance.inirEverywhere ? 1 : 1
+                        : Appearance.ilmangoEverywhere ? 1 : 1
             Behavior on border.width {
                 enabled: Appearance.animationsEnabled
                 NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }
             }
             border.color: Appearance.zzzEverywhere ? Appearance.zzz.borderColor
                         : Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                        : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                         : Appearance.colors.colLayer0Border
             radius: Appearance.zzzEverywhere ? Appearance.zzz.panelRadius
                   : Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                  : Appearance.inirEverywhere ? Appearance.inir.roundingNormal
+                  : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal
                   : Appearance.rounding.windowRounding
             Behavior on radius { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementResize.duration; easing.type: Appearance.animation.elementResize.type; easing.bezierCurve: Appearance.animation.elementResize.bezierCurve } }
 

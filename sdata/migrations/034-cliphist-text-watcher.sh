@@ -16,7 +16,7 @@ MIGRATION_TARGET_FILE="~/.config/niri/config.d/50-startup.kdl"
 MIGRATION_REQUIRED=true
 
 _cliphist_startup_file="${HOME}/.config/niri/config.d/50-startup.kdl"
-_text_watcher='spawn-at-startup "bash" "-c" "wl-paste --type text --watch ~/.config/quickshell/inir/scripts/clipboard-store.py \&"'
+_text_watcher='spawn-at-startup "bash" "-c" "wl-paste --type text --watch ~/.config/quickshell/ilmango/scripts/clipboard-store.py \&"'
 
 migration_check() {
     [[ -f "$_cliphist_startup_file" ]] || return 1
@@ -31,7 +31,7 @@ migration_check() {
 }
 
 migration_preview() {
-    echo -e "${STY_GREEN}+ wl-paste --type text --watch ~/.config/quickshell/inir/scripts/clipboard-store.py${STY_RST}"
+    echo -e "${STY_GREEN}+ wl-paste --type text --watch ~/.config/quickshell/ilmango/scripts/clipboard-store.py${STY_RST}"
     echo "  wl-paste --type image --watch cliphist store"
     echo ""
     echo "Only the image watcher is spawned, so copied text never reaches the"

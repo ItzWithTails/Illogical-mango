@@ -19,7 +19,7 @@ Item {
     // Easter egg: long-press the clock → bedtime lecture, whatever the hour
     TapHandler {
         enabled: Config.options?.mascot?.enable ?? false
-        onLongPressed: Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "appear", "late-night", "top"])
+        onLongPressed: Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "appear", "late-night", "top"])
     }
 
     RowLayout {
@@ -33,7 +33,7 @@ Item {
             font.pixelSize: root._timePixelSize > 0
                 ? root._timePixelSize : Appearance.font.pixelSize.large
             color: Appearance.angelEverywhere ? Appearance.angel.colText
-                : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
             text: DateTime.timeDisplay
         }
 
@@ -42,7 +42,7 @@ Item {
             StyledText {
                 font.pixelSize: Appearance.font.pixelSize.small
                 color: Appearance.angelEverywhere ? Appearance.angel.colTextSecondary
-                    : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
                 text: "•"
             }
         }
@@ -55,7 +55,7 @@ Item {
                 font.pixelSize: root._datePixelSize > 0
                     ? root._datePixelSize : Appearance.font.pixelSize.small
                 color: Appearance.angelEverywhere ? Appearance.angel.colText
-                    : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnLayer1
+                    : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnLayer1
                 text: DateTime.date
             }
         }

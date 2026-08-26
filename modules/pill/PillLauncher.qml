@@ -11,7 +11,7 @@ import "lib/calc.js" as Calc
 /**
  * Launcher surface: search field over a ranked application list, drawn as one
  * of the pill's surfaces. Desktop entries are ranked by fuzzy match and prior
- * launch frequency (stored under iNiR's state dir), the chosen entry executes
+ * launch frequency (stored under Illogical-mango's state dir), the chosen entry executes
  * directly. Upstream's AppImage rename/remove editing rode a Ricelin-only
  * install script, so it is not carried over.
  */

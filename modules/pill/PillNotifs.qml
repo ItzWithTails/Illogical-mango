@@ -8,7 +8,7 @@ import qs.modules.common
 /**
  * Notification facade for the pill's toast and link surfaces.
  *
- * Upstream this singleton owned its own NotificationServer. iNiR already runs
+ * Upstream this singleton owned its own NotificationServer. Illogical-mango already runs
  * one, and two servers fight over org.freedesktop.Notifications, so this is a
  * pure view over `Notifications` instead: grouping, coalescing, read tracking and
  * age labels computed from that service's `list`. All mutations delegate back to

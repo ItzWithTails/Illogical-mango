@@ -57,11 +57,13 @@ Wayland → GPU
 - **코드를 고치지 않고 설정.** 모든 것이 단일 `config.json` 위에 얹힌 GUI 설정 항목입니다.
   겉모습이나 동작을 바꾸려고 QML을 건드릴 일은 없습니다.
 - **제대로 된 설치·업그레이드 경로.** `./setup`이 의존성과 시스템 설정을 맡고,
-  `inir update`가 pull하고 스키마 마이그레이션을 돌리고 당신의 변경을 보존하며 롤백도 됩니다.
+  `ilmango update`가 pull하고 스키마 마이그레이션을 돌리고 당신의 변경을 보존하며 롤백도 됩니다.
 
 **계보.** [end-4의 illogical-impulse](https://github.com/end-4/dots-hyprland)(Hyprland
 닷파일) → [snowarch의 iNiR](https://github.com/snowarch/iNiR)(niri용으로 재작성) → 이것,
-MangoWM으로 포팅한 것. CLI도 설정 경로도 내부도 여전히 `inir`라는 이름입니다. 이름을 바꾸면
+MangoWM으로 포팅한 것. CLI도 설정 경로도 내부도 `ilmango`라는 이름입니다. iNiR 시절 설치는
+마이그레이션 037이 옮겨 주며, 옛 경로에 심볼릭 링크를 남기므로 기존 키바인드와 스크립트는
+그대로 동작합니다.
 업그레이드 경로가 전부 깨지기 때문에 그대로 뒀습니다.
 왜 end-4를 바로 포크하지 않았느냐? 논리는 간단합니다 - 한 번 옮겨 본 프로젝트는 다시 옮기기가
 더 쉽습니다.
@@ -83,9 +85,9 @@ Arch Linux에서 systemd를 뜯어내면 패키지 기반을 거의 통째로 �
 설정은 의도적으로 비파괴적입니다. mango는 정확히 파일 하나
 (`~/.config/mango/config.conf`)만 읽고 병합은 전혀 하지 않으므로, 설치 스크립트가 당신의
 컴포지터 설정을 덮어쓰는 일은 없습니다. 셸의 단축키와 자동 시작은
-`~/.config/mango/inir.conf`에 넣고, 거기를 가리키는 `source-optional=` 한 줄만 덧붙입니다.
+`~/.config/mango/ilmango.conf`에 넣고, 거기를 가리키는 `source-optional=` 한 줄만 덧붙입니다.
 당신의 창 관리에는 손대지 않습니다. 자동 시작은 그 파일 안의
-`exec-once=inir run --daemon` 한 줄이지 systemd 유닛이 아닙니다.
+`exec-once=ilmango run --daemon` 한 줄이지 systemd 유닛이 아닙니다.
 
 > [!NOTE]
 > **niri와 Hyprland 코드는 아직 트리에 남아 있습니다.** `NiriService.qml`,
@@ -132,7 +134,7 @@ Arch Linux에서 systemd를 뜯어내면 패키지 기반을 거의 통째로 �
 **패널 패밀리 두 가지**, <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd>로 즉시 전환:
 
 - **Material ii** — 떠 있는 바, 사이드바, 독, 그리고 8가지 시각 스타일(Material, Cards,
-  Aurora, iNiR, Angel, Regalia, ZZZ, Cookie Shapes)
+  Aurora, Illogical-mango, Angel, Regalia, ZZZ, Cookie Shapes)
 - **Waffle** — Windows 11 스타일 작업 표시줄, 시작 메뉴, 액션 센터, 알림 센터
 
 **자동 테마화.** 배경화면을 고르면 시스템 전체가 따라옵니다. 셸의 Material You 색이 GTK3/4,
@@ -144,7 +146,7 @@ Catppuccin, Rosé Pine 프리셋이 들어 있고, 직접 만들 수도 있습�
 
 ### 테마와 외관
 
-- **8가지 시각 스타일**: Material(불투명), Cards, Aurora(유리 블러), iNiR(TUI 풍), Angel(네오브루탈리즘), Regalia(검은 공학용 섀시, 따뜻한 아이보리 잉크, 절제된 샴페인 금속), ZZZ(포스터 판), Cookie Shapes(형태가 애니메이션으로 변형)
+- **8가지 시각 스타일**: Material(불투명), Cards, Aurora(유리 블러), Illogical-mango(TUI 풍), Angel(네오브루탈리즘), Regalia(검은 공학용 섀시, 따뜻한 아이보리 잉크, 절제된 샴페인 금속), ZZZ(포스터 판), Cookie Shapes(형태가 애니메이션으로 변형)
 - **배경화면에서 뽑은 동적 색상**을 Material You로 시스템 전체에 전파
 - **터미널·TUI 도구 10종 자동 테마화**: foot, kitty, alacritty, ghostty, wezterm, starship, fuzzel, btop, lazygit, yazi
 - **앱 테마화**: GTK3/4, Qt(plasma-integration과 darkly 경유), Firefox(MaterialFox), Discord/Vesktop(System24), Zed, Spicetify, Steam, SDDM
@@ -196,7 +198,7 @@ Catppuccin, Rosé Pine 프리셋이 들어 있고, 직접 만들 수도 있습�
 
 - **GUI 설정**: 파일을 건드리지 않고 전부 설정
 - **GameMode**: 전체 화면 앱에서 효과를 자동으로 끔
-- **자동 업데이트**: `inir update`. 롤백, 마이그레이션, 사용자 변경 보존 포함
+- **자동 업데이트**: `ilmango update`. 롤백, 마이그레이션, 사용자 변경 보존 포함
 - **잠금 화면**과 **세션 화면**(로그아웃/재부팅/종료/절전)
 - **polkit 에이전트**, **화면 키보드**, **자동 시작 관리자**(mango 설정의 `exec-once` 줄이 바탕)
 - **Kira**: 선택 사항인 픽셀 아트 마스코트. 화면 가장자리를 돌아다니며 당신의 행동에 반응합니다. 기본은 꺼짐이고, 약 32 MiB짜리 아트 팩은 `./setup` › Extras에서 따로 내려받습니다
@@ -213,22 +215,22 @@ Catppuccin, Rosé Pine 프리셋이 들어 있고, 직접 만들 수도 있습�
 ## 빠른 시작 (설치 스크립트는 앞으로 다른 것이 됩니다)
 
 ```bash
-git clone https://github.com/ItzWithTails/Illogical-mango.git
+git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
 ./setup install       # 대화식. 각 단계 전에 물어봅니다
 ./setup install -y    # 자동. 아무것도 묻지 않습니다
 ```
 
 설치 스크립트가 의존성, 시스템 설정, 테마화를 맡습니다. 셸의 단축키를
-`~/.config/mango/inir.conf`에 쓰고 기존 mango 설정에 걸어 주되, 창 관리에는 손대지 않습니다.
+`~/.config/mango/ilmango.conf`에 쓰고 기존 mango 설정에 걸어 주되, 창 관리에는 손대지 않습니다.
 그다음 mango를 재시작하거나 `mmsg dispatch reload_config`를 실행하세요.
 
 ```bash
-inir run                        # 셸 실행
-inir settings                   # 설정 GUI 열기
-inir logs                       # 로그 보기
-inir doctor                     # 자동 진단과 수리
-inir update                     # pull + 마이그레이션 + 재시작
+ilmango run                        # 셸 실행
+ilmango settings                   # 설정 GUI 열기
+ilmango logs                       # 로그 보기
+ilmango doctor                     # 자동 진단과 수리
+ilmango update                     # pull + 마이그레이션 + 재시작
 ```
 
 다른 진입점:
@@ -299,10 +301,10 @@ sudo make install       # 홈이 아니라 시스템 전역에 설치
 ## 문제 해결
 
 ```bash
-inir logs                       # 최근 런타임 로그
-inir restart                    # 실행 중인 런타임 재시작
-inir repair                     # doctor + 재시작 + 걸러낸 로그 확인
-inir doctor                     # 흔한 문제 자동 진단과 수리
+ilmango logs                       # 최근 런타임 로그
+ilmango restart                    # 실행 중인 런타임 재시작
+ilmango repair                     # doctor + 재시작 + 걸러낸 로그 확인
+ilmango doctor                     # 흔한 문제 자동 진단과 수리
 ./setup rollback                # 마지막 업데이트 되돌리기
 claude "도와줘"                  # 직접 파헤치기 싫을 때. 20달러 값은 해야지
 ```

@@ -1,12 +1,12 @@
 # Notifications
 
-How notifications work in iNiR, from arrival to display to history.
+How notifications work in Illogical-mango, from arrival to display to history.
 
 ## How it works
 
-iNiR implements the freedesktop notification spec via Quickshell's notification module. Apps send notifications over D-Bus, iNiR receives them, shows popups, and stores history.
+Illogical-mango implements the freedesktop notification spec via Quickshell's notification module. Apps send notifications over D-Bus, Illogical-mango receives them, shows popups, and stores history.
 
-When iNiR starts, it tells the session it's the notification daemon. If another notification daemon is running (mako, dunst, etc.), iNiR's ConflictKiller handles the conflict on startup.
+When Illogical-mango starts, it tells the session it's the notification daemon. If another notification daemon is running (mako, dunst, etc.), Illogical-mango's ConflictKiller handles the conflict on startup.
 
 ## Popups
 
@@ -28,7 +28,7 @@ Max 20 notifications per second. Spam from misbehaving apps gets throttled inste
 Toggle DND from:
 - Right sidebar toggle (ii)
 - Action center toggle (waffle)
-- IPC: `inir notifications toggleSilent`
+- IPC: `ilmango notifications toggleSilent`
 
 When DND is on, new notifications still arrive and get stored in history. They just don't show popups.
 
@@ -89,12 +89,12 @@ Popups appear at the bottom-right (Windows 11 style). The notification center (`
 ## IPC
 
 ```bash
-inir notifications clearAll          # Clear all notifications
-inir notifications toggleSilent      # Toggle DND
+ilmango notifications clearAll          # Clear all notifications
+ilmango notifications toggleSilent      # Toggle DND
 ```
 
 ## Troubleshooting
 
-**No notifications showing up**: check if another notification daemon is running (`pidof mako dunst`). iNiR's ConflictKiller should handle this, but if it doesn't, kill the other daemon manually.
+**No notifications showing up**: check if another notification daemon is running (`pidof mako dunst`). Illogical-mango's ConflictKiller should handle this, but if it doesn't, kill the other daemon manually.
 
-**Notifications from specific apps missing**: some apps send notifications to specific categories or with transient hints. Check `inir logs` for notification-related messages.
+**Notifications from specific apps missing**: some apps send notifications to specific categories or with transient hints. Check `ilmango logs` for notification-related messages.

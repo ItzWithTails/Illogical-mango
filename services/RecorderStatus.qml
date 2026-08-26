@@ -36,7 +36,7 @@ Singleton {
             ? root.legacyAudioSource : configured
     }
     readonly property string effectiveAudioMode: isRecording && hasAudioMetadata ? activeAudioMode : configuredAudioMode
-    readonly property string recorderStatusPath: (Quickshell.env("XDG_STATE_HOME") || (Quickshell.env("HOME") + "/.local/state")) + "/inir/recorder-status.json"
+    readonly property string recorderStatusPath: (Quickshell.env("XDG_STATE_HOME") || (Quickshell.env("HOME") + "/.local/state")) + "/ilmango/recorder-status.json"
     // Timestamp (ms since epoch) when recording started, 0 when not recording
     property real recordingStartTime: 0
     // Elapsed seconds since recording started, updated every second

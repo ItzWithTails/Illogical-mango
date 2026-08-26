@@ -95,7 +95,7 @@ generate_css_from_colors_json() {
 
   cat <<EOCSS
 /**
- * iNiR Material You — Pear Desktop (YouTube Music)
+ * Illogical-mango Material You — Pear Desktop (YouTube Music)
  * Auto-generated from wallpaper colors. Do not edit.
  * Based on catppuccin/youtubemusic structure.
  */

@@ -44,7 +44,7 @@ migration_check() {
 
 migration_preview() {
     echo -e "${STY_RED}- wl-paste --type text --watch cliphist store${STY_RST}"
-    echo -e "${STY_GREEN}+ wl-paste --type text --watch ~/.config/quickshell/inir/scripts/clipboard-store.py${STY_RST}"
+    echo -e "${STY_GREEN}+ wl-paste --type text --watch ~/.config/quickshell/ilmango/scripts/clipboard-store.py${STY_RST}"
     echo ""
     echo "Copying an image or rich text from a browser stored raw HTML markup."
     echo "The preview hid it, but every paste carried it."
@@ -57,7 +57,7 @@ migration_apply() {
     # The image watcher keeps storing directly: `image` is generic too, but every
     # type it can match is an image, so there is no markup to strip.
     sed -i -E \
-        "s|wl-paste --type text(/plain)? --watch cliphist store|wl-paste --type text --watch ~/.config/quickshell/inir/scripts/${_store_filter}|" \
+        "s|wl-paste --type text(/plain)? --watch cliphist store|wl-paste --type text --watch ~/.config/quickshell/ilmango/scripts/${_store_filter}|" \
         "$_cliphist_startup_file"
 
     grep -q "$_store_filter" "$_cliphist_startup_file"

@@ -67,4 +67,4 @@ The theming core should stay small:
 - fan-out belongs in `applycolor.sh`
 - integrations belong in modules
 
-That split is what keeps iNiR maintainable as a Linux shell product instead of a pile of ad-hoc scripts.
+That split is what keeps Illogical-mango maintainable as a Linux shell product instead of a pile of ad-hoc scripts.

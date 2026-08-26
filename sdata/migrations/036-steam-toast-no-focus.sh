@@ -26,7 +26,7 @@ migration_preview() {
 migration_apply() {
     [[ -f "$_steam_rules_file" ]] || return 1
 
-    local tmp_file="${_steam_rules_file}.inir-steam.$$"
+    local tmp_file="${_steam_rules_file}.ilmango-steam.$$"
     awk '
         BEGIN { in_steam = 0; done = 0 }
         !done && /notificationtoasts_/ { in_steam = 1 }

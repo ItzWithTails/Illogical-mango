@@ -10,7 +10,7 @@ SHELL_ROOT="$(cd "$SCRIPT_DIR/../.." 2>/dev/null && pwd)"
 
 # shellcheck source=scripts/lib/config-path.sh
 source "$SCRIPT_DIR/../lib/config-path.sh"
-SHELL_CONFIG_FILE="$(inir_config_file)"
+SHELL_CONFIG_FILE="$(ilmango_config_file)"
 TEMPLATE_DIR="$XDG_CONFIG_HOME/matugen"
 terminalscheme="$SCRIPT_DIR/terminal/scheme-base.json"
 
@@ -576,8 +576,8 @@ switch() {
     [[ "$cfg_color_invert" == "true" ]] && generate_colors_material_args+=(--invert-hue)
 
     # Generate colors and render templates in one unified Python pass
-    if [[ -n "${INIR_VENV:-}" ]]; then
-        _ii_venv="$(eval echo "$INIR_VENV")"
+    if [[ -n "${ILMANGO_VENV:-}" ]]; then
+        _ii_venv="$(eval echo "$ILMANGO_VENV")"
     elif [[ -n "${ILLOGICAL_IMPULSE_VIRTUAL_ENV:-}" ]]; then
         _ii_venv="$(eval echo "$ILLOGICAL_IMPULSE_VIRTUAL_ENV")"
     else

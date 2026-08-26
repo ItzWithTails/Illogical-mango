@@ -1,4 +1,4 @@
-// iNiR SDDM pixel theme — Virtual Keyboard
+// Illogical-mango SDDM pixel theme — Virtual Keyboard
 // Matches the shell's OnScreenKeyboard / KeyboardKey.qml visual style.
 import QtQuick 2.15
 import QtQuick.Layouts 1.15

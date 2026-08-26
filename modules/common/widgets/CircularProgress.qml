@@ -12,9 +12,9 @@ Item {
     property int lineWidth: 2
     property real value: 0
     property color colPrimary: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-        : Appearance.inirEverywhere ? Appearance.inir.colText : Appearance.colors.colOnSecondaryContainer
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText : Appearance.colors.colOnSecondaryContainer
     property color colSecondary: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-        : Appearance.inirEverywhere ? Appearance.inir.colLayer2 
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2 
         : Appearance.auroraEverywhere ? Appearance.aurora.colElevatedSurface 
         : Appearance.colors.colSecondaryContainer
     property real gapAngle: 360 / 18

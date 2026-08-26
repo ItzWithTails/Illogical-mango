@@ -380,7 +380,7 @@ def _normalize_generic(
 
 
 def _headers(kind: str, key: str) -> dict[str, str]:
-    headers = {"Accept": "application/json", "User-Agent": "iNiR/AI-Catalog"}
+    headers = {"Accept": "application/json", "User-Agent": "Illogical-mango/AI-Catalog"}
     if not key:
         return headers
     if kind == "anthropic":
@@ -408,7 +408,7 @@ def main() -> int:
     parser.add_argument("--timeout", type=float, default=8.0)
     args = parser.parse_args()
 
-    key = os.environ.get("INIR_AI_PROVIDER_KEY", "")
+    key = os.environ.get("ILMANGO_AI_PROVIDER_KEY", "")
     result: dict[str, Any] = {
         "providerId": args.provider_id,
         "ok": False,

@@ -7,7 +7,7 @@ import qs.modules.common.widgets
 import qs.modules.common.functions
 
 /**
- * Compact iNiR shell update indicator for the bar.
+ * Compact Illogical-mango shell update indicator for the bar.
  * Shows when a new version is available in the git repo, and handles live update progress.
  */
 MouseArea {
@@ -27,7 +27,7 @@ MouseArea {
     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
     readonly property color accentColor: Appearance.angelEverywhere ? Appearance.angel.colPrimary
-        : Appearance.inirEverywhere ? (Appearance.inir?.colAccent ?? Appearance.colors.colPrimary)
+        : Appearance.ilmangoEverywhere ? (Appearance.ilmango?.colAccent ?? Appearance.colors.colPrimary)
         : Appearance.auroraEverywhere ? (Appearance.aurora?.colAccent ?? Appearance.colors.colPrimary)
         : Appearance.colors.colPrimary
 
@@ -44,7 +44,7 @@ MouseArea {
     // Easter egg: long-press instead of clicking and she takes the credit
     onPressAndHold: {
         if (Config.options?.mascot?.enable ?? false)
-            Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "mascot", "appearWithLine",
+            Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "mascot", "appearWithLine",
                 "update-ready", "top", Translation.tr("Pressed it. You're welcome.")])
     }
 
@@ -59,31 +59,31 @@ MouseArea {
         color: {
             if (ShellUpdates.isUpdating) {
                 if (Appearance.angelEverywhere) return ColorUtils.transparentize(Appearance.angel.colPrimary, 0.92)
-                if (Appearance.inirEverywhere) return ColorUtils.transparentize(Appearance.inir?.colAccent ?? Appearance.colors.colPrimary, 0.92)
+                if (Appearance.ilmangoEverywhere) return ColorUtils.transparentize(Appearance.ilmango?.colAccent ?? Appearance.colors.colPrimary, 0.92)
                 if (Appearance.auroraEverywhere) return ColorUtils.transparentize(Appearance.aurora?.colAccent ?? Appearance.colors.colPrimary, 0.92)
                 return ColorUtils.transparentize(Appearance.colors.colPrimary, 0.92)
             }
             if (root.pressed) {
                 if (Appearance.angelEverywhere) return Appearance.angel.colGlassCardActive
-                if (Appearance.inirEverywhere) return Appearance.inir.colLayer2Active
+                if (Appearance.ilmangoEverywhere) return Appearance.ilmango.colLayer2Active
                 if (Appearance.auroraEverywhere) return Appearance.aurora.colSubSurfaceActive
                 return Appearance.colors.colLayer1Active
             }
             if (root.containsMouse) {
                 if (Appearance.angelEverywhere) return Appearance.angel.colGlassCardHover
-                if (Appearance.inirEverywhere) return Appearance.inir.colLayer1Hover
+                if (Appearance.ilmangoEverywhere) return Appearance.ilmango.colLayer1Hover
                 if (Appearance.auroraEverywhere) return Appearance.aurora.colSubSurface
                 return Appearance.colors.colLayer1Hover
             }
             if (Appearance.angelEverywhere) return ColorUtils.transparentize(Appearance.angel.colPrimary, 0.85)
-            if (Appearance.inirEverywhere) return ColorUtils.transparentize(Appearance.inir?.colAccent ?? Appearance.colors.colPrimary, 0.85)
+            if (Appearance.ilmangoEverywhere) return ColorUtils.transparentize(Appearance.ilmango?.colAccent ?? Appearance.colors.colPrimary, 0.85)
             if (Appearance.auroraEverywhere) return ColorUtils.transparentize(Appearance.aurora?.colAccent ?? Appearance.colors.colPrimary, 0.85)
             return ColorUtils.transparentize(Appearance.colors.colPrimary, 0.88)
         }
 
-        border.width: (Appearance.angelEverywhere || Appearance.inirEverywhere) ? 1 : 0
+        border.width: (Appearance.angelEverywhere || Appearance.ilmangoEverywhere) ? 1 : 0
         border.color: Appearance.angelEverywhere ? Appearance.angel.colBorder
-            : Appearance.inirEverywhere ? Appearance.inir.colBorder : "transparent"
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent"
 
         Behavior on color {
             enabled: Appearance.animationsEnabled
@@ -188,7 +188,7 @@ MouseArea {
 
                     StyledText {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: ShellUpdates.isUpdating ? Translation.tr("Updating...") : Translation.tr("iNiR Update")
+                        text: ShellUpdates.isUpdating ? Translation.tr("Updating...") : Translation.tr("Illogical-mango Update")
                         font {
                             weight: Font.Medium
                             pixelSize: Appearance.font.pixelSize.normal
@@ -389,7 +389,7 @@ MouseArea {
                     Layout.topMargin: 2
                     Layout.bottomMargin: 2
                     color: Appearance.angelEverywhere ? Appearance.angel.colBorderSubtle
-                        : Appearance.inirEverywhere ? (Appearance.inir?.colBorder ?? Appearance.colors.colLayer0Border)
+                        : Appearance.ilmangoEverywhere ? (Appearance.ilmango?.colBorder ?? Appearance.colors.colLayer0Border)
                         : Appearance.colors.colLayer0Border
                     opacity: 0.5
                 }

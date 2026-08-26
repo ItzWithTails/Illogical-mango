@@ -10,12 +10,12 @@ MIGRATION_TITLE="Remove Reddit panel config"
 MIGRATION_DESCRIPTION="Removes the orphan sidebar.reddit config key. The Reddit panel was
   removed because Reddit blocks unauthenticated access and the OAuth workaround
   required per-user app registration."
-MIGRATION_TARGET_FILE="~/.config/inir/config.json"
+MIGRATION_TARGET_FILE="~/.config/ilmango/config.json"
 MIGRATION_REQUIRED=true
 
 _config_path() {
   local xdg_config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
-  local config_new="${xdg_config_home}/inir/config.json"
+  local config_new="${xdg_config_home}/ilmango/config.json"
   local config_legacy="${xdg_config_home}/illogical-impulse/config.json"
 
   if [[ -f "$config_legacy" ]]; then

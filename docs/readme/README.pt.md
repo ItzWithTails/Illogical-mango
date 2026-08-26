@@ -60,13 +60,15 @@ Wayland → GPU
 - **Configurável sem mexer no código.** Tudo é um ajuste da interface por cima de um único
   `config.json`. Nunca é preciso tocar em QML para mudar a aparência ou o comportamento.
 - **Um caminho de instalação e atualização de verdade.** O `./setup` cuida das dependências
-  e da configuração do sistema; o `inir update` faz pull, roda as migrações de esquema,
+  e da configuração do sistema; o `ilmango update` faz pull, roda as migrações de esquema,
   preserva suas mudanças e sabe reverter.
 
 **Origem.** [illogical-impulse do end-4](https://github.com/end-4/dots-hyprland) (dotfiles
 do Hyprland) → [iNiR do snowarch](https://github.com/snowarch/iNiR) (reescrito para o niri)
 → isto, portado para o MangoWM. A CLI, os caminhos de configuração e as entranhas ainda se
-chamam `inir`: renomear quebraria todos os caminhos de atualização, então o nome ficou.
+chamam `ilmango`. Instalações da época do iNiR são migradas pela migração 037, que deixa
+links simbólicos nos caminhos antigos para que atalhos e scripts existentes continuem
+funcionando.
 Por que não forkar o end-4 direto? A lógica é simples - um projeto que já foi portado uma
 vez é mais fácil de portar de novo.
 Como analogia, pegue o Void Linux. Instale systemd nele e ele vai rodar numa boa.
@@ -86,9 +88,9 @@ tag)` no mesmo modelo de áreas de trabalho que a barra, o dock, a visão geral 
 A configuração é deliberadamente não destrutiva. O mango lê exatamente um arquivo
 (`~/.config/mango/config.conf`) e não mescla nada, então o instalador nunca sobrescreve a
 sua configuração do compositor. Ele coloca os atalhos e a inicialização automática do shell
-em `~/.config/mango/inir.conf` e acrescenta uma única linha `source-optional=` apontando
+em `~/.config/mango/ilmango.conf` e acrescenta uma única linha `source-optional=` apontando
 para lá, sem tocar na sua gestão de janelas. A inicialização automática é uma linha
-`exec-once=inir run --daemon` nesse arquivo, não uma unidade do systemd.
+`exec-once=ilmango run --daemon` nesse arquivo, não uma unidade do systemd.
 
 > [!NOTE]
 > **O código do niri e do Hyprland ainda está na árvore.** `NiriService.qml`,
@@ -135,7 +137,7 @@ Ambas as famílias de painéis, trazidas do upstream sem alterações.
 **Duas famílias de painéis**, trocadas em tempo real com <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>W</kbd>:
 
 - **Material ii** — barra flutuante, barras laterais, dock e 8 estilos visuais (Material,
-  Cards, Aurora, iNiR, Angel, Regalia, ZZZ, Cookie Shapes)
+  Cards, Aurora, Illogical-mango, Angel, Regalia, ZZZ, Cookie Shapes)
 - **Waffle** — barra de tarefas no estilo Windows 11, menu iniciar, central de ações,
   central de notificações
 
@@ -149,7 +151,7 @@ ou monte a sua.
 
 ### Tematização e aparência
 
-- **8 estilos visuais**: Material (sólido), Cards, Aurora (desfoque de vidro), iNiR (inspirado em TUI), Angel (neobrutalismo), Regalia (chassi preto de engenharia, tinta marfim quente, ferragens champanhe contidas), ZZZ (placas de cartaz), Cookie Shapes (morfose animada de formas)
+- **8 estilos visuais**: Material (sólido), Cards, Aurora (desfoque de vidro), Illogical-mango (inspirado em TUI), Angel (neobrutalismo), Regalia (chassi preto de engenharia, tinta marfim quente, ferragens champanhe contidas), ZZZ (placas de cartaz), Cookie Shapes (morfose animada de formas)
 - **Cores dinâmicas do papel de parede** via Material You, propagadas por todo o sistema
 - **10 terminais e ferramentas TUI tematizados automaticamente**: foot, kitty, alacritty, ghostty, wezterm, starship, fuzzel, btop, lazygit, yazi
 - **Tematização de apps**: GTK3/4, Qt (via plasma-integration e darkly), Firefox (MaterialFox), Discord/Vesktop (System24), Zed, Spicetify, Steam, SDDM
@@ -201,7 +203,7 @@ Barra direita:
 
 - **Ajustes em GUI**: configura tudo sem mexer em arquivos
 - **GameMode**: desliga os efeitos automaticamente em apps em tela cheia
-- **Atualizações automáticas**: `inir update` com reversão, migrações e preservação das suas mudanças
+- **Atualizações automáticas**: `ilmango update` com reversão, migrações e preservação das suas mudanças
 - **Tela de bloqueio** e **tela de sessão** (sair/reiniciar/desligar/suspender)
 - **Agente polkit**, **teclado na tela**, **gerenciador de inicialização automática** apoiado na linha `exec-once` da configuração do mango
 - **Kira**: mascote opcional em pixel art que perambula pelas bordas da tela e reage ao que você faz. Desligada por padrão; o pacote de arte de ~32 MiB é baixado à parte em `./setup` › Extras
@@ -218,23 +220,23 @@ Barra direita:
 ## Início rápido (o instalador será outro no futuro)
 
 ```bash
-git clone https://github.com/ItzWithTails/Illogical-mango.git
+git clone https://github.com/ItzWithTails/illogical-mango.git
 cd Illogical-mango
 ./setup install       # interativo, pergunta antes de cada passo
 ./setup install -y    # automático, sem perguntas
 ```
 
 O instalador cuida das dependências, da configuração do sistema e da tematização. Ele
-escreve os atalhos do shell em `~/.config/mango/inir.conf` e os engata na sua configuração
+escreve os atalhos do shell em `~/.config/mango/ilmango.conf` e os engata na sua configuração
 existente do mango sem tocar na gestão de janelas. Reinicie o mango ou rode
 `mmsg dispatch reload_config`.
 
 ```bash
-inir run                        # iniciar o shell
-inir settings                   # abrir a GUI de ajustes
-inir logs                       # ver os logs
-inir doctor                     # autodiagnóstico e conserto
-inir update                     # pull + migrações + reinício
+ilmango run                        # iniciar o shell
+ilmango settings                   # abrir a GUI de ajustes
+ilmango logs                       # ver os logs
+ilmango doctor                     # autodiagnóstico e conserto
+ilmango update                     # pull + migrações + reinício
 ```
 
 Outros pontos de entrada:
@@ -306,10 +308,10 @@ certo é este README.
 ## Solução de problemas
 
 ```bash
-inir logs                       # logs recentes do runtime
-inir restart                    # reiniciar o runtime ativo
-inir repair                     # doctor + reinício + checagem filtrada dos logs
-inir doctor                     # autodiagnóstico e conserto de problemas comuns
+ilmango logs                       # logs recentes do runtime
+ilmango restart                    # reiniciar o runtime ativo
+ilmango repair                     # doctor + reinício + checagem filtrada dos logs
+ilmango doctor                     # autodiagnóstico e conserto de problemas comuns
 ./setup rollback                # desfazer a última atualização
 claude "me ajuda por favor"     # se você não quiser se virar sozinho. vai, ele tem que trabalhar pelos 20 US$ dele
 ```

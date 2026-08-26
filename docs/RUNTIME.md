@@ -11,16 +11,16 @@ Display manager starts Niri (or Hyprland)
   |
 Compositor reaches graphical-session.target
   |
-systemd starts inir.service (wants link from compositor)
+systemd starts ilmango.service (wants link from compositor)
   |
-ExecStart calls: /usr/bin/inir run --session
+ExecStart calls: /usr/bin/ilmango run --session
   |
-inir script (bash):
+ilmango script (bash):
   - Validates QS/Qt ABI compatibility
   - Sets QT_SCALE_FACTOR=1
   - Suppresses noisy Qt log categories
   - Bridges niri env vars to systemd session
-  - Launches: qs -c inir
+  - Launches: qs -c ilmango
   |
 Quickshell loads shell.qml
   |
@@ -52,27 +52,27 @@ Shell fully operational
 
 ## Service wiring
 
-The systemd service is the key piece. It does not use `systemctl enable` in the traditional sense because there's no `[Install]` section. Instead, iNiR creates a wants link from your compositor's service:
+The systemd service is the key piece. It does not use `systemctl enable` in the traditional sense because there's no `[Install]` section. Instead, Illogical-mango creates a wants link from your compositor's service:
 
-**Niri**: `~/.config/systemd/user/niri.service.wants/inir.service`
+**Niri**: `~/.config/systemd/user/niri.service.wants/ilmango.service`
 
-**Hyprland**: `~/.config/systemd/user/wayland-wm@Hyprland.service.wants/inir.service`
+**Hyprland**: `~/.config/systemd/user/wayland-wm@Hyprland.service.wants/ilmango.service`
 
-This means iNiR starts when your compositor starts and stops when it stops. It will never accidentally start under KDE or GNOME.
+This means Illogical-mango starts when your compositor starts and stops when it stops. It will never accidentally start under KDE or GNOME.
 
 Managing the link:
 
 ```bash
-inir service enable    # create the wants link
-inir service disable   # remove it
-inir service status    # check current state
+ilmango service enable    # create the wants link
+ilmango service disable   # remove it
+ilmango service status    # check current state
 ```
 
-## The inir launcher
+## The ilmango launcher
 
-`scripts/inir` is a 3600+ line bash script that wraps Quickshell. It's not the same as running `qs -c inir` directly:
+`scripts/ilmango` is a 3600+ line bash script that wraps Quickshell. It's not the same as running `qs -c ilmango` directly:
 
-| | `inir run` | `qs -c inir` |
+| | `ilmango run` | `qs -c ilmango` |
 |---|---|---|
 | Environment setup | Sets QT_SCALE_FACTOR, suppresses warnings, bridges niri env | Raw environment |
 | Output | Backgrounded, logs to journal | Foreground, direct stdout |
@@ -80,7 +80,7 @@ inir service status    # check current state
 | ABI check | Validates Quickshell/Qt compatibility | None |
 | Orphan cleanup | ExecStopPost cleans stale runtime | None |
 
-For development and debugging, `qs -c inir` (direct mode) is usually better because you get stdout immediately. For daily use, the systemd service handles everything.
+For development and debugging, `qs -c ilmango` (direct mode) is usually better because you get stdout immediately. For daily use, the systemd service handles everything.
 
 ## Environment variables
 
@@ -139,8 +139,8 @@ Panels are split into immediate (load at first frame) and deferred (load after `
 The systemd service has:
 
 - `Restart=on-failure` with `StartLimitBurst=3` and `StartLimitIntervalSec=30`
-- If iNiR crashes, systemd restarts it (up to 3 times in 30 seconds)
-- `ExecStopPost` runs `inir cleanup-orphans` to clear stale Quickshell runtime entries
+- If Illogical-mango crashes, systemd restarts it (up to 3 times in 30 seconds)
+- `ExecStopPost` runs `ilmango cleanup-orphans` to clear stale Quickshell runtime entries
 - Exit code 143 (SIGTERM) is treated as success, not failure
 
 ## Deferred initialization
@@ -162,29 +162,29 @@ If the shell won't start:
 
 ```bash
 # Direct stdout (bypass systemd)
-qs -c inir
+qs -c ilmango
 
 # Verbose internal logging
-qs -v -c inir
+qs -v -c ilmango
 
 # Extra verbose
-qs -vv -c inir
+qs -vv -c ilmango
 
 # Debug-level service logging
-QS_DEBUG=1 qs -c inir
+QS_DEBUG=1 qs -c ilmango
 ```
 
-Check `inir logs` for recent journal output, or `inir doctor` for automated diagnostics.
+Check `ilmango logs` for recent journal output, or `ilmango doctor` for automated diagnostics.
 
 ## Performance diagnostics
 
-`inir doctor --perf` prints a read-only snapshot of the running shell. It reports
+`ilmango doctor --perf` prints a read-only snapshot of the running shell. It reports
 process memory and threads, the observed Qt Quick RHI and render loop, DRM render
 nodes, Qt Multimedia decoder ownership, open video and GIF files, mapped Niri
-layer surfaces, child processes, and the `inir.service` cgroup.
+layer surfaces, child processes, and the `ilmango.service` cgroup.
 
 ```bash
-inir doctor --perf
+ilmango doctor --perf
 ```
 
 Use it before changing graphics environment variables or blaming one feature for

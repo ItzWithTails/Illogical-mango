@@ -86,7 +86,7 @@ WSettingsPage {
         case "convert":
             if (convertSource === "custom")
                 GowallService.convertCustomTheme(sourcePath, customThemeName.trim(), customColors, selectedFormat)
-            else if (convertSource === "inir")
+            else if (convertSource === "ilmango")
                 GowallService.convertCurrentTheme(sourcePath, selectedFormat)
             else if (selectedTheme.length > 0)
                 GowallService.convertTheme(sourcePath, selectedTheme, selectedFormat)
@@ -339,7 +339,7 @@ WSettingsPage {
                 Repeater {
                     model: [
                         { label: Translation.tr("Built-in"), value: "builtin" },
-                        { label: Translation.tr("iNiR theme"), value: "inir" },
+                        { label: Translation.tr("Illogical-mango theme"), value: "ilmango" },
                         { label: Translation.tr("Custom"), value: "custom" }
                     ]
 
@@ -528,10 +528,10 @@ WSettingsPage {
         }
     }
 
-    // ── iNiR palette preview ──
+    // ── Illogical-mango palette preview ──
     WSettingsCard {
-        visible: GowallService.available && root.operationMode === "convert" && root.convertSource === "inir"
-        title: Translation.tr("Current iNiR Palette")
+        visible: GowallService.available && root.operationMode === "convert" && root.convertSource === "ilmango"
+        title: Translation.tr("Current Illogical-mango Palette")
         icon: "eyedropper"
 
         WText {
@@ -539,7 +539,7 @@ WSettingsPage {
             Layout.fillWidth: true
             Layout.leftMargin: 0
             Layout.rightMargin: 0
-            text: Translation.tr("The current iNiR Material You palette is not available yet. Regenerate your wallpaper colors and try again.")
+            text: Translation.tr("The current Illogical-mango Material You palette is not available yet. Regenerate your wallpaper colors and try again.")
             font.pixelSize: Looks.font.pixelSize.small
             color: Looks.colors.subfg
             wrapMode: Text.WordWrap

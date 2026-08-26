@@ -57,16 +57,16 @@ StyledFlickable {
             Layout.fillWidth: true
             Layout.preferredHeight: tableColumn.implicitHeight + root.cardPadding * 2
             radius: Appearance.angelEverywhere ? Appearance.angel.roundingNormal
-                  : Appearance.inirEverywhere ? Appearance.inir.roundingNormal : Appearance.rounding.normal
+                  : Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingNormal : Appearance.rounding.normal
             color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                 : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface : Appearance.colors.colLayer1
             border.width: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
                         : Appearance.zzzEverywhere ? 1
-                        : Appearance.inirEverywhere ? 1 : 0
+                        : Appearance.ilmangoEverywhere ? 1 : 0
             border.color: Appearance.angelEverywhere ? Appearance.angel.colCardBorder
                         : Appearance.zzzEverywhere ? Appearance.zzz.hairline
-                        : Appearance.inirEverywhere ? Appearance.inir.colBorder : "transparent"
+                        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent"
             Behavior on border.width {
                 enabled: Appearance.animationsEnabled
                 NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }

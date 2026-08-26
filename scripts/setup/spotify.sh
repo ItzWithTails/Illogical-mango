@@ -14,7 +14,7 @@
 #               prefs file) if the first apply fails. Then sets prefs_path,
 #               retries, installs the Marketplace, and — only if the user has
 #               enabled `appearance.wallpaperTheming.enableSpicetify` in
-#               config.json — applies the iNiR Spicetify theme.
+#               config.json — applies the Illogical-mango Spicetify theme.
 # Other distros: falls back to the Flatpak build of Spotify. Spicetify is
 #                skipped because it cannot patch the Flatpak install reliably.
 
@@ -363,11 +363,11 @@ if is_arch_like; then
     fi
 
     if _theme_enabled_in_config; then
-        setup_progress 6 $TOTAL "Applying iNiR Spicetify theme"
+        setup_progress 6 $TOTAL "Applying Illogical-mango Spicetify theme"
         theme_script="$SCRIPT_DIR/../colors/apply-spicetify-theme.sh"
         if [[ -x "$theme_script" ]]; then
             if "$theme_script"; then
-                echo "iNiR theme applied."
+                echo "Illogical-mango theme applied."
             else
                 echo "warning: theme script returned non-zero; rerun it manually if Spotify looks unstyled." >&2
             fi
@@ -375,8 +375,8 @@ if is_arch_like; then
             echo "warning: $theme_script not found or not executable; skipping theme." >&2
         fi
     else
-        setup_progress 6 $TOTAL "Skipping iNiR theme (appearance.wallpaperTheming.enableSpicetify is off)"
-        echo "  · Enable it in Settings → Themes → 'Spotify theming' to apply the iNiR theme."
+        setup_progress 6 $TOTAL "Skipping Illogical-mango theme (appearance.wallpaperTheming.enableSpicetify is off)"
+        echo "  · Enable it in Settings → Themes → 'Spotify theming' to apply the Illogical-mango theme."
     fi
 
     setup_done "Spotify + Spicetify ready. Launch Spotify to verify."

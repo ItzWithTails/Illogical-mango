@@ -1,6 +1,6 @@
 # Calendar Integration
 
-iNiR can display events from external calendars (Google Calendar, Outlook, Nextcloud, Apple iCloud, or any CalDAV server) alongside your local events in the sidebar calendar.
+Illogical-mango can display events from external calendars (Google Calendar, Outlook, Nextcloud, Apple iCloud, or any CalDAV server) alongside your local events in the sidebar calendar.
 
 No accounts, no OAuth, no tokens. You paste an ICS URL and events show up.
 
@@ -8,7 +8,7 @@ No accounts, no OAuth, no tokens. You paste an ICS URL and events show up.
 
 ## How it works
 
-Every calendar provider exposes a standard ICS/iCal URL for each calendar. iNiR fetches these URLs periodically (default: every 15 minutes), parses the events, and merges them with your local events. External events are read-only: you can see them but not edit or delete them from the shell.
+Every calendar provider exposes a standard ICS/iCal URL for each calendar. Illogical-mango fetches these URLs periodically (default: every 15 minutes), parses the events, and merges them with your local events. External events are read-only: you can see them but not edit or delete them from the shell.
 
 Each calendar source gets its own color dot on the calendar grid, so you can tell at a glance which calendar an event belongs to.
 
@@ -52,7 +52,7 @@ You can add multiple calendars. Each one syncs independently.
 2. Click the share icon next to a calendar
 3. Check **Public Calendar**
 4. Copy the `webcal://` URL
-5. Change `webcal://` to `https://` before pasting into iNiR
+5. Change `webcal://` to `https://` before pasting into Illogical-mango
 
 ### Nextcloud
 
@@ -128,7 +128,7 @@ Currently there's no manual refresh button in the UI. The service re-fetches whe
 
 For debugging:
 ```bash
-QS_DEBUG=1 qs -c inir    # shows [CalendarSync] log lines
+QS_DEBUG=1 qs -c ilmango    # shows [CalendarSync] log lines
 ```
 
 **Cache issues:**
@@ -136,5 +136,5 @@ QS_DEBUG=1 qs -c inir    # shows [CalendarSync] log lines
 Delete the cache file to force a clean re-fetch:
 ```bash
 rm ~/.local/state/quickshell/user/calendar-sync-cache.json
-inir restart
+ilmango restart
 ```

@@ -1,6 +1,6 @@
 {
   "preserve": [
-    "iNiR",
+    "Illogical-mango",
     "Niri",
     "Quickshell",
     "Material ii",
@@ -35,7 +35,7 @@
     "API"
   ],
   "patterns": [
-    "^inir(?:\\s|$)",
+    "^ilmango(?:\\s|$)",
     "^/[^ ]*",
     "^~/[^ ]*",
     "^https?://",
@@ -44,7 +44,7 @@
     "^[a-z0-9_-]+\\.[a-z0-9]+$"
   ],
   "terms": {
-    "shell": "Keep as a technical noun when it names iNiR or the desktop-shell layer. Translate only when the target language has an established concise UI term.",
+    "shell": "Keep as a technical noun when it names Illogical-mango or the desktop-shell layer. Translate only when the target language has an established concise UI term.",
     "workspace": "Use the normal desktop/compositor term in the target language, not a literal office-work translation.",
     "sidebar": "Use the established UI term for a side panel or sidebar.",
     "system tray": "Use the established desktop-environment term.",

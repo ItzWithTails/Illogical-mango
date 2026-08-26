@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Illogical-mango Settings
+Comment=Open Illogical-mango settings
+Exec=ilmango settings
+Icon=ilmango
+Terminal=false
+Categories=Settings;

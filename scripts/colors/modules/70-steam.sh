@@ -288,7 +288,7 @@ main() {
   local enabled
   enabled=$(config_bool '.appearance.wallpaperTheming.enableSteam' false)
 
-  [[ "$enabled" == 'true' || "${INIR_STEAM_THEME_FORCE:-0}" == "1" ]] || exit 0
+  [[ "$enabled" == 'true' || "${ILMANGO_STEAM_THEME_FORCE:-0}" == "1" ]] || exit 0
 
   if ! millennium_runtime_available; then
     log_module "Millennium is required for Steam theming — install millennium-bin"

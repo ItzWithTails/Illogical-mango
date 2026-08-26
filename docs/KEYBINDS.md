@@ -1,16 +1,16 @@
 # Default Keybinds
 
-These are the default keybinds shipped with iNiR. They live in `~/.config/niri/config.d/70-binds.kdl` after install.
+These are the default keybinds shipped with Illogical-mango. They live in `~/.config/niri/config.d/70-binds.kdl` after install.
 
 Change them. Break them. Make them yours. We won't judge.
 
 ---
 
-## iNiR Shell
+## Illogical-mango Shell
 
 | Key | Action |
 |-----|--------|
-| `Mod+Space` | iNiR overview / app launcher |
+| `Mod+Space` | Illogical-mango overview / app launcher |
 | `Mod+Tab` | Niri overview (native compositor) |
 | `Super+G` | Floating tools (notes, images, crosshair, resources) |
 | `Alt+Tab` | Niri Recent Windows (next) |
@@ -143,7 +143,7 @@ Niri arranges windows in an infinite horizontal strip. These binds control colum
 
 ## Media & Hardware Keys
 
-All media/volume/brightness keys are routed through iNiR IPC for OSD feedback.
+All media/volume/brightness keys are routed through Illogical-mango IPC for OSD feedback.
 
 | Key | Action |
 |-----|--------|
@@ -169,15 +169,15 @@ Keybinds live in `~/.config/niri/config.d/70-binds.kdl`. Add personal overrides 
 
 The distributed Alt-Tab uses Niri's native `recent-windows` surface. Its
 preview timing, highlight and size are tuned in `config.d/20-layout-and-overview.kdl`.
-The iNiR switcher remains available from Settings, but is disabled by default
+The Illogical-mango switcher remains available from Settings, but is disabled by default
 so two window switchers do not compete for the same keys.
 
-See [IPC.md](IPC.md) for all available iNiR targets you can bind.
+See [IPC.md](IPC.md) for all available Illogical-mango targets you can bind.
 
 ```kdl
 // In 90-user-extra.kdl
 binds {
-    Super+P { spawn "inir" "session" "toggle"; }
+    Super+P { spawn "ilmango" "session" "toggle"; }
 }
 ```
 

@@ -294,13 +294,13 @@ ContentPage {
                     Layout.preferredHeight: 180
                     radius: Appearance.rounding.normal
                     color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                         : Appearance.inirEverywhere ? Appearance.inir.colLayer0
+                         : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer0
                          : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                          : Appearance.colors.colLayer0
                     border.width: Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth
-                        : Appearance.inirEverywhere ? 1 : (Appearance.auroraEverywhere ? 0 : 1)
+                        : Appearance.ilmangoEverywhere ? 1 : (Appearance.auroraEverywhere ? 0 : 1)
                     border.color: Appearance.angelEverywhere ? Appearance.angel.colCardBorder
-                               : Appearance.inirEverywhere ? Appearance.inir.colBorder
+                               : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder
                                : Appearance.colors.colLayer0Border
 
                     RowLayout {
@@ -351,14 +351,14 @@ ContentPage {
                                     height: bgMonDelegate.cardHeight
                                     radius: Appearance.rounding.small
                                     color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                                         : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                                         : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                                          : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                                          : Appearance.colors.colLayer1
                                     border.width: bgMonDelegate.isSelected && bgMultiMonPanel.showBackdropView
-                                        ? (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : Appearance.inirEverywhere ? 1 : 2) : (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : Appearance.inirEverywhere ? 1 : 0)
+                                        ? (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : Appearance.ilmangoEverywhere ? 1 : 2) : (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : Appearance.ilmangoEverywhere ? 1 : 0)
                                     border.color: bgMonDelegate.isSelected && bgMultiMonPanel.showBackdropView
-                                        ? (Appearance.angelEverywhere ? Appearance.angel.colPrimary : Appearance.inirEverywhere ? Appearance.inir.colAccent : Appearance.colors.colPrimary)
-                                        : (Appearance.angelEverywhere ? Appearance.angel.colCardBorder : Appearance.inirEverywhere ? Appearance.inir.colBorder : "transparent")
+                                        ? (Appearance.angelEverywhere ? Appearance.angel.colPrimary : Appearance.ilmangoEverywhere ? Appearance.ilmango.colAccent : Appearance.colors.colPrimary)
+                                        : (Appearance.angelEverywhere ? Appearance.angel.colCardBorder : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent")
                                     clip: true
 
                                     layer.enabled: true
@@ -462,7 +462,7 @@ ContentPage {
                                         color: "transparent"
                                         visible: bgMultiMonPanel.showBackdropView && bgMonDelegate.isSelected
                                         border.width: 2
-                                        border.color: Appearance.inirEverywhere ? Appearance.inir.colAccent : Appearance.colors.colPrimary
+                                        border.color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colAccent : Appearance.colors.colPrimary
                                     }
                                 }
 
@@ -478,14 +478,14 @@ ContentPage {
                                     height: bgMonDelegate.cardHeight
                                     radius: Appearance.rounding.small
                                     color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                                         : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                                         : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                                          : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                                          : Appearance.colors.colLayer1
                                     border.width: bgMonDelegate.isSelected && !bgMultiMonPanel.showBackdropView
-                                        ? (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : Appearance.inirEverywhere ? 1 : 2) : (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : Appearance.inirEverywhere ? 1 : 0)
+                                        ? (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : Appearance.ilmangoEverywhere ? 1 : 2) : (Appearance.angelEverywhere ? Appearance.angel.cardBorderWidth : Appearance.ilmangoEverywhere ? 1 : 0)
                                     border.color: bgMonDelegate.isSelected && !bgMultiMonPanel.showBackdropView
-                                        ? (Appearance.angelEverywhere ? Appearance.angel.colPrimary : Appearance.inirEverywhere ? Appearance.inir.colAccent : Appearance.colors.colPrimary)
-                                        : (Appearance.angelEverywhere ? Appearance.angel.colCardBorder : Appearance.inirEverywhere ? Appearance.inir.colBorder : "transparent")
+                                        ? (Appearance.angelEverywhere ? Appearance.angel.colPrimary : Appearance.ilmangoEverywhere ? Appearance.ilmango.colAccent : Appearance.colors.colPrimary)
+                                        : (Appearance.angelEverywhere ? Appearance.angel.colCardBorder : Appearance.ilmangoEverywhere ? Appearance.ilmango.colBorder : "transparent")
                                     clip: true
 
                                     layer.enabled: true
@@ -678,12 +678,12 @@ ContentPage {
                     implicitHeight: bgMonPreviewCol.implicitHeight
                     radius: Appearance.rounding.small
                     color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                         : Appearance.inirEverywhere ? Appearance.inir.colLayer1
+                         : Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer1
                          : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurface
                          : Appearance.colors.colLayer1
                     border.width: Appearance.angelEverywhere ? (Appearance.angel?.cardBorderWidth ?? 1) : 1
                     border.color: Appearance.angelEverywhere ? (Appearance.angel?.colCardBorder ?? Appearance.colors.colLayer0Border)
-                               : Appearance.inirEverywhere ? (Appearance.inir?.colBorder ?? Appearance.colors.colLayer0Border)
+                               : Appearance.ilmangoEverywhere ? (Appearance.ilmango?.colBorder ?? Appearance.colors.colLayer0Border)
                                : Appearance.colors.colLayer0Border
                     clip: true
 
@@ -851,8 +851,8 @@ ContentPage {
                         Rectangle {
                             Layout.fillWidth: true
                             implicitHeight: 1
-                            color: Appearance.inirEverywhere
-                                ? (Appearance.inir?.colBorder
+                            color: Appearance.ilmangoEverywhere
+                                ? (Appearance.ilmango?.colBorder
                                     ?? Appearance.colors?.colLayer0Border
                                     ?? Appearance.colors?.colLayer0Border
                                     ?? Appearance.colors.colOutlineVariant)
@@ -914,7 +914,7 @@ ContentPage {
                                         if (mon) {
                                             Config.setNestedValue("wallpaperSelector.selectionTarget", "main")
                                             Config.setNestedValue("wallpaperSelector.targetMonitor", mon)
-                                            Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "wallpaperSelector", "toggle"])
+                                            Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "wallpaperSelector", "toggle"])
                                         }
                                     }
                                 }
@@ -958,7 +958,7 @@ ContentPage {
                                     }
                                     onClicked: {
                                         Config.setNestedValue("wallpaperSelector.selectionTarget", "backdrop")
-                                        Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "wallpaperSelector", "toggle"])
+                                        Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "wallpaperSelector", "toggle"])
                                     }
                                 }
                                 RippleButtonWithIcon {
@@ -1396,7 +1396,7 @@ ContentPage {
                         MaterialSymbol {
                             text: "open_with"
                             iconSize: 16
-                            color: Appearance.inirEverywhere ? Appearance.inir.colPrimary
+                            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colPrimary
                                  : Appearance.auroraEverywhere ? Appearance.colors.colPrimary
                                  : Appearance.colors.colPrimary
                         }
@@ -1405,7 +1405,7 @@ ContentPage {
                             text: Translation.tr("Wallpaper position")
                             font.pixelSize: Appearance.font.pixelSize.small
                             font.weight: Font.Medium
-                            color: Appearance.inirEverywhere ? Appearance.inir.colText
+                            color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
                                  : Appearance.auroraEverywhere ? Appearance.colors.colOnSurface
                                  : Appearance.colors.colOnLayer1
                         }
@@ -1433,9 +1433,9 @@ ContentPage {
                             visible: panCard.hasPan
                             implicitWidth: 26
                             implicitHeight: 26
-                            buttonRadius: Appearance.inirEverywhere ? Appearance.inir.roundingSmall : Appearance.rounding.full
+                            buttonRadius: Appearance.ilmangoEverywhere ? Appearance.ilmango.roundingSmall : Appearance.rounding.full
                             colBackground: "transparent"
-                            colBackgroundHover: Appearance.inirEverywhere ? Appearance.inir.colLayer2Hover
+                            colBackgroundHover: Appearance.ilmangoEverywhere ? Appearance.ilmango.colLayer2Hover
                                 : Appearance.auroraEverywhere ? Appearance.aurora.colSubSurfaceHover
                                 : Appearance.colors.colLayer2Hover
                             onClicked: {
@@ -1447,7 +1447,7 @@ ContentPage {
                                 anchors.centerIn: parent
                                 text: "restart_alt"
                                 iconSize: 14
-                                color: Appearance.inirEverywhere ? Appearance.inir.colTextSecondary
+                                color: Appearance.ilmangoEverywhere ? Appearance.ilmango.colTextSecondary
                                      : Appearance.auroraEverywhere ? Appearance.colors.colOnSurfaceVariant
                                      : Appearance.colors.colSubtext
                             }
@@ -2074,7 +2074,7 @@ ContentPage {
                     mainText: Translation.tr("Pick backdrop wallpaper")
                     onClicked: {
                         Config.setNestedValue("wallpaperSelector.selectionTarget", "backdrop")
-                        Quickshell.execDetached([Quickshell.shellPath("scripts/inir"), "wallpaperSelector", "toggle"]);
+                        Quickshell.execDetached([Quickshell.shellPath("scripts/ilmango"), "wallpaperSelector", "toggle"]);
                     }
                 }
 

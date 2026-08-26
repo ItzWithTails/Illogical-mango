@@ -84,7 +84,7 @@ DashCard {
                 anchors.fill: parent
                 radius: width / 2
                 color: Appearance.angelEverywhere ? Appearance.angel.colGlassCard
-                     : root.inirEverywhere ? Appearance.inir.colLayer2
+                     : root.ilmangoEverywhere ? Appearance.ilmango.colLayer2
                      : root.auroraEverywhere ? Appearance.aurora.colSubSurface
                      : Appearance.colors.colLayer2
                 opacity: avatarImg.status !== Image.Ready ? 1 : 0

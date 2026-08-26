@@ -23,8 +23,8 @@ Singleton {
     }
     readonly property bool cookieEverywhere: Appearance.cookieEverywhere
     property bool useMaterial: Config.options?.waffles?.theming?.useMaterialColors ?? false
-    // Glass mode: aurora/angel active (not iNiR which has its own aesthetic)
-    readonly property bool glassActive: root.auroraEverywhere && !Appearance.inirEverywhere
+    // Glass mode: aurora/angel active (not Illogical-mango which has its own aesthetic)
+    readonly property bool glassActive: root.auroraEverywhere && !Appearance.ilmangoEverywhere
 
     readonly property bool effectsEnabled: Appearance.effectsEnabled
     readonly property bool gameModeActive: Appearance._gameModeActive

@@ -5,7 +5,7 @@ import qs.modules.common.functions
 import QtQuick
 
 // The source component only draws its app icon in vertical mode; horizontally
-// it is the same two-line app/title stack, and iNiR's stock one locks both rows
+// it is the same two-line app/title stack, and Illogical-mango's stock one locks both rows
 // to baselines and settles the title, so that is the better body. What it did
 // not know is that the M3 bar seats it inside a tonal pill, so the ink has to
 // come down from the group instead of from the layer.

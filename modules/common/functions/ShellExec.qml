@@ -91,7 +91,7 @@ Singleton {
                 [ -n "$_value" ] && export "$_name=$_value"
             }
 
-            # apply_shell_scale()/apply_qt_runtime_env() own these for iNiR's
+            # apply_shell_scale()/apply_qt_runtime_env() own these for Illogical-mango's
             # process only. Restore the user's session values for launched apps.
             for _var in \
                 QT_SCALE_FACTOR QT_SCALE_FACTOR_ROUNDING_POLICY \
@@ -103,12 +103,12 @@ Singleton {
                 restore_from_manager "$_var"
             done
 
-            # The launcher marks exactly which GPU variables iNiR injected for
+            # The launcher marks exactly which GPU variables Illogical-mango injected for
             # the shell. Restore user values (or unset them) before games/apps.
-            for _var in $INIR_SHELL_GPU_POLICY_VARS; do
+            for _var in $ILMANGO_SHELL_GPU_POLICY_VARS; do
                 restore_from_manager "$_var"
             done
-            unset INIR_SHELL_GPU_POLICY_VARS INIR_DISABLE_HOT_RELOAD
+            unset ILMANGO_SHELL_GPU_POLICY_VARS ILMANGO_DISABLE_HOT_RELOAD
 
             # If startup raced the compositor/session import, fill in the late
             # variables now rather than keeping Quickshell's frozen snapshot.
@@ -212,7 +212,7 @@ Singleton {
             fi
             exec "$@"
         `
-        Quickshell.execDetached([root.bashPath, "-lc", script, "inir-scope", root.systemdRunPath, desc, workDir, ...argv])
+        Quickshell.execDetached([root.bashPath, "-lc", script, "ilmango-scope", root.systemdRunPath, desc, workDir, ...argv])
     }
 
     function execCmd(cmd: string, workingDirectory = ""): void {
