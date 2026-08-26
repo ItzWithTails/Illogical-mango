@@ -145,6 +145,80 @@ else
     log_ok "Theme files already up to date — skipping copy"
 fi
 
+# ── Material Symbols font ──────────────────────────────────────────────────
+# The greeter runs as the sddm user before any login, so it cannot read fonts
+# from ${HOME}/.local/share/fonts — it needs its own copy inside the theme dir.
+# The 14 MB TTF is deliberately not vendored in git; take the cheapest source
+# available and only reach for the network when nothing local exists.
+MATERIAL_FONT_URL="https://raw.githubusercontent.com/google/material-design-icons/master/variablefont/MaterialSymbolsRounded%5BFILL%2CGRAD%2Copsz%2Cwght%5D.ttf"
+THEME_FONT_DIR="${THEME_DIR}/fonts"
+THEME_FONT="${THEME_FONT_DIR}/MaterialSymbolsRounded.ttf"
+
+# Copy into the theme dir, elevating only when we do not own it.
+put_theme_font() {
+    local src="$1"
+    if [[ -O "${THEME_DIR}" ]]; then
+        mkdir -p "${THEME_FONT_DIR}" && cp -f "$src" "${THEME_FONT}"
+    else
+        elevate mkdir -p "${THEME_FONT_DIR}" && elevate cp -f "$src" "${THEME_FONT}"
+    fi
+}
+
+find_local_material_font() {
+    local candidate
+    for candidate in \
+        "${HOME}/.local/share/fonts/MaterialSymbolsRounded.ttf" \
+        "/usr/share/fonts/TTF/MaterialSymbolsRounded.ttf" \
+        "/usr/share/fonts/materialsymbols/MaterialSymbolsRounded.ttf"
+    do
+        if [[ -s "$candidate" ]]; then
+            echo "$candidate"
+            return 0
+        fi
+    done
+
+    # Ask fontconfig, but only accept it if it really resolved to this family —
+    # fc-match happily returns an unrelated fallback when the font is missing.
+    if command -v fc-match &>/dev/null; then
+        candidate="$(fc-match -f '%{file}' 'Material Symbols Rounded' 2>/dev/null || true)"
+        if [[ -s "$candidate" && "$candidate" == *MaterialSymbolsRounded* ]]; then
+            echo "$candidate"
+            return 0
+        fi
+    fi
+    return 1
+}
+
+provision_theme_font() {
+    if [[ -s "${THEME_FONT}" ]]; then
+        log_ok "Material Symbols font already in place"
+        return 0
+    fi
+
+    local src=""
+    src="$(find_local_material_font || true)"
+    if [[ -n "$src" ]] && put_theme_font "$src"; then
+        log_ok "Material Symbols font taken from ${src}"
+        return 0
+    fi
+
+    log_info "Downloading Material Symbols Rounded for the greeter..."
+    local tmp
+    tmp="$(mktemp)"
+    if curl -fsSL -o "$tmp" "${MATERIAL_FONT_URL}" 2>/dev/null && [[ -s "$tmp" ]] \
+       && put_theme_font "$tmp"; then
+        log_ok "Material Symbols font installed"
+    else
+        # Main.qml guards on FontLoader.status, so the greeter still works —
+        # it just falls back to text labels instead of icon glyphs.
+        log_warn "Material Symbols font unavailable — greeter will render without icon glyphs"
+    fi
+    rm -f "$tmp"
+    return 0
+}
+
+provision_theme_font
+
 # Create a placeholder background (symlinked to wallpaper later by sync script)
 if [[ ! -f "${THEME_DIR}/assets/background.png" ]]; then
     log_info "No background.png yet — creating placeholder..."

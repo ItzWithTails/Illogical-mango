@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -59,6 +60,9 @@ func (s filesStep) Run(ctx context.Context, env *installer.Env) error {
 	if err := s.installShell(ctx, env); err != nil {
 		return err
 	}
+	if err := s.installDefaults(ctx, env); err != nil {
+		return err
+	}
 	return s.installDotfiles(ctx, env)
 }
 
@@ -112,6 +116,75 @@ func (s filesStep) installShell(ctx context.Context, env *installer.Env) error {
 			return err
 		}
 	}
+	return nil
+}
+
+// defaultDirs are trees under defaults/ that land in the user's config home.
+// defaults/ is the single source of truth for these: dots/ used to carry a
+// hand-maintained mirror that silently drifted (old GTK colour tokens, a
+// pre-modular niri config, an outdated UI font), so it was removed.
+var defaultDirs = map[string]string{
+	"matugen": "matugen",
+	"fuzzel":  "fuzzel",
+	"gtk-3.0": "gtk-3.0",
+	"gtk-4.0": "gtk-4.0",
+}
+
+// defaultFiles are single files under defaults/ that land in the config home.
+// The KDE pair is only useful when Dolphin is actually installed.
+var defaultFiles = []struct {
+	src, dst    string
+	requiresCmd string
+}{
+	{src: "kde/kdeglobals", dst: "kdeglobals"},
+	{src: "kde/dolphinrc", dst: "dolphinrc", requiresCmd: "dolphin"},
+	{src: "kde/kservicemenurc", dst: "kservicemenurc", requiresCmd: "dolphin"},
+}
+
+// installDefaults applies defaults/ to the user's config home, mirroring what
+// sdata/subcmd-install/3.files.sh does for the shell-script install path.
+func (s filesStep) installDefaults(ctx context.Context, env *installer.Env) error {
+	defaults := filepath.Join(env.Repo.Root, "defaults")
+	if _, err := os.Stat(defaults); err != nil {
+		return nil // optional payload
+	}
+	cfg := configHome()
+
+	for src, dst := range defaultDirs {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
+		from := filepath.Join(defaults, src)
+		if _, err := os.Stat(from); err != nil {
+			continue
+		}
+		env.Detail("defaults → ~/.config/" + dst)
+		if err := env.Home.CopyTreeExcept(from, filepath.Join(cfg, dst), excluded); err != nil {
+			return err
+		}
+	}
+
+	for _, f := range defaultFiles {
+		if err := ctx.Err(); err != nil {
+			return err
+		}
+		if f.requiresCmd != "" {
+			if _, err := exec.LookPath(f.requiresCmd); err != nil {
+				continue
+			}
+		}
+		from := filepath.Join(defaults, f.src)
+		if _, err := os.Stat(from); err != nil {
+			continue
+		}
+		env.Detail("defaults → ~/.config/" + f.dst)
+		if err := env.Home.CopyFile(from, filepath.Join(cfg, f.dst)); err != nil {
+			return err
+		}
+	}
+
+	// The compositor config is not handled here: this fork targets Mango, and
+	// mangoStep hooks defaults/mango/config.conf in on its own.
 	return nil
 }
 

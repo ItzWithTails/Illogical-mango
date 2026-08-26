@@ -1006,7 +1006,7 @@ func main() {
 	defaultPalette := filepath.Join(home, ".local/state/quickshell/user/generated/palette.json")
 	defaultTerminal := filepath.Join(home, ".local/state/quickshell/user/generated/terminal.json")
 	defaultOutput := filepath.Join(home, ".config/zed/themes/ii-theme.json")
-	defaultTemplate := filepath.Join(".", "dots/.config/matugen/templates/zed-colors.json")
+	defaultTemplate := filepath.Join(".", "defaults/matugen/templates/zed-colors.json")
 	if _, err := os.Stat(defaultTemplate); err != nil {
 		defaultTemplate = ""
 	}

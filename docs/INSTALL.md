@@ -90,14 +90,21 @@ git clone https://github.com/ItzWithTails/illogical-mango.git ~/.config/quickshe
 ### 3. Copy the configs
 
 ```bash
+# Plain dotfiles: terminals, fish, mpv, Kvantum, fontconfig, portals
 cp -r dots/.config/* ~/.config/
+
+# Shipped defaults: theming templates, launcher, GTK and KDE settings
+cp -r defaults/matugen defaults/fuzzel defaults/gtk-3.0 defaults/gtk-4.0 ~/.config/
+cp defaults/kde/kdeglobals ~/.config/
+cp -r defaults/niri ~/.config/          # only if you run Niri
 ```
 
 This gives you:
-- Niri config wired to the `ilmango` launcher
+- Terminal, shell and media dotfiles
 - Theming templates for Material You colors
-- GTK settings
+- GTK and KDE settings
 - Fuzzel config
+- A compositor config wired to the `ilmango` launcher
 
 ### 4. Enable the Illogical-mango user service
 

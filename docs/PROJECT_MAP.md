@@ -228,9 +228,21 @@ It affects presentation and first-run defaults, but it is not where business log
 
 ### `dots/`
 
-This contains distributed dotfiles and shared configuration assets that are installed or referenced by setup flows.
+This contains plain dotfiles copied into the home directory as-is: terminal
+configs, fish, mpv, Kvantum, fontconfig, the desktop portal config, and the
+SDDM login theme under `dots/sddm/`.
 
-It matters for the user environment around Illogical-mango, especially when the project applies or ships theming-related defaults.
+It holds only files that have no counterpart elsewhere. Anything the project
+generates, themes or versions lives in `defaults/` instead.
+
+### `defaults/`
+
+This is the single source of truth for shipped configuration: Material You
+theming templates (`defaults/matugen/`), compositor configs, GTK and KDE
+settings, launcher config, AI prompts and the widget SDK.
+
+Both installers read from here. `dots/` previously carried a hand-maintained
+mirror of these files, which drifted out of sync; that mirror is gone.
 
 ## Runtime architecture in more detail
 

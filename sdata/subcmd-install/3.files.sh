@@ -329,19 +329,13 @@ case "${SKIP_NIRI}" in
     if [[ "${INSTALL_FIRSTRUN}" == true ]]; then
       if [[ -d "defaults/niri" ]]; then
         install_dir__sync "defaults/niri" "${XDG_CONFIG_HOME}/niri"
-        log_success "Niri config installed (defaults)"
-      elif [[ -d "dots/.config/niri" ]]; then
-        install_dir__sync "dots/.config/niri" "${XDG_CONFIG_HOME}/niri"
-        log_success "Niri config installed (dots)"
+        log_success "Niri config installed"
       fi
     elif [[ -f "$NIRI_CONFIG" ]]; then
       log_success "Preserving existing Niri config"
     elif [[ -d "defaults/niri" ]]; then
       install_dir__sync "defaults/niri" "${XDG_CONFIG_HOME}/niri"
-      log_success "Niri config installed (defaults)"
-    elif [[ -d "dots/.config/niri" ]]; then
-      install_dir__sync "dots/.config/niri" "${XDG_CONFIG_HOME}/niri"
-      log_success "Niri config installed (dots)"
+      log_success "Niri config installed"
     fi
 
     # Patch config.kdl: detect polkit agent
@@ -396,13 +390,10 @@ case "${SKIP_NIRI}" in
     ;;
 esac
 
-# Theming templates — defaults/ is the primary source (kept in sync with dots/)
+# Theming templates — defaults/ is the single source of truth
 if [[ -d "defaults/matugen" ]]; then
   install_dir__sync "defaults/matugen" "${XDG_CONFIG_HOME}/matugen"
-  log_success "Theming templates installed (defaults)"
-elif [[ -d "dots/.config/matugen" ]]; then
-  install_dir__sync "dots/.config/matugen" "${XDG_CONFIG_HOME}/matugen"
-  log_success "Theming templates installed (dots)"
+  log_success "Theming templates installed"
 fi
 
 # ii-pixel-sddm theme (login screen matching ii lockscreen aesthetic)
@@ -425,8 +416,8 @@ if command -v sddm &>/dev/null; then
 fi
 
 # Fuzzel (launcher)
-if [[ -d "dots/.config/fuzzel" ]]; then
-  install_dir__sync "dots/.config/fuzzel" "${XDG_CONFIG_HOME}/fuzzel"
+if [[ -d "defaults/fuzzel" ]]; then
+  install_dir__sync "defaults/fuzzel" "${XDG_CONFIG_HOME}/fuzzel"
   log_success "Fuzzel config installed"
 fi
 
@@ -520,8 +511,8 @@ fi
 
 # GTK settings
 for gtkver in gtk-3.0 gtk-4.0; do
-  if [[ -d "dots/.config/${gtkver}" ]]; then
-    install_dir "dots/.config/${gtkver}" "${XDG_CONFIG_HOME}/${gtkver}"
+  if [[ -d "defaults/${gtkver}" ]]; then
+    install_dir "defaults/${gtkver}" "${XDG_CONFIG_HOME}/${gtkver}"
   fi
 done
 
@@ -529,23 +520,17 @@ done
 # These are controlled by Illogical-mango for theming - always overwrite
 if [[ -f "defaults/kde/kdeglobals" ]]; then
   install_file "defaults/kde/kdeglobals" "${XDG_CONFIG_HOME}/kdeglobals"
-elif [[ -f "dots/.config/kdeglobals" ]]; then
-  install_file "dots/.config/kdeglobals" "${XDG_CONFIG_HOME}/kdeglobals"
 fi
 
 # Dolphin config — only if dolphin is installed (nautilus is now the default file manager)
 if command -v dolphin &>/dev/null; then
   if [[ -f "defaults/kde/dolphinrc" ]]; then
     install_file "defaults/kde/dolphinrc" "${XDG_CONFIG_HOME}/dolphinrc"
-  elif [[ -f "dots/.config/dolphinrc" ]]; then
-    install_file "dots/.config/dolphinrc" "${XDG_CONFIG_HOME}/dolphinrc"
   fi
 
   # KDE service menu (enables "Open terminal here" in Dolphin right-click)
   if [[ -f "defaults/kde/kservicemenurc" ]]; then
     install_file "defaults/kde/kservicemenurc" "${XDG_CONFIG_HOME}/kservicemenurc"
-  elif [[ -f "dots/.config/kservicemenurc" ]]; then
-    install_file "dots/.config/kservicemenurc" "${XDG_CONFIG_HOME}/kservicemenurc"
   fi
 
   # Dolphin panel layout state

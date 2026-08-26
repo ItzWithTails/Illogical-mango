@@ -42,12 +42,12 @@ migration_apply() {
   local ii_dir
   ii_dir="$(get_runtime_shell_dir)"
   ii_dir="${ii_dir:-${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/ilmango}"
-  local gtk4_src="${ii_dir}/dots/.config/matugen/templates/gtk-4.0/gtk.css"
+  local gtk4_src="${ii_dir}/defaults/matugen/templates/gtk-4.0/gtk.css"
   local gtk4_dst="${XDG_CONFIG_HOME:-$HOME/.config}/matugen/templates/gtk-4.0/gtk.css"
-  local gtk3_src="${ii_dir}/dots/.config/matugen/templates/gtk-3.0/gtk.css"
+  local gtk3_src="${ii_dir}/defaults/matugen/templates/gtk-3.0/gtk.css"
   local gtk3_dst="${XDG_CONFIG_HOME:-$HOME/.config}/matugen/templates/gtk-3.0/gtk.css"
 
-  # Copy updated templates from the synced dots/ directory
+  # Copy updated templates from the shipped defaults/ directory
   if [[ -f "$gtk4_src" ]]; then
     mkdir -p "$(dirname "$gtk4_dst")"
     cp -f "$gtk4_src" "$gtk4_dst"

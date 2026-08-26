@@ -485,7 +485,7 @@ def generate_zed_config(
 
     _alt_template_path = (
         Path(__file__).resolve().parents[3]
-        / "dots/.config/matugen/templates/zed-colors.json"
+        / "defaults/matugen/templates/zed-colors.json"
     )
     _alt_placeholder_re = re.compile(r"\{\{colors\.([a-z0-9_]+)\.(dark|light)\.hex\}\}")
 

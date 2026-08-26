@@ -81,6 +81,10 @@ mcp/
 .github/copilot-instructions.md
 .github/instructions/
 
+# ── SDDM greeter font (fetched by scripts/sddm/install-pixel-sddm.sh) ──
+# 14 MB variable TTF; the greeter needs it in its theme dir, not in git.
+/dots/sddm/pixel/fonts/
+
 # ── Go installer binary (built on demand) ────────────────────
 /ilmango-installer
 

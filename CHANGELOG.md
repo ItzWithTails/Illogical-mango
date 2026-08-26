@@ -9,7 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- **`dots/` no longer mirrors `defaults/`.** 22 duplicated config files were deleted and
+  `defaults/` is now the single source of truth for everything it covers. The hand-kept
+  mirror had drifted, so the copy that got installed depended on which installer ran:
+  - `matugen/` templates: `dots/` still used the pre-`app_*` colour tokens and the legacy
+    `[templates.*]` blocks in `config.toml`, and was missing the Steam template.
+  - `gtk-3.0`/`gtk-4.0` `settings.ini`: `dots/` still asked for `Rubik`, while `defaults/`
+    had moved to `Roboto Flex`. The shell-script installer was copying the stale pair.
+  - `kdeglobals`: `dots/` carried 141 lines of hardcoded colours that are now generated.
+  - `niri/config.kdl`: `dots/` held the old 361-line monolith instead of the modular
+    `config.d/` split.
+  - Migrations `011-gtk4-nautilus-css` and `013-kde-material-you-colors-stop` copied their
+    templates out of `dots/` and now read `defaults/`.
+- **The 14 MB Material Symbols TTF is no longer vendored.** `scripts/sddm/install-pixel-sddm.sh`
+  now provisions the greeter's font at install time, preferring a copy already on the
+  machine (`~/.local/share/fonts`, `/usr/share/fonts`, or whatever fontconfig resolves)
+  and only downloading when nothing local exists. A checkout is 80.1 MB → 66.2 MB.
+- **`ClassicToggleDelegateChooser.qml`**: a zero-byte file that was still registered as a
+  type in its `qmldir` and instantiated nowhere.
+
 ### Changed
+- The Go installer applies `defaults/` to the config home (`matugen`, `fuzzel`, `gtk-3.0`,
+  `gtk-4.0`, `kdeglobals`, and the Dolphin pair when Dolphin is installed), matching what
+  `sdata/subcmd-install/3.files.sh` already did. It previously relied on the `dots/` mirror
+  for these and so installed the drifted copies.
+- `defaults/matugen/templates/zed-colors.json` moved out of `dots/`; the three Zed theme
+  generators point at the new path.
 - **Renamed iNiR to Illogical-mango.** The brand is `Illogical-mango`; the CLI, config
   paths, environment variables and internal identifiers are `ilmango`. `mango` alone was
   not available — it already means the MangoWC compositor throughout the tree.
