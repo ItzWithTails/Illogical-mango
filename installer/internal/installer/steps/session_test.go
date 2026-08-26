@@ -3,6 +3,7 @@ package steps
 import (
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 
@@ -36,7 +37,7 @@ func TestDesktopSettingsPublishesTheCursorToTheCompositor(t *testing.T) {
 func TestMangoTemplateSetsTheCursorEnvironment(t *testing.T) {
 	// The compositor reads XCURSOR_THEME before anything else can correct it,
 	// so the shipped config has to carry it.
-	config, err := os.ReadFile(filepath.Join("..", "..", "..", "defaults", "mango", "config.conf"))
+	config, err := os.ReadFile(filepath.Join("..", "..", "..", "..", "src", "defaults", "mango", "config.conf"))
 	if err != nil {
 		t.Skipf("template not readable from here: %v", err)
 	}
@@ -45,5 +46,27 @@ func TestMangoTemplateSetsTheCursorEnvironment(t *testing.T) {
 		if !strings.Contains(string(config), want) {
 			t.Errorf("the mango template does not carry %q", want)
 		}
+	}
+}
+
+func TestPayloadDirsMatchThePackagingManifest(t *testing.T) {
+	// Two lists describe the same thing: this one and the manifest the
+	// packaging Makefile reads. Editing one and forgetting the other ships a
+	// shell that is missing a directory, which fails at runtime rather than
+	// at build time.
+	body, err := os.ReadFile(filepath.Join("..", "..", "..", "..", "src", "sdata", "runtime-payload-dirs.txt"))
+	if err != nil {
+		t.Skipf("manifest not readable from here: %v", err)
+	}
+
+	var manifest []string
+	for _, line := range strings.Split(string(body), "\n") {
+		if name := strings.TrimSpace(line); name != "" {
+			manifest = append(manifest, name)
+		}
+	}
+
+	if !slices.Equal(manifest, payloadDirs) {
+		t.Fatalf("payload lists disagree:\n  files.go: %v\n  manifest: %v", payloadDirs, manifest)
 	}
 }

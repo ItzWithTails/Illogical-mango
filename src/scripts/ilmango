@@ -2414,7 +2414,7 @@ open_detached_qml_window() {
 }
 
 resolve_setup_dir() {
-    if [[ -x "$launcher_root/setup" && -f "$launcher_root/shell.qml" ]]; then
+    if [[ -x "$launcher_root/setup" && -f "$launcher_root/src/shell.qml" ]]; then
         printf '%s' "$launcher_root"
         return
     fi
@@ -2432,7 +2432,7 @@ resolve_setup_dir() {
     fi
 
     stored_repo="${stored_repo/#\~/$HOME}"
-    if [[ -n "$stored_repo" && -d "${stored_repo}/.git" && -x "${stored_repo}/setup" && -f "${stored_repo}/shell.qml" ]]; then
+    if [[ -n "$stored_repo" && -d "${stored_repo}/.git" && -x "${stored_repo}/setup" && -f "${stored_repo}/src/shell.qml" ]]; then
         printf '%s' "$stored_repo"
         return
     fi
@@ -3369,7 +3369,7 @@ EOF
     elif git -C "$launcher_root" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         while IFS= read -r -d '' changed_path; do
             case "$changed_path" in
-                GlobalStates.qml|ShellIiPanels.qml|ShellWafflePanels.qml|shell.qml|settings.qml|waffleSettings.qml|defaults/config.json|modules/common/Config.qml|modules/common/Appearance.qml|modules/common/Looks.qml|modules/common/widgets/*)
+                shell/GlobalStates.qml|shell/ShellIiPanels.qml|shell/ShellWafflePanels.qml|shell.qml|shell/settings.qml|shell/waffleSettings.qml|defaults/config.json|modules/common/Config.qml|modules/common/Appearance.qml|modules/common/Looks.qml|modules/common/widgets/*)
                     : ;; # Broad files do not turn a focused audit into an exhaustive one.
                 modules/sidebarLeft/aiChat/*|modules/sidebarLeft/AiChat.qml|modules/sidebarLeft/ApiInputBoxIndicator.qml|services/Ai.qml|services/ai/*)
                     select_prefix "sidebar-left/ai"; select_prefix "settings/ai" ;;
@@ -3909,7 +3909,7 @@ case "$command_name" in
             esac
         done
         resolve_config_dir
-        open_detached_qml_window "$config_dir" "settings.qml"
+        open_detached_qml_window "$config_dir" "shell/settings.qml"
         ;;
     waffle-settings-window)
         require_qs
@@ -3930,7 +3930,7 @@ case "$command_name" in
             esac
         done
         resolve_config_dir
-        open_detached_qml_window "$config_dir" "waffleSettings.qml"
+        open_detached_qml_window "$config_dir" "shell/waffleSettings.qml"
         ;;
     welcome)
         require_qs
@@ -3951,7 +3951,7 @@ case "$command_name" in
             esac
         done
         resolve_config_dir
-        open_detached_qml_window "$config_dir" "welcome.qml"
+        open_detached_qml_window "$config_dir" "shell/welcome.qml"
         ;;
     repair)
         require_qs

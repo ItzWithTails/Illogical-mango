@@ -77,9 +77,9 @@ func checkRepo(_ context.Context, repo Repo) CheckResult {
 
 	// The QML entry point is what Quickshell loads; without it there is
 	// nothing to install, whatever else the directory contains.
-	if _, err := os.Stat(filepath.Join(repo.Root, "shell.qml")); err != nil {
+	if _, err := os.Stat(filepath.Join(repo.Payload, "shell.qml")); err != nil {
 		res.Status = CheckFail
-		res.Detail = "shell.qml missing — this is not an Illogical-mango checkout"
+		res.Detail = PayloadDir + "/shell.qml missing — this is not an Illogical-mango checkout"
 		return res
 	}
 	if _, err := os.Stat(filepath.Join(repo.Root, "dots")); err != nil {

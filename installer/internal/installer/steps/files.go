@@ -14,6 +14,7 @@ import (
 // The list mirrors sdata/runtime-payload-dirs.txt, which the packaging
 // Makefile also reads.
 var payloadDirs = []string{
+	"shell",
 	"modules",
 	"services",
 	"scripts",
@@ -24,9 +25,15 @@ var payloadDirs = []string{
 	"sdata",
 }
 
-// payloadFiles are the loose repository files the shell needs at runtime.
+// payloadFiles are the loose payload files the shell needs at runtime.
 var payloadFiles = []string{
 	"VERSION",
+}
+
+// docFiles are copied out of the checkout's documentation rather than the
+// payload. The changelog is repository documentation, but the shell shows it
+// as release notes, so it travels rather than being kept in two places.
+var docFiles = []string{
 	"CHANGELOG.md",
 }
 
@@ -72,12 +79,12 @@ func (s filesStep) installShell(ctx context.Context, env *installer.Env) error {
 		return err
 	}
 
-	qml, err := filepath.Glob(filepath.Join(env.Repo.Root, "*.qml"))
+	qml, err := filepath.Glob(filepath.Join(env.Repo.Payload, "*.qml"))
 	if err != nil {
 		return fmt.Errorf("locating QML files: %w", err)
 	}
 	if len(qml) == 0 {
-		return fmt.Errorf("no QML files in %s — is this an Illogical-mango checkout?", env.Repo.Root)
+		return fmt.Errorf("no QML files in %s — is this an Illogical-mango checkout?", env.Repo.Payload)
 	}
 
 	for _, src := range append(qml, repoPaths(env, "qmldir")...) {
@@ -90,7 +97,17 @@ func (s filesStep) installShell(ctx context.Context, env *installer.Env) error {
 	}
 
 	for _, name := range payloadFiles {
-		src := filepath.Join(env.Repo.Root, name)
+		src := filepath.Join(env.Repo.Payload, name)
+		if _, err := os.Stat(src); err != nil {
+			continue // optional
+		}
+		if err := env.Home.CopyFile(src, filepath.Join(target, name)); err != nil {
+			return err
+		}
+	}
+
+	for _, name := range docFiles {
+		src := filepath.Join(env.Repo.Root, "docs", name)
 		if _, err := os.Stat(src); err != nil {
 			continue // optional
 		}
@@ -103,7 +120,7 @@ func (s filesStep) installShell(ctx context.Context, env *installer.Env) error {
 		if err := ctx.Err(); err != nil {
 			return err
 		}
-		src := filepath.Join(env.Repo.Root, dir)
+		src := filepath.Join(env.Repo.Payload, dir)
 		if _, err := os.Stat(src); err != nil {
 			continue
 		}
@@ -118,7 +135,7 @@ func (s filesStep) installShell(ctx context.Context, env *installer.Env) error {
 // installDotfiles mirrors dots/ into the home directory. The layout under
 // dots/ is already the layout it lands in, so this stays a straight copy.
 func (s filesStep) installDotfiles(ctx context.Context, env *installer.Env) error {
-	dots := filepath.Join(env.Repo.Root, "dots")
+	dots := filepath.Join(env.Repo.Payload, "dots")
 	entries, err := os.ReadDir(dots)
 	if err != nil {
 		return fmt.Errorf("reading dotfiles: %w", err)
@@ -156,7 +173,7 @@ func excluded(name string) bool { return excludedNames[name] }
 func repoPaths(env *installer.Env, names ...string) []string {
 	var out []string
 	for _, name := range names {
-		path := filepath.Join(env.Repo.Root, name)
+		path := filepath.Join(env.Repo.Payload, name)
 		if _, err := os.Stat(path); err == nil {
 			out = append(out, path)
 		}

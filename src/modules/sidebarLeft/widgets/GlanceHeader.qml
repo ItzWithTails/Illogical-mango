@@ -205,7 +205,7 @@ Item {
 
                     onClicked: {
                         const isWaffle = (Config.options?.panelFamily === "waffle" && Config.options?.waffles?.settings?.useMaterialStyle !== true);
-                        const settingsPath = isWaffle ? Quickshell.shellPath("waffleSettings.qml") : Quickshell.shellPath("settings.qml");
+                        const settingsPath = isWaffle ? Quickshell.shellPath("shell/waffleSettings.qml") : Quickshell.shellPath("shell/settings.qml");
                         const pageIndex = isWaffle ? 6 : 5; // Modules (Waffle) vs Interface (ii)
                         const section = isWaffle ? Translation.tr("Widgets Panel") : Translation.tr("Widgets");
 

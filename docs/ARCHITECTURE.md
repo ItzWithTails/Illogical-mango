@@ -49,14 +49,17 @@ Style dispatch priority: **cookie > zzz > angel > ilmango > aurora > material** 
 
 ```
 shell.qml                     # Root entry — loads services, selects panel family
-ShellIiPanels.qml             # Material Design family
-ShellWafflePanels.qml         # Windows 11 family
-GlobalStates.qml              # Runtime UI state (panel open/closed booleans)
-FamilyTransitionOverlay.qml   # Animated family switch
-settings.qml                  # Settings GUI (separate Quickshell config)
-waffleSettings.qml            # Waffle-specific settings GUI
-welcome.qml                   # First-run wizard
-killDialog.qml                # Process kill confirmation
+qmldir                        # Declares module `qs`
+
+shell/                        # Everything shell.qml assembles. Only shell.qml and
+├── ShellIiPanels.qml         #   qmldir stay at the root: Quickshell resolves the
+├── ShellWafflePanels.qml     #   config directory from them.
+├── GlobalStates.qml
+├── FamilyTransitionOverlay.qml
+├── settings.qml
+├── waffleSettings.qml
+├── welcome.qml
+└── killDialog.qml
 
 modules/                      # UI module directories
 ├── common/                   # Shared infrastructure

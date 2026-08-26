@@ -9,6 +9,12 @@ import (
 	"strings"
 )
 
+// PayloadDir is the checkout subdirectory holding everything that ships to a
+// user's machine. The repository root above it carries only the things a
+// developer needs — the installer's own source, packaging, documentation — none
+// of which a running shell has any use for.
+const PayloadDir = "src"
+
 // repoMarkers are the paths that together identify an Illogical-mango checkout: the shell
 // entry point, the dotfiles it installs alongside itself, and the version it
 // reports. All must be present, so a bare directory named "ilmango" is never
@@ -16,14 +22,23 @@ import (
 //
 // These are what the installer actually reads. They deliberately do not
 // include the shell installer under sdata/, which this program replaced.
-var repoMarkers = []string{"shell.qml", "dots", "VERSION"}
+var repoMarkers = []string{
+	filepath.Join(PayloadDir, "shell.qml"),
+	filepath.Join(PayloadDir, "dots"),
+	filepath.Join(PayloadDir, "VERSION"),
+}
 
 // ErrRepoNotFound is returned when no Illogical-mango checkout could be located.
 var ErrRepoNotFound = errors.New("Illogical-mango repository not found")
 
 // Repo is a located Illogical-mango checkout.
 type Repo struct {
-	Root    string
+	// Root is the checkout itself: what git reports on, and what the install
+	// manifest records so a later run can find the same source.
+	Root string
+	// Payload is the subtree that actually gets installed. Every step that
+	// copies a file into the user's home reads from here, never from Root.
+	Payload string
 	Version string
 	Commit  string
 	Branch  string
@@ -82,9 +97,13 @@ func isRepo(dir string) bool {
 // describeRepo reads the version and git metadata. Missing git information is
 // not an error — a tarball install has no .git directory.
 func describeRepo(root string) Repo {
-	repo := Repo{Root: root, Version: "unknown", Commit: "unknown", Branch: ""}
+	repo := Repo{
+		Root:    root,
+		Payload: filepath.Join(root, PayloadDir),
+		Version: "unknown", Commit: "unknown", Branch: "",
+	}
 
-	if data, err := os.ReadFile(filepath.Join(root, "VERSION")); err == nil {
+	if data, err := os.ReadFile(filepath.Join(repo.Payload, "VERSION")); err == nil {
 		if v := strings.TrimSpace(string(data)); v != "" {
 			repo.Version = v
 		}

@@ -36,7 +36,7 @@ func newMangoStep() installer.Step {
 }
 
 func (s mangoStep) Run(ctx context.Context, env *installer.Env) error {
-	source := filepath.Join(env.Repo.Root, "defaults", "mango", "config.conf")
+	source := filepath.Join(env.Repo.Payload, "defaults", "mango", "config.conf")
 	if _, err := os.Stat(source); err != nil {
 		env.Log("no defaults/mango/config.conf in this checkout; nothing to hook in")
 		return nil

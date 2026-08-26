@@ -38,7 +38,7 @@ func newPythonStep() installer.Step {
 func (pythonStep) Optional() bool { return true }
 
 func (s pythonStep) Run(ctx context.Context, env *installer.Env) error {
-	requirements := filepath.Join(env.Repo.Root, "sdata", "uv", "requirements.txt")
+	requirements := filepath.Join(env.Repo.Payload, "sdata", "uv", "requirements.txt")
 	if _, err := os.Stat(requirements); err != nil {
 		env.Log("no requirements.txt in this checkout; nothing to install")
 		return nil

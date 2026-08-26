@@ -1,0 +1,29 @@
+#!/bin/sh
+# The one entry point: build the installer, then hand over to it.
+#
+# The installer itself is Go, under installer/. This wrapper exists so that a
+# fresh checkout has exactly one obvious thing to run, and so that the binary is
+# never committed. Every argument is passed straight through:
+#
+#   ./install                 guided installation
+#   ./install --dry-run       print the plan, change nothing
+#   ./install --help          the installer's own help
+set -eu
+
+top=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+# The binary lives beside its source, so building never adds anything to the
+# repository root.
+bin="$top/installer/ilmango-installer"
+
+if ! command -v go >/dev/null 2>&1; then
+    echo "install: Go is required to build the installer (https://go.dev/dl/)" >&2
+    exit 3
+fi
+
+# Rebuild whenever a source file is newer than the binary, so running this
+# twice in a row is cheap but never stale.
+if [ ! -x "$bin" ] || [ -n "$(find "$top/installer" -name '*.go' -newer "$bin" -print -quit 2>/dev/null)" ]; then
+    ( cd "$top/installer" && go build -o "$bin" ./cmd/ilmango-installer )
+fi
+
+exec "$bin" "$@"

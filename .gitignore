@@ -82,7 +82,16 @@ mcp/
 .github/instructions/
 
 # ── Go installer binary (built on demand) ────────────────────
+/installer/ilmango-installer
 /ilmango-installer
+# The pre-rename name, so an older checkout cannot commit its binary either.
+/inir-installer
+
+# ── Go build and test artefacts ──────────────────────────────
+*.test
+coverage.out
+coverage.html
+__debug_bin*
 
 # ── Go theme-generator binaries (built on demand) ────────────
 /vscode_themegen

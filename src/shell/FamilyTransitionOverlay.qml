@@ -611,7 +611,7 @@ Scope {
                     anchors.centerIn: parent
                     width: 40
                     height: 40
-                    source: Qt.resolvedUrl("assets/icons/illogical-impulse.svg")
+                    source: Qt.resolvedUrl("../assets/icons/illogical-impulse.svg")
                     sourceSize: Qt.size(40, 40)
                 }
             }

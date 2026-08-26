@@ -124,7 +124,7 @@ let
 in
 pkgs.stdenvNoCC.mkDerivation {
   pname = "ilmango";
-  version = lib.removeSuffix "\n" (builtins.readFile ../VERSION);
+  version = lib.removeSuffix "\n" (builtins.readFile ../src/VERSION);
   src = lib.cleanSource ../.;
 
   nativeBuildInputs = [ pkgs.makeWrapper ];

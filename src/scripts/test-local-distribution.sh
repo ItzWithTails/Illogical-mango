@@ -47,7 +47,7 @@ root = pathlib.Path(sys.argv[1])
 with (root / "defaults/config.json").open(encoding="utf-8") as handle:
     config = json.load(handle)
 schema = (root / "modules/common/Config.qml").read_text(encoding="utf-8")
-wizard = (root / "welcome.qml").read_text(encoding="utf-8")
+wizard = (root / "shell" / "welcome.qml").read_text(encoding="utf-8")
 
 checks = {
     "settings rail": config["settingsUi"]["overlayStyle"] == "rail",

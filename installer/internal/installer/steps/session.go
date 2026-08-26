@@ -33,7 +33,7 @@ func newServiceStep() installer.Step {
 func (serviceStep) Optional() bool { return true }
 
 func (s serviceStep) Run(ctx context.Context, env *installer.Env) error {
-	source := filepath.Join(env.Repo.Root, "assets", "systemd", "ilmango.service")
+	source := filepath.Join(env.Repo.Payload, "assets", "systemd", "ilmango.service")
 	data, err := os.ReadFile(source)
 	if err != nil {
 		env.Log("no service unit in this checkout; skipping")

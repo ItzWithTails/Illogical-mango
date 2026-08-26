@@ -42,7 +42,7 @@ func newLauncherStep() installer.Step {
 }
 
 func (s launcherStep) Run(_ context.Context, env *installer.Env) error {
-	source := filepath.Join(env.Repo.Root, "scripts", "ilmango")
+	source := filepath.Join(env.Repo.Payload, "scripts", "ilmango")
 	if _, err := os.Stat(source); err != nil {
 		return fmt.Errorf("the launcher is missing from this checkout: %w", err)
 	}
@@ -112,7 +112,7 @@ func (s desktopStep) Run(_ context.Context, env *installer.Env) error {
 	}
 
 	for name, command := range desktopEntries {
-		source := filepath.Join(env.Repo.Root, "assets", "applications", name)
+		source := filepath.Join(env.Repo.Payload, "assets", "applications", name)
 		data, err := os.ReadFile(source)
 		if err != nil {
 			env.Log("no " + name + " in this checkout; skipping")
@@ -131,7 +131,7 @@ func (s desktopStep) Run(_ context.Context, env *installer.Env) error {
 }
 
 func (s desktopStep) installIcon(env *installer.Env) error {
-	source := filepath.Join(env.Repo.Root, "assets", "icons", "desktop-symbolic.svg")
+	source := filepath.Join(env.Repo.Payload, "assets", "icons", "desktop-symbolic.svg")
 	if _, err := os.Stat(source); err != nil {
 		return nil
 	}

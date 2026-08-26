@@ -5,14 +5,17 @@
 ```
 ilmango/
 ├── shell.qml                     # Root entry — loads services, selects panel family
-├── ShellIiPanels.qml             # Material Design panel family
-├── ShellWafflePanels.qml         # Windows 11 panel family
-├── GlobalStates.qml              # Runtime UI state (panel open/closed booleans)
-├── FamilyTransitionOverlay.qml   # Animated family switch
-├── settings.qml                  # Settings GUI (separate Quickshell config)
-├── waffleSettings.qml            # Waffle-specific settings GUI
-├── welcome.qml                   # First-run wizard
-├── killDialog.qml                # Process kill confirmation
+├── qmldir                        # Declares module `qs`; both must stay at the root,
+│                                 #   Quickshell resolves the config from here
+├── shell/                        # Everything shell.qml assembles
+│   ├── ShellIiPanels.qml         # Material Design panel family
+│   ├── ShellWafflePanels.qml     # Windows 11 panel family
+│   ├── GlobalStates.qml          # Runtime UI state (panel open/closed booleans)
+│   ├── FamilyTransitionOverlay.qml # Animated family switch
+│   ├── settings.qml              # Settings GUI (separate Quickshell config)
+│   ├── waffleSettings.qml        # Waffle-specific settings GUI
+│   ├── welcome.qml               # First-run wizard
+│   └── killDialog.qml            # Process kill confirmation
 ├── modules/                      # UI module directories
 │   ├── common/                   # Shared infrastructure
 │   │   ├── Appearance.qml        # ii visual tokens
