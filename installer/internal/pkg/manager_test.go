@@ -142,3 +142,62 @@ func TestProgressReportsBuildsAndDownloadsWithoutCountingThem(t *testing.T) {
 		t.Errorf("the installed package was not counted: %+v", seen[2])
 	}
 }
+
+func TestDiagnosisRepeatsTheManagersOwnReason(t *testing.T) {
+	// The exact lines a real machine produced. The install failed and the
+	// installer blamed the network, which was working perfectly.
+	d := newDiagnosis()
+	for _, line := range []string{
+		"looking for conflicting packages...",
+		":: ttf-material-symbols-variable-git-4.0.0.r168.ge083cc60-1 and ttf-material-symbols-variable-2.874-1 are in conflict. Remove ttf-material-symbols-variable? [y/N] ",
+		"error: unresolvable package conflicts detected",
+		"error: failed to prepare transaction (conflicting dependencies)",
+	} {
+		d.observe(line)
+	}
+
+	conflicts := d.Conflicts()
+	if len(conflicts) != 1 {
+		t.Fatalf("found %d conflicts, want 1: %+v", len(conflicts), conflicts)
+	}
+	// Versions are not something the reader can type back at pacman.
+	if conflicts[0].Wanted != "ttf-material-symbols-variable-git" {
+		t.Errorf("wanted = %q, want the bare name", conflicts[0].Wanted)
+	}
+	if conflicts[0].Installed != "ttf-material-symbols-variable" {
+		t.Errorf("installed = %q, want the bare name", conflicts[0].Installed)
+	}
+
+	why := d.explain()
+	for _, want := range []string{
+		"cannot be installed while",
+		"Remove ttf-material-symbols-variable yourself",
+		"--without ttf-material-symbols-variable-git",
+	} {
+		if !strings.Contains(why, want) {
+			t.Errorf("the explanation is missing %q:\n%s", want, why)
+		}
+	}
+	if strings.Contains(why, "network") {
+		t.Errorf("a package conflict was blamed on the network:\n%s", why)
+	}
+}
+
+func TestDiagnosisIsSilentWhenNothingWasSaid(t *testing.T) {
+	// With no recognisable complaint the caller keeps its own wording rather
+	// than inventing a reason.
+	d := newDiagnosis()
+	d.observe("installing bc...")
+	if why := d.explain(); why != "" {
+		t.Fatalf("explain() = %q, want nothing", why)
+	}
+}
+
+func TestDiagnosisNamesAnUnobtainablePackage(t *testing.T) {
+	d := newDiagnosis()
+	d.observe("error: target not found: ttf-nonexistent")
+
+	if why := d.explain(); !strings.Contains(why, "ttf-nonexistent") {
+		t.Fatalf("explain() = %q, want the package named", why)
+	}
+}

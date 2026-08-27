@@ -75,6 +75,9 @@ func (s mangoStep) Run(ctx context.Context, env *installer.Env) error {
 	if err := s.repairRejectedKeys(env, mainConfig); err != nil {
 		return err
 	}
+	if err := s.applyKeyboardLayout(env, mainConfig); err != nil {
+		return err
+	}
 
 	s.reload(ctx, env)
 	return nil
@@ -372,4 +375,125 @@ func repairRejectedKeys(content string) (string, []string) {
 		corrected = append(corrected, key+" → "+replacement)
 	}
 	return strings.Join(lines, "\n"), corrected
+}
+
+// layoutToggle lets the layouts be switched between once there is more than
+// one. Both Alt keys together is the combination most people already know from
+// elsewhere, and it collides with nothing this shell binds.
+const layoutToggle = "grp:alt_shift_toggle"
+
+// applyKeyboardLayout writes the keyboard layout into the mango config.
+//
+// mango owns the keymap: a layout it does not list cannot be typed at all, in
+// any application. The example config this installer seeds from hardcodes
+// "us", so without this every install silently imposes a US-only keyboard —
+// which for anyone who writes in another script means they cannot type in it.
+func (s mangoStep) applyKeyboardLayout(env *installer.Env, mainConfig string) error {
+	layout := env.Config.Choice(installer.OptKeyboardLayout)
+	if layout == installer.LayoutSystem {
+		layout = systemKeyboardLayout(env)
+		if layout == "" {
+			// Nothing configured anywhere. mango's own default stands, but say
+			// so: on a machine with no layout set this is the difference
+			// between "I can type Russian" and "I cannot".
+			env.Note("No keyboard layout is configured on this machine, so mango keeps its US default. To add one: ./install --set keyboard-layout=us,ru")
+			return nil
+		}
+		env.Detail("layout from the system: " + layout)
+	}
+
+	current, err := env.Home.ReadFile(mainConfig)
+	if err != nil {
+		return fmt.Errorf("reading %s: %w", mainConfig, err)
+	}
+
+	updated, changed := setLayout(string(current), layout)
+	if !changed {
+		return nil
+	}
+	if err := env.Home.Unrecorded().WriteFile(mainConfig, []byte(updated), 0o644); err != nil {
+		return err
+	}
+
+	env.Detail("keyboard layout → " + layout)
+	if strings.Contains(layout, ",") {
+		env.NoteApplied("The keyboard layout is now " + layout + ", switched with both Alt keys together.")
+	} else {
+		env.NoteApplied("The keyboard layout is now " + layout + ".")
+	}
+	return nil
+}
+
+// setLayout rewrites the layout, and the switch option when there is more than
+// one layout to switch between.
+//
+// Assignments are replaced rather than appended: mango takes the last value it
+// reads, so appending would work but would leave the file saying two different
+// things.
+func setLayout(content, layout string) (string, bool) {
+	wants := map[string]string{"xkb_rules_layout": layout}
+	if strings.Contains(layout, ",") {
+		wants["xkb_rules_options"] = layoutToggle
+	}
+
+	lines := strings.Split(content, "\n")
+	changed := false
+	seen := map[string]bool{}
+
+	for i, line := range lines {
+		key, _, ok := strings.Cut(strings.TrimSpace(line), "=")
+		if !ok {
+			continue
+		}
+		want, ours := wants[key]
+		if !ours {
+			continue
+		}
+		seen[key] = true
+		if strings.TrimSpace(line) == key+"="+want {
+			continue
+		}
+		lines[i] = key + "=" + want
+		changed = true
+	}
+
+	// A key the example config does not carry has to be added.
+	for key, want := range wants {
+		if seen[key] {
+			continue
+		}
+		lines = append(lines, key+"="+want)
+		changed = true
+	}
+	return strings.Join(lines, "\n"), changed
+}
+
+// systemKeyboardLayout asks the machine what it is already set to.
+//
+// localectl is the authority when systemd is in charge; the X11 configuration
+// and the console keymap are read as fallbacks, in that order, because a
+// machine can carry one without the other.
+func systemKeyboardLayout(env *installer.Env) string {
+	if out, err := env.Runner.Output(context.Background(),
+		run.Command{Name: "localectl", Args: []string{"status"}}); err == nil {
+		for _, line := range strings.Split(out, "\n") {
+			if _, value, ok := strings.Cut(line, "X11 Layout:"); ok {
+				if layout := strings.TrimSpace(value); layout != "" && layout != "(unset)" {
+					return layout
+				}
+			}
+		}
+	}
+
+	if body, err := os.ReadFile("/etc/vconsole.conf"); err == nil {
+		for _, line := range strings.Split(string(body), "\n") {
+			line = strings.TrimSpace(line)
+			if key, value, ok := strings.Cut(line, "="); ok && key == "XKBLAYOUT" {
+				if layout := strings.Trim(value, `"'`); layout != "" {
+					return layout
+				}
+			}
+		}
+	}
+	return ""
 }

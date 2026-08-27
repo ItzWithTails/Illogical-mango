@@ -65,6 +65,8 @@ func (s conflictsStep) Run(ctx context.Context, env *installer.Env) error {
 		}
 	}
 
+	s.reportPackageConflicts(ctx, env, manager)
+
 	if len(found) == 0 {
 		env.Log("no conflicting desktop shells installed")
 		return nil
@@ -77,4 +79,42 @@ func (s conflictsStep) Run(ctx context.Context, env *installer.Env) error {
 		"Conflicting shells are installed: %s. Illogical-mango will not work correctly until they are removed — remove them yourself with your package manager when you are ready.",
 		strings.Join(found, ", ")))
 	return nil
+}
+
+// reportPackageConflicts names dependencies that cannot be installed over what
+// is already there.
+//
+// pacman discovers this at the end of the transaction, which on Arch can be an
+// hour of compiling away, and then refuses the whole thing. Saying it here
+// costs a few queries and lets someone decide before waiting.
+//
+// It only reports. Removing a package to make room is not something an
+// installer should decide on a working machine — the replacement might be the
+// one the user wanted.
+func (s conflictsStep) reportPackageConflicts(ctx context.Context, env *installer.Env, manager pkg.Manager) {
+	if !env.Config.Effective(installer.OptDependencies) {
+		return
+	}
+
+	family := string(env.Distro.Family)
+	wanted := env.Config.KeepPackages(pkg.Packages(family, groupsFor(env.Config)...))
+	if len(wanted) == 0 {
+		return
+	}
+
+	conflicts := manager.ConflictsWith(ctx, env.Runner, wanted)
+	if len(conflicts) == 0 {
+		return
+	}
+
+	var lines []string
+	for _, c := range conflicts {
+		env.Log("conflict: " + c.Wanted + " cannot be installed over " + c.Installed)
+		lines = append(lines, c.Wanted+" over "+c.Installed)
+	}
+	env.Note(fmt.Sprintf(
+		"These packages cannot be installed while what is already there stays: %s. "+
+			"The install will fail on them unless you remove the installed one yourself, "+
+			"or leave the new one out with --without.",
+		strings.Join(lines, ", ")))
 }

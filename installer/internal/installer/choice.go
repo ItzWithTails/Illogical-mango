@@ -17,6 +17,11 @@ type Choice struct {
 	Default string
 	// Requires names an option that must be on for this choice to matter.
 	Requires OptionID
+	// Free accepts any value, not only the listed ones. The list then serves
+	// as suggestions — the picker cycles them, and --set takes anything.
+	// A keyboard layout is the case that needs this: "us,ru" is as valid as
+	// any of a few hundred others, and enumerating them would be absurd.
+	Free bool
 }
 
 // ChoiceValue is one selectable value.
@@ -45,6 +50,13 @@ const (
 	KeybindsFull           = "full"
 	KeybindsShell          = "shell"
 	OptKeybinds   OptionID = "keybinds"
+)
+
+// Keyboard layout choice values.
+const (
+	// LayoutSystem takes whatever the machine is already configured with.
+	LayoutSystem               = "system"
+	OptKeyboardLayout OptionID = "keyboard-layout"
 )
 
 // System upgrade choice values.
@@ -89,6 +101,23 @@ var choiceCatalog = []Choice{
 		},
 	},
 	{
+		ID:    OptKeyboardLayout,
+		Group: GroupBehaviour,
+		Title: "Keyboard layout",
+		Description: "mango owns the keymap, so a layout it does not list cannot be typed at all. " +
+			"The default follows whatever your system is already set to; any xkb layout string works, " +
+			"and several separated by commas can be switched between.",
+		Default:  LayoutSystem,
+		Requires: OptMango,
+		Free:     true,
+		Values: []ChoiceValue{
+			{Value: LayoutSystem, Label: "system", Detail: "whatever localectl reports, else leave mango's own"},
+			{Value: "us", Label: "us", Detail: "English only"},
+			{Value: "us,ru", Label: "us,ru", Detail: "English and Russian, switched with both Alt keys"},
+			{Value: "us,de", Label: "us,de", Detail: "English and German"},
+		},
+	},
+	{
 		ID:          OptSystemUpgrade,
 		Group:       GroupDependencies,
 		Title:       "System upgrade",
@@ -126,6 +155,9 @@ func LookupChoice(id OptionID) (Choice, bool) {
 
 // Valid reports whether value is one this choice offers.
 func (c Choice) Valid(value string) bool {
+	if c.Free {
+		return value != ""
+	}
 	for _, v := range c.Values {
 		if v.Value == value {
 			return true

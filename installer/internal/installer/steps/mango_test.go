@@ -402,3 +402,62 @@ func TestAnIncludeWithNoBindsBelowItIsLeftAlone(t *testing.T) {
 		t.Fatalf("action = %v; a config with no binds was rewritten:\n%s", action, unchanged)
 	}
 }
+
+func TestLayoutIsReplacedNotAppended(t *testing.T) {
+	// mango takes the last value it reads, so appending would work but leave
+	// the file saying two different things.
+	config := "cursor_size=24\nxkb_rules_layout=us\nborderpx=2\n"
+
+	updated, changed := setLayout(config, "us,ru")
+
+	if !changed {
+		t.Fatal("the layout was not changed")
+	}
+	if n := strings.Count(updated, "xkb_rules_layout="); n != 1 {
+		t.Fatalf("xkb_rules_layout appears %d times:\n%s", n, updated)
+	}
+	if !strings.Contains(updated, "xkb_rules_layout=us,ru") {
+		t.Errorf("the layout was not written:\n%s", updated)
+	}
+	// More than one layout is useless without a way to switch between them.
+	if !strings.Contains(updated, "xkb_rules_options="+layoutToggle) {
+		t.Errorf("no switch option was added for two layouts:\n%s", updated)
+	}
+	for _, keep := range []string{"cursor_size=24", "borderpx=2"} {
+		if !strings.Contains(updated, keep) {
+			t.Errorf("%q did not survive", keep)
+		}
+	}
+}
+
+func TestASingleLayoutNeedsNoToggle(t *testing.T) {
+	updated, changed := setLayout("xkb_rules_layout=de\n", "us")
+
+	if !changed || !strings.Contains(updated, "xkb_rules_layout=us") {
+		t.Fatalf("the layout was not set:\n%s", updated)
+	}
+	if strings.Contains(updated, "xkb_rules_options=") {
+		t.Errorf("a switch option was added for one layout:\n%s", updated)
+	}
+}
+
+func TestSettingTheSameLayoutTwiceChangesNothing(t *testing.T) {
+	config := "xkb_rules_layout=us,ru\nxkb_rules_options=" + layoutToggle + "\n"
+
+	updated, changed := setLayout(config, "us,ru")
+
+	if changed {
+		t.Fatalf("a config that already matched was rewritten:\n%s", updated)
+	}
+}
+
+func TestLayoutIsAddedWhenTheConfigLacksIt(t *testing.T) {
+	updated, changed := setLayout("cursor_size=24\n", "us,ru")
+
+	if !changed {
+		t.Fatal("nothing was added")
+	}
+	if !strings.Contains(updated, "xkb_rules_layout=us,ru") || !strings.Contains(updated, "xkb_rules_options=") {
+		t.Fatalf("the layout was not added:\n%s", updated)
+	}
+}

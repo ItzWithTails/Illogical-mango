@@ -2,7 +2,10 @@ package pkg
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"regexp"
+	"slices"
 	"strings"
 	"time"
 
@@ -225,7 +228,8 @@ func (m Manager) Install(ctx context.Context, r *run.Runner, names []string, rep
 		return nil, nil
 	}
 
-	watch := newProgressWatcher(wanted, report)
+	diagnosis := newDiagnosis()
+	watch := combine(newProgressWatcher(wanted, report), diagnosis.observe)
 	if err := m.install(ctx, r, wanted, BatchBudget(len(wanted)), watch); err == nil {
 		return nil, nil
 	}
@@ -249,12 +253,110 @@ func (m Manager) Install(ctx context.Context, r *run.Runner, names []string, rep
 		}
 	}
 
-	// Everything failing points at a broken package manager or no network,
-	// not at a list of bad names.
+	// Everything failing usually points at something the manager said out
+	// loud. Repeating its own diagnosis beats guessing at network trouble,
+	// which is what this used to claim whatever the cause.
 	if len(failed) == len(wanted) {
+		if why := diagnosis.explain(); why != "" {
+			return failed, errors.New(why)
+		}
 		return failed, fmt.Errorf("could not install any of the %d packages; check your package manager and network", len(wanted))
 	}
 	return failed, nil
+}
+
+// Conflict is one package that cannot be installed while another is present.
+type Conflict struct{ Wanted, Installed string }
+
+// diagnosis reads a package manager's own complaints as they stream past.
+//
+// A failed transaction says why it failed, in words meant for a person, and
+// then the exit status throws that away. Keeping the sentences means the
+// installer can repeat the manager's reason instead of inventing one.
+type diagnosis struct {
+	conflicts []Conflict
+	missing   []string
+}
+
+func newDiagnosis() *diagnosis { return &diagnosis{} }
+
+// conflictLine matches pacman's "A and B are in conflict".
+var conflictLine = regexp.MustCompile(`([^\s:]+) and ([^\s]+) are in conflict`)
+
+// missingLine matches a name no repository or the AUR can supply.
+var missingLine = regexp.MustCompile(`target not found: ([^\s]+)|could not find all required packages:\s*([^\s]+)`)
+
+func (d *diagnosis) observe(line string) {
+	line = strings.TrimSpace(line)
+
+	if m := conflictLine.FindStringSubmatch(line); m != nil {
+		// pacman prints the version with the name; the name is what a person
+		// can act on.
+		c := Conflict{Wanted: stripVersion(m[1]), Installed: stripVersion(m[2])}
+		for _, seen := range d.conflicts {
+			if seen == c {
+				return
+			}
+		}
+		d.conflicts = append(d.conflicts, c)
+		return
+	}
+
+	if m := missingLine.FindStringSubmatch(line); m != nil {
+		name := m[1]
+		if name == "" {
+			name = m[2]
+		}
+		if name != "" && !slices.Contains(d.missing, name) {
+			d.missing = append(d.missing, name)
+		}
+	}
+}
+
+// Conflicts returns what the manager refused to install over.
+func (d *diagnosis) Conflicts() []Conflict { return d.conflicts }
+
+// explain turns what was overheard into one sentence, or nothing.
+func (d *diagnosis) explain() string {
+	if len(d.conflicts) > 0 {
+		c := d.conflicts[0]
+		return fmt.Sprintf(
+			"%s cannot be installed while %s is present — they provide the same files. "+
+				"Remove %s yourself if you want the newer one, or leave it out with --without %s",
+			c.Wanted, c.Installed, c.Installed, c.Wanted)
+	}
+	if len(d.missing) > 0 {
+		return fmt.Sprintf("no repository or the AUR could supply %s", strings.Join(d.missing, ", "))
+	}
+	return ""
+}
+
+// stripVersion turns "foo-1.2-3" into "foo".
+//
+// pacman names a package with its version in these messages, and a version is
+// not something the reader can type back at it.
+func stripVersion(s string) string {
+	parts := strings.Split(s, "-")
+	for i := len(parts) - 1; i > 0; i-- {
+		// A version part starts with a digit; the name never does at this
+		// position for the packages this installer deals with.
+		if len(parts[i]) > 0 && parts[i][0] >= '0' && parts[i][0] <= '9' {
+			continue
+		}
+		return strings.Join(parts[:i+1], "-")
+	}
+	return s
+}
+
+// combine feeds a line to several observers.
+func combine(observers ...func(string)) func(string) {
+	return func(line string) {
+		for _, observe := range observers {
+			if observe != nil {
+				observe(line)
+			}
+		}
+	}
 }
 
 // install runs one install transaction under a time budget.
@@ -371,4 +473,70 @@ func (m Manager) IsInstalled(ctx context.Context, r *run.Runner, name string) bo
 	args := append(append([]string{}, m.QueryArgs...), name)
 	_, err := r.Output(ctx, run.Command{Name: m.Name, Args: args})
 	return err == nil
+}
+
+// ConflictsWith reports installed packages that would block installing names.
+//
+// A conflict is only discovered at the end of a transaction, which on Arch can
+// be an hour of compiling away: the friend's install built eleven font
+// packages before pacman refused the last one. Asking beforehand costs one
+// query per candidate and turns that into something said at the start.
+//
+// The question is asked of the candidate rather than of everything installed:
+// "what does this replace" is one lookup, "what conflicts with this" would be
+// a scan of the whole system.
+func (m Manager) ConflictsWith(ctx context.Context, r *run.Runner, names []string) []Conflict {
+	if m.Name != "pacman" && !m.IsAURHelper() {
+		return nil // only pacman's query syntax is known here
+	}
+
+	installed, err := m.InstalledSet(ctx, r)
+	if err != nil {
+		return nil
+	}
+
+	var found []Conflict
+	for _, name := range names {
+		if installed[name] {
+			continue // already there, so nothing to conflict with
+		}
+		for _, other := range m.declaredConflicts(ctx, r, name) {
+			if installed[other] {
+				found = append(found, Conflict{Wanted: name, Installed: other})
+			}
+		}
+	}
+	return found
+}
+
+// declaredConflicts asks what a package says it conflicts with or replaces.
+func (m Manager) declaredConflicts(ctx context.Context, r *run.Runner, name string) []string {
+	out, err := r.Output(ctx, run.Command{Name: m.Name, Args: []string{"-Si", name}})
+	if err != nil {
+		return nil // not in the repositories, or the AUR helper cannot say
+	}
+
+	var names []string
+	for _, line := range strings.Split(out, "\n") {
+		key, value, ok := strings.Cut(line, ":")
+		if !ok {
+			continue
+		}
+		switch strings.TrimSpace(key) {
+		case "Conflicts With", "Replaces":
+		default:
+			continue
+		}
+		for _, field := range strings.Fields(value) {
+			if field == "None" {
+				continue
+			}
+			// Entries can carry a version constraint: "foo<2.0".
+			if cut := strings.IndexAny(field, "<>="); cut > 0 {
+				field = field[:cut]
+			}
+			names = append(names, field)
+		}
+	}
+	return names
 }
