@@ -111,6 +111,9 @@ func (s *packagesScreen) move(delta int) {
 }
 
 func (s *packagesScreen) toggle() {
+	if len(s.rows) == 0 {
+		return
+	}
 	row := s.rows[s.cursor]
 	if row.name == "" {
 		return
@@ -120,6 +123,9 @@ func (s *packagesScreen) toggle() {
 
 // setGroup includes or excludes every package in the group under the cursor.
 func (s *packagesScreen) setGroup(skip bool) {
+	if len(s.rows) == 0 {
+		return
+	}
 	group := s.rows[s.cursor].group
 	for _, row := range s.rows {
 		if row.name != "" && row.group == group {
@@ -212,6 +218,9 @@ func (s *packagesScreen) View() string {
 // once. Centring on the cursor rather than paging keeps the surrounding
 // context visible while moving through a group.
 func (s *packagesScreen) window() (first, last int) {
+	if len(s.rows) == 0 {
+		return 0, -1
+	}
 	height := s.session.ContentHeight() - 2 // the two "N more" markers
 	if height >= len(s.rows) {
 		return 0, len(s.rows) - 1

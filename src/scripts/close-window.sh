@@ -11,6 +11,14 @@
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 launcher_path="$script_dir/ilmango"
 
+# mango has no niri IPC. It closes the focused client with a compositor
+# function, which needs no window id, no shell and no round trip — so on mango
+# the whole niri path below is skipped. Without this the keybind fired, every
+# `niri msg` failed, and the window simply stayed open.
+if [ -n "${MANGO_INSTANCE_SIGNATURE:-}" ] && command -v mmsg >/dev/null 2>&1; then
+    exec mmsg dispatch killclient
+fi
+
 # Capture focused window JSON immediately — this is the window the user intended to close.
 focused_window_json=$(niri msg -j focused-window 2>/dev/null)
 focused_id=$(printf '%s' "$focused_window_json" | grep -o '"id":[0-9]*' | grep -o '[0-9]*')

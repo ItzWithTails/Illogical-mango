@@ -35,7 +35,19 @@ Singleton {
 
     property var keybinds: ({ children: [] })
 
+    // Includes are collected while parsing and drained one at a time through
+    // includeView. The buckets accumulate across every file, so the cheatsheet
+    // shows one list rather than one per config fragment.
+    property var _buckets: ({})
+    property int _count: 0
+    property var _pending: []
+    property var _visited: ({})
+
     function reload(): void {
+        root._buckets = ({})
+        root._count = 0
+        root._pending = []
+        root._visited = ({})
         userConfigView.reload()
     }
 
@@ -46,23 +58,43 @@ Singleton {
         path: root.userConfigPath
         onLoaded: {
             root.configPath = root.userConfigPath
-            root._parse(text())
+            root._collect(text(), root.userConfigPath)
+            root._drain()
         }
-        onLoadFailed: systemConfigView.reload()
+        onLoadFailed: {
+            systemConfigView.path = root.systemConfigPath
+            systemConfigView.reload()
+        }
     }
 
     FileView {
         id: systemConfigView
-        path: root.systemConfigPath
+        // The path is set only when the user config is missing. Binding it here
+        // loaded both, and since a user config starts life as a copy of this
+        // one, every default bind was listed twice.
         onLoaded: {
             root.configPath = root.systemConfigPath
-            root._parse(text())
+            root._collect(text(), root.systemConfigPath)
+            root._drain()
         }
         onLoadFailed: {
             root.loaded = false
             root.errorMessage = "No mango config found at " + root.userConfigPath + " or " + root.systemConfigPath
             root.keybinds = ({ children: [] })
         }
+    }
+
+    // One view reused for every include, in turn: the list is short and the
+    // order does not matter once the buckets are merged.
+    FileView {
+        id: includeView
+        onLoaded: {
+            root._collect(text(), path)
+            root._drain()
+        }
+        // source-optional names a file that need not exist; a missing include
+        // is the normal case, not an error.
+        onLoadFailed: root._drain()
     }
 
     Component.onCompleted: if (CompositorService.isMango) root.reload()
@@ -192,25 +224,54 @@ Singleton {
 
     // ── Parser ───────────────────────────────────────────────────────────
 
-    function _parse(content) {
-        if (!content) {
-            root.loaded = false
-            root.errorMessage = "Empty mango config"
-            return
-        }
+    // _resolve turns a path as written in a config into an absolute one.
+    // mango resolves a bare name against ~/.config/mango; see parse_config.h.
+    function _resolve(raw) {
+        const home = Quickshell.env("HOME")
+        let path = raw.trim().replace(/^["']|["']$/g, "")
+        if (path.length === 0)
+            return ""
+        if (path.startsWith("~/"))
+            path = home + path.slice(1)
+        else if (path.startsWith("$HOME/"))
+            path = home + path.slice("$HOME".length)
+        else if (!path.startsWith("/"))
+            path = `${home}/.config/mango/${path}`
+        return path
+    }
 
-        const buckets = ({})
-        let count = 0
+    // _collect reads one config file into the shared buckets and queues any
+    // file it includes.
+    function _collect(content, path) {
+        // FileView can report the same file more than once — a reload and a
+        // change notification both arrive as onLoaded — and counting it twice
+        // shows every bind twice in the cheatsheet.
+        if (!content || root._visited[path])
+            return
+        root._visited[path] = true
 
         for (const rawLine of content.split("\n")) {
             const line = rawLine.trim()
             if (line.length === 0 || line.startsWith("#"))
                 continue
-            if (!line.startsWith("bind="))
+
+            const include = line.match(/^source(-optional)?=(.*)$/)
+            if (include) {
+                const target = root._resolve(include[2])
+                // A config that includes itself, directly or in a cycle, would
+                // otherwise load for ever.
+                if (target.length > 0 && !root._visited[target] && root._pending.indexOf(target) === -1)
+                    root._pending.push(target)
+                continue
+            }
+
+            // bind, bindl, bindr and the rest are the same grammar; the letters
+            // after "bind" are flags such as "fires while locked".
+            const bind = line.match(/^bind[slrpc]*=(.*)$/)
+            if (!bind)
                 continue
 
-            // bind=<mods>,<key>,<func>[,arg...]
-            const parts = line.slice("bind=".length).split(",")
+            const parts = bind[1].split(",")
             if (parts.length < 3)
                 continue
 
@@ -222,30 +283,45 @@ Singleton {
                 continue
 
             const category = root._categoryFor(func)
-            if (!buckets[category])
-                buckets[category] = []
-            buckets[category].push({
+            if (!root._buckets[category])
+                root._buckets[category] = []
+            root._buckets[category].push({
                 mods: mods,
                 key: key,
                 comment: root._describe(func, args)
             })
-            count++
+            root._count++
         }
+    }
 
+    // _drain loads the next queued include, or publishes the result when the
+    // queue is empty.
+    function _drain() {
+        if (root._pending.length > 0) {
+            const next = root._pending.shift()
+            includeView.path = next
+            includeView.reload()
+            return
+        }
+        root._publish()
+    }
+
+    function _publish() {
         const children = []
         for (const name of root._categoryOrder) {
-            if (buckets[name] && buckets[name].length > 0)
-                children.push({ name: name, children: [{ keybinds: buckets[name] }] })
+            if (root._buckets[name] && root._buckets[name].length > 0)
+                children.push({ name: name, children: [{ keybinds: root._buckets[name] }] })
         }
         // Any category the order list does not mention (defensive — _categoryFor
         // only ever returns names from that list today).
-        for (const name in buckets) {
+        for (const name in root._buckets) {
             if (root._categoryOrder.indexOf(name) === -1)
-                children.push({ name: name, children: [{ keybinds: buckets[name] }] })
+                children.push({ name: name, children: [{ keybinds: root._buckets[name] }] })
         }
 
         root.keybinds = ({ children: children })
-        root.loaded = count > 0
-        root.errorMessage = count > 0 ? "" : "No binds found in " + root.configPath
+        root.loaded = root._count > 0
+        console.info("MangoKeybinds: " + root._count + " binds from " + Object.keys(root._visited).length + " file(s)")
+        root.errorMessage = root._count > 0 ? "" : "No binds found in " + root.configPath
     }
 }

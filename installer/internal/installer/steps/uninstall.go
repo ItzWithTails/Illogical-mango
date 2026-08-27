@@ -421,9 +421,16 @@ func (s unhookPathStep) Run(_ context.Context, env *installer.Env) error {
 	// Both are checked rather than only the current shell's: the shell may
 	// have changed since the install, and a line left behind would point at a
 	// directory that no longer exists.
+	// Every file the install might have written to, whatever the shell was
+	// then: it may have changed since, and a line left behind would point at a
+	// directory that no longer exists.
 	for _, profile := range []string{
+		filepath.Join(home(), ".bash_profile"),
+		filepath.Join(home(), ".bash_login"),
 		filepath.Join(home(), ".profile"),
+		filepath.Join(home(), ".bashrc"),
 		filepath.Join(home(), ".zprofile"),
+		filepath.Join(home(), ".zshrc"),
 	} {
 		if !env.Home.Exists(profile) {
 			continue

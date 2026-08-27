@@ -4,8 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	tea "charm.land/bubbletea/v2"
-
 	"ilmango/internal/installer"
 	"ilmango/internal/system"
 	"ilmango/internal/ui/theme"
@@ -20,11 +18,6 @@ func newPackagesFixture(t *testing.T) *packagesScreen {
 		Distro: system.Distro{Name: "Arch Linux", Family: "arch"},
 	}
 	return newPackagesScreen(session).(*packagesScreen)
-}
-
-func press(s Screen, key string) Screen {
-	next, _ := s.Update(tea.KeyPressMsg{Code: keyCodeFor(key), Text: key})
-	return next
 }
 
 func TestPackagePickerExcludesAndRestores(t *testing.T) {
@@ -106,5 +99,25 @@ func TestPackagePickerShowsExcludedCriticalPackages(t *testing.T) {
 
 	if body := s.View(); !strings.Contains(body, "the shell needs this") {
 		t.Fatalf("excluding a critical package is not flagged:\n%s", body)
+	}
+}
+
+func TestPackagePickerSurvivesADistributionWithNoList(t *testing.T) {
+	// NixOS and anything unrecognised have no package list. The screen still
+	// has to accept every key it advertises rather than panicking on an empty
+	// catalogue.
+	session := &Session{
+		Width: 90, Height: 30,
+		Config: installer.NewConfig(),
+		Theme:  theme.New(),
+		Distro: system.Distro{Name: "NixOS", Family: "nixos"},
+	}
+	s := newPackagesScreen(session).(*packagesScreen)
+
+	s.move(1)
+	s.toggle()
+	s.setGroup(true)
+	if body := s.View(); !strings.Contains(body, "No package list") {
+		t.Fatalf("an empty catalogue rendered as %q", body)
 	}
 }

@@ -91,8 +91,19 @@ write_generated_wallpaper_path() {
 get_max_monitor_resolution() {
     local width=1920
     local height=1080
-    # Try Niri first
-    if command -v niri >/dev/null 2>&1 && niri msg outputs >/dev/null 2>&1; then
+    # mango first: it is what this fork targets. Without this branch the
+    # resolution silently stayed at the 1920x1080 default, so the upscale
+    # prompt misjudged every wallpaper on any other screen.
+    if [[ -n "${MANGO_INSTANCE_SIGNATURE:-}" ]] && command -v mmsg >/dev/null 2>&1; then
+        local mres
+        mres=$(mmsg get all-monitors 2>/dev/null \
+            | jq -r '[.monitors[] | select(.active)] | max_by(.width) | "\(.width)x\(.height)"' 2>/dev/null)
+        if [[ "$mres" =~ ^[0-9]+x[0-9]+$ ]]; then
+            width=${mres%x*}
+            height=${mres#*x}
+        fi
+    # Try Niri next
+    elif command -v niri >/dev/null 2>&1 && niri msg outputs >/dev/null 2>&1; then
         # Parse niri msg outputs for resolution (e.g., "  Current mode: 1920x1080@60.000")
         local res=$(niri msg outputs 2>/dev/null | grep -oP 'Current mode: \K\d+x\d+' | sort -t'x' -k1 -nr | head -1)
         if [[ -n "$res" ]]; then

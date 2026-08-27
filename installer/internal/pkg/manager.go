@@ -265,14 +265,24 @@ func (m Manager) install(ctx context.Context, r *run.Runner, names []string, bud
 	})
 }
 
-// Progress reports one package finishing during a transaction.
+// Progress reports what a transaction is doing.
+//
+// Counting installed packages alone leaves the longest part of an Arch install
+// — fetching and compiling from the AUR — with nothing to show. That phase can
+// run for a quarter of an hour before the first package is installed, and a
+// step that says nothing for that long is indistinguishable from one that has
+// hung. So building and downloading are reported too.
 type Progress struct {
 	Done, Total int
 	Name        string
-	// Action is the word the package manager used: installing, upgrading and
-	// so on. It is worth showing, because "upgrading" on a first run tells the
-	// user something they may want to know.
+	// Action is what is happening to Name: the word the package manager used
+	// when installing, or "building" or "downloading" while it works up to
+	// that.
 	Action string
+	// Counted is true when Name is one of the packages that were asked for, so
+	// Done and Total mean something. Builds and downloads are worth showing
+	// but not worth counting: one build can pull in several packages.
+	Counted bool
 }
 
 // progressVerbs are the words pacman prints when it starts on a package. The
@@ -299,6 +309,23 @@ func newProgressWatcher(wanted []string, report func(Progress)) func(string) {
 	done := 0
 	return func(line string) {
 		line = strings.TrimSpace(line)
+
+		// makepkg announces each package it builds and each source it fetches.
+		// Neither is a package from the list — one build can pull in several —
+		// but both say the install is alive and what it is working on.
+		if rest, found := strings.CutPrefix(line, "==> Making package: "); found {
+			if name, _, _ := strings.Cut(rest, " "); name != "" {
+				report(Progress{Done: done, Total: total, Name: name, Action: "building"})
+			}
+			return
+		}
+		if rest, found := strings.CutPrefix(line, "-> Downloading "); found {
+			if name := strings.TrimSuffix(strings.TrimSpace(rest), "..."); name != "" {
+				report(Progress{Done: done, Total: total, Name: name, Action: "downloading"})
+			}
+			return
+		}
+
 		for _, verb := range progressVerbs {
 			rest, found := strings.CutPrefix(line, verb+" ")
 			if !found {
@@ -310,7 +337,7 @@ func newProgressWatcher(wanted []string, report func(Progress)) func(string) {
 			}
 			delete(remaining, name)
 			done++
-			report(Progress{Done: done, Total: total, Name: name, Action: verb})
+			report(Progress{Done: done, Total: total, Name: name, Action: verb, Counted: true})
 			return
 		}
 	}

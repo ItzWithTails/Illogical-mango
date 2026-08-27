@@ -238,6 +238,8 @@ Other entry points:
 
 ```bash
 ./install --list-options            # everything you can turn on or off
+./install --list-packages           # every package it would install
+./install --without cava,mpv        # leave individual packages out
 ./install --disable mango           # don't touch the mango config at all
 ./install --set system-upgrade=skip # install without upgrading the system first
 ./install --enable wallpapers,icons,mascot  # optional downloads, all off by default

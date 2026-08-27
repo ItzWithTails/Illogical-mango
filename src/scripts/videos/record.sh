@@ -439,6 +439,21 @@ prepare_audio_capture() {
 }
 
 getactivemonitor() {
+    # mango first: it is what this fork targets. Without this branch the
+    # function returned nothing on mango and the recorder had no output to
+    # capture — screenshots worked, recording did not.
+    if [[ -n "${MANGO_INSTANCE_SIGNATURE:-}" ]] && command -v mmsg >/dev/null 2>&1; then
+        local focused
+        focused=$(mmsg get focusing-client 2>/dev/null | jq -r '.monitor // empty' 2>/dev/null)
+        if [[ -n "$focused" ]]; then
+            printf '%s' "$focused"
+            return
+        fi
+        # Nothing focused: the active monitor is still a fair answer.
+        mmsg get all-monitors 2>/dev/null \
+            | jq -r '[.monitors[] | select(.active)][0].name // empty' 2>/dev/null
+        return
+    fi
     if command -v niri >/dev/null 2>&1 && niri msg focused-output >/dev/null 2>&1; then
         niri msg focused-output 2>/dev/null | head -n 1 | sed -n 's/.*(\(.*\))/\1/p' || true
     elif command -v hyprctl >/dev/null 2>&1; then

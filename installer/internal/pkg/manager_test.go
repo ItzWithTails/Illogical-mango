@@ -104,3 +104,41 @@ func TestProgressCountsEachPackageOnce(t *testing.T) {
 		t.Fatalf("reported %d times, want 1: %+v", len(seen), seen)
 	}
 }
+
+func TestProgressReportsBuildsAndDownloadsWithoutCountingThem(t *testing.T) {
+	// The AUR phase can run for a quarter of an hour before the first package
+	// is installed. Saying nothing for that long is indistinguishable from
+	// having hung, which is exactly what it looked like.
+	var seen []Progress
+	watch := newProgressWatcher([]string{"ttf-oxanium", "cava"}, func(p Progress) { seen = append(seen, p) })
+
+	for _, line := range []string{
+		"==> Making package: 38c3-styles 2-2 (Thu Aug 27 12:07:02 2026)",
+		"  -> Downloading 38c3-styleguide-full-v2.zip...",
+		"installing ttf-oxanium...",
+	} {
+		watch(strings.TrimSpace(line))
+	}
+
+	if len(seen) != 3 {
+		t.Fatalf("reported %d events, want 3: %+v", len(seen), seen)
+	}
+	if seen[0].Action != "building" || seen[0].Name != "38c3-styles" {
+		t.Errorf("first event = %+v, want building 38c3-styles", seen[0])
+	}
+	if seen[1].Action != "downloading" || seen[1].Name != "38c3-styleguide-full-v2.zip" {
+		t.Errorf("second event = %+v, want the source being fetched", seen[1])
+	}
+
+	// A build is not a package from the list: one can pull in several, so
+	// counting them would make the total a lie.
+	if seen[0].Counted || seen[1].Counted {
+		t.Error("a build or download was counted as an installed package")
+	}
+	if seen[0].Done != 0 || seen[1].Done != 0 {
+		t.Errorf("the count moved during the build phase: %d, %d", seen[0].Done, seen[1].Done)
+	}
+	if !seen[2].Counted || seen[2].Done != 1 || seen[2].Total != 2 {
+		t.Errorf("the installed package was not counted: %+v", seen[2])
+	}
+}

@@ -142,3 +142,34 @@ func TestCommandLineIncludesChangedChoices(t *testing.T) {
 		t.Errorf("CommandLine() = %q, missing the chosen helper", got)
 	}
 }
+
+func TestExcludedPackagesSurviveIntoTheEquivalentCommand(t *testing.T) {
+	// The review screen's command has to reproduce the run, exclusions and all.
+	cfg := NewConfig()
+	cfg.SkipPackage("mpv", true)
+	cfg.SkipPackage("cava", true)
+
+	line := cfg.CommandLine()
+	if !strings.Contains(line, "--without cava,mpv") {
+		t.Fatalf("CommandLine() = %q, want it to carry --without cava,mpv", line)
+	}
+}
+
+func TestKeepPackagesDropsOnlyWhatWasExcluded(t *testing.T) {
+	cfg := NewConfig()
+	cfg.SkipPackage("cava", true)
+
+	kept := cfg.KeepPackages([]string{"bc", "cava", "jq"})
+
+	if len(kept) != 2 || kept[0] != "bc" || kept[1] != "jq" {
+		t.Fatalf("KeepPackages() = %v, want [bc jq]", kept)
+	}
+}
+
+func TestNewConfigExcludesNothing(t *testing.T) {
+	// Exclusions are stored, not inclusions, so a package added to the
+	// catalogue later is installed by default like every other dependency.
+	if skipped := NewConfig().SkippedPackages(); len(skipped) != 0 {
+		t.Fatalf("a fresh configuration already excludes %v", skipped)
+	}
+}

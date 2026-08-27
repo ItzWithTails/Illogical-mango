@@ -377,10 +377,53 @@ const (
 	iconBudget      = 15 * time.Minute
 )
 
-// pictureHome resolves the user's pictures directory, honouring XDG.
+// pictureHome resolves the user's pictures directory the way everything else
+// on the desktop does.
+//
+// The environment variable is only set in sessions that sourced user-dirs.dirs,
+// which a shell started over ssh or from a tty has not. The file itself is
+// where the answer actually lives, and on a localised system the answer is not
+// "Pictures": it might be "Изображения" or "Bilder". Guessing the English name
+// puts the wallpaper pack somewhere the shell will never look — the pack
+// installs, and the wallpapers simply are not there.
 func pictureHome() string {
 	if dir := os.Getenv("XDG_PICTURES_DIR"); dir != "" {
 		return dir
 	}
+	if dir := xdgUserDir("XDG_PICTURES_DIR"); dir != "" {
+		return dir
+	}
 	return filepath.Join(home(), "Pictures")
+}
+
+// xdgUserDir reads one entry out of user-dirs.dirs.
+//
+// The format is shell assignments — XDG_PICTURES_DIR="$HOME/Изображения" — so
+// the value needs its quotes stripped and its one variable expanded. Anything
+// it cannot make sense of yields the empty string, and the caller falls back.
+func xdgUserDir(name string) string {
+	body, err := os.ReadFile(filepath.Join(configHome(), "user-dirs.dirs"))
+	if err != nil {
+		return ""
+	}
+
+	for _, line := range strings.Split(string(body), "\n") {
+		line = strings.TrimSpace(line)
+		if !strings.HasPrefix(line, name+"=") {
+			continue
+		}
+		value := strings.Trim(strings.TrimPrefix(line, name+"="), `"'`)
+		switch {
+		case value == "":
+			return ""
+		case strings.HasPrefix(value, "$HOME/"):
+			return filepath.Join(home(), strings.TrimPrefix(value, "$HOME/"))
+		case strings.HasPrefix(value, "/"):
+			return value
+		default:
+			// A relative path in this file is relative to the home directory.
+			return filepath.Join(home(), value)
+		}
+	}
+	return ""
 }

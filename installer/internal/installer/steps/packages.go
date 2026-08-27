@@ -103,7 +103,9 @@ func (s packagesStep) Run(ctx context.Context, env *installer.Env) error {
 	// the one being worked on, with a count, turns that into something a
 	// person can watch.
 	skipped, err := manager.Install(ctx, env.Runner, packages, func(p pkg.Progress) {
-		env.Detail(fmt.Sprintf("%d/%d  %s %s", p.Done, p.Total, p.Action, p.Name))
+		// The count leads, because "how many of how many" is the question
+		// being asked; what it is doing right now follows.
+		env.Detail(fmt.Sprintf("%d/%d installed  ·  %s %s", p.Done, p.Total, p.Action, p.Name))
 	})
 	if err != nil {
 		return err

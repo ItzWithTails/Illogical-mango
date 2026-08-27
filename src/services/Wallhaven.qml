@@ -184,11 +184,41 @@ QtObject {
     property int searchGeneration: 0
 
     property Process searchProcess: Process {
+        // curl's exit status is the only thing that distinguishes "the
+        // provider could not be reached" from "the search found nothing".
+        // Without it every failure was reported as bad tags, which sends
+        // someone hunting through settings that were never the problem.
+        onExited: exitCode => root._lastSearchExit = exitCode
         stdout: StdioCollector {
             onStreamFinished: {
                 root._handleSearchResponse(text)
             }
         }
+    }
+
+    property int _lastSearchExit: 0
+
+    // curl exit codes that mean the request never got an answer.
+    // 6 could not resolve host, 7 could not connect, 28 timed out,
+    // 35 TLS handshake failed — a reset there is what a filtered connection
+    // looks like from the inside.
+    readonly property var _networkExitCodes: [5, 6, 7, 28, 35, 52, 56]
+
+    // _fitFilterMessage explains an empty page that was not empty when it
+    // arrived: the wallpaper shape filter removed everything.
+    function _fitFilterMessage(found): string {
+        const fit = root._currentSearchFitProfile ?? root.activeFitProfile
+        const shape = fit?.ratioCode ?? "16x9"
+        return Translation.tr("All %1 results were the wrong shape for %2. Try another page, or set the shape to Any.")
+            .arg(found).arg(String(shape).replace("x", ":"))
+    }
+
+    function _failureMessage(): string {
+        if (!root._networkExitCodes.includes(root._lastSearchExit))
+            return root.failMessage
+
+        const provider = root._currentSearchProvider || root.activeSearchProvider
+        return Translation.tr("Could not reach %1. Your tags are fine — the connection failed. Check your network, or whether this site is reachable from where you are.").arg(provider)
     }
 
     // Process for tag count requests
@@ -753,7 +783,7 @@ QtObject {
 
         if (!text || text.length === 0) {
             _log("[Wallhaven] Request failed: empty response")
-            newResponse.message = failMessage
+            newResponse.message = root._failureMessage()
             root._appendResponse(newResponse)
             root.responseFinished()
             root._currentSearchResponse = null
@@ -862,14 +892,20 @@ QtObject {
                 images = provider?.manualParseFunc
                     ? payload : (provider?.mapFunc ? provider.mapFunc(payload) : [])
             }
+            // Held before filtering: a page that returned plenty and lost all
+            // of it to the shape filter is not the same as a search that found
+            // nothing, and saying "check your tags" for the first sends
+            // someone to the wrong setting entirely.
+            const found = images.length
             images = root._filterImagesForFit(images, root._currentSearchFitProfile)
             if (images.length > root._currentSearchDisplayLimit)
                 images = images.slice(0, root._currentSearchDisplayLimit)
             newResponse.images = images
-            newResponse.message = images.length > 0 ? "" : failMessage
+            newResponse.message = images.length > 0 ? ""
+                : (found > 0 ? root._fitFilterMessage(found) : failMessage)
         } catch (e) {
             console.log("[Wallhaven] Failed to parse response:", e)
-            newResponse.message = failMessage
+            newResponse.message = root._failureMessage()
         }
 
         root._appendResponse(newResponse)
