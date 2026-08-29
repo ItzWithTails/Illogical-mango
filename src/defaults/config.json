@@ -355,9 +355,9 @@
         "enableAnimation": true,
         "pauseAnimationOnBattery": true,
         "effects": {
-            "blurRadius": 22,
-            "dim": 30,
-            "dynamicDim": 20,
+            "blurRadius": 12,
+            "dim": 0,
+            "dynamicDim": 0,
             "enableBlur": true,
             "ripple": {
                 "enable": false,
@@ -959,7 +959,7 @@
         "rightScrollAction": "volume",
         "topLeftIcon": "distro",
         "tray": {
-            "filterPassive": true,
+            "filterPassive": false,
             "invertPinnedItems": true,
             "monochromeIcons": true,
             "pinnedItems": [],
@@ -1916,7 +1916,7 @@
         "showItemId": false,
         "invertPinnedItems": true,
         "pinnedItems": [],
-        "filterPassive": true
+        "filterPassive": false
     },
     "shellUpdates": {
         "enabled": true,
@@ -1995,8 +1995,8 @@
                 "duration": 800
             },
             "effects": {
-                "enableBlur": false,
-                "blurRadius": 32,
+                "enableBlur": true,
+                "blurRadius": 12,
                 "dim": 0,
                 "dynamicDim": 0,
                 "enableAnimatedBlur": false,
@@ -2075,7 +2075,7 @@
                 "showUnreadCount": true
             },
             "searchIconSize": 24,
-            "tintTrayIcons": false
+            "tintTrayIcons": true
         },
         "actionCenter": {
             "toggles": [

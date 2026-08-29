@@ -38,11 +38,11 @@ Singleton {
     property var activeWindow: null
 
     property string currentKeyboardLayout: ""
-    // mango's IPC only ever reports the *current* layout name, never the
-    // full configured list, so we fall back to what we configured in
-    // /etc/mango/config.conf (xkb_rules_layout=us,ru) to give
-    // hasMultipleKeyboardLayouts/switchLayout something to work with.
-    property var keyboardLayoutNames: ["English (US)", "Russian"]
+    // mango's IPC reports the current human-readable name but not the complete
+    // XKB list. Learn the real names as they are observed instead of pretending
+    // every installation uses us,ru. The panel does not depend on this list to
+    // show the current layout; it is only useful for backwards navigation.
+    property var keyboardLayoutNames: []
     property int currentKeyboardLayoutIndex: 0
     readonly property bool hasMultipleKeyboardLayouts: keyboardLayoutNames.length > 1
 
@@ -265,8 +265,14 @@ Singleton {
     }
 
     function _applyKeyboardLayout(name) {
-        currentKeyboardLayout = name
-        const idx = keyboardLayoutNames.findIndex(n => n === name)
+        const normalized = String(name ?? "").trim()
+        if (normalized.length === 0)
+            return
+
+        if (!keyboardLayoutNames.includes(normalized))
+            keyboardLayoutNames = [...keyboardLayoutNames, normalized]
+        currentKeyboardLayout = normalized
+        const idx = keyboardLayoutNames.findIndex(n => n === normalized)
         currentKeyboardLayoutIndex = idx >= 0 ? idx : 0
     }
 

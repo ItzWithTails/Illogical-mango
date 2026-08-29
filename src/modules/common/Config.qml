@@ -1780,8 +1780,8 @@ Singleton {
                 property bool pauseAnimationOnBattery: true // Freeze video/gif wallpapers while on battery power (all surfaces, both families)
                 property bool hideWhenFullscreen: true
                 property JsonObject effects: JsonObject {
-                    property bool enableBlur: false
-                    property int blurRadius: 32
+                    property bool enableBlur: true
+                    property int blurRadius: 12
                     property int thumbnailBlurStrength: 50
                     property bool enableAnimatedBlur: false // Enable blur for animated wallpapers (video/gif) - has performance impact
                     property int dim: 0 // 0-100 percentage (base overlay)
@@ -2209,7 +2209,7 @@ Singleton {
                     property bool showItemId: false
                     property bool invertPinnedItems: true // Makes the below a whitelist for the tray and blacklist for the pinned area
                     property list<string> pinnedItems: []
-                    property bool filterPassive: true
+                    property bool filterPassive: false
                 }
                 property JsonObject workspaces: JsonObject {
                     property string scrollBehavior: "workspace" // "workspace" or "column"
@@ -3138,7 +3138,7 @@ Singleton {
                 property bool showItemId: false
                 property bool invertPinnedItems: true
                 property list<string> pinnedItems: []
-                property bool filterPassive: true
+                property bool filterPassive: false
             }
             property JsonObject updates: JsonObject {
                 property int checkInterval: 120
@@ -3239,8 +3239,8 @@ Singleton {
                         property int duration: 800
                     }
                     property JsonObject effects: JsonObject {
-                        property bool enableBlur: false
-                        property int blurRadius: 32
+                        property bool enableBlur: true
+                        property int blurRadius: 12
                         property int dim: 0
                         property int dynamicDim: 0
                         property bool enableAnimatedBlur: false // Enable blur for animated wallpapers (video/gif) - has performance impact
@@ -3306,7 +3306,7 @@ Singleton {
                     property bool bottom: true
                     property bool leftAlignApps: false
                     property bool monochromeIcons: false
-                    property bool tintTrayIcons: false
+                    property bool tintTrayIcons: true
                     property int iconSize: 26
                     property int searchIconSize: 24
                     property list<string> screenList: [] // Waffle taskbar output filter. Empty = all screens.

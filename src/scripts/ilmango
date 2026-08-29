@@ -4100,25 +4100,25 @@ case "$command_name" in
         retired_command doctor "ilmango doctor --fix-abi rebuilds quickshell; ilmango repair restarts the runtime"
         ;;
     reinstall)
-        run_installer "$(resolve_checkout_dir)" -y "$@"
+        run_installer "$(resolve_checkout_dir)" install --yes --conflict replace "$@"
         ;;
     uninstall)
-        run_installer "$(resolve_checkout_dir)" --uninstall "$@"
+        run_installer "$(resolve_checkout_dir)" uninstall "$@"
         ;;
     update)
-        run_installer "$(resolve_checkout_dir)" --update "$@"
+        run_installer "$(resolve_checkout_dir)" update "$@"
         ;;
     rollback)
-        run_installer "$(resolve_checkout_dir)" --rollback "$@"
+        run_installer "$(resolve_checkout_dir)" rollback "$@"
         ;;
     my-changes)
-        run_installer "$(resolve_checkout_dir)" --changes "$@"
+        run_installer "$(resolve_checkout_dir)" status "$@"
         ;;
     status|info)
-        retired_command "$command_name" "ilmango version, and ./install --dry-run to see what a run would change"
+        run_installer "$(resolve_checkout_dir)" status "$@"
         ;;
     logs)
-        retired_command logs "ilmango logs is gone; the installer writes a transcript under ~/.local/state/ilmango/"
+        retired_command logs "installer transcripts are under ~/.local/state/ilmango-v2/logs/"
         ;;
     migrate|config|backup)
         while [[ $# -gt 0 ]]; do

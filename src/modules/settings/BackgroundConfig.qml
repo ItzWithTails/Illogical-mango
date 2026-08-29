@@ -1730,7 +1730,7 @@ ContentPage {
                 visible: Config.options?.background?.effects?.enableBlur ?? false
                 icon: "blur_medium"
                 text: Translation.tr("Blur radius")
-                value: Config.options?.background?.effects?.blurRadius ?? 32
+                value: Config.options?.background?.effects?.blurRadius ?? 12
                 from: 0
                 to: 100
                 stepSize: 2

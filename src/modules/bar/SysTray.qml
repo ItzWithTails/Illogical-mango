@@ -44,8 +44,6 @@ Item {
     // Signal to close all tray menus before opening a new one
     signal closeAllTrayMenus()
 
-    property bool smartTray: Config.options.bar.tray.filterPassive
-    
     // Filter out invalid items (null or missing id)
     function isValidItem(item) {
         return item && item.id;
@@ -53,19 +51,11 @@ Item {
     
     property list<var> itemsInUserList: SystemTray.items.values.filter(i => {
         if (!isValidItem(i)) return false;
-        const id = (i.id || "").toLowerCase();
-        const title = (i.title || "").toLowerCase();
-        const isSpotify = id.indexOf("spotify") !== -1 || title.indexOf("spotify") !== -1;
-        return (Config.options?.bar?.tray?.pinnedItems ?? []).includes(i.id)
-                && (!smartTray || i.status !== Status.Passive || isSpotify);
+        return (Config.options?.bar?.tray?.pinnedItems ?? []).includes(i.id);
     })
     property list<var> itemsNotInUserList: SystemTray.items.values.filter(i => {
         if (!isValidItem(i)) return false;
-        const id = (i.id || "").toLowerCase();
-        const title = (i.title || "").toLowerCase();
-        const isSpotify = id.indexOf("spotify") !== -1 || title.indexOf("spotify") !== -1;
-        return !(Config.options?.bar?.tray?.pinnedItems ?? []).includes(i.id)
-                && (!smartTray || i.status !== Status.Passive || isSpotify);
+        return !(Config.options?.bar?.tray?.pinnedItems ?? []).includes(i.id);
     })
 
     property bool invertPins: Config.options?.bar?.tray?.invertPinnedItems ?? false
@@ -75,21 +65,23 @@ Item {
         if (unpinnedItems.length == 0) root.closeOverflowMenu();
     }
 
-    function grabFocus() {
-        focusGrab.active = true;
-    }
-
     function setExtraWindowAndGrabFocus(window) {
+        if (root.activeMenu && root.activeMenu !== window
+                && typeof root.activeMenu.close === "function") {
+            root.activeMenu.close();
+        }
         root.activeMenu = window;
-        root.grabFocus();
     }
 
-    function releaseFocus() {
-        focusGrab.active = false;
+    function releaseFocus(window) {
+        // A previous menu may finish its close animation after the next one has
+        // already opened. Do not let that stale callback clear the new window.
+        if (!window || root.activeMenu === window)
+            root.activeMenu = null;
     }
 
     function closeOverflowMenu() {
-        focusGrab.active = false;
+        root.trayOverflowOpen = false;
     }
 
     CompositorFocusGrab {
@@ -186,7 +178,7 @@ Item {
                             trayParent: root
                             Layout.fillHeight: !root.vertical
                             Layout.fillWidth: root.vertical
-                            onMenuClosed: root.releaseFocus();
+                            onMenuClosed: (qsWindow) => root.releaseFocus(qsWindow);
                             onMenuOpened: (qsWindow) => root.setExtraWindowAndGrabFocus(qsWindow);
                         }
                     }
@@ -205,7 +197,7 @@ Item {
                 trayParent: root
                 Layout.fillHeight: !root.vertical
                 Layout.fillWidth: root.vertical
-                onMenuClosed: root.releaseFocus();
+                onMenuClosed: (qsWindow) => root.releaseFocus(qsWindow);
                 onMenuOpened: (qsWindow) => {
                     root.setExtraWindowAndGrabFocus(qsWindow);
                 }

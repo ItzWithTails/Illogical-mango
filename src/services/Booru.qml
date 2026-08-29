@@ -4,6 +4,7 @@ pragma ComponentBehavior: Bound
 import qs.modules.common
 import qs.services
 import Quickshell;
+import Quickshell.Io
 import QtQuick;
 
 /**
@@ -88,6 +89,8 @@ Singleton {
             "name": "Konachan",
             "url": "https://konachan.net",
             "api": "https://konachan.net/post.json",
+            // .net is the SFW mirror. The full catalog lives on .com.
+            "nsfwApi": "https://konachan.com/post.json",
             "description": Translation.tr("For desktop wallpapers | Good quality"),
             "mapFunc": (response) => {
                 return response.map(item => {
@@ -349,7 +352,7 @@ Singleton {
     function constructRequestUrlForProvider(providerId, tags, nsfw=true, limit=20, page=1) {
         const resolvedProviderId = providers[providerId] ? providerId : currentProvider
         var provider = providers[resolvedProviderId]
-        var baseUrl = provider.api
+        var baseUrl = nsfw && provider.nsfwApi ? provider.nsfwApi : provider.api
         var url = baseUrl
         var tagString = tags.join(" ")
         if (!nsfw && !(["zerochan", "waifu.im", "t.alcy.cc"].includes(resolvedProviderId))) {
@@ -420,6 +423,80 @@ Singleton {
         return root.constructRequestUrlForProvider(currentProvider, tags, nsfw, limit, page)
     }
 
+    function _finishImageRequest(newResponse, requestProvider, responseText, succeeded, errorText) {
+        if (succeeded) {
+            try {
+                let response
+                if (requestProvider.manualParseFunc) {
+                    response = requestProvider.manualParseFunc(responseText)
+                } else {
+                    response = JSON.parse(responseText)
+                    response = requestProvider.mapFunc(response)
+                }
+                newResponse.images = response
+                newResponse.message = response.length > 0 ? "" : root.failMessage
+            } catch (error) {
+                console.warn("[Booru] Failed to parse response:", error)
+                newResponse.message = root.failMessage
+            }
+        } else {
+            console.warn("[Booru] Request failed:", errorText)
+            newResponse.message = root.failMessage
+        }
+
+        root.runningRequests = Math.max(0, root.runningRequests - 1)
+        root._appendResponse(newResponse)
+        root.responseFinished()
+    }
+
+    Process {
+        id: secureRequestProcess
+        property var queue: []
+        property var currentRequest: null
+        property string responseText: ""
+        property string errorText: ""
+
+        running: false
+        stdout: StdioCollector {
+            onStreamFinished: secureRequestProcess.responseText = text
+        }
+        stderr: StdioCollector {
+            onStreamFinished: secureRequestProcess.errorText = text.trim()
+        }
+
+        function enqueue(request): void {
+            queue = [...queue, request]
+            if (!running && currentRequest === null)
+                runNext()
+        }
+
+        function runNext(): void {
+            if (queue.length === 0)
+                return
+
+            const nextQueue = [...queue]
+            currentRequest = nextQueue.shift()
+            queue = nextQueue
+            responseText = ""
+            errorText = ""
+            command = [
+                "curl", "--fail", "--location", "--silent", "--show-error",
+                "--connect-timeout", "8", "--max-time", "30",
+                "--doh-url", "https://1.1.1.1/dns-query",
+                "--user-agent", String(root.defaultUserAgent), currentRequest.url
+            ]
+            running = true
+        }
+
+        onExited: (exitCode, exitStatus) => {
+            const completed = currentRequest
+            currentRequest = null
+            root._finishImageRequest(completed.response, completed.provider,
+                responseText, exitCode === 0, errorText || ("curl exit " + exitCode))
+            Qt.callLater(() => secureRequestProcess.runNext())
+        }
+    }
+
     function makeRequest(tags, nsfw=false, limit=20, page=1, providerOverride) {
         const requestProviderId = providers[providerOverride] ? providerOverride : currentProvider
         const requestProvider = providers[requestProviderId]
@@ -434,38 +511,27 @@ Singleton {
             "message": ""
         })
 
+        // Konachan's NSFW catalog is on .com. On systems where that domain is
+        // filtered by the local resolver, use the same DoH fallback as image
+        // previews so the switch has real, observable semantics.
+        if (requestProviderId === "konachan" && nsfw && requestProvider.nsfwApi) {
+            root.runningRequests++
+            secureRequestProcess.enqueue({
+                url: url,
+                provider: requestProvider,
+                response: newResponse
+            })
+            return
+        }
+
         var xhr = new XMLHttpRequest()
         xhr.open("GET", url)
         xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                try {
-                    // console.log("[Booru] Raw response: " + xhr.responseText)
-                    let response;
-                    if (requestProvider.manualParseFunc) {
-                        response = requestProvider.manualParseFunc(xhr.responseText)
-                    } else {
-                        response = JSON.parse(xhr.responseText)
-                        response = requestProvider.mapFunc(response)
-                    }
-                    // console.log("[Booru] Mapped response: " + JSON.stringify(response))
-                    newResponse.images = response
-                    newResponse.message = response.length > 0 ? "" : root.failMessage
-                    
-                } catch (e) {
-                    console.log("[Booru] Failed to parse response: " + e)
-                    newResponse.message = root.failMessage
-                } finally {
-                    root.runningRequests--;
-                    root._appendResponse(newResponse)
-                }
-            }
-            else if (xhr.readyState === XMLHttpRequest.DONE) {
-                console.log("[Booru] Request failed with status: " + xhr.status)
-                newResponse.message = root.failMessage
-                root.runningRequests--;
-                root._appendResponse(newResponse)
-            }
-            root.responseFinished()
+            if (xhr.readyState !== XMLHttpRequest.DONE)
+                return
+
+            root._finishImageRequest(newResponse, requestProvider, xhr.responseText,
+                xhr.status === 200, "HTTP " + xhr.status)
         }
 
         try {
@@ -485,7 +551,8 @@ Singleton {
             root.runningRequests++;
             xhr.send()
         } catch (error) {
-            _log("Could not set User-Agent:", error)
+            _log("Could not start booru request:", error)
+            root._finishImageRequest(newResponse, requestProvider, "", false, String(error))
         } 
     }
 
@@ -537,4 +604,3 @@ Singleton {
         } 
     }
 }
-

@@ -60,8 +60,8 @@ WSettingsPage {
         WSettingsSwitch {
             label: Translation.tr("Tint tray icons")
             icon: "eyedropper"
-            description: Translation.tr("Apply accent color to system tray icons")
-            checked: Config.options?.waffles?.bar?.tintTrayIcons ?? false
+            description: Translation.tr("Tint system tray icons with the current theme's foreground color")
+            checked: Config.options?.waffles?.bar?.tintTrayIcons ?? true
             onCheckedChanged: Config.setNestedValue("waffles.bar.tintTrayIcons", checked)
         }
 

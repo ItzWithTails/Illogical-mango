@@ -2815,7 +2815,7 @@ ContentPage {
                 checked: Config.options?.bar?.tray?.monochromeIcons ?? true
                 onCheckedChanged: Config.setNestedValue("bar.tray.monochromeIcons", checked)
                 StyledToolTip {
-                    text: Translation.tr("Apply accent color tint to tray icons")
+                    text: Translation.tr("Tint tray icons with the current theme's foreground color")
                 }
             }
 

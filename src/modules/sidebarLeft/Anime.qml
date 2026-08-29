@@ -29,6 +29,25 @@ Item {
     property int pullLoadingGap: 80
     property real normalizedPullDistance: Math.max(0, (1 - Math.exp(-booruResponseListView.verticalOvershoot / 50)) * booruResponseListView.dragging)
 
+    function setNsfwEnabled(enabled: bool, refresh: bool): void {
+        if (Persistent.states.booru.allowNsfw === enabled)
+            return
+
+        Persistent.states.booru.allowNsfw = enabled
+        if (!refresh)
+            return
+
+        const lastResponse = [...root.responses].reverse().find(response =>
+            response?.provider === Booru.currentProvider && Number(response?.page ?? -1) > 0)
+        if (!lastResponse)
+            return
+
+        const tags = [...(lastResponse.tags ?? [])]
+        const page = Number(lastResponse.page)
+        Booru.clearResponses()
+        Booru.makeRequest(tags, enabled, Config.options?.sidebar?.booru?.limit ?? 24, page)
+    }
+
     Connections {
         target: Booru
         function onTagSuggestion(query, suggestions) {
@@ -73,14 +92,14 @@ Item {
             name: "safe",
             description: Translation.tr("Disable NSFW content"),
             execute: () => {
-                Persistent.states.booru.allowNsfw = false;
+                root.setNsfwEnabled(false, true)
             }
         },
         {
             name: "lewd",
             description: Translation.tr("Allow NSFW content"),
             execute: () => {
-                Persistent.states.booru.allowNsfw = true;
+                root.setNsfwEnabled(true, true)
             }
         },
         {
@@ -494,15 +513,10 @@ Item {
                     buttonRadius: Appearance.zzzEverywhere ? Appearance.zzz.controlRadius : Appearance.rounding.small
                     enabled: tagInputField.text.length > 0
                     toggled: enabled
+                    pointingHandCursor: enabled
 
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: sendButton.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-                        onClicked: {
-                            const inputText = tagInputField.text
-                            root.handleInput(inputText)
-                            tagInputField.clear()
-                        }
+                    onClicked: {
+                        tagInputField.accept()
                     }
 
                     contentItem: MaterialSymbol {
@@ -552,43 +566,35 @@ Item {
                     text: "•"
                 }
 
-                MouseArea { // NSFW toggle
-                    visible: width > 0
-                    implicitWidth: switchesRow.implicitWidth
+                RowLayout { // NSFW toggle
+                    id: switchesRow
+                    visible: implicitWidth > 0
                     Layout.fillHeight: true
+                    spacing: 5
 
-                    hoverEnabled: true
-                    PointingHandInteraction {}
-                    onPressed: {
-                        nsfwSwitch.checked = !nsfwSwitch.checked
-                    }
+                    StyledText {
+                        Layout.fillHeight: true
+                        Layout.leftMargin: 10
+                        Layout.alignment: Qt.AlignVCenter
+                        font.pixelSize: Appearance.font.pixelSize.smaller
+                        color: nsfwSwitch.enabled ? Appearance.colors.colOnLayer1 : Appearance.colors.colOutline
+                        text: Translation.tr("Allow NSFW")
 
-                    RowLayout {
-                        id: switchesRow
-                        spacing: 5
-                        anchors.centerIn: parent
-
-                        StyledText {
-                            Layout.fillHeight: true
-                            Layout.leftMargin: 10
-                            Layout.alignment: Qt.AlignVCenter
-                            font.pixelSize: Appearance.font.pixelSize.smaller
-                            color: nsfwSwitch.enabled ? Appearance.colors.colOnLayer1 : Appearance.colors.colOutline
-                            text: Translation.tr("Allow NSFW")
-                        }
-                        StyledSwitch {
-                            id: nsfwSwitch
-                            enabled: Booru.currentProvider !== "zerochan"
-                            scale: 0.6
-                            Layout.alignment: Qt.AlignVCenter
-                            checked: (Persistent.states.booru.allowNsfw && Booru.currentProvider !== "zerochan")
-                            onCheckedChanged: {
-                                if (!nsfwSwitch.enabled) return;
-                                Persistent.states.booru.allowNsfw = checked;
-                            }
+                        MouseArea {
+                            anchors.fill: parent
+                            enabled: nsfwSwitch.enabled
+                            cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                            onClicked: root.setNsfwEnabled(!Persistent.states.booru.allowNsfw, true)
                         }
                     }
-
+                    StyledSwitch {
+                        id: nsfwSwitch
+                        enabled: Booru.currentProvider !== "zerochan"
+                        scale: 0.6
+                        Layout.alignment: Qt.AlignVCenter
+                        checked: Persistent.states.booru.allowNsfw && enabled
+                        onToggled: root.setNsfwEnabled(checked, true)
+                    }
                 }
 
                 Item { Layout.fillWidth: true }

@@ -17,7 +17,12 @@ import "root:modules/common/functions/md5.js" as MD5
 
 Variants {
     id: root
-    model: Quickshell.screens
+    // Niri's place-within-backdrop rule keeps this surface out of the normal
+    // desktop. Other compositors do not have that layer role, so only create
+    // the overview backdrop while the feature is enabled and only show it
+    // during overview (unless the user explicitly chose backdrop-only mode).
+    model: (Config.options?.background?.backdrop?.enable ?? true)
+        ? Quickshell.screens : []
 
     PanelWindow {
         id: backdropWindow
@@ -35,7 +40,9 @@ Variants {
         anchors.right: true
 
         color: "transparent"
-        visible: true
+        visible: CompositorService.isNiri
+            || GlobalStates.overviewOpen
+            || (Config.options?.background?.backdrop?.hideWallpaper ?? false)
 
         // Material ii backdrop config (independent)
         readonly property var iiBackdrop: Config.options?.background?.backdrop ?? {}

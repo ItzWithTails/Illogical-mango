@@ -1119,7 +1119,7 @@ WSettingsPage {
                     icon: "settings"
                     description: Translation.tr("Amount of blur applied to wallpaper")
                     from: 0; to: 100; stepSize: 5
-                    value: root.wEffects.blurRadius ?? 32
+                    value: root.wEffects.blurRadius ?? 12
                     onValueChanged: root.setNestedValueWhenReady("waffles.background.effects.blurRadius", value)
                 }
 

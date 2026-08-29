@@ -217,13 +217,15 @@ Right sidebar:
 git clone https://github.com/ItzWithTails/illogical-mango.git
 cd illogical-mango
 ./install             # guided, shows the plan before touching anything
-./install -y          # automatic, no questions asked
-./install --dry-run   # print every command and file, change nothing
+./install install --yes          # automatic, no questions asked
+./install install --dry-run      # review the exact plan, change nothing
 ```
 
-The installer takes care of dependencies, system config and theming. It writes the shell's
-keybinds to `~/.config/mango/ilmango.conf` and hooks them into your existing mango config
-without touching your window management. Restart mango or run
+The default `recommended` preset installs verified Arch dependencies and a reversible
+Mango integration, but deliberately leaves unrelated desktop dotfiles and the display
+manager alone. Every filesystem mutation is journalled and rolled back on failure. It
+writes the shell's keybinds to `~/.config/mango/ilmango.conf` and adds a marked include to
+your existing Mango config without touching window management. Restart Mango or run
 `mmsg dispatch reload_config`.
 
 ```bash
@@ -234,21 +236,23 @@ ilmango doctor                     # auto-diagnose and fix
 ilmango update                     # pull + migrate + restart
 ```
 
-Other entry points:
+Installer lifecycle and safety controls:
 
 ```bash
-./install --list-options            # everything you can turn on or off
-./install --list-packages           # every package it would install
-./install --without cava,mpv        # leave individual packages out
-./install --disable mango           # don't touch the mango config at all
-./install --set system-upgrade=skip # install without upgrading the system first
-./install --enable wallpapers,icons,mascot  # optional downloads, all off by default
-./install --uninstall               # remove it, keeping files you edited
+./install status                     # verify hashes and symlink targets
+./install update                     # install this checkout; remove unchanged stale files
+./install uninstall                  # remove owned files, keeping edits and packages
+./install rollback                   # restore the state before the last operation
+./install install --preset minimal   # shell only; keep Mango hand-managed
+./install install --mango=false      # do not add the marked Mango include
+./install install --no-packages      # filesystem-only installation
+./install install --conflict replace # deliberately replace existing conflicts
 sudo make -f packaging/Makefile install   # system-wide instead of your home
 ```
 
-**Distros.** Arch is the primary target and the best tested. Debian and Fedora do have a
-port, of course... at your own risk, there has been no testing on them.
+**Distros.** Automatic packages are an Arch-only, verified recipe. On Debian, Ubuntu,
+Fedora and other systems the installer is honest: it installs files and gives manual
+dependency guidance instead of pretending an untested package list is supported.
 
 ---
 

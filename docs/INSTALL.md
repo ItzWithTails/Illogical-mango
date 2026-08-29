@@ -1,145 +1,115 @@
 # Installation
 
-> **Arch Linux only.** The installer only supports Arch-based distros. If you're on something else, you're on your own - check the manual section below and figure out the equivalent packages for your distro.
->
-> **NixOS:** there is an experimental flake path. See [NixOS](NIXOS.md).
+The supported installer is a transactional Bubble Tea application. It targets
+the Mango compositor integration in this port and installs the Quickshell
+payload without taking ownership of unrelated user files.
 
----
-
-## The Easy Way (Arch)
+## Guided install
 
 ```bash
 git clone https://github.com/ItzWithTails/illogical-mango.git
-cd ilmango
+cd illogical-mango
 ./install
 ```
 
-Add `-y` if you don't want to answer questions:
+`./install` builds the installer locally when Go is available. Otherwise it
+downloads the matching release binary and verifies its published SHA-256 before
+executing it. No script from the network is piped into a shell.
+
+The default `recommended` preset installs the shell, launcher, desktop entries,
+user service, and a small marked Mango include. It does **not** copy the broad
+GTK, terminal, KDE, and Niri preference set. Choose `full` only if you have
+reviewed those dotfiles and want them.
+
+## Review before applying
 
 ```bash
-./install -y
+./install install --dry-run --yes --no-packages
 ```
 
-When it's done:
+The review reports exact create, replace, stale-removal, preserved-modification,
+and unchanged counts. Existing foreign files and locally edited installed files
+are preserved by default. To deliberately replace conflicts, select `replace`
+in the UI or pass `--conflict replace`.
+
+Important defaults:
+
+- a full system upgrade is off;
+- starting the shell is left to the user/session;
+- SDDM and other display managers are never changed;
+- uninstall never removes packages;
+- the installer never performs a hidden `git pull`;
+- `NO_COLOR` and `--no-color` are supported;
+- English and Russian UI text are selected with `--language` or `LANG`.
+
+## Presets
+
+| Preset | Files | Intended use |
+|---|---|---|
+| `minimal` | Quickshell payload, launcher, desktop/service files | Existing hand-managed Mango setup |
+| `recommended` | Minimal plus reversible Mango integration | Most users |
+| `full` | Recommended plus the repository's broad dotfile tree | Dedicated desktop install after review |
+
+## Dependencies
+
+Automatic dependency installation is enabled only on Arch-family systems,
+where the repository has a maintained Mango/Quickshell recipe. The exact list
+is displayed before confirmation and every requested package is verified after
+the package manager exits. A partial package result fails the operation before
+home files are changed.
+
+Package-manager transactions cannot be rolled back safely by a dotfiles
+installer because packages may be shared. This boundary is stated in review,
+recorded in output, and packages are left installed on uninstall.
+
+Fedora, Debian, Ubuntu, NixOS, and other distributions use filesystem-only
+installation. Install the equivalents described in [PACKAGES.md](PACKAGES.md)
+yourself; the installer does not claim those recipes are verified.
+
+## Lifecycle commands
 
 ```bash
-niri msg action load-config-file
+./install status
+./install update
+./install uninstall
+./install rollback
 ```
 
-Log out and back in, or just restart Niri. Done.
+- `status` checks regular-file hashes and symlink targets without writing.
+- `update` installs the current checkout and removes files that disappeared
+  upstream, while preserving local edits.
+- `uninstall` removes only unchanged installer-owned files and its marked Mango
+  include. User modifications remain and are reported.
+- `rollback` restores the complete filesystem state before the last committed
+  operation, including symlinks and the installation manifest.
 
----
+Each mutation is preceded by a durable write-ahead journal entry. Failure,
+Ctrl+C, or an interrupted previous run triggers reverse-order restoration. A
+legacy v1 manifest is migrated inside the same transaction. Every applied
+operation also keeps a timestamped transcript under
+`~/.local/state/ilmango-v2/logs/`; failure output prints its exact path.
 
-## The Hard Way (Manual)
+## Safe sandbox and CI
 
-For when you're not on Arch, or you enjoy pain.
-
-### 1. Get dependencies
-
-The bare minimum to not crash immediately:
-
-| Package | Why |
-|---------|-----|
-| `niri` | The compositor. Obviously. |
-| `quickshell` | The shell runtime (official repos). Chosen intentionally for faster and more reliable installs. |
-| `syntax-highlighting` | Provides QML module `org.kde.syntaxhighlighting` (required by AiChat code blocks). |
-| `kirigami` | KDE QML components used by shell modules. |
-| `kdialog` | KDE runtime helper used by some dialogs/integrations. |
-| `wl-clipboard` | Copy/paste. |
-| `cliphist` | Clipboard history. |
-| `pipewire` + `wireplumber` | Audio. |
-| `grim` + `slurp` | Screenshots. |
-| `materialyoucolor` | Material You colors from wallpaper (Python, installed via venv). |
-| `plasma-browser-integration` | Browser MPRIS sessions, controls, and artwork. |
-| `plasma-integration` | KDE platform theme plugin (reads kdeglobals for Qt app colors). |
-| `darkly-bin` (AUR) | Darkly Qt style (Material You widget rendering). |
-
-For everything else, check [PACKAGES.md](PACKAGES.md). It's organized by category so you can skip what you don't need.
-
-> **Note on quickshell package:** Illogical-mango intentionally uses `quickshell` from official repos to avoid long AUR compile times and update-time build failures.
->
-> **Runtime extras used by features:**
-> - `socat` for YTMusic IPC fallback control
-> - `fprintd` for fingerprint lockscreen support
->
-> **Optional content packs** (`./install --enable wallpapers,icons,mascot`): the iNiR-Walls wallpaper
-> pack, the ii-pixel-sddm login theme, YAMIS icons, and the Kira mascot art
-> pack (354 poses and animations, about 32 MiB). The mascot feature ships
-> disabled and does nothing until you install the pack and enable her in
-> Settings › Mascot.
->
-> The art pack and the shell have separate jobs. `snowarch/inir-mascot`
-> publishes the PNG/GIF files. Illogical-mango ships the required
-> `assets/images/mascot/manifest.json`, dialogue, pose pools, settings and
-> runtime behavior. Updating or reinstalling the art pack does not replace the
-> shell manifest; normal Illogical-mango install/update paths provide it. Extras stages and
-> verifies the complete archive before touching live assets, records the release
-> tag plus an installed-tree hash, and repairs missing or corrupt files during a
-> later `./install --update` without auto-installing the optional pack for new users.
->
-> **Important for minimal installs (Arch base / netinstall):**
-> If shell startup fails with `module "org.kde.syntaxhighlighting" is not installed`, install:
-> `syntax-highlighting kirigami kdialog`
-
-### 2. Clone the repo
+`--root` redirects **all reads and writes** to a filesystem tree and disables
+packages and every host command; it is not a pretend chroot.
 
 ```bash
-git clone https://github.com/ItzWithTails/illogical-mango.git ~/.config/quickshell/ilmango
+root=$(mktemp -d)
+./install install --repo "$PWD" --home /home/tester --root "$root" --yes
+./install status --home /home/tester --root "$root" --yes
+./install uninstall --home /home/tester --root "$root" --yes
 ```
 
-### 3. Copy the configs
+Non-terminal execution refuses to start unless `--yes` is present. Headless
+output is plain text and caps the action listing unless `--verbose` is used.
+
+## After installation
+
+Log out and back into Mango, or start the installed shell explicitly:
 
 ```bash
-cp -r dots/.config/* ~/.config/
+~/.local/bin/ilmango run --daemon
+~/.local/bin/ilmango doctor
+~/.local/bin/ilmango logs
 ```
-
-This gives you:
-- Niri config wired to the `ilmango` launcher
-- Theming templates for Material You colors
-- GTK settings
-- Fuzzel config
-
-### 4. Enable the Illogical-mango user service
-
-```bash
-ilmango service install
-ilmango service enable
-ilmango service start
-```
-
-### 5. Restart Niri
-
-```bash
-niri msg action load-config-file
-```
-
-Or log out and back in.
-
----
-
-## Did it work?
-
-Check the logs:
-
-```bash
-ilmango logs
-```
-
-If everything went well, you should see:
-- Bar at the top (the thing with the clock)
-- Background/wallpaper (hopefully not a black screen)
-- `Mod+Tab` opens the Niri overview (native)
-- `Mod+Space` (`Super+Space`) toggles the ii overview
-- `Alt+Tab` cycles windows using ii's switcher
-- `Super+V` opens the clipboard panel
-- `Super+Shift+S` takes a region screenshot
-
-If something's broken, the logs will probably tell you which package is missing. Probably.
-
----
-
-## What now?
-
-- [KEYBINDS.md](KEYBINDS.md) - Learn the shortcuts
-- [IPC.md](IPC.md) - Make your own keybindings
-- [PACKAGES.md](PACKAGES.md) - Full package list if something's missing

@@ -794,13 +794,20 @@ Scope {
                     const currentWs = allWs.find(ws => ws.output === outputName
                         && ws.is_active);
                     if (!currentWs) return false;
-                    return NiriService.windows.some(w => w.workspace_id === currentWs.id);
+                    return NiriService.windows.some(w => w.workspace_id === currentWs.id
+                        && !w?.is_minimized);
                 }
                 if (CompositorService.isHyprland && monitor && monitor.activeWorkspace) {
                     const wsId = monitor.activeWorkspace.id;
-                    return relevantWindows.some(w => w.workspace.id === wsId);
+                    return relevantWindows.some(w => w.workspace.id === wsId
+                        && w?.mapped !== false && !w?.hidden);
                 }
-                return relevantWindows.length > 0;
+                if (CompositorService.isMango && typeof MangoService !== "undefined") {
+                    const outputName = bgRoot.modelData?.name ?? "";
+                    return (MangoService.windows ?? []).some(w => w.monitor === outputName
+                        && w.is_visible);
+                }
+                return false;
             } catch (e) { return false; }
         }
 
@@ -1324,7 +1331,7 @@ Scope {
                         && (bgRoot.effectsOptions.enableAnimatedBlur ?? false)
                         && (bgRoot.effectsOptions.blurRadius ?? 0) > 0
                     layer.effect: GaussianBlur {
-                        radius: Math.round((bgRoot.effectsOptions.blurRadius ?? 32) * Math.max(0, Math.min(1, (bgRoot.effectsOptions.thumbnailBlurStrength ?? 50) / 100)))
+                        radius: Math.round((bgRoot.effectsOptions.blurRadius ?? 12) * Math.max(0, Math.min(1, (bgRoot.effectsOptions.thumbnailBlurStrength ?? 50) / 100)))
                         // Cap samples — beyond ~33 the visual difference is imperceptible
                         // but the fragment shader cost grows linearly. See #159.
                         samples: Math.min(33, radius * 2 + 1)
@@ -1368,7 +1375,7 @@ Scope {
                         && (bgRoot.effectsOptions.enableAnimatedBlur ?? false)
                         && (bgRoot.effectsOptions.blurRadius ?? 0) > 0
                     layer.effect: GaussianBlur {
-                        radius: Math.round((bgRoot.effectsOptions.blurRadius ?? 32) * Math.max(0, Math.min(1, (bgRoot.effectsOptions.thumbnailBlurStrength ?? 50) / 100)))
+                        radius: Math.round((bgRoot.effectsOptions.blurRadius ?? 12) * Math.max(0, Math.min(1, (bgRoot.effectsOptions.thumbnailBlurStrength ?? 50) / 100)))
                         // See #159 — cap samples to bound fragment shader cost
                         samples: Math.min(33, radius * 2 + 1)
                     }
@@ -1396,7 +1403,7 @@ Scope {
                     GaussianBlur {
                         anchors.fill: parent
                         source: wallpaper
-                        radius: bgRoot.effectsOptions.blurRadius ?? 32
+                        radius: bgRoot.effectsOptions.blurRadius ?? 12
                         // See #159 — cap samples to bound fragment shader cost
                         samples: Math.min(33, radius * 2 + 1)
                     }

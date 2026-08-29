@@ -11,6 +11,7 @@ import QtQuick
 import QtQuick.Effects
 import QtMultimedia
 import Quickshell
+import Quickshell.Hyprland
 import Quickshell.Wayland
 
 Variants {
@@ -154,7 +155,20 @@ Variants {
                     const currentWs = allWs.find(ws => ws.output === outputName
                         && ws.is_active);
                     if (!currentWs) return false;
-                    return NiriService.windows.some(w => w.workspace_id === currentWs.id);
+                    return NiriService.windows.some(w => w.workspace_id === currentWs.id
+                        && !w?.is_minimized);
+                }
+                if (CompositorService.isHyprland) {
+                    const monitor = Hyprland.monitorFor(panelRoot.modelData);
+                    const wsId = monitor?.activeWorkspace?.id;
+                    if (wsId === undefined || wsId === null) return false;
+                    return (HyprlandData.windowList ?? []).some(w => w.monitor === monitor.id
+                        && w.workspace?.id === wsId && w?.mapped !== false && !w?.hidden);
+                }
+                if (CompositorService.isMango && typeof MangoService !== "undefined") {
+                    const outputName = panelRoot.modelData?.name ?? "";
+                    return (MangoService.windows ?? []).some(w => w.monitor === outputName
+                        && w.is_visible);
                 }
                 return false;
             } catch (e) { return false; }
@@ -200,7 +214,7 @@ Variants {
 
         // Blur progress — blur activates only when windows are present on the current workspace
         property real blurProgress: {
-            const blurEnabled = wEffects.enableBlur ?? false;
+            const blurEnabled = wEffects.enableBlur ?? true;
             const blurRadius = wEffects.blurRadius ?? 0;
             if (!blurEnabled || blurRadius <= 0) return 0;
             return focusPresenceProgress * _blurTransitionFactor;
@@ -269,7 +283,7 @@ Variants {
                         && (panelRoot.wEffects.blurRadius ?? 0) > 0
                     layer.effect: MultiEffect {
                         blurEnabled: true
-                        blur: ((panelRoot.wEffects.blurRadius ?? 32) * Math.max(0, Math.min(1, panelRoot.thumbnailBlurStrength / 100))) / 100.0
+                        blur: ((panelRoot.wEffects.blurRadius ?? 12) * Math.max(0, Math.min(1, panelRoot.thumbnailBlurStrength / 100))) / 100.0
                         blurMax: 64
                     }
                 }
@@ -295,7 +309,7 @@ Variants {
                         && (panelRoot.wEffects.blurRadius ?? 0) > 0
                     layer.effect: MultiEffect {
                         blurEnabled: true
-                        blur: ((panelRoot.wEffects.blurRadius ?? 32) * Math.max(0, Math.min(1, panelRoot.thumbnailBlurStrength / 100))) / 100.0
+                        blur: ((panelRoot.wEffects.blurRadius ?? 12) * Math.max(0, Math.min(1, panelRoot.thumbnailBlurStrength / 100))) / 100.0
                         blurMax: 64
                     }
                 }
@@ -310,7 +324,7 @@ Variants {
                          !panelRoot.wallpaperIsGif && !panelRoot.wallpaperIsVideo &&
                          wallpaper.ready
                 blurEnabled: visible
-                blur: panelRoot.blurProgress * ((panelRoot.wEffects.blurRadius ?? 32) / 100.0)
+                blur: panelRoot.blurProgress * ((panelRoot.wEffects.blurRadius ?? 12) / 100.0)
                 blurMax: 64
             }
 

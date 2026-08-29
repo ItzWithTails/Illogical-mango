@@ -8,7 +8,10 @@ import qs.modules.common
 import qs.services
 
 /**
- * Exposes the active Hyprland Xkb keyboard layout name and code for indicators.
+ * Exposes the active compositor XKB layout name and code for indicators.
+ *
+ * The name is historical: the service started as a Hyprland-only adapter, but
+ * the bar and lock screen use it as their compositor-neutral layout source.
  */
 Singleton {
     id: root
@@ -21,22 +24,52 @@ Singleton {
     property var baseLayoutFilePath: "/usr/share/X11/xkb/rules/base.lst"
     property bool needsLayoutRefresh: false
 
-    // Update the layout code according to the layout name (Hyprland gives the name not the code)
+    // Compositors expose a human-readable name; turn it into the short bar code.
     onCurrentLayoutNameChanged: root.updateLayoutCode()
     function updateLayoutCode() {
+        if (!currentLayoutName || currentLayoutName.length === 0) {
+            root.currentLayoutCode = "";
+            return;
+        }
         if (cachedLayoutCodes.hasOwnProperty(currentLayoutName)) {
             root.currentLayoutCode = cachedLayoutCodes[currentLayoutName];
         } else {
+            // Do not leave the previous layout on screen while base.lst is
+            // being read. This fallback also keeps the indicator useful for
+            // custom XKB descriptions that base.lst does not know about.
+            root.currentLayoutCode = root.fallbackLayoutCode(currentLayoutName);
             getLayoutProc.running = true;
         }
     }
 
-    function syncFromNiri() {
-        if (!CompositorService.isNiri || typeof NiriService === "undefined")
+    function fallbackLayoutCode(name) {
+        const text = String(name ?? "").trim();
+        const parenthesized = text.match(/\(([A-Za-z0-9_-]{2,8})\)\s*$/);
+        if (parenthesized)
+            return parenthesized[1].toLowerCase();
+        if (/^[A-Za-z0-9_-]{2,8}$/.test(text))
+            return text.toLowerCase();
+
+        const aliases = {
+            "english": "us", "russian": "ru", "german": "de",
+            "french": "fr", "spanish": "es", "italian": "it",
+            "ukrainian": "ua", "polish": "pl", "portuguese": "pt"
+        };
+        const firstWord = text.split(/[\s(]/)[0].toLowerCase();
+        return aliases[firstWord] ?? firstWord.slice(0, 4);
+    }
+
+    function syncFromCompositor() {
+        if (CompositorService.isNiri && typeof NiriService !== "undefined") {
+            root.layoutCodes = NiriService.keyboardLayoutNames || [];
+            root.currentLayoutName = NiriService.getCurrentKeyboardLayoutName();
             return;
-        const names = NiriService.keyboardLayoutNames || [];
-        root.layoutCodes = names;
-        root.currentLayoutName = NiriService.getCurrentKeyboardLayoutName();
+        }
+
+        if (CompositorService.isMango && typeof MangoService !== "undefined") {
+            root.layoutCodes = MangoService.keyboardLayoutNames || [];
+            root.currentLayoutName = MangoService.getCurrentKeyboardLayoutName();
+        }
     }
 
     // Get the layout code from the base.lst file by grabbing the line with the current layout name
@@ -50,7 +83,7 @@ Singleton {
             onStreamFinished: {
                 const lines = layoutCollector.text.split("\n");
                 const targetDescription = root.currentLayoutName;
-                const foundLine = lines.find(line => {
+                lines.find(line => {
                     // Skip comment lines and empty lines
                     if (!line.trim() || line.trim().startsWith('!'))
                         return false;
@@ -134,12 +167,19 @@ Singleton {
     Connections {
         target: NiriService
         enabled: CompositorService.isNiri
-        function onKeyboardLayoutNamesChanged() { root.syncFromNiri(); }
-        function onCurrentKeyboardLayoutIndexChanged() { root.syncFromNiri(); }
+        function onKeyboardLayoutNamesChanged() { root.syncFromCompositor(); }
+        function onCurrentKeyboardLayoutIndexChanged() { root.syncFromCompositor(); }
+    }
+
+    Connections {
+        target: MangoService
+        enabled: CompositorService.isMango
+        function onKeyboardLayoutNamesChanged() { root.syncFromCompositor(); }
+        function onCurrentKeyboardLayoutChanged() { root.syncFromCompositor(); }
     }
 
     Component.onCompleted: {
-        if (CompositorService.isNiri)
-            root.syncFromNiri();
+        if (CompositorService.isNiri || CompositorService.isMango)
+            root.syncFromCompositor();
     }
 }

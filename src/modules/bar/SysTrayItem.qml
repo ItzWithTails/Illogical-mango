@@ -13,9 +13,15 @@ MouseArea {
     required property SystemTrayItem item
     property var trayParent: null  // Reference to SysTray for closing other menus
     property bool targetMenuOpen: false
+    readonly property bool monochromeIcon: Config.options?.bar?.tray?.monochromeIcons ?? false
+    readonly property string iconSource: TrayService.getSafeIcon(root.item)
+    readonly property color themeIconColor: Appearance.angelEverywhere ? Appearance.angel.colText
+        : Appearance.regaliaEverywhere ? Appearance.regalia.onColor
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
+        : Appearance.colors.colOnLayer0
 
     signal menuOpened(qsWindow: var)
-    signal menuClosed()
+    signal menuClosed(qsWindow: var)
 
     hoverEnabled: true
     acceptedButtons: Qt.LeftButton | Qt.MiddleButton | Qt.RightButton
@@ -62,52 +68,42 @@ MouseArea {
         target: root.trayParent
         enabled: root.trayParent !== null
         function onCloseAllTrayMenus() {
-            if (menu.active && menu.item) {
-                menu.item.close();
-            }
+            if (menu.visible)
+                menu.close();
         }
     }
 
-    Loader {
+    // Let Quickshell render the DBus menu through the platform menu backend.
+    // Telegram and Throne populate their menu asynchronously; the old custom
+    // PopupWindow opened at its initial 1x1 size and remained a blurred blob.
+    QsMenuAnchor {
         id: menu
-        function open() {
-            menu.active = true;
+        menu: root.item.menu
+        anchor {
+            item: root
+            edges: (Config.options?.bar?.vertical ?? false)
+                ? ((Config.options?.bar?.bottom ?? false) ? Edges.Left : Edges.Right)
+                : ((Config.options?.bar?.bottom ?? false) ? Edges.Top : Edges.Bottom)
+            gravity: (Config.options?.bar?.vertical ?? false)
+                ? ((Config.options?.bar?.bottom ?? false) ? Edges.Left : Edges.Right)
+                : ((Config.options?.bar?.bottom ?? false) ? Edges.Top : Edges.Bottom)
+            adjustment: PopupAdjustment.FlipX | PopupAdjustment.FlipY
+                | PopupAdjustment.SlideX | PopupAdjustment.SlideY
         }
-        active: false
-        sourceComponent: SysTrayMenu {
-            Component.onCompleted: this.open();
-            trayItemMenuHandle: root.item.menu
-            anchorHovered: root.containsMouse
-            anchor {
-                item: root
-                edges: (Config.options?.bar?.vertical ?? false)
-                    ? ((Config.options?.bar?.bottom ?? false) ? Edges.Left : Edges.Right)
-                    : ((Config.options?.bar?.bottom ?? false) ? Edges.Top : Edges.Bottom)
-                gravity: (Config.options?.bar?.vertical ?? false)
-                    ? ((Config.options?.bar?.bottom ?? false) ? Edges.Left : Edges.Right)
-                    : ((Config.options?.bar?.bottom ?? false) ? Edges.Top : Edges.Bottom)
-                adjustment: (Config.options?.bar?.vertical ?? false)
-                    ? PopupAdjustment.SlideY : PopupAdjustment.SlideX
-            }
-            onMenuOpened: (window) => root.menuOpened(window);
-            onMenuClosed: {
-                root.menuClosed();
-                menu.active = false;
-            }
-        }
+        onClosed: root.menuClosed(null)
     }
 
     IconImage {
         id: trayIcon
-        visible: !(Config.options?.bar?.tray?.monochromeIcons ?? false)
-        source: root.item?.icon ?? ""
+        visible: !root.monochromeIcon
+        source: root.iconSource
         anchors.centerIn: parent
         width: parent.width
         height: parent.height
     }
 
     Loader {
-        active: Config.options?.bar?.tray?.monochromeIcons ?? false
+        active: root.monochromeIcon
         anchors.centerIn: parent
         width: root.width
         height: root.height
@@ -116,21 +112,26 @@ MouseArea {
                 id: tintedIcon
                 visible: false
                 anchors.fill: parent
-                source: root.item?.icon ?? ""
+                source: root.iconSource
             }
-            Desaturate {
-                id: desaturatedIcon
-                visible: false
-                anchors.fill: parent
+            Colorize {
+                anchors.fill: tintedIcon
                 source: tintedIcon
-                desaturation: 0.8
-            }
-            ColorOverlay {
-                anchors.fill: desaturatedIcon
-                source: desaturatedIcon
-                color: ColorUtils.transparentize(Appearance.colors.colOnLayer0, 0.9)
+                hue: root.themeIconColor.hslHue >= 0 ? root.themeIconColor.hslHue : 0
+                saturation: root.themeIconColor.hslSaturation
+                lightness: (root.themeIconColor.hslLightness - 0.5) * 0.35
             }
         }
+    }
+
+    MaterialSymbol {
+        anchors.centerIn: parent
+        visible: root.iconSource.length === 0 || trayIcon.status === Image.Error
+        text: "apps"
+        iconSize: 17
+        color: Appearance.angelEverywhere ? Appearance.angel.colText
+            : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
+            : Appearance.colors.colOnLayer0
     }
 
     PopupToolTip {

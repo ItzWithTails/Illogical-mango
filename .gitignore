@@ -83,6 +83,7 @@ mcp/
 
 # ── Go installer binary (built on demand) ────────────────────
 /installer/ilmango-installer
+/installer/ilmango-installer-v2
 /ilmango-installer
 # The pre-rename name, so an older checkout cannot commit its binary either.
 /inir-installer

@@ -32,7 +32,9 @@ Variants {
         anchors.right: true
 
         color: "transparent"
-        visible: true
+        visible: CompositorService.isNiri
+            || GlobalStates.overviewOpen
+            || (Config.options?.waffles?.background?.backdrop?.hideWallpaper ?? false)
 
         // Multi-monitor wallpaper support
         readonly property string _perMonitorMainPath: {

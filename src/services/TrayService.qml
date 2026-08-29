@@ -16,8 +16,6 @@ Singleton {
     property bool _xembedProxyStartRequested: false
     property bool _xembedProxyCheckedOnce: false
 
-    property bool smartTray: Config.options?.tray?.filterPassive ?? true
-    
     // Apps that don't implement DBus Activate properly (libappindicator issue)
     // These apps need workarounds: gtk-launch or window focus
     // matches: array of substrings to match in tray id/title OR window app_id/title
@@ -159,7 +157,10 @@ Singleton {
     
     property var _pinnedItems: Config.options?.tray?.pinnedItems ?? []
     property list<var> itemsInUserList: SystemTray.items.values.filter(i => (isValidItem(i) && _pinnedItems.includes(i.id)))
-    property list<var> itemsNotInUserList: SystemTray.items.values.filter(i => (isValidItem(i) && !_pinnedItems.includes(i.id) && (!smartTray || i.status !== Status.Passive)))
+    // A Passive SNI item can still be the only way to restore an application
+    // after its main window was closed. Keep every valid item reachable and let
+    // the pin/overflow preference decide where it is shown.
+    property list<var> itemsNotInUserList: SystemTray.items.values.filter(i => (isValidItem(i) && !_pinnedItems.includes(i.id)))
 
     property bool invertPins: Config.options?.tray?.invertPinnedItems ?? false
     property list<var> pinnedItems: invertPins ? itemsNotInUserList : itemsInUserList

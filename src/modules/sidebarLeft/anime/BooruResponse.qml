@@ -260,6 +260,8 @@ Rectangle {
                         enableTooltip: Persistent.states.booru.showTagsOnHover
                         // Download manually to reduce redundant requests or make sure downloading works
                         manualDownload: ["danbooru", "waifu.im", "t.alcy.cc"].includes(root.responseData?.provider ?? "")
+                            || ((root.responseData?.provider ?? "") === "konachan"
+                                && String(modelData?.preview_url ?? "").includes("konachan.com"))
                         previewDownloadPath: root.previewDownloadPath
                         downloadPath: root.downloadPath
                         nsfwPath: root.nsfwPath

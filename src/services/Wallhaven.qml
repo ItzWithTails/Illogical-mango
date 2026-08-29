@@ -184,15 +184,22 @@ QtObject {
     property int searchGeneration: 0
 
     property Process searchProcess: Process {
+        property string responseText: ""
+        property string errorText: ""
+
         // curl's exit status is the only thing that distinguishes "the
         // provider could not be reached" from "the search found nothing".
         // Without it every failure was reported as bad tags, which sends
         // someone hunting through settings that were never the problem.
-        onExited: exitCode => root._lastSearchExit = exitCode
+        onExited: exitCode => {
+            root._lastSearchExit = exitCode
+            root._handleSearchResponse(responseText)
+        }
         stdout: StdioCollector {
-            onStreamFinished: {
-                root._handleSearchResponse(text)
-            }
+            onStreamFinished: root.searchProcess.responseText = text
+        }
+        stderr: StdioCollector {
+            onStreamFinished: root.searchProcess.errorText = text.trim()
         }
     }
 
@@ -755,12 +762,22 @@ QtObject {
         root._currentSearchGeneration = requestedGeneration
         runningRequests += 1
 
-        const command = ["/usr/bin/curl", "-s", "--max-time", "20"]
+        const command = [
+            "/usr/bin/curl", "--fail", "--location", "--silent", "--show-error",
+            "--connect-timeout", "8", "--max-time", "30"
+        ]
+        // The SFW mirror is konachan.net, but adult results only exist on
+        // konachan.com. Some local/ISP resolvers deliberately return no record
+        // for the latter, so use Secure DNS for that one request path.
+        if (requestedProvider === "konachan" && nsfw)
+            command.push("--doh-url", "https://1.1.1.1/dns-query")
         if (requestedProvider === "wallhaven")
             command.push("-H", "User-Agent: " + defaultUserAgent)
         else if (requestedProvider === "waifu.im")
             command.push("-H", "Accept-Version: v7")
         command.push(url)
+        root.searchProcess.responseText = ""
+        root.searchProcess.errorText = ""
         root.searchProcess.command = command
         root.searchProcess.running = true
     }

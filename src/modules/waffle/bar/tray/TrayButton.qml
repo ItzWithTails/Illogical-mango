@@ -20,6 +20,7 @@ BarIconButton {
     property alias menuOpen: menu.visible
     readonly property bool barAtBottom: Config.options?.waffles?.bar?.bottom ?? false
     readonly property bool tintIcons: Config.options?.waffles?.bar?.tintTrayIcons ?? false
+    readonly property color themeIconColor: Looks.colors.fg
 
     iconScale: 0
     Component.onCompleted: {
@@ -80,17 +81,12 @@ BarIconButton {
                 anchors.fill: parent
                 source: root.item?.icon ?? ""
             }
-            Desaturate {
-                id: desaturatedIcon
-                visible: false
-                anchors.fill: parent
+            Colorize {
+                anchors.fill: tintedIcon
                 source: tintedIcon
-                desaturation: 0.8
-            }
-            ColorOverlay {
-                anchors.fill: desaturatedIcon
-                source: desaturatedIcon
-                color: ColorUtils.transparentize(Looks.colors.accent, 0.9)
+                hue: root.themeIconColor.hslHue >= 0 ? root.themeIconColor.hslHue : 0
+                saturation: root.themeIconColor.hslSaturation
+                lightness: (root.themeIconColor.hslLightness - 0.5) * 0.35
             }
         }
     }

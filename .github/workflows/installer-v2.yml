@@ -1,0 +1,65 @@
+name: installer-v2
+
+on:
+  push:
+    paths:
+      - "installer/**"
+      - "install"
+      - ".github/workflows/installer-v2.yml"
+  pull_request:
+    paths:
+      - "installer/**"
+      - "install"
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: installer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: installer/go.mod
+          cache-dependency-path: installer/go.sum
+      - run: go test -race ./...
+      - run: go vet ./...
+
+  release-binaries:
+    if: github.event_name == 'release'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        include:
+          - goarch: amd64
+            asset: ilmango-installer-linux-amd64
+          - goarch: arm64
+            asset: ilmango-installer-linux-arm64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: installer/go.mod
+      - name: Build static installer
+        working-directory: installer
+        env:
+          CGO_ENABLED: "0"
+          GOOS: linux
+          GOARCH: ${{ matrix.goarch }}
+        run: go build -trimpath -ldflags='-s -w' -o ../${{ matrix.asset }} ./cmd/ilmango-installer-v2
+      - name: Checksum
+        run: sha256sum "${{ matrix.asset }}" > "${{ matrix.asset }}.sha256"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ matrix.asset }}
+            ${{ matrix.asset }}.sha256

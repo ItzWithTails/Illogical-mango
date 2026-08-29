@@ -30,6 +30,10 @@ Item {
     readonly property bool useZzzStyle: Appearance.zzzEverywhere && !root.forceMaterialStyle
     readonly property bool useAngelStyle: Appearance.angelEverywhere && !root.forceMaterialStyle
     readonly property bool useAuroraStyle: Appearance.auroraEverywhere && !root.forceMaterialStyle
+    readonly property color workspaceThemeIconColor: Appearance.angelEverywhere ? Appearance.angel.colText
+        : Appearance.regaliaEverywhere ? Appearance.regalia.onColor
+        : Appearance.ilmangoEverywhere ? Appearance.ilmango.colText
+        : Appearance.colors.colOnLayer0
     readonly property color workspaceThemePrimary: root.forceMaterialStyle ? Appearance.m3colors.m3primary : Appearance.colors.colPrimary
     readonly property color workspaceThemeIndicator: root.useZzzStyle ? Appearance.zzz.accentSoft
         : root.useAngelStyle ? Appearance.angel.colPrimary : root.workspaceThemePrimary
@@ -693,6 +697,7 @@ Item {
                             visible: opacity > 0
                         IconImage {
                             id: mainAppIcon
+                            visible: !root.monochromeIcons
                             anchors.bottom: parent.bottom
                             anchors.right: parent.right
                             anchors.bottomMargin: (!root.showNumbers && root.showAppIcons) ?
@@ -721,17 +726,18 @@ Item {
                             active: root.monochromeIcons
                             anchors.fill: mainAppIcon
                             sourceComponent: Item {
-                                Desaturate {
-                                    id: desaturatedIcon
-                                    visible: false // There's already color overlay
+                                IconImage {
+                                    id: themedIconSource
+                                    visible: false
                                     anchors.fill: parent
-                                    source: mainAppIcon
-                                    desaturation: 0.8
+                                    source: mainAppIcon.source
                                 }
-                                ColorOverlay {
-                                    anchors.fill: desaturatedIcon
-                                    source: desaturatedIcon
-                                    color: ColorUtils.transparentize(wsMarker.markerColor, 0.9)
+                                Colorize {
+                                    anchors.fill: themedIconSource
+                                    source: themedIconSource
+                                    hue: root.workspaceThemeIconColor.hslHue >= 0 ? root.workspaceThemeIconColor.hslHue : 0
+                                    saturation: root.workspaceThemeIconColor.hslSaturation
+                                    lightness: (root.workspaceThemeIconColor.hslLightness - 0.5) * 0.35
                                 }
                             }
                         }
@@ -883,6 +889,7 @@ Item {
 
                         IconImage {
                             id: columnAppIcon
+                            visible: !root.monochromeIcons
                             anchors.centerIn: parent
                             source: parent.parent.appIconSource
                             implicitSize: root.workspaceIconSize
@@ -896,17 +903,18 @@ Item {
                             active: root.monochromeIcons
                             anchors.fill: columnAppIcon
                             sourceComponent: Item {
-                                Desaturate {
-                                    id: colDesaturatedIcon
+                                IconImage {
+                                    id: themedColumnIconSource
                                     visible: false
                                     anchors.fill: parent
-                                    source: columnAppIcon
-                                    desaturation: 0.8
+                                    source: columnAppIcon.source
                                 }
-                                ColorOverlay {
-                                    anchors.fill: colDesaturatedIcon
-                                    source: colDesaturatedIcon
-                                    color: ColorUtils.transparentize(columnDot.color, 0.9)
+                                Colorize {
+                                    anchors.fill: themedColumnIconSource
+                                    source: themedColumnIconSource
+                                    hue: root.workspaceThemeIconColor.hslHue >= 0 ? root.workspaceThemeIconColor.hslHue : 0
+                                    saturation: root.workspaceThemeIconColor.hslSaturation
+                                    lightness: (root.workspaceThemeIconColor.hslLightness - 0.5) * 0.35
                                 }
                             }
                         }

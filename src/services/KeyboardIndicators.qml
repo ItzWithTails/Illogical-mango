@@ -54,7 +54,10 @@ Singleton {
     readonly property string currentLayoutCodeMultiline: root.abbreviateLayoutCode(root.currentLayoutCode, "\n")
     readonly property string currentLayoutCodeInline: root.abbreviateLayoutCode(root.currentLayoutCode, " ").toUpperCase()
     readonly property bool usingEvdev: root._lockSource === "evdev"
-    readonly property bool layoutVisible: root.showLayoutPanel && root.hasMultipleLayouts && root.currentLayoutCode.length > 0
+    // A layout indicator answers "what am I typing with now?" even on a
+    // compositor that cannot enumerate every configured layout.  Keep the
+    // multiple-layout check for change popups, but not for the panel itself.
+    readonly property bool layoutVisible: root.showLayoutPanel && root.currentLayoutCode.length > 0
     readonly property bool capsLockVisible: root.showCapsPanel && root.capsLock
     readonly property bool numLockVisible: root.showNumPanel && root.numLock
     readonly property bool hasPanelIndicators: root.layoutVisible || root.capsLockVisible || root.numLockVisible

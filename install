@@ -1,29 +1,41 @@
 #!/bin/sh
-# The one entry point: build the installer, then hand over to it.
-#
-# The installer itself is Go, under installer/. This wrapper exists so that a
-# fresh checkout has exactly one obvious thing to run, and so that the binary is
-# never committed. Every argument is passed straight through:
-#
-#   ./install                 guided installation
-#   ./install --dry-run       print the plan, change nothing
-#   ./install --help          the installer's own help
+# Bootstrap the transactional Bubble Tea installer and hand over to it.
 set -eu
 
 top=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-# The binary lives beside its source, so building never adds anything to the
-# repository root.
-bin="$top/installer/ilmango-installer"
+bin="$top/installer/ilmango-installer-v2"
 
-if ! command -v go >/dev/null 2>&1; then
-    echo "install: Go is required to build the installer (https://go.dev/dl/)" >&2
-    exit 3
-fi
-
-# Rebuild whenever a source file is newer than the binary, so running this
-# twice in a row is cheap but never stale.
 if [ ! -x "$bin" ] || [ -n "$(find "$top/installer" -name '*.go' -newer "$bin" -print -quit 2>/dev/null)" ]; then
-    ( cd "$top/installer" && go build -o "$bin" ./cmd/ilmango-installer )
+    if command -v go >/dev/null 2>&1; then
+        echo "install: building installer v2 from this checkout" >&2
+        ( cd "$top/installer" && go build -trimpath -o "$bin" ./cmd/ilmango-installer-v2 )
+    else
+        case "$(uname -m)" in
+            x86_64|amd64) asset=ilmango-installer-linux-amd64 ;;
+            aarch64|arm64) asset=ilmango-installer-linux-arm64 ;;
+            *)
+                echo "install: no prebuilt installer for $(uname -m); install Go 1.26 or newer" >&2
+                exit 3
+                ;;
+        esac
+        if ! command -v curl >/dev/null 2>&1 || ! command -v sha256sum >/dev/null 2>&1; then
+            echo "install: need Go, or curl + sha256sum to fetch a verified prebuilt installer" >&2
+            exit 3
+        fi
+        bootstrap_dir=$(mktemp -d "${TMPDIR:-/tmp}/ilmango-bootstrap.XXXXXX")
+        trap 'rm -rf "$bootstrap_dir"' EXIT HUP INT TERM
+        release=https://github.com/ItzWithTails/illogical-mango/releases/latest/download
+        echo "install: Go not found; downloading the verified release artifact for $(uname -m)" >&2
+        curl --fail --location --proto '=https' --tlsv1.2 \
+            "$release/$asset" -o "$bootstrap_dir/$asset"
+        curl --fail --location --proto '=https' --tlsv1.2 \
+            "$release/$asset.sha256" -o "$bootstrap_dir/$asset.sha256"
+        ( cd "$bootstrap_dir" && sha256sum --check "$asset.sha256" )
+        cp "$bootstrap_dir/$asset" "$bin"
+        chmod 0755 "$bin"
+        trap - EXIT HUP INT TERM
+        rm -rf "$bootstrap_dir"
+    fi
 fi
 
 exec "$bin" "$@"

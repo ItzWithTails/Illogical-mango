@@ -122,7 +122,7 @@ ContentPage {
                 icon: "blur_medium"
                 text: Translation.tr("Blur radius")
                 from: 0; to: 64; stepSize: 2
-                value: Config.options?.waffles?.background?.effects?.blurRadius ?? 32
+                value: Config.options?.waffles?.background?.effects?.blurRadius ?? 12
                 onValueChanged: Config.setNestedValue("waffles.background.effects.blurRadius", value)
             }
 
