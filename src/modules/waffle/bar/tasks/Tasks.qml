@@ -12,9 +12,11 @@ MouseArea {
     implicitHeight: row.implicitHeight
     implicitWidth: row.implicitWidth
     hoverEnabled: true
-    
-    readonly property var pinnedApps: TaskbarApps.apps.filter(app => app.pinned && app.toplevels.length === 0)
-    readonly property var runningApps: TaskbarApps.apps.filter(app => app.toplevels.length > 0)
+
+    readonly property string screenName: root.QsWindow.window?.screen?.name ?? ""
+    readonly property var screenApps: TaskbarApps.appsForScreen(root.screenName)
+    readonly property var pinnedApps: root.screenApps.filter(app => app.pinned && app.toplevels.length === 0)
+    readonly property var runningApps: root.screenApps.filter(app => app.toplevels.length > 0)
     
     // Signal to close all context menus before opening a new one
     signal closeAllContextMenus()

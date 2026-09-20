@@ -26,10 +26,16 @@ Button {
         const match = NiriService.findNiriWindow(root.toplevel)
         return match?.niriWindow?.id ?? -1
     }
+    readonly property int mangoWindowId: Number(root.toplevel?.mangoWindowId ?? -1)
 
     onClicked: {
         if (CompositorService.isNiri && root.niriWindowId > 0) {
             NiriService.focusWindow(root.niriWindowId)
+        } else if (CompositorService.isMango && root.mangoWindowId > 0) {
+            if (root.toplevel?.isMinimized === true)
+                MangoService.restoreMinimizedWindow(root.mangoWindowId)
+            else
+                MangoService.focusWindow(root.mangoWindowId)
         } else {
             root.toplevel?.activate()
         }
@@ -176,6 +182,8 @@ Button {
         onClicked: {
             if (CompositorService.isNiri && root.niriWindowId > 0) {
                 NiriService.closeWindow(root.niriWindowId)
+            } else if (CompositorService.isMango && root.mangoWindowId > 0) {
+                MangoService.closeWindow(root.mangoWindowId)
             } else {
                 root.toplevel?.close()
             }

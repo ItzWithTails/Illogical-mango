@@ -327,12 +327,15 @@ Singleton {
     }
 
     function filterCurrentWorkspace(toplevels, screen) {
+        const screenName = typeof screen === "string"
+            ? screen
+            : (screen?.name ?? "")
         if (isNiri)
-            return NiriService.filterCurrentWorkspace(toplevels, screen)
+            return NiriService.filterCurrentWorkspace(toplevels, screenName)
         if (isHyprland)
-            return filterHyprlandCurrentWorkspaceSafe(toplevels, screen)
+            return filterHyprlandCurrentWorkspaceSafe(toplevels, screenName)
         if (isMango)
-            return MangoService.filterCurrentWorkspace(toplevels, screen)
+            return MangoService.filterCurrentWorkspace(toplevels, screenName)
         return toplevels
     }
 
@@ -342,37 +345,9 @@ Singleton {
 
         let currentWorkspaceId = null
         try {
-            const hy = Array.from(Hyprland.toplevels.values)
-            for (const toplevel of hy) {
-                const monitor = _get(toplevel, ["monitor", "name"], "")
-                const workspaceId = _get(toplevel, ["workspace", "id"], null)
-                const active = !!_get(toplevel, ["activated"], false)
-                if (monitor === screenName && workspaceId !== null) {
-                    if (active) {
-                        currentWorkspaceId = workspaceId
-                        break
-                    }
-                    if (currentWorkspaceId === null)
-                        currentWorkspaceId = workspaceId
-                }
-            }
-
-            if (currentWorkspaceId === null && Hyprland.workspaces) {
-                const workspaces = Array.from(Hyprland.workspaces.values)
-                const focusedId = _get(Hyprland, ["focusedWorkspace", "id"], null)
-                for (const workspace of workspaces) {
-                    const monitor = _get(workspace, ["monitor"], "")
-                    const workspaceId = _get(workspace, ["id"], null)
-                    if (monitor === screenName && workspaceId !== null) {
-                        if (focusedId !== null && workspaceId === focusedId) {
-                            currentWorkspaceId = workspaceId
-                            break
-                        }
-                        if (currentWorkspaceId === null)
-                            currentWorkspaceId = workspaceId
-                    }
-                }
-            }
+            const monitors = Array.from(Hyprland.monitors?.values ?? [])
+            const monitor = monitors.find(item => item?.name === screenName)
+            currentWorkspaceId = _get(monitor, ["activeWorkspace", "id"], null)
         } catch (e) {
             console.warn("CompositorService: workspace snapshot failed:", e)
         }

@@ -37,7 +37,16 @@ Singleton {
         Config.setNestedValue(["dock", "pinnedApps"], next)
     }
 
-    property list<var> apps: {
+    function sourceToplevels(): list<var> {
+        const sorted = CompositorService.sortedToplevels ?? [];
+        return CompositorService.isNiri
+            ? sorted
+            : (sorted.length > 0
+                ? sorted
+                : (ToplevelManager.toplevels?.values ?? []));
+    }
+
+    function buildApps(sourceToplevels): list<var> {
         const identityRulesRevision = root._identityRulesRevision;
         var map = new Map();
 
@@ -67,16 +76,6 @@ Singleton {
         const ignoredRegexes = ignoredRegexStrings.concat(systemIgnored)
             .map(pattern => new RegExp(pattern, "i"));
 
-        // Niri's event stream is authoritative. CompositorService enriches
-        // live foreign-toplevel handles with exact Niri ids and drops stale
-        // handles instead of letting ghost apps survive in the taskbar.
-        const sorted = CompositorService.sortedToplevels ?? [];
-        const sourceToplevels = CompositorService.isNiri
-            ? sorted
-            : (sorted.length > 0
-                ? sorted
-                : (ToplevelManager.toplevels?.values ?? []));
-
         // Open windows
         for (const toplevel of sourceToplevels) {
             const appId = AppSearch.resolveWindowIdentity(toplevel);
@@ -102,5 +101,15 @@ Singleton {
 
         return values;
     }
+
+    // Pinned launchers remain shared, but running windows are scoped to the
+    // active workspace of the bar's own output.
+    function appsForScreen(screen): list<var> {
+        const filtered = CompositorService.filterCurrentWorkspace(
+            root.sourceToplevels(), screen);
+        return root.buildApps(filtered);
+    }
+
+    property list<var> apps: root.buildApps(root.sourceToplevels())
 
 }

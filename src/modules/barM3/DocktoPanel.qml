@@ -38,8 +38,10 @@ Item {
     property real buttonPadding: Math.max(3, Math.round(root.btnSize * 0.1))
     property bool vertical:    Config.options.bar.vertical
     property bool isMaterial:  Config.options.bar.m3.cornerStyle === 3
+    readonly property string screenName: root.QsWindow.window?.screen?.name ?? ""
+    readonly property var screenApps: TaskbarApps.appsForScreen(root.screenName)
     property var pinnedApps: Config.options?.dock.pinnedApps ?? []
-    property var activeUnpinned: TaskbarApps.apps.filter(
+    property var activeUnpinned: root.screenApps.filter(
         a => !a.pinned && a.appId !== "SEPARATOR" && a.toplevels.length > 0
     )
     property bool showSeparator: _workOrder.length > 0 && activeUnpinned.length > 0
@@ -47,9 +49,7 @@ Item {
     property int  activeDragVisualIndex: -1
     property bool _dragging:             false
     readonly property var focusedWindow: CompositorService.isNiri
-        ? (NiriService.windows?.find(window => window.is_focused)
-            ?? NiriService.activeWindow
-            ?? null)
+        ? NiriService.activeWindowForOutput(root.screenName)
         : null
     readonly property int focusedWindowId:
         Number(root.focusedWindow?.id ?? -1)
@@ -155,7 +155,7 @@ Item {
                     required property int index
 
                     property string appId:        root._workOrder[index] ?? ""
-                    property var    appEntry:     TaskbarApps.apps.find(
+                    property var    appEntry:     root.screenApps.find(
                         app => String(app.appId ?? "").toLowerCase() === appId.toLowerCase()) ?? null
                     property var    deskEntry:    AppSearch.lookupDesktopEntry(appId)
                     property int    _lastFocused: -1

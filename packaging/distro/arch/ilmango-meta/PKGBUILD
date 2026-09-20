@@ -1,7 +1,7 @@
 # Maintainer: snowarch
 
 pkgname=ilmango-meta
-pkgver=2.29.2
+pkgver=2.29.3
 pkgrel=1
 pkgdesc='Full Illogical-mango desktop experience meta-package'
 arch=(any)

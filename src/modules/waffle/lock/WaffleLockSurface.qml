@@ -1323,6 +1323,7 @@ MouseArea {
                         id: passwordField
                         Layout.fillWidth: true
                         Layout.fillHeight: true
+                        clip: true
                         verticalAlignment: Text.AlignVCenter
                         
                         echoMode: TextInput.Password

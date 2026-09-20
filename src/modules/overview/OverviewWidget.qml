@@ -284,6 +284,7 @@ Item {
                 toplevel: modelData
                 monitorData: this.monitor
                 scale: root.scale
+                tileMargin: Math.max(0, Config.options?.overview?.windowTileMargin ?? 6) * root.scale
                 widgetMonitor: root.monitorData
                 windowData: windowByAddress[address]
 
@@ -294,8 +295,8 @@ Item {
                 property int workspaceRowIndex: Math.floor((windowData?.workspace.id - 1) % root.workspacesShown / Config.options.overview.columns)
                 xOffset: (root.workspaceImplicitWidth + workspaceSpacing) * workspaceColIndex
                 yOffset: (root.workspaceImplicitHeight + workspaceSpacing) * workspaceRowIndex
-                property real xWithinWorkspaceWidget: Math.max((windowData?.at[0] - (monitor?.x ?? 0) - monitorData?.reserved[0]) * root.scale, 0)
-                property real yWithinWorkspaceWidget: Math.max((windowData?.at[1] - (monitor?.y ?? 0) - monitorData?.reserved[1]) * root.scale, 0)
+                property real xWithinWorkspaceWidget: Math.max((windowData?.at[0] - (monitor?.x ?? 0) - monitorData?.reserved[0]) * root.scale, 0) + tileMargin
+                property real yWithinWorkspaceWidget: Math.max((windowData?.at[1] - (monitor?.y ?? 0) - monitorData?.reserved[1]) * root.scale, 0) + tileMargin
 
                 // Radius
                 property real minRadius: Appearance.angelEverywhere ? Appearance.angel.roundingSmall
@@ -401,86 +402,86 @@ Item {
                         text: `${windowData.title}\n[${windowData.class}] ${windowData.xwayland ? "[XWayland] " : ""}`
                     }
                 }
+            }
+        }
 
-                Rectangle { // Focused workspace indicator
-                    id: focusedWorkspaceIndicator
-                    property int activeWorkspaceInGroup: root.activeWorkspaceId - (root.workspaceGroup * root.workspacesShown)
-                    property int rowIndex: Math.floor((activeWorkspaceInGroup - 1) / Config.options.overview.columns)
-                    property int colIndex: (activeWorkspaceInGroup - 1) % Config.options.overview.columns
+        Rectangle { // Focused workspace indicator
+            id: focusedWorkspaceIndicator
+            property int activeWorkspaceInGroup: root.activeWorkspaceId - (root.workspaceGroup * root.workspacesShown)
+            property int rowIndex: Math.floor((activeWorkspaceInGroup - 1) / Config.options.overview.columns)
+            property int colIndex: (activeWorkspaceInGroup - 1) % Config.options.overview.columns
 
-                // Pequeño inset para que el borde se alinee mejor con las esquinas redondeadas
-                property real borderInset: 1
+            // Pequeño inset para que el borde se alinee mejor con las esquinas redondeadas
+            property real borderInset: 1
 
-                x: (root.workspaceImplicitWidth + workspaceSpacing) * colIndex + borderInset
-                y: (root.workspaceImplicitHeight + workspaceSpacing) * rowIndex + borderInset
-                z: root.windowZ
-                width: root.workspaceImplicitWidth - borderInset * 2
-                height: root.workspaceImplicitHeight - borderInset * 2
-                color: "transparent"
-                property bool workspaceAtLeft: colIndex === 0
-                property bool workspaceAtRight: colIndex === Config.options.overview.columns - 1
-                property bool workspaceAtTop: rowIndex === 0
-                property bool workspaceAtBottom: rowIndex === Config.options.overview.rows - 1
-                property real baseLargeRadius: root.largeWorkspaceRadius
-                property real baseSmallRadius: root.smallWorkspaceRadius
-                property real largeWorkspaceRadius: Math.max(0, baseLargeRadius - borderInset)
-                property real smallWorkspaceRadius: Math.max(0, baseSmallRadius - borderInset)
-                topLeftRadius: (workspaceAtLeft && workspaceAtTop) ? largeWorkspaceRadius : smallWorkspaceRadius
-                topRightRadius: (workspaceAtRight && workspaceAtTop) ? largeWorkspaceRadius : smallWorkspaceRadius
-                bottomLeftRadius: (workspaceAtLeft && workspaceAtBottom) ? largeWorkspaceRadius : smallWorkspaceRadius
-                bottomRightRadius: (workspaceAtLeft && workspaceAtBottom) ? largeWorkspaceRadius : smallWorkspaceRadius
-                border.width: 2
-                border.color: root.activeBorderColor
-                Behavior on x {
-                    enabled: root.focusAnimEnabled && Appearance.animationsEnabled
-                    animation: NumberAnimation {
-                        duration: root.focusAnimDuration
-                        easing.type: Appearance.animation.elementMoveFast.type
-                        easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
-                    }
+            x: (root.workspaceImplicitWidth + workspaceSpacing) * colIndex + borderInset
+            y: (root.workspaceImplicitHeight + workspaceSpacing) * rowIndex + borderInset
+            z: root.windowZ
+            width: root.workspaceImplicitWidth - borderInset * 2
+            height: root.workspaceImplicitHeight - borderInset * 2
+            color: "transparent"
+            property bool workspaceAtLeft: colIndex === 0
+            property bool workspaceAtRight: colIndex === Config.options.overview.columns - 1
+            property bool workspaceAtTop: rowIndex === 0
+            property bool workspaceAtBottom: rowIndex === Config.options.overview.rows - 1
+            property real baseLargeRadius: root.largeWorkspaceRadius
+            property real baseSmallRadius: root.smallWorkspaceRadius
+            property real largeWorkspaceRadius: Math.max(0, baseLargeRadius - borderInset)
+            property real smallWorkspaceRadius: Math.max(0, baseSmallRadius - borderInset)
+            topLeftRadius: (workspaceAtLeft && workspaceAtTop) ? largeWorkspaceRadius : smallWorkspaceRadius
+            topRightRadius: (workspaceAtRight && workspaceAtTop) ? largeWorkspaceRadius : smallWorkspaceRadius
+            bottomLeftRadius: (workspaceAtLeft && workspaceAtBottom) ? largeWorkspaceRadius : smallWorkspaceRadius
+            bottomRightRadius: (workspaceAtRight && workspaceAtBottom) ? largeWorkspaceRadius : smallWorkspaceRadius
+            border.width: 2
+            border.color: root.activeBorderColor
+            Behavior on x {
+                enabled: root.focusAnimEnabled && Appearance.animationsEnabled
+                animation: NumberAnimation {
+                    duration: root.focusAnimDuration
+                    easing.type: Appearance.animation.elementMoveFast.type
+                    easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
                 }
-                Behavior on y {
-                    enabled: root.focusAnimEnabled && Appearance.animationsEnabled
-                    animation: NumberAnimation {
-                        duration: root.focusAnimDuration
-                        easing.type: Appearance.animation.elementMoveFast.type
-                        easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
-                    }
+            }
+            Behavior on y {
+                enabled: root.focusAnimEnabled && Appearance.animationsEnabled
+                animation: NumberAnimation {
+                    duration: root.focusAnimDuration
+                    easing.type: Appearance.animation.elementMoveFast.type
+                    easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
                 }
-                Behavior on topLeftRadius {
-                    enabled: root.focusAnimEnabled && Appearance.animationsEnabled
-                    animation: NumberAnimation {
-                        duration: root.focusAnimDuration
-                        easing.type: Appearance.animation.elementMoveEnter.type
-                        easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
-                    }
+            }
+            Behavior on topLeftRadius {
+                enabled: root.focusAnimEnabled && Appearance.animationsEnabled
+                animation: NumberAnimation {
+                    duration: root.focusAnimDuration
+                    easing.type: Appearance.animation.elementMoveEnter.type
+                    easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
                 }
-                Behavior on topRightRadius {
-                    enabled: root.focusAnimEnabled && Appearance.animationsEnabled
-                    animation: NumberAnimation {
-                        duration: root.focusAnimDuration
-                        easing.type: Appearance.animation.elementMoveEnter.type
-                        easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
-                    }
+            }
+            Behavior on topRightRadius {
+                enabled: root.focusAnimEnabled && Appearance.animationsEnabled
+                animation: NumberAnimation {
+                    duration: root.focusAnimDuration
+                    easing.type: Appearance.animation.elementMoveEnter.type
+                    easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
                 }
-                Behavior on bottomLeftRadius {
-                    enabled: root.focusAnimEnabled && Appearance.animationsEnabled
-                    animation: NumberAnimation {
-                        duration: root.focusAnimDuration
-                        easing.type: Appearance.animation.elementMoveEnter.type
-                        easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
-                    }
+            }
+            Behavior on bottomLeftRadius {
+                enabled: root.focusAnimEnabled && Appearance.animationsEnabled
+                animation: NumberAnimation {
+                    duration: root.focusAnimDuration
+                    easing.type: Appearance.animation.elementMoveEnter.type
+                    easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
                 }
-                Behavior on bottomRightRadius {
-                    enabled: root.focusAnimEnabled && Appearance.animationsEnabled
-                    animation: NumberAnimation {
-                        duration: root.focusAnimDuration
-                        easing.type: Appearance.animation.elementMoveEnter.type
-                        easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
-                    }
+            }
+            Behavior on bottomRightRadius {
+                enabled: root.focusAnimEnabled && Appearance.animationsEnabled
+                animation: NumberAnimation {
+                    duration: root.focusAnimDuration
+                    easing.type: Appearance.animation.elementMoveEnter.type
+                    easing.bezierCurve: Appearance.animationCurves.emphasizedLastHalf
                 }
             }
         }
-    }
     }
 }

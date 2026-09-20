@@ -908,6 +908,34 @@ Singleton {
         return 1
     }
 
+    // Niri has one active workspace per output, while input focus is global.
+    // Per-monitor UI must use the former to avoid leaking another output's
+    // focused window into this output's bar.
+    function activeWorkspaceForOutput(outputName) {
+        return allWorkspaces.find(workspace =>
+            workspace.output === outputName && workspace.is_active) ?? null
+    }
+
+    function activeWindowForOutput(outputName) {
+        const workspace = activeWorkspaceForOutput(outputName)
+        if (!workspace)
+            return null
+
+        const workspaceWindows = windows.filter(window =>
+            window.workspace_id === workspace.id)
+        const activeWindowId = workspace.active_window_id
+        if (activeWindowId !== undefined && activeWindowId !== null) {
+            const remembered = workspaceWindows.find(window =>
+                window.id === activeWindowId)
+            if (remembered)
+                return remembered
+        }
+
+        return workspaceWindows.find(window => window.is_focused)
+            ?? workspaceWindows[0]
+            ?? null
+    }
+
     function getCurrentKeyboardLayoutName() {
         if (currentKeyboardLayoutIndex >= 0 && currentKeyboardLayoutIndex < keyboardLayoutNames.length) {
             return keyboardLayoutNames[currentKeyboardLayoutIndex]
@@ -1030,17 +1058,20 @@ Singleton {
     }
 
     function filterCurrentWorkspace(toplevels, screenName) {
-        let currentWorkspaceId = null
-
-        for (const workspace of allWorkspaces) {
-            if (workspace.output === screenName && workspace.is_active) {
-                currentWorkspaceId = workspace.id
-                break
-            }
-        }
+        const currentWorkspaceId = activeWorkspaceForOutput(screenName)?.id ?? null
 
         if (currentWorkspaceId === null)
             return toplevels
+
+        // Sorted toplevels already carry an exact Niri workspace id. Prefer
+        // that over fuzzy app-id/title matching, since identical browser titles
+        // can exist on different monitors.
+        if (toplevels.some(toplevel =>
+                toplevel?.niriWorkspaceId !== undefined
+                && toplevel?.niriWorkspaceId !== null)) {
+            return toplevels.filter(toplevel =>
+                toplevel?.niriWorkspaceId === currentWorkspaceId)
+        }
 
         const workspaceWindows = windows.filter(window =>
             window.workspace_id === currentWorkspaceId)

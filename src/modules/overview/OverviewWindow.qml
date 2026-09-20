@@ -15,6 +15,9 @@ Item { // Window
     property var windowData
     property var monitorData
     property var scale
+    // Keep adjacent tiled windows from drawing their borders on top of each
+    // other in the overview. The value is already scaled to overview pixels.
+    property real tileMargin: 0
     property bool restrictToWorkspace: true
     property real widthRatio: {
         const widgetWidth = widgetMonitor.transform & 1 ? widgetMonitor.height : widgetMonitor.width;
@@ -27,19 +30,19 @@ Item { // Window
         return (widgetHeight * monitorData.scale) / (monitorHeight * widgetMonitor.scale);
     }
     property real initX: {
-        return Math.max((windowData?.at[0] - (monitorData?.x ?? 0) - monitorData?.reserved[0]) * widthRatio * root.scale, 0) + xOffset;
+        return Math.max((windowData?.at[0] - (monitorData?.x ?? 0) - monitorData?.reserved[0]) * widthRatio * root.scale, 0) + tileMargin + xOffset;
     }
 
     property real initY: {
-        return Math.max((windowData?.at[1] - (monitorData?.y ?? 0) - monitorData?.reserved[1]) * heightRatio * root.scale, 0) + yOffset;
+        return Math.max((windowData?.at[1] - (monitorData?.y ?? 0) - monitorData?.reserved[1]) * heightRatio * root.scale, 0) + tileMargin + yOffset;
     }
     property real xOffset: 0
     property real yOffset: 0
     property var widgetMonitor
     property int widgetMonitorId: widgetMonitor.id
 
-    property var targetWindowWidth: windowData?.size[0] * scale * widthRatio
-    property var targetWindowHeight: windowData?.size[1] * scale * heightRatio
+    property var targetWindowWidth: Math.max(10, windowData?.size[0] * scale * widthRatio - tileMargin * 2)
+    property var targetWindowHeight: Math.max(10, windowData?.size[1] * scale * heightRatio - tileMargin * 2)
     property bool hovered: false
     property bool pressed: false
 

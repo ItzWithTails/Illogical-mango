@@ -13,7 +13,8 @@ MouseArea {
     required property SystemTrayItem item
     property var trayParent: null  // Reference to SysTray for closing other menus
     property bool targetMenuOpen: false
-    readonly property bool monochromeIcon: Config.options?.bar?.tray?.monochromeIcons ?? false
+    readonly property bool monochromeIcon: (Config.options?.bar?.tray?.monochromeIcons ?? false)
+        && !TrayService.shouldPreserveIconColors(root.item)
     readonly property string iconSource: TrayService.getSafeIcon(root.item)
     readonly property color themeIconColor: Appearance.angelEverywhere ? Appearance.angel.colText
         : Appearance.regaliaEverywhere ? Appearance.regalia.onColor

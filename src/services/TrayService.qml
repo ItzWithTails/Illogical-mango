@@ -29,7 +29,7 @@ Singleton {
         { matches: ["armcord", "ArmCord"], launch: "armcord" },
         { matches: ["slack", "Slack"], launch: "slack" },
         { matches: ["teams", "Teams"], launch: "teams-for-linux" },
-        { matches: ["telegram", "Telegram", "org.telegram"], launch: "org.telegram.desktop" },
+        { matches: ["telegram", "Telegram", "org.telegram"], launch: "/usr/bin/Telegram --" },
         { matches: ["signal", "Signal"], launch: "signal-desktop" },
         { matches: ["element", "Element"], launch: "element-desktop" },
         { matches: ["steam", "Steam"], launch: "steam" },
@@ -38,6 +38,11 @@ Singleton {
         { matches: ["zoom", "Zoom"], launch: "zoom" },
         { matches: ["easyeffects", "EasyEffects", "com.github.wwmm.easyeffects"], launch: "easyeffects" },
     ]
+
+    // Some applications use the tray icon's own colour as a status indicator.
+    // Tinting those icons makes distinct states (for example Throne's red TUN
+    // mode) indistinguishable.
+    readonly property var colorSensitiveApps: ["throne"]
     
     // Check if an item is a problematic app
     function getProblematicAppInfo(item): var {
@@ -154,6 +159,21 @@ Singleton {
     function isValidItem(item) {
         return item && item.id;
     }
+
+    function itemMatchesAny(item, patterns): bool {
+        if (!item || !patterns) return false;
+        const identity = [
+            item.id ?? "",
+            item.title ?? "",
+            item.tooltipTitle ?? "",
+            item.tooltipDescription ?? ""
+        ].join(" ").toLowerCase();
+        return patterns.some(pattern => identity.includes(pattern.toLowerCase()));
+    }
+
+    function shouldPreserveIconColors(item): bool {
+        return itemMatchesAny(item, colorSensitiveApps);
+    }
     
     property var _pinnedItems: Config.options?.tray?.pinnedItems ?? []
     property list<var> itemsInUserList: SystemTray.items.values.filter(i => (isValidItem(i) && _pinnedItems.includes(i.id)))
@@ -168,9 +188,18 @@ Singleton {
 
     function getSafeIcon(item): string {
         if (!item) return "";
+        // Prefer the SNI-provided URL/pixmap. It can change with application
+        // state and is already in the form IconImage expects.
+        const providedIcon = String(item.icon ?? "");
+        if (providedIcon.length > 0) return providedIcon;
+
+        // Some Electron clients (notably Flatpak Discord) publish IconPixmap
+        // but expose a broken IconName property. If Quickshell cannot build an
+        // icon URL from that item, resolve the known fallback through the icon
+        // theme instead of passing a bare icon name as a relative URL.
         const app = getProblematicAppInfo(item);
-        if (app && app.fixedIcon) return app.fixedIcon;
-        return item.icon ?? "";
+        if (app && app.fixedIcon) return Quickshell.iconPath(app.fixedIcon, "");
+        return "";
     }
 
     function getTooltipForItem(item) {

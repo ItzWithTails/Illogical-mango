@@ -161,6 +161,14 @@ Singleton {
         _wpctlGetMicState.exec(["wpctl", "get-volume", target])
     }
 
+    function _syncMicMuteLed(): void {
+        micMuteLedSync.exec([
+            "python3",
+            Quickshell.shellPath("scripts/daemon/mic_mute_led.py"),
+            root._micMuted ? "muted" : "unmuted",
+        ])
+    }
+
     Process {
         id: wpctlSetDefaultDevice
         command: ["wpctl", "set-default", "0"]
@@ -209,6 +217,11 @@ Singleton {
     }
 
     Process {
+        id: micMuteLedSync
+        command: ["python3", Quickshell.shellPath("scripts/daemon/mic_mute_led.py"), "unmuted"]
+    }
+
+    Process {
         id: _wpctlGetMicState
         command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SOURCE@"]
         stdout: StdioCollector { id: _micStateCollector }
@@ -217,6 +230,7 @@ Singleton {
             const out = (_micStateCollector.text?.trim() ?? "")
             if (!out.length) return
             root._micMuted = out.toUpperCase().includes("MUTED")
+            root._syncMicMuteLed()
             const match = out.match(/Volume:\s*([0-9]*\.?[0-9]+)/i)
             if (match && match[1] !== undefined) {
                 const parsed = Number(match[1])

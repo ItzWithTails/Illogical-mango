@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Hyprland
 import Quickshell.Widgets
 import Qt5Compat.GraphicalEffects
 import qs.services
@@ -21,6 +22,9 @@ Item {
 
     property var parentWindow: null
     property bool vertical: false
+    readonly property string screenName: parentWindow?.screen?.name
+        ?? root.QsWindow.window?.screen?.name
+        ?? ""
     // Bar position: "top", "bottom", "left", "right"
     property string barPosition: {
         if (vertical) return (Config.options?.bar?.bottom ?? false) ? "right" : "left"
@@ -160,9 +164,17 @@ Item {
 
     // App id of the currently focused window (lowercased). Used to flag the
     // focused item so it's prioritised for visibility when space runs out.
-    readonly property string focusedAppId: CompositorService.isNiri
-        ? String(NiriService.activeWindow?.app_id ?? "").toLowerCase()
-        : String(ToplevelManager.activeToplevel?.appId ?? "").toLowerCase()
+    readonly property var localFocusedWindow: CompositorService.isNiri
+        ? NiriService.activeWindowForOutput(root.screenName)
+        : (CompositorService.isMango
+            ? MangoService.activeWindowForOutput(root.screenName)
+            : null)
+    readonly property string focusedAppId:
+        (CompositorService.isNiri || CompositorService.isMango)
+            ? String(root.localFocusedWindow?.app_id
+                ?? root.localFocusedWindow?.appid
+                ?? "").toLowerCase()
+            : String(ToplevelManager.activeToplevel?.appId ?? "").toLowerCase()
 
     function _doRebuildDockItems(): void {
         const pinnedApps = Config.options?.dock?.pinnedApps ?? [];
@@ -183,6 +195,8 @@ Item {
         const allToplevels = niriAuthoritative
                 ? (sorted ?? [])
                 : (sortedHasItems ? sorted : ToplevelManager.toplevels.values);
+        const currentToplevels = CompositorService.filterCurrentWorkspace(
+            allToplevels, root.screenName);
 
         // Off-Niri ghost guard: when using enriched `sorted`, cross-check it
         // against live ToplevelManager and drop entries with no live handle.
@@ -197,7 +211,7 @@ Item {
         }
 
         const runningAppsMap = new Map();
-        for (const toplevel of allToplevels) {
+        for (const toplevel of currentToplevels) {
             if (!toplevel.appId || toplevel.appId === "" || toplevel.appId === "null") continue;
             const effectiveId = AppSearch.resolveWindowIdentity(toplevel);
             if (ignoredRegexes.some(re => re.test(effectiveId))) continue;
@@ -352,6 +366,22 @@ Item {
         target: CompositorService
         function onSortedToplevelsChanged() { root.rebuildDockItems() }
     }
+    Connections {
+        target: NiriService
+        enabled: CompositorService.isNiri
+        function onAllWorkspacesChanged() { root.rebuildDockItems() }
+    }
+    Connections {
+        target: MangoService
+        enabled: CompositorService.isMango
+        function onAllWorkspacesChanged() { root.rebuildDockItems() }
+    }
+    Connections {
+        target: Hyprland.monitors
+        enabled: CompositorService.isHyprland
+        function onValuesChanged() { root.rebuildDockItems() }
+    }
+    onScreenNameChanged: rebuildDockItems()
     Connections {
         target: Config.options?.dock
         function onPinnedAppsChanged() { root.rebuildDockItems() }

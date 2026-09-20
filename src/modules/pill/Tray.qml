@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.SystemTray
 import qs.modules.common
+import qs.services
 
 /**
  * System tray. Draws StatusNotifier items as warm-tinted icons. Left-click
@@ -65,7 +66,7 @@ Item {
 
                 Image {
                     anchors.centerIn: parent
-                    source: slot.modelData.icon
+                    source: TrayService.getSafeIcon(slot.modelData)
                     sourceSize.width: 32
                     sourceSize.height: 32
                     width: 16 * tray.s
@@ -96,7 +97,7 @@ Item {
                             tray.showMenu(slot.modelData, slot);
                         } else if (slot.modelData.onlyMenu) {
                             tray.showMenu(slot.modelData, slot);
-                        } else {
+                        } else if (!TrayService.smartToggle(slot.modelData)) {
                             slot.modelData.activate();
                         }
                     }

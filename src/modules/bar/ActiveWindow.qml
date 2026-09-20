@@ -10,31 +10,24 @@ Item {
     id: root
     readonly property HyprlandMonitor monitor: CompositorService.isHyprland ? Hyprland.monitorFor(root.QsWindow.window?.screen) : null
     readonly property Toplevel activeWindow: ToplevelManager.activeToplevel
+    readonly property string screenName: root.QsWindow.window?.screen?.name ?? ""
 
     property string activeWindowAddress: CompositorService.isHyprland ? `0x${activeWindow?.HyprlandToplevel?.address}` : ""
     property bool focusingThisMonitor: CompositorService.isHyprland ? (HyprlandData.activeWorkspace?.monitor == monitor?.name) : true
     property var biggestWindow: CompositorService.isHyprland ? HyprlandData.biggestWindowForWorkspace(HyprlandData.monitors[root.monitor?.id]?.activeWorkspace.id) : null
 
-    // Ventana activa según Niri (focus global)
-    property var niriFocusedWindow: {
-        if (!CompositorService.isNiri || !NiriService || !NiriService.windows)
-            return null
-        const wins = NiriService.windows
-        for (var i = 0; i < wins.length; ++i) {
-            const w = wins[i]
-            if (w && w.is_focused)
-                return w
-        }
-        return null
-    }
+    readonly property var niriActiveWorkspace: CompositorService.isNiri
+        ? NiriService.activeWorkspaceForOutput(root.screenName)
+        : null
+    readonly property var niriDisplayedWindow: CompositorService.isNiri
+        ? NiriService.activeWindowForOutput(root.screenName)
+        : null
 
     // mango: focused client, plus this output's active tag for the idle label.
-    readonly property string mangoScreenName: root.QsWindow.window?.screen?.name ?? ""
-    property var mangoFocusedWindow: {
-        if (!CompositorService.isMango)
-            return null
-        return MangoService.activeWindow ?? null
-    }
+    readonly property string mangoScreenName: root.screenName
+    readonly property var mangoFocusedWindow: CompositorService.isMango
+        ? MangoService.activeWindowForOutput(root.mangoScreenName)
+        : null
     readonly property int mangoActiveTag: {
         if (!CompositorService.isMango)
             return 1
@@ -55,7 +48,7 @@ Item {
 
     property string displayAppName: {
         if (CompositorService.isNiri) {
-            const w = niriFocusedWindow
+            const w = niriDisplayedWindow
             if (w) {
                 const base = w.app_id || w.appId || Translation.tr("Desktop")
                 return shortenText(base, 40)
@@ -80,11 +73,11 @@ Item {
 
     property string displayTitle: {
         if (CompositorService.isNiri) {
-            const w = niriFocusedWindow
+            const w = niriDisplayedWindow
             if (w && w.title) {
                 return shortenText(w.title, 80)
             }
-            const wsNum = NiriService.getCurrentWorkspaceNumber()
+            const wsNum = niriActiveWorkspace?.idx ?? 1
             return shortenText(`${Translation.tr("Workspace")} ${wsNum}`, 80)
         }
 

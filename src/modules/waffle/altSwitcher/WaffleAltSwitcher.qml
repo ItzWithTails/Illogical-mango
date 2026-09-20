@@ -23,6 +23,7 @@ Scope {
     property bool quickSwitchDone: false  // Track if quick switch already happened this session
     property var noUiSnapshot: []
     property int noUiIndex: 0
+    property bool keyboardSession: false
 
     property bool cardVisible: false
 
@@ -40,6 +41,41 @@ Scope {
     function getShowOverview() { return cfg().showOverviewWhileSwitching ?? false }
     function getUseMostRecentFirst() { return cfg().useMostRecentFirst ?? true }
     function getAutoHideDelayMs() { return cfg().autoHideDelayMs ?? 500 }
+
+    function compositorWindows() {
+        return CompositorService.isMango
+            ? (MangoService.windows || [])
+            : (NiriService.windows || [])
+    }
+
+    function compositorWorkspaces() {
+        return CompositorService.isMango
+            ? (MangoService.workspaces || {})
+            : (NiriService.workspaces || {})
+    }
+
+    function compositorMruIds() {
+        return CompositorService.isMango
+            ? (MangoService.mruWindowIds || [])
+            : (NiriService.mruWindowIds || [])
+    }
+
+    function focusItem(item) {
+        if (!item || item.id === undefined) return
+        console.info("[WaffleAltSwitcher] activating", item.id, item.appId,
+            "workspace", item.workspaceId, "minimized", !!item.isMinimized)
+        if (CompositorService.isMango) {
+            if (item.isMinimized)
+                MangoService.restoreMinimizedWindow(item.id)
+            else {
+                if (item.workspaceId && item.workspaceId !== MangoService.focusedWorkspaceId)
+                    MangoService.switchToWorkspaceById(item.workspaceId)
+                MangoService.focusWindow(item.id)
+            }
+        } else {
+            NiriService.focusWindow(item.id)
+        }
+    }
 
     // Resuelve y cachea el icono
     function getCachedIcon(appId, appName, title) {
@@ -105,6 +141,7 @@ Scope {
                 workspaceIdx: wsIdx,
                 isFocused: w.is_focused ?? false,
                 isFloating: w.is_floating ?? false,
+                isMinimized: w.is_minimized ?? false,
                 icon: root.getCachedIcon(appId, appName, w.title)
             })
             itemsById[w.id] = items[items.length - 1]
@@ -140,9 +177,9 @@ Scope {
 
     function rebuildSnapshot() {
         itemSnapshot = buildItemsFrom(
-            NiriService.windows || [],
-            NiriService.workspaces || {},
-            NiriService.mruWindowIds || []
+            root.compositorWindows(),
+            root.compositorWorkspaces(),
+            root.compositorMruIds()
         )
         currentIndex = 0
         _warmedUp = true
@@ -150,9 +187,9 @@ Scope {
 
     function rebuildNoUiSnapshot() {
         root.noUiSnapshot = buildItemsFrom(
-            NiriService.windows || [],
-            NiriService.workspaces || {},
-            NiriService.mruWindowIds || []
+            root.compositorWindows(),
+            root.compositorWorkspaces(),
+            root.compositorMruIds()
         )
         root.noUiIndex = 0
     }
@@ -162,16 +199,14 @@ Scope {
         if (len <= 0)
             return
         const idx = Math.max(0, Math.min(len - 1, root.noUiIndex))
-        const id = root.noUiSnapshot[idx]?.id
-        if (id !== undefined)
-            NiriService.focusWindow(id)
+        root.focusItem(root.noUiSnapshot[idx])
     }
 
     // Pre-warm al inicio
     Timer {
         id: warmUpTimer
         interval: 2000
-        running: !root._warmedUp && (NiriService.windows?.length ?? 0) > 0
+        running: !root._warmedUp && (root.compositorWindows()?.length ?? 0) > 0
         onTriggered: {
             root.rebuildSnapshot()
             Qt.callLater(function() {
@@ -217,7 +252,7 @@ Scope {
         if (CompositorService.isNiri && root.getPreset() === "skew") {
             Qt.callLater(() => WindowPreviewService.captureForTaskView())
         }
-        if (root.getAutoHide() && root.getPreset() !== "skew")
+        if (root.getAutoHide() && root.getPreset() !== "skew" && !root.keyboardSession)
             autoHideTimer.restart()
     }
 
@@ -226,6 +261,8 @@ Scope {
         GlobalStates.waffleAltSwitcherOpen = false
         root.cardVisible = false
         quickSwitchDone = false  // Reset for next session
+        root.keyboardSession = false
+        keyboardSessionTimer.stop()
         maybeCloseOverview()
     }
 
@@ -250,22 +287,20 @@ Scope {
     function nextItem() {
         if (itemSnapshot.length === 0) return
         currentIndex = (currentIndex + 1) % itemSnapshot.length
-        if (root.getAutoHide() && root.getPreset() !== "skew")
+        if (root.getAutoHide() && root.getPreset() !== "skew" && !root.keyboardSession)
             autoHideTimer.restart()
     }
 
     function previousItem() {
         if (itemSnapshot.length === 0) return
         currentIndex = (currentIndex - 1 + itemSnapshot.length) % itemSnapshot.length
-        if (root.getAutoHide() && root.getPreset() !== "skew")
+        if (root.getAutoHide() && root.getPreset() !== "skew" && !root.keyboardSession)
             autoHideTimer.restart()
     }
 
     function activateCurrent() {
         const item = itemSnapshot[currentIndex]
-        if (item?.id !== undefined) {
-            NiriService.focusWindow(item.id)
-        }
+        root.focusItem(item)
     }
 
     function confirmCurrent() {
@@ -274,7 +309,8 @@ Scope {
     }
 
     function activateAndClose(windowId) {
-        NiriService.focusWindow(windowId)
+        const item = root.itemSnapshot.find(candidate => candidate.id === windowId)
+        root.focusItem(item)
         if (root.getCloseOnFocus()) {
             closeSwitcher()
         } else if (root.getAutoHide()) {
@@ -287,6 +323,15 @@ Scope {
         interval: root.getAutoHideDelayMs()
         repeat: false
         onTriggered: root.closeSwitcher()
+    }
+
+    // If the compositor misses Alt release while the layer-shell window is
+    // mapping, never leave an exclusive keyboard grab behind.
+    Timer {
+        id: keyboardSessionTimer
+        interval: 3000
+        repeat: false
+        onTriggered: root.confirmCurrent()
     }
 
     // Reset quick switch state after a short delay if user doesn't continue switching
@@ -305,11 +350,11 @@ Scope {
 
     // Window list sync
     Connections {
-        target: NiriService
+        target: CompositorService.isMango ? MangoService : NiriService
         function onWindowsChanged() {
             if (!GlobalStates.waffleAltSwitcherOpen || !root.itemSnapshot.length) return
 
-            const wins = NiriService.windows || []
+            const wins = root.compositorWindows()
             if (!wins.length) {
                 root.closeSwitcher()
                 return
@@ -374,7 +419,7 @@ Scope {
             focus: GlobalStates.waffleAltSwitcherOpen
 
             Keys.onReleased: event => {
-                if (root.getPreset() === "skew" && event.key === Qt.Key_Alt) {
+                if (root.keyboardSession && event.key === Qt.Key_Alt) {
                     root.confirmCurrent()
                     event.accepted = true
                 }
@@ -402,6 +447,7 @@ Scope {
                             root.previousItem()
                         else
                             root.nextItem()
+                        keyboardSessionTimer.restart()
                         event.accepted = true
                         break
                     case Qt.Key_Right:
@@ -491,7 +537,9 @@ Scope {
 
             if (root.getPreset() === "skew") {
                 if (!GlobalStates.waffleAltSwitcherOpen) {
+                    root.keyboardSession = true
                     root.openSwitcher()
+                    keyboardSessionTimer.restart()
                     return
                 }
                 root.nextItem()
@@ -507,15 +555,16 @@ Scope {
                 if (root.getQuickSwitch() && root.itemSnapshot.length > 1 && !root.quickSwitchDone) {
                     root.quickSwitchDone = true
                     root.currentIndex = 1
-                    NiriService.focusWindow(root.itemSnapshot[1].id)
+                    root.focusItem(root.itemSnapshot[1])
                     // Start a timer to reset quickSwitchDone if user doesn't press again
                     quickSwitchResetTimer.restart()
                     return
                 }
+                root.keyboardSession = true
                 root.openSwitcher()
+                keyboardSessionTimer.restart()
             }
             root.nextItem()
-            root.activateCurrent()
         }
 
         function previous(): void {
@@ -546,7 +595,9 @@ Scope {
 
             if (root.getPreset() === "skew") {
                 if (!GlobalStates.waffleAltSwitcherOpen) {
+                    root.keyboardSession = true
                     root.openSwitcher()
+                    keyboardSessionTimer.restart()
                     return
                 }
                 root.previousItem()
@@ -554,10 +605,11 @@ Scope {
             }
 
             if (!GlobalStates.waffleAltSwitcherOpen) {
+                root.keyboardSession = true
                 root.openSwitcher()
+                keyboardSessionTimer.restart()
             }
             root.previousItem()
-            root.activateCurrent()
         }
     }
 }

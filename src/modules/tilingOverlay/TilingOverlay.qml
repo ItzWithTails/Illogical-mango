@@ -15,9 +15,10 @@ Scope {
 
     readonly property bool showPicker: GlobalStates.tilingOverlayPickerOpen
     readonly property bool showOsd: GlobalStates.tilingOverlayOsdOpen
+    readonly property bool isMango: CompositorService.isMango
 
-    readonly property string currentLayout: NiriService.currentLayout
-    readonly property int windowCount: NiriService.tilingWindowCount
+    readonly property string currentLayout: isMango ? MangoService.currentWindowLayout : NiriService.currentLayout
+    readonly property int windowCount: isMango ? MangoService.currentWindowLayoutWindowCount : NiriService.tilingWindowCount
     readonly property var layouts: [
         { id: "off", name: "Off" },
         { id: "master-left", name: "Master Left" },
@@ -31,6 +32,68 @@ Scope {
             if (layouts[i].id === id) return i
         return 0
     }
+
+    function mangoLayoutLabel(layoutId): string {
+        const russian = Translation.languageCode.startsWith("ru")
+        const horizontal = Translation.tr("Horizontal").toLowerCase()
+        const vertical = Translation.tr("Vertical").toLowerCase()
+        const labels = russian ? {
+            "tile": "Плитка",
+            "scroller": "Скроллинг · горизонтальный",
+            "vertical_scroller": "Скроллинг · вертикальный",
+            "grid": Translation.tr("Grid"),
+            "vertical_grid": "Сетка · вертикальная",
+            "monocle": "Монокль",
+            "deck": "Колода",
+            "vertical_deck": "Колода · вертикальная",
+            "center_tile": "Плитка · по центру",
+            "right_tile": "Плитка · справа",
+            "vertical_tile": "Плитка · вертикальная",
+            "dwindle": "Спираль",
+            "fair": "Равномерная сетка",
+            "vertical_fair": "Равномерная сетка · вертикальная"
+        } : {
+            "tile": "Tile",
+            "scroller": `Scroller · ${horizontal}`,
+            "vertical_scroller": `Scroller · ${vertical}`,
+            "grid": Translation.tr("Grid"),
+            "vertical_grid": `${Translation.tr("Grid")} · ${vertical}`,
+            "monocle": "Monocle",
+            "deck": "Deck",
+            "vertical_deck": `Deck · ${vertical}`,
+            "center_tile": "Centered tile",
+            "right_tile": "Right tile",
+            "vertical_tile": `Tile · ${vertical}`,
+            "dwindle": "Dwindle",
+            "fair": Translation.tr("Fair"),
+            "vertical_fair": `${Translation.tr("Fair")} · ${vertical}`
+        }
+        return labels[layoutId] ?? layoutId.replaceAll("_", " ")
+    }
+
+    function mangoLayoutIcon(layoutId): string {
+        const icons = {
+            "tile": "view_quilt",
+            "scroller": "view_carousel",
+            "vertical_scroller": "view_stream",
+            "grid": "grid_view",
+            "vertical_grid": "grid_on",
+            "monocle": "crop_square",
+            "deck": "view_day",
+            "vertical_deck": "vertical_align_center",
+            "center_tile": "align_horizontal_center",
+            "right_tile": "align_horizontal_right",
+            "vertical_tile": "view_agenda",
+            "dwindle": "dashboard",
+            "fair": "space_dashboard",
+            "vertical_fair": "splitscreen"
+        }
+        return icons[layoutId] ?? "view_quilt"
+    }
+
+    readonly property string currentLayoutLabel: isMango
+        ? mangoLayoutLabel(currentLayout)
+        : (layouts[layoutIndex(currentLayout)]?.name ?? "Off")
 
     function applyLayout(id): void {
         NiriService.applyLayout(id)
@@ -113,16 +176,25 @@ Scope {
                         LayoutPreview {
                             anchors.fill: parent
                             anchors.margins: 6
+                            visible: !root.isMango
                             layout: root.currentLayout
                             windowCount: root.windowCount
                             accentColor: Appearance.zzzEverywhere ? Appearance.zzz.accent : Appearance.colors.colOnPrimaryContainer
+                        }
+
+                        MaterialSymbol {
+                            anchors.centerIn: parent
+                            visible: root.isMango
+                            text: root.mangoLayoutIcon(root.currentLayout)
+                            iconSize: 30
+                            color: Appearance.zzzEverywhere ? Appearance.zzz.accent : Appearance.colors.colOnPrimaryContainer
                         }
                     }
 
                     Column {
                         spacing: 2
                         StyledText {
-                            text: root.layouts[root.layoutIndex(root.currentLayout)]?.name ?? "Off"
+                            text: root.currentLayoutLabel
                             font.pixelSize: Appearance.font.pixelSize.large
                             font.weight: Font.DemiBold
                             color: Appearance.zzzEverywhere ? Appearance.zzz.ink : Appearance.colors.colOnLayer0
@@ -132,7 +204,9 @@ Scope {
                             }
                         }
                         StyledText {
-                            text: root.windowCount + " window" + (root.windowCount !== 1 ? "s" : "")
+                            text: root.isMango
+                                ? Translation.tr("%1 windows").replace("%1", root.windowCount)
+                                : root.windowCount + " window" + (root.windowCount !== 1 ? "s" : "")
                             font.pixelSize: Appearance.font.pixelSize.smaller
                             color: Appearance.zzzEverywhere ? Appearance.zzz.ghostInk : Appearance.colors.colSubtext
                         }

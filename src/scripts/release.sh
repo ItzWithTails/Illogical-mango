@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(git -C "$script_dir/../.." rev-parse --show-toplevel)"
+changelog="$repo_root/docs/CHANGELOG.md"
+
 usage() {
   cat <<'EOF'
 Usage:
@@ -35,7 +39,7 @@ extract_notes() {
       if ($0 ~ /^## \[/) exit
       print
     }
-  ' CHANGELOG.md | sed '/^$/N;/^\n$/D'
+  ' "$changelog" | sed '/^$/N;/^\n$/D'
 }
 
 write_notes() {
@@ -52,7 +56,7 @@ $notes
 
 Update: https://github.com/ItzWithTails/illogical-mango?tab=readme-ov-file#update
 Fresh install: https://github.com/ItzWithTails/illogical-mango?tab=readme-ov-file#install
-Full changelog: https://github.com/ItzWithTails/illogical-mango/blob/main/CHANGELOG.md
+Full changelog: https://github.com/ItzWithTails/illogical-mango/blob/main/docs/CHANGELOG.md
 EOF
 }
 

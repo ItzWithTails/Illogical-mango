@@ -15,7 +15,10 @@ AppButton {
     readonly property bool isSeparator: appEntry.appId === "SEPARATOR"
     readonly property var desktopEntry: AppSearch.lookupDesktopEntry(appEntry.appId)
     property bool active: root.appEntry.toplevels.some(t => t.activated)
-    property bool hasWindows: appEntry.toplevels.length > 0
+    readonly property int visibleWindowCount: CompositorService.isMango
+        ? root.appEntry.toplevels.filter(t => t?.isMinimized !== true).length
+        : root.appEntry.toplevels.length
+    property bool hasWindows: root.visibleWindowCount > 0
 
     // Focused window index for smart indicator (Niri)
     property int focusedWindowIndex: {
@@ -61,14 +64,32 @@ AppButton {
         root.hoverPreviewRequested()
     }
 
-    // Count of minimized windows for this app
-    readonly property int minimizedCount: MinimizedWindows.countMinimizedForApp(appEntry.appId)
+    // Niri emulates minimize with a hidden workspace; mango exposes the real
+    // minimized state on each client.
+    readonly property var mangoMinimizedToplevels: CompositorService.isMango
+        ? root.appEntry.toplevels.filter(t => t?.isMinimized === true)
+        : []
+    readonly property int minimizedCount: CompositorService.isMango
+        ? root.mangoMinimizedToplevels.length
+        : MinimizedWindows.countMinimizedForApp(appEntry.appId)
     readonly property bool hasMinimized: minimizedCount > 0
 
     function niriWindowIds(): list<var> {
         const ids = []
         for (const toplevel of root.appEntry.toplevels ?? []) {
             const id = Number(toplevel?.niriWindowId ?? -1)
+            if (id > 0)
+                ids.push(id)
+        }
+        return ids
+    }
+
+    function mangoWindowIds(includeMinimized = true): list<var> {
+        const ids = []
+        for (const toplevel of root.appEntry.toplevels ?? []) {
+            if (!includeMinimized && toplevel?.isMinimized === true)
+                continue
+            const id = Number(toplevel?.mangoWindowId ?? -1)
             if (id > 0)
                 ids.push(id)
         }
@@ -114,7 +135,30 @@ AppButton {
         
         const isAppFocused = root.wasActive;
 
-        if (CompositorService.isNiri) {
+        if (CompositorService.isMango) {
+            const focused = root.appEntry.toplevels.find(t => t.activated === true)
+
+            // KDE/Windows-style task button: clicking the focused app hides
+            // it, while clicking its dimmed task restores it.
+            if (isAppFocused && focused?.mangoWindowId) {
+                MangoService.minimizeWindow(focused.mangoWindowId)
+                return
+            }
+
+            if (root.hasMinimized) {
+                const minimized = root.mangoMinimizedToplevels[root.mangoMinimizedToplevels.length - 1]
+                if (minimized?.mangoWindowId) {
+                    MangoService.restoreMinimizedWindow(minimized.mangoWindowId)
+                    return
+                }
+            }
+
+            const windowIds = root.mangoWindowIds(false)
+            if (windowIds.length > 0) {
+                MangoService.focusWindow(windowIds[0])
+                return
+            }
+        } else if (CompositorService.isNiri) {
             const windowIds = root.niriWindowIds()
 
             // Case 1: App is focused -> minimize the exact active window.
@@ -184,7 +228,7 @@ AppButton {
 
         // Active windows
         Repeater {
-            model: Math.min(appEntry.toplevels.length, 5)
+            model: Math.min(root.visibleWindowCount, 5)
             delegate: Rectangle {
                 required property int index
                 property bool isFocused: root.active && index === root.focusedWindowIndex
@@ -262,16 +306,34 @@ AppButton {
                     TaskbarApps.togglePin(root.appEntry.appId);
                 }
             },
-            // MinimizedWindows is the Niri hidden-workspace workaround.
-            // Do not advertise a no-op action on secondary compositors.
-            ...(CompositorService.isNiri
-                    && root.appEntry.toplevels.length > 0 ? [
+            ...((CompositorService.isNiri || CompositorService.isMango)
+                    && root.appEntry.toplevels.length > root.minimizedCount ? [
                 {
                     iconName: "caret-down",
-                    text: root.multiple ? Translation.tr("Move all down") : Translation.tr("Move down"),
+                    text: Translation.tr("Minimize"),
                     action: () => {
-                        for (const id of root.niriWindowIds())
-                            MinimizedWindows.minimize(id)
+                        if (CompositorService.isMango) {
+                            for (const id of root.mangoWindowIds(false))
+                                MangoService.minimizeWindow(id)
+                        } else {
+                            for (const id of root.niriWindowIds())
+                                MinimizedWindows.minimize(id)
+                        }
+                    }
+                }
+            ] : []),
+            ...(root.hasMinimized ? [
+                {
+                    iconName: "arrow-up",
+                    text: Translation.tr("Show"),
+                    action: () => {
+                        if (CompositorService.isMango) {
+                            const minimized = root.mangoMinimizedToplevels[root.mangoMinimizedToplevels.length - 1]
+                            if (minimized?.mangoWindowId)
+                                MangoService.restoreMinimizedWindow(minimized.mangoWindowId)
+                        } else {
+                            MinimizedWindows.restoreLatestForApp(root.appEntry.appId)
+                        }
                     }
                 }
             ] : []),

@@ -10,6 +10,9 @@ import Quickshell
 StyledFlickable {
     id: root
     required property int length
+    clip: true
+    interactive: false
+    boundsBehavior: Flickable.StopAtBounds
     contentWidth: dotsRow.implicitWidth
     contentX: (Math.max(contentWidth - width, 0))
     Behavior on contentX {
@@ -20,9 +23,8 @@ StyledFlickable {
         anchors {
             left: parent.left
             verticalCenter: parent.verticalCenter
-            leftMargin: 4
         }
-        spacing: 10
+        spacing: 2
         Repeater {
             model: ScriptModel {
                 values: Array(root.length)
@@ -30,8 +32,11 @@ StyledFlickable {
             delegate: Item {
                 id: charItem
                 required property int index
-                implicitWidth: 10
-                implicitHeight: 10
+                // Reserve the final animated size. Previously the 18 px shape
+                // lived in a 10 px slot, so the first and last characters
+                // could paint outside the password field.
+                implicitWidth: 18
+                implicitHeight: 18
                 MaterialShape {
                     id: materialShape
                     anchors.centerIn: parent

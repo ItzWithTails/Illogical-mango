@@ -14,7 +14,8 @@ MouseArea {
     id: root
     required property SystemTrayItem item
     property bool targetMenuOpen: false
-    readonly property bool tintIcon: Config.options?.bar?.m3?.tray?.monochromeIcons ?? true
+    readonly property bool tintIcon: (Config.options?.bar?.m3?.tray?.monochromeIcons ?? true)
+        && !TrayService.shouldPreserveIconColors(root.item)
     readonly property string iconSource: TrayService.getSafeIcon(root.item)
 
     signal menuOpened(qsWindow: var)
@@ -27,7 +28,8 @@ MouseArea {
     onPressed: (event) => {
         switch (event.button) {
         case Qt.LeftButton:
-            item.activate();
+            if (!TrayService.smartToggle(item))
+                item.activate();
             break;
         case Qt.RightButton:
             if (item.hasMenu)

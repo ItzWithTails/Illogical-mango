@@ -981,6 +981,12 @@ Item { // Bar content region
     FocusedScrollMouseArea { // Left side | scroll to change brightness
         id: barLeftSideMouseArea
 
+        // This area intentionally spans the empty space between the edge and
+        // centre modules so scrolling works there.  Do not turn that whole
+        // space into an invisible sidebar button: left clicks belong only to
+        // the visible module buttons inside the area.
+        acceptedButtons: Qt.RightButton
+
         anchors {
             top: parent.top
             bottom: parent.bottom
@@ -995,12 +1001,7 @@ Item { // Bar content region
         onScrollDown: root.performScrollAction(root.leftAction, false)
         onScrollUp: root.performScrollAction(root.leftAction, true)
         onMovedAway: root.closeOSD(root.leftAction)
-        onPressed: event => {
-            if (event.button === Qt.LeftButton)
-                ShellLayoutController.toggleSidebarAtSlot("left");
-            else if (event.button === Qt.RightButton)
-                root.openBarContextMenu(event.x, event.y, barLeftSideMouseArea)
-        }
+        onPressed: event => root.openBarContextMenu(event.x, event.y, barLeftSideMouseArea)
 
         // ScrollHint as overlay - at the inner edge of the margin space
         ScrollHint {
@@ -1291,6 +1292,10 @@ Item { // Bar content region
     FocusedScrollMouseArea { // Right side | scroll to change volume
         id: barRightSideMouseArea
 
+        // As on the left, keep the wide background useful for scrolling and
+        // right-clicks without making its empty portion toggle the sidebar.
+        acceptedButtons: Qt.RightButton
+
         anchors {
             top: parent.top
             bottom: parent.bottom
@@ -1303,13 +1308,7 @@ Item { // Bar content region
         onScrollDown: root.performScrollAction(root.rightAction, false)
         onScrollUp: root.performScrollAction(root.rightAction, true)
         onMovedAway: root.closeOSD(root.rightAction)
-        onPressed: event => {
-            if (event.button === Qt.LeftButton) {
-                ShellLayoutController.toggleSidebarAtSlot("right");
-            } else if (event.button === Qt.RightButton) {
-                root.openBarContextMenu(event.x, event.y, barRightSideMouseArea)
-            }
-        }
+        onPressed: event => root.openBarContextMenu(event.x, event.y, barRightSideMouseArea)
 
         // ScrollHint as overlay - at the inner edge of the margin space
         ScrollHint {

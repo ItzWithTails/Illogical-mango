@@ -46,6 +46,24 @@ Singleton {
     property int currentKeyboardLayoutIndex: 0
     readonly property bool hasMultipleKeyboardLayouts: keyboardLayoutNames.length > 1
 
+    // Window layout shown by mango for the active tag. Keep this separate from
+    // the similarly named keyboard layout API below.
+    readonly property var currentWindowLayoutWorkspace: root.activeWorkspaceForOutput(root.currentOutput)
+    readonly property string currentWindowLayoutSymbol: currentWindowLayoutWorkspace?.layout
+        ?? root.outputs[root.currentOutput]?.layout_symbol
+        ?? ""
+    readonly property string currentWindowLayout: root.windowLayoutNameFromSymbol(currentWindowLayoutSymbol)
+    readonly property int currentWindowLayoutWindowCount: {
+        const workspace = root.currentWindowLayoutWorkspace
+        if (!workspace)
+            return 0
+        return root.windows.filter(window =>
+            window.monitor === root.currentOutput
+            && Array.isArray(window.tags)
+            && window.tags.includes(workspace.idx)
+            && !window.is_minimized).length
+    }
+
     signal windowUrgentChanged
     signal windowOrderChanged
 
@@ -260,6 +278,8 @@ Singleton {
             if (!prev) return true
             if (prev.workspace_id !== w.workspace_id || !!prev.is_floating !== !!w.is_floating)
                 return true
+            if (!!prev.is_minimized !== !!w.is_minimized)
+                return true
         }
         return false
     }
@@ -309,6 +329,44 @@ Singleton {
 
     function closeWindow(windowId) {
         return dispatch("killclient,0", windowId)
+    }
+
+    function cycleWindowLayout() {
+        return dispatch("switch_layout")
+    }
+
+    function setWindowLayout(layoutName) {
+        return dispatch("setlayout," + layoutName)
+    }
+
+    function windowLayoutNameFromSymbol(symbol) {
+        const names = {
+            "T": "tile",
+            "S": "scroller",
+            "G": "grid",
+            "M": "monocle",
+            "K": "deck",
+            "CT": "center_tile",
+            "RT": "right_tile",
+            "VS": "vertical_scroller",
+            "VT": "vertical_tile",
+            "VG": "vertical_grid",
+            "VK": "vertical_deck",
+            "DW": "dwindle",
+            "F": "fair",
+            "VF": "vertical_fair"
+        }
+        return names[symbol] ?? symbol.toLowerCase()
+    }
+
+    // mango supports real minimized clients, unlike Niri's hidden-workspace
+    // emulation. Keep the raw dispatch names out of taskbar components.
+    function minimizeWindow(windowId) {
+        return dispatch("minimized", windowId)
+    }
+
+    function restoreMinimizedWindow(windowId) {
+        return dispatch("restore_minimized", windowId)
     }
 
     function powerOffMonitors() {
@@ -365,6 +423,24 @@ Singleton {
         return 1
     }
 
+    function activeWorkspaceForOutput(outputName) {
+        return allWorkspaces.find(workspace =>
+            workspace.output === outputName && workspace.is_active) ?? null
+    }
+
+    function activeWindowForOutput(outputName) {
+        const workspace = activeWorkspaceForOutput(outputName)
+        if (!workspace)
+            return null
+        const workspaceWindows = windows.filter(window =>
+            window.monitor === outputName
+            && Array.isArray(window.tags)
+            && window.tags.includes(workspace.idx))
+        return workspaceWindows.find(window => window.is_focused)
+            ?? workspaceWindows[0]
+            ?? null
+    }
+
     // ========== TOPLEVEL <-> CLIENT MATCHING (mirrors NiriService) ==========
 
     function matchToplevelToWindow(toplevel, mangoWindow) {
@@ -386,6 +462,7 @@ Singleton {
             "activated": !!mangoWindow.is_focused,
             "mangoWindowId": windowId,
             "mangoWorkspaceId": mangoWindow.workspace_id,
+            "isMinimized": !!mangoWindow.is_minimized,
             "_sourceKey": `mango:${windowId}`,
             "_sourceToplevel": toplevel,
             "activate": function () { return MangoService.focusWindow(windowId) },
@@ -445,13 +522,7 @@ Singleton {
     }
 
     function filterCurrentWorkspace(toplevels, screenName) {
-        let currentTagIndex = null
-        for (const ws of allWorkspaces) {
-            if (ws.output === screenName && ws.is_active) {
-                currentTagIndex = ws.idx
-                break
-            }
-        }
+        const currentTagIndex = activeWorkspaceForOutput(screenName)?.idx ?? null
         if (currentTagIndex === null)
             return toplevels
 

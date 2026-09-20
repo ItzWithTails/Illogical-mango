@@ -1,6 +1,6 @@
 pkgbase = ilmango-meta
 	pkgdesc = Full Illogical-mango desktop experience meta-package
-	pkgver = 2.29.2
+	pkgver = 2.29.3
 	pkgrel = 1
 	url = https://github.com/ItzWithTails/illogical-mango
 	arch = any

@@ -1,7 +1,7 @@
 # Maintainer: snowarch
 
 pkgname=ilmango-shell
-pkgver=2.29.2
+pkgver=2.29.3
 pkgrel=1
 pkgdesc='Illogical-mango shell payload, launcher, and user service'
 arch=(any)

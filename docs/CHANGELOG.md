@@ -9,28 +9,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.29.3] - 2026-09-20
+
+A Mango and Waffle integration release focused on making the shell behave like
+a complete desktop rather than a collection of compositor-specific surfaces.
+
+### Added
+- **Windows-style Alt+Tab on Mango**: Waffle now presents a visual MRU switcher,
+  supports forward and reverse cycling, restores minimized clients, and safely
+  releases its keyboard grab even if the compositor misses the Alt release.
+- **Mango layout OSD**: `Super+N` cycles Mango's native window layouts and shows
+  the active layout at the top of the screen, including horizontal and vertical
+  scroller direction and the current window count.
+- **Native Mango minimize/restore**: Waffle task buttons, previews, and context
+  menus use Mango's real minimized-client support.
+- **Desktop integration helpers**: added PipeWire-to-ALSA microphone mute LED
+  synchronization and a KDE-style xdg-desktop-portal-wlr screencast chooser.
+
 ### Changed
-- **Renamed iNiR to Illogical-mango.** The brand is `Illogical-mango`; the CLI, config
-  paths, environment variables and internal identifiers are `ilmango`. `mango` alone was
-  not available — it already means the MangoWC compositor throughout the tree.
-  - CLI: `inir` → `ilmango`; the launcher, completions, desktop entries, systemd units
-    and Arch packages follow the same name.
-  - Config: `~/.config/inir` → `~/.config/ilmango`; shell payload
-    `~/.config/quickshell/inir` → `~/.config/quickshell/ilmango`.
-  - Environment: every `INIR_*` variable is now `ILMANGO_*` (`INIR_VENV` → `ILMANGO_VENV`).
-  - Compositor keybinds move from `~/.config/mango/inir.conf` to
-    `~/.config/mango/ilmango.conf`, and the `source-optional=` line is rewritten in place.
-  - The `Inir` global style is now `Ilmango`: `appearance.globalStyle` values and
-    `globalStyleCornerStyles` keys are renamed in user configs, along with all 15
-    translation files.
-  - Update checks and packaging now point at `ItzWithTails/illogical-mango` instead of the
-    upstream repository.
-  - Migration `037-ilmango-rename` moves every installed artifact and leaves symlinks at
-    the old paths, so existing keybinds and user scripts keep resolving. Arch packages
-    carry `provides`/`replaces` for their `inir-*` predecessors.
-  - Upstream references are untouched: `snowarch/iNiR`, the `iNiR-Walls` wallpaper pack and
-    the `inir-mascot` art pack keep their names, and credits still name iNiR as the shell
-    this was ported from.
+- **Renamed iNiR to Illogical-mango.** The brand is `Illogical-mango`; the CLI,
+  config paths, environment variables, systemd units, Arch packages, migration,
+  and internal identifiers now use `ilmango`. Compatibility symlinks preserve
+  existing user scripts, while upstream iNiR project and asset names remain
+  unchanged in credits and download sources.
+- **Per-monitor window state**: active-window labels and taskbars now follow each
+  output's active workspace across Mango, Niri, and Hyprland instead of leaking
+  global focus or windows from another display.
+- **Tray behavior**: stateful icons can preserve their original colors, broken
+  Electron icon names receive safer fallbacks, and supported applications use
+  smarter activate/show behavior.
+- **Overview spacing**: tiled window previews keep a configurable inset so their
+  borders no longer overlap.
+
+### Fixed
+- **Waffle family switching**: `Super+Shift+W` no longer crashes the shell or
+  leaves keyboard and interface input unusable.
+- **Waffle taskbar interactions**: clicking a focused Mango application minimizes
+  it, clicking a minimized task restores it, and previews focus or close the
+  correct native client.
+- **Lock screen password rendering**: long passwords remain clipped inside the
+  field in the standard, Waffle, and safe lock surfaces.
+- **Bar input regions**: empty scroll areas no longer act as invisible sidebar
+  buttons while retaining scrolling and right-click behavior.
 
 ## [2.29.2] - 2026-08-24
 

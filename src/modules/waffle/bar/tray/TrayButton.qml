@@ -19,7 +19,9 @@ BarIconButton {
     property var trayParent: null  // Reference to Tray for closing other menus
     property alias menuOpen: menu.visible
     readonly property bool barAtBottom: Config.options?.waffles?.bar?.bottom ?? false
-    readonly property bool tintIcons: Config.options?.waffles?.bar?.tintTrayIcons ?? false
+    readonly property bool tintIcons: (Config.options?.waffles?.bar?.tintTrayIcons ?? false)
+        && !TrayService.shouldPreserveIconColors(root.item)
+    readonly property string iconSource: TrayService.getSafeIcon(root.item)
     readonly property color themeIconColor: Looks.colors.fg
 
     iconScale: 0
@@ -64,7 +66,7 @@ BarIconButton {
         anchors.centerIn: parent
         width: 16
         height: 16
-        source: root.item?.icon ?? ""
+        source: root.iconSource
     }
 
     // Tinted icon (same style as WAppIcon)
@@ -79,7 +81,7 @@ BarIconButton {
                 id: tintedIcon
                 visible: false
                 anchors.fill: parent
-                source: root.item?.icon ?? ""
+                source: root.iconSource
             }
             Colorize {
                 anchors.fill: tintedIcon

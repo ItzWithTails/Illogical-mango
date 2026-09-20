@@ -46,7 +46,10 @@ QtObject {
         }
 
         function cycle(): void {
-            NiriService.cycleLayout()
+            if (CompositorService.isMango)
+                MangoService.cycleWindowLayout()
+            else
+                NiriService.cycleLayout()
             GlobalStates.tilingOverlayOsdOpen = true
             GlobalStates.tilingOverlayPickerOpen = false
             root.osdTimer.restart()
@@ -59,7 +62,8 @@ QtObject {
         }
 
         function promote(): void {
-            NiriService.promoteToMaster()
+            if (!CompositorService.isMango)
+                NiriService.promoteToMaster()
         }
     }
 }
