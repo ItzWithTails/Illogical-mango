@@ -2,6 +2,10 @@ name: installer-v2
 
 on:
   push:
+    branches:
+      - "**"
+    tags:
+      - "v*"
     paths:
       - "installer/**"
       - "install"
@@ -32,7 +36,7 @@ jobs:
       - run: go vet ./...
 
   release-binaries:
-    if: github.event_name == 'release'
+    if: github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v')
     needs: test
     runs-on: ubuntu-latest
     permissions:
