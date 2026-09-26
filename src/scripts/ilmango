@@ -333,11 +333,11 @@ EOF
 
 find_qs() {
     if [[ ! -x "$qs_bin" ]]; then
-        qs_bin="$(command -v qs || true)"
+        qs_bin="$(command -v qs 2>/dev/null || command -v quickshell 2>/dev/null || true)"
     fi
 
     if [[ -z "${qs_bin:-}" || ! -x "$qs_bin" ]]; then
-        echo "qs not found" >&2
+        echo "Quickshell not found (looked for 'qs' and 'quickshell')" >&2
         exit 1
     fi
 }

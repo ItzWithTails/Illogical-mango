@@ -9,11 +9,15 @@ on:
     paths:
       - "installer/**"
       - "install"
+      - "src/scripts/ilmango"
+      - "src/shell.qml"
       - ".github/workflows/installer-v2.yml"
   pull_request:
     paths:
       - "installer/**"
       - "install"
+      - "src/scripts/ilmango"
+      - "src/shell.qml"
   release:
     types: [published]
 
@@ -34,6 +38,11 @@ jobs:
           cache-dependency-path: installer/go.sum
       - run: go test -race ./...
       - run: go vet ./...
+      - name: Check runtime launcher compatibility
+        run: |
+          bash -n ../src/scripts/ilmango
+          grep -q 'command -v quickshell' ../src/scripts/ilmango
+          ! grep -q 'pragma DefaultEnv' ../src/shell.qml
 
   release-binaries:
     if: github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v')
