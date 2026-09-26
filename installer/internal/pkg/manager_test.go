@@ -2,11 +2,42 @@ package pkg
 
 import (
 	"context"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
 	"ilmango/internal/run"
 )
+
+func TestMissingUsesPacmanDependencyResolutionForProvides(t *testing.T) {
+	bin := t.TempDir()
+	pacman := filepath.Join(bin, "pacman")
+	script := `#!/bin/sh
+if [ "$1" != "-T" ]; then exit 2; fi
+shift
+missing=0
+for dependency in "$@"; do
+    case "$dependency" in
+        quickshell) ;; # satisfied by an installed provider
+        *) printf '%s\n' "$dependency"; missing=1 ;;
+    esac
+done
+if [ "$missing" -eq 1 ]; then exit 127; fi
+`
+	if err := os.WriteFile(pacman, []byte(script), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PATH", bin)
+
+	missing, err := (Manager{Name: "yay"}).Missing(context.Background(), &run.Runner{Mode: run.ModeApply}, []string{"quickshell", "mangowm"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(missing) != 1 || missing[0] != "mangowm" {
+		t.Fatalf("Missing() = %v, want [mangowm]", missing)
+	}
+}
 
 func TestBatchBudgetScalesWithTheWorkAndIsCapped(t *testing.T) {
 	small := BatchBudget(5)

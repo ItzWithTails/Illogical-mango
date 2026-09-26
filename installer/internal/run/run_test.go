@@ -54,6 +54,26 @@ func TestPrivilegedCommandsNeverPrompt(t *testing.T) {
 	}
 }
 
+func TestAcquireCommandExplainsHiddenSudoInput(t *testing.T) {
+	bin := t.TempDir()
+	if err := os.WriteFile(filepath.Join(bin, "sudo"), []byte("#!/bin/sh\nexit 0\n"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PATH", bin)
+
+	name, args, ok := (&Runner{}).AcquireCommand()
+	if !ok || name != "sudo" {
+		t.Fatalf("AcquireCommand() = %q %v, %v; want sudo command", name, args, ok)
+	}
+	joined := strings.Join(args, " ")
+	if !strings.Contains(joined, "input is hidden") || !strings.Contains(joined, "press Enter") {
+		t.Fatalf("sudo prompt does not explain invisible password input: %q", joined)
+	}
+	if args[len(args)-1] != "-v" {
+		t.Fatalf("AcquireCommand() args = %v; want credential validation with -v", args)
+	}
+}
+
 func TestResolveRejectsNamelessCommand(t *testing.T) {
 	r := Runner{}
 	if _, _, err := r.resolve(Command{}); err == nil {

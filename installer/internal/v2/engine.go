@@ -61,15 +61,9 @@ func (a ArchPackages) Install(ctx context.Context, cfg Config, names []string, e
 
 	// A successful exit is not enough: helpers and hooks can return zero while
 	// leaving a requested package unavailable. Verify the resulting state.
-	present, err := manager.InstalledSet(ctx, runner)
+	missing, err := manager.Missing(ctx, runner, names)
 	if err != nil {
 		return fmt.Errorf("could not verify installed dependencies: %w", err)
-	}
-	var missing []string
-	for _, name := range names {
-		if !present[name] {
-			missing = append(missing, name)
-		}
 	}
 	if len(missing) > 0 {
 		return fmt.Errorf("package manager finished, but these dependencies are still missing: %s", strings.Join(missing, ", "))

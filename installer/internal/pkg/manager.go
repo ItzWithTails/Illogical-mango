@@ -211,18 +211,11 @@ func (m Manager) CanUpgrade() bool { return len(m.UpgradeArgs) > 0 }
 // rather than treated as fatal: most are optional tools, and abandoning the
 // install over one of them helps nobody.
 func (m Manager) Install(ctx context.Context, r *run.Runner, names []string, report func(Progress)) (failed []string, err error) {
-	present, err := m.InstalledSet(ctx, r)
+	wanted, err := m.Missing(ctx, r, names)
 	if err != nil {
-		// Without the set we simply try everything; the manager skips what is
+		// Without the dependency check we simply try everything; the manager skips what is
 		// already there anyway.
-		present = map[string]bool{}
-	}
-
-	var wanted []string
-	for _, name := range names {
-		if !present[name] {
-			wanted = append(wanted, name)
-		}
+		wanted = append([]string{}, names...)
 	}
 	if len(wanted) == 0 {
 		return nil, nil
@@ -237,16 +230,14 @@ func (m Manager) Install(ctx context.Context, r *run.Runner, names []string, rep
 	// A failed batch is rarely a total loss: package managers install what they
 	// can and give up on the one that broke. Re-reading what is present keeps
 	// the retry loop from rebuilding everything that already succeeded.
-	if after, err := m.InstalledSet(ctx, r); err == nil {
-		present = after
+	remaining := wanted
+	if after, err := m.Missing(ctx, r, wanted); err == nil {
+		remaining = after
 	}
 
-	for _, name := range wanted {
+	for _, name := range remaining {
 		if err := ctx.Err(); err != nil {
 			return failed, err
-		}
-		if present[name] {
-			continue
 		}
 		if err := m.install(ctx, r, []string{name}, PackageBudget, watch); err != nil {
 			failed = append(failed, name)
@@ -465,6 +456,40 @@ func (m Manager) InstalledSet(ctx context.Context, r *run.Runner) (map[string]bo
 	return set, nil
 }
 
+// Missing returns the requested dependencies that are not satisfied.
+//
+// Arch packages can satisfy a dependency through Provides (for example,
+// noctalia-qs provides quickshell). pacman -Qq only reports real package names,
+// so filtering against InstalledSet would try to install the provided name and
+// can trigger a needless conflict. pacman -T is the native dependency check and
+// understands both Provides and version constraints.
+func (m Manager) Missing(ctx context.Context, r *run.Runner, names []string) ([]string, error) {
+	if len(names) == 0 {
+		return nil, nil
+	}
+	if (m.Name == "pacman" || m.Name == "paru" || m.Name == "yay") && run.Exists("pacman") {
+		args := append([]string{"-T"}, names...)
+		out, err := r.Output(ctx, run.Command{Name: "pacman", Args: args})
+		missing := strings.Fields(out)
+		if err != nil && len(missing) == 0 {
+			return nil, err
+		}
+		return missing, nil
+	}
+
+	installed, err := m.InstalledSet(ctx, r)
+	if err != nil {
+		return nil, err
+	}
+	missing := make([]string, 0, len(names))
+	for _, name := range names {
+		if !installed[name] {
+			missing = append(missing, name)
+		}
+	}
+	return missing, nil
+}
+
 // IsInstalled reports whether a package is present.
 func (m Manager) IsInstalled(ctx context.Context, r *run.Runner, name string) bool {
 	if len(m.QueryArgs) == 0 {
@@ -490,18 +515,15 @@ func (m Manager) ConflictsWith(ctx context.Context, r *run.Runner, names []strin
 		return nil // only pacman's query syntax is known here
 	}
 
-	installed, err := m.InstalledSet(ctx, r)
+	missing, err := m.Missing(ctx, r, names)
 	if err != nil {
 		return nil
 	}
 
 	var found []Conflict
-	for _, name := range names {
-		if installed[name] {
-			continue // already there, so nothing to conflict with
-		}
+	for _, name := range missing {
 		for _, other := range m.declaredConflicts(ctx, r, name) {
-			if installed[other] {
+			if m.IsInstalled(ctx, r, other) {
 				found = append(found, Conflict{Wanted: name, Installed: other})
 			}
 		}

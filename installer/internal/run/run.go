@@ -477,7 +477,11 @@ func (r *Runner) HasPrivileges(ctx context.Context) bool {
 func (r *Runner) AcquireCommand() (name string, args []string, ok bool) {
 	switch tool := r.privilegeTool(); tool {
 	case "sudo":
-		return tool, []string{"-v"}, true
+		// sudo deliberately disables terminal echo while a password is typed.
+		// Say that in the prompt: without the hint, an empty-looking input is
+		// easily mistaken for a frozen installer after Bubble Tea hands the
+		// terminal to sudo.
+		return tool, []string{"-p", "[sudo] password for %p (input is hidden; type it and press Enter): ", "-v"}, true
 	case "doas":
 		return tool, []string{"true"}, true
 	default:

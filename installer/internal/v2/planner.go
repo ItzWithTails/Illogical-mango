@@ -128,8 +128,13 @@ func BuildPlan(cfg Config) (*Plan, error) {
 		return nil, fmt.Errorf("cannot update: no v2 installation record exists; use install")
 	}
 	if cfg.Root == "" && !run.Exists("mango") && !run.Exists("mmsg") {
-		p.Impact.Warnings = append(p.Impact.Warnings,
-			"MangoWM was not found on PATH. The shell files can be installed, but you need a working Mango session separately.")
+		if cfg.Packages && system.DetectDistro().Family == system.FamilyArch {
+			p.Impact.Warnings = append(p.Impact.Warnings,
+				"MangoWM is not installed yet; the Arch dependency plan will install mangowm and its login session.")
+		} else {
+			p.Impact.Warnings = append(p.Impact.Warnings,
+				"MangoWM was not found on PATH. The shell files can be installed, but you need a working Mango session separately.")
+		}
 	}
 
 	desired, unmanaged, seededMain, err := buildDesired(cfg, repo)
@@ -586,20 +591,7 @@ func appendPackageImpact(p *Plan) error {
 		p.Impact.Warnings = append(p.Impact.Warnings,
 			"You explicitly enabled a full Arch system upgrade. This can change packages unrelated to Illogical-mango.")
 	}
-	core := []string{
-		"bash", "curl", "jq", "python", "quickshell", "qt6-5compat", "qt6-base",
-		"qt6-declarative", "qt6-imageformats", "qt6-multimedia", "qt6-positioning",
-		"qt6-sensors", "qt6-svg", "qt6-wayland", "kirigami", "syntax-highlighting",
-	}
-	if p.Config.Preset != Minimal {
-		core = append(core, "cliphist", "foot", "fuzzel", "grim", "matugen", "pipewire",
-			"playerctl", "slurp", "ttf-material-symbols-variable-git", "ttf-roboto-flex",
-			"wireplumber", "wl-clipboard")
-	}
-	if p.Config.Preset == Full {
-		core = append(core, "brightnessctl", "cava", "ddcutil", "imagemagick", "mpv",
-			"swappy", "upower", "wf-recorder", "ydotool")
-	}
+	core := archPackages(p.Config.Preset)
 	p.Impact.Packages = uniqueSorted(core)
 	if manager.Name == "pacman" {
 		for _, name := range p.Impact.Packages {
@@ -610,6 +602,24 @@ func appendPackageImpact(p *Plan) error {
 	}
 	p.Impact.Details = append(p.Impact.Details, "package manager: "+manager.Name)
 	return nil
+}
+
+func archPackages(preset Preset) []string {
+	core := []string{
+		"bash", "curl", "jq", "mangowm", "python", "quickshell", "qt6-5compat", "qt6-base",
+		"qt6-declarative", "qt6-imageformats", "qt6-multimedia", "qt6-positioning",
+		"qt6-sensors", "qt6-svg", "qt6-wayland", "kirigami", "syntax-highlighting",
+	}
+	if preset != Minimal {
+		core = append(core, "cliphist", "foot", "fuzzel", "grim", "matugen", "pipewire",
+			"playerctl", "slurp", "ttf-material-symbols-variable-git", "ttf-roboto-flex",
+			"wireplumber", "wl-clipboard")
+	}
+	if preset == Full {
+		core = append(core, "brightnessctl", "cava", "ddcutil", "imagemagick", "mpv",
+			"swappy", "upower", "wf-recorder", "ydotool")
+	}
+	return core
 }
 
 func keyboardSettings(mainConfig, layout string) string {
