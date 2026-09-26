@@ -36,6 +36,7 @@ singleton MangoService 1.0 MangoService.qml
 singleton MaterialThemeLoader 1.0 MaterialThemeLoader.qml
 singleton MemoryPressureService 1.0 MemoryPressureService.qml
 singleton MinimizedWindows 1.0 MinimizedWindows.qml
+singleton MonitorConfig 1.0 MonitorConfig.qml
 singleton MascotChaos 1.0 MascotChaos.qml
 singleton MascotMood 1.0 MascotMood.qml
 singleton MprisController 1.0 MprisController.qml

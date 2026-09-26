@@ -8,6 +8,7 @@ AutostartConfig 1.0 AutostartConfig.qml
 WorkspaceStripConfig 1.0 WorkspaceStripConfig.qml
 DockConfig 1.0 DockConfig.qml
 M3LayoutSection 1.0 M3LayoutSection.qml
+MonitorConfiguration 1.0 MonitorConfiguration.qml
 SidebarsConfig 1.0 SidebarsConfig.qml
 SettingsOverlay 1.0 SettingsOverlay.qml
 SettingsFocus 1.0 SettingsFocus.qml

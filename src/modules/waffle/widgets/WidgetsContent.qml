@@ -122,6 +122,7 @@ WBarAttachedPanelContent {
             // Header
             BodyRectangle {
                 Layout.fillWidth: true
+                Layout.fillHeight: false
                 implicitHeight: Looks.dp(56)
 
                 RowLayout {
@@ -158,6 +159,7 @@ WBarAttachedPanelContent {
             // Date & Time widget
             BodyRectangle {
                 Layout.fillWidth: true
+                Layout.fillHeight: false
                 implicitHeight: dateTimeContent.implicitHeight + Looks.dp(36)
                 visible: Config.options?.waffles?.widgetsPanel?.showDateTime ?? true
 
@@ -206,6 +208,7 @@ WBarAttachedPanelContent {
             // Weather widget
             BodyRectangle {
                 Layout.fillWidth: true
+                Layout.fillHeight: false
                 implicitHeight: weatherContent.implicitHeight + Looks.dp(32)
                 visible: (Config.options?.waffles?.widgetsPanel?.showWeather ?? true) && Weather.data.temp !== undefined && Weather.data.temp !== ""
 
@@ -390,6 +393,7 @@ WBarAttachedPanelContent {
             // System Resources widget
             BodyRectangle {
                 Layout.fillWidth: true
+                Layout.fillHeight: false
                 implicitHeight: sysContent.implicitHeight + Looks.dp(36)
                 visible: Config.options?.waffles?.widgetsPanel?.showSystem ?? true
 
@@ -516,6 +520,7 @@ WBarAttachedPanelContent {
             BodyRectangle {
                 id: mediaWidget
                 Layout.fillWidth: true
+                Layout.fillHeight: false
                 implicitHeight: ((Config.options?.waffles?.widgetsPanel?.showMedia ?? true) && MprisController.activePlayer !== null) ? mediaContent.implicitHeight : 0
                 visible: implicitHeight > 0
                 Behavior on implicitHeight { enabled: Appearance.animationsEnabled; NumberAnimation { duration: Appearance.animation.elementMoveEnter.duration; easing.type: Appearance.animation.elementMoveEnter.type; easing.bezierCurve: Appearance.animation.elementMoveEnter.bezierCurve } }
@@ -773,7 +778,10 @@ WBarAttachedPanelContent {
 
                                 delegate: QuickActionButton {
                                     required property var modelData
-                                    width: (parent.width - Looks.dp(16)) / 3
+                                    // Do not derive delegate width from Grid.width: Grid's
+                                    // implicit width is itself derived from its delegates.
+                                    // That feedback loop can pin Qt's layout pass at 100% CPU.
+                                    width: (actionsContent.width - Looks.dp(20)) / 3
                                     iconName: modelData.icon
                                     label: modelData.label
                                     onClicked: root.runQuickAction(modelData.id)

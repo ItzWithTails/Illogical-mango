@@ -140,7 +140,7 @@ Singleton {
             key: "monitors",
             name: Translation.tr("Monitors"),
             icon: "display_settings",
-            desc: Translation.tr("Per-monitor shell visibility"),
+            desc: Translation.tr("Modes, arrangement, and shell visibility"),
             essential: true,
             component: "modules/settings/MonitorVisibilityConfig.qml"
         },
@@ -867,6 +867,13 @@ Singleton {
         // =====================================================================
         // Monitors (page 15)
         // =====================================================================
+        {
+            pageIndex: 15, pageName: root.pages[15].name,
+            section: Translation.tr("Display configuration"),
+            label: Translation.tr("Resolution, refresh rate, and layout"),
+            description: Translation.tr("Arrange displays and choose output modes"),
+            keywords: ["monitor", "display", "resolution", "refresh", "rate", "scale", "rotation", "position", "layout"]
+        },
         {
             pageIndex: 15, pageName: root.pages[15].name,
             section: Translation.tr("Shell visibility"),
@@ -1865,6 +1872,7 @@ Singleton {
         // =====================================================================
         // Monitors (page 15)
         // =====================================================================
+        { pageIndex: 15, pageName: root.pages[15].name, section: Translation.tr("Display configuration"), label: Translation.tr("Resolution, refresh rate, and layout"), description: Translation.tr("Arrange displays and choose output modes"), keywords: ["monitor", "display", "resolution", "refresh", "rate", "scale", "rotation", "position", "layout"] },
         { pageIndex: 15, pageName: root.pages[15].name, section: Translation.tr("Shell visibility"), label: Translation.tr("Primary monitor"), description: Translation.tr("Choose the default output for shell popups"), keywords: ["monitor", "display", "primary", "screen", "output"] },
         { pageIndex: 15, pageName: root.pages[15].name, section: Translation.tr("Overview placement"), label: Translation.tr("Active screen only"), description: Translation.tr("Open the overview on the monitor where it was invoked"), keywords: ["overview", "monitor", "screen", "focused", "active", "output"] },
         { pageIndex: 15, pageName: root.pages[15].name, section: Translation.tr("Material shell surfaces"), label: Translation.tr("Bar, dock, sidebars, and media controls"), description: Translation.tr("Choose which monitors show Material shell surfaces"), keywords: ["monitor", "visibility", "bar", "dock", "sidebar", "media", "workspace", "secondary"] },

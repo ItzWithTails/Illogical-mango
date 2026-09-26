@@ -549,6 +549,16 @@ ContentPage {
 
     SettingsCardSection {
         expanded: true
+        icon: "display_settings"
+        title: Translation.tr("Display configuration")
+
+        SettingsGroup {
+            MonitorConfiguration {}
+        }
+    }
+
+    SettingsCardSection {
+        expanded: true
         icon: "settings_input_component"
         title: Translation.tr("Shell visibility")
 
@@ -556,7 +566,7 @@ ContentPage {
             NoticeBox {
                 Layout.fillWidth: true
                 materialIcon: "info"
-                text: Translation.tr("This page controls where Illogical-mango shell surfaces appear. It does not change monitor resolution, scale, rotation, or physical output layout.")
+                text: Translation.tr("These controls choose where Illogical-mango panels, popups, and widgets appear.")
             }
 
             ContentSubsection {
