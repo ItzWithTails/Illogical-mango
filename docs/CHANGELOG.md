@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Parallax controls in easy mode**: the Quick page now exposes the master
+  wallpaper-parallax switch, while the full motion controls remain grouped on
+  the Background page.
+- **Release repository archive**: tagged releases now publish a versioned
+  repository tarball and SHA-256 checksum alongside the installer binaries.
+
+### Fixed
+- **Multi-monitor parallax**: each wallpaper follows the active workspace of
+  its own Mango, Niri, or Hyprland output instead of waiting for global pointer
+  focus to move to that monitor.
+- **Mango session logout**: the session action now asks Mango to quit cleanly.
+- **NetworkManager-free systems**: a missing `nmcli` no longer causes a tight
+  process-restart loop that floods runtime logs.
+- **Steam tray restore**: installations with the optional `steam-visible`
+  helper use it to recover a hidden Steam window and otherwise fall back to the
+  normal Steam launcher.
+
 ## [2.29.3] - 2026-09-20
 
 A Mango and Waffle integration release focused on making the shell behave like

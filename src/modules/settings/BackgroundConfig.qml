@@ -59,7 +59,7 @@ ContentPage {
 
     SettingsCardSection {
         visible: root.isIiActive
-        expanded: false
+        expanded: true
         icon: "sync_alt"
         title: Translation.tr("Parallax")
 
@@ -74,6 +74,23 @@ ContentPage {
                 }
             }
 
+            StyledText {
+                Layout.fillWidth: true
+                text: Translation.tr("Move the wallpaper and background widgets with workspaces and panels")
+                color: Appearance.colors.colSubtext
+                font.pixelSize: Appearance.font.pixelSize.small
+                wrapMode: Text.WordWrap
+            }
+        }
+    }
+
+    SettingsCardSection {
+        visible: root.isIiActive
+        expanded: false
+        icon: "tune"
+        title: Translation.tr("Advanced options")
+
+        SettingsGroup {
             StyledText {
                 Layout.fillWidth: true
                 text: Translation.tr("When parallax is active, ii renders the wallpaper internally so workspace motion, widget depth and wallpaper transitions stay synchronized.")

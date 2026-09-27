@@ -43,6 +43,18 @@ ContentPage {
         Layout.fillWidth: true
 
         SettingsGroup {
+            SettingsSwitch {
+                visible: Config.options?.panelFamily !== "waffle"
+                buttonIcon: "sync_alt"
+                text: Translation.tr("Enable parallax")
+                description: Translation.tr("Move the wallpaper and background widgets with workspaces and panels")
+                checked: Config.options?.background?.parallax?.enable
+                    ?? ((Config.options?.background?.parallax?.enableWorkspace ?? false)
+                        || (Config.options?.background?.parallax?.enableSidebar ?? false))
+                autoToggle: false
+                onToggledByUser: enabled => Config.setNestedValue("background.parallax.enable", enabled)
+            }
+
             // ── Hero wallpaper preview ──
             Rectangle {
                 id: heroCard

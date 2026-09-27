@@ -97,6 +97,11 @@ Singleton {
             return;
         }
 
+        if (CompositorService.isMango) {
+            MangoService.dispatch("quit");
+            return;
+        }
+
         closeAllWindows();
         Quickshell.execDetached(["/usr/bin/pkill", "-i", "Hyprland"]);
     }

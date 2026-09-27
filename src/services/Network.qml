@@ -201,11 +201,28 @@ Singleton {
     Process {
         id: subscriber
         running: false
-        command: ["nmcli", "monitor"]
-        // Auto-restart if the monitor process dies (can happen after lockscreen/suspend)
-        onRunningChanged: if (!running && !root._destroying) running = true
+        // Go through sh so a system without NetworkManager does not make
+        // Quickshell log a failed direct spawn in a tight loop.
+        command: ["sh", "-c", "command -v nmcli >/dev/null 2>&1 || exit 127; exec nmcli monitor"]
+        // Auto-restart if the monitor dies (for example after suspend), but
+        // never immediately: an absent/broken nmcli otherwise fills
+        // $XDG_RUNTIME_DIR with Quickshell logs and breaks systemd app launch.
+        onRunningChanged: {
+            if (!running && !root._destroying)
+                subscriberRestart.restart();
+        }
         stdout: SplitParser {
             onRead: root.update()
+        }
+    }
+
+    Timer {
+        id: subscriberRestart
+        interval: 5000
+        repeat: false
+        onTriggered: {
+            if (!root._destroying && !subscriber.running)
+                subscriber.running = true;
         }
     }
 

@@ -353,7 +353,20 @@ Scope {
         property list<var> relevantWindows: CompositorService.isHyprland ? HyprlandData.windowList.filter(win => win.monitor == monitor?.id && win.workspace.id >= 0).sort((a, b) => a.workspace.id - b.workspace.id) : []
         property int firstWorkspaceId: relevantWindows[0]?.workspace.id || 1
         property int lastWorkspaceId: relevantWindows[relevantWindows.length - 1]?.workspace.id || 10
-        readonly property string screenName: screen?.name ?? ""
+        readonly property string screenName: modelData?.name ?? ""
+        // Workspace focus is global, but every output keeps its own active
+        // workspace. Drive each wallpaper from the workspace of its screen so
+        // an unfocused monitor moves immediately instead of waiting for the
+        // pointer (and compositor focus) to enter it.
+        readonly property int activeWorkspaceNumber: {
+            if (CompositorService.isMango && typeof MangoService !== "undefined")
+                return MangoService.activeWorkspaceForOutput(screenName)?.idx ?? 1
+            if (CompositorService.isNiri && typeof NiriService !== "undefined")
+                return NiriService.activeWorkspaceForOutput(screenName)?.idx ?? 1
+            if (CompositorService.isHyprland)
+                return monitor?.activeWorkspace?.id ?? 1
+            return 1
+        }
         readonly property var backgroundOptions: Config.options?.background ?? {}
         readonly property var parallaxOptions: backgroundOptions.parallax ?? {}
         readonly property var effectsOptions: backgroundOptions.effects ?? {}
@@ -1133,7 +1146,7 @@ Scope {
                     bgRoot.effectiveWorkspaceLast :
                     (Math.ceil(bgRoot.lastWorkspaceId / chunkSize) * chunkSize)
                 property int range: Math.max(1, upper - lower)
-                property int currentWorkspaceId: CompositorService.isNiri ? (NiriService.focusedWorkspaceIndex ?? 1) : (bgRoot.monitor?.activeWorkspace?.id ?? 1)
+                property int currentWorkspaceId: bgRoot.activeWorkspaceNumber
                 property real workspaceProgress: ParallaxMath.normalizedWorkspaceProgress(currentWorkspaceId, lower, upper)
                 property real valueX: ParallaxMath.axisValue(
                     "horizontal",

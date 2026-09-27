@@ -76,3 +76,30 @@ jobs:
           files: |
             ${{ matrix.asset }}
             ${{ matrix.asset }}.sha256
+
+  release-repository-archive:
+    if: github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v')
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build repository archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          asset="illogical-mango-${GITHUB_REF_NAME}.tar.gz"
+          git archive \
+            --format=tar.gz \
+            --prefix="illogical-mango-${GITHUB_REF_NAME}/" \
+            --output="$asset" \
+            "$GITHUB_SHA"
+          sha256sum "$asset" > "$asset.sha256"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            illogical-mango-${{ github.ref_name }}.tar.gz
+            illogical-mango-${{ github.ref_name }}.tar.gz.sha256

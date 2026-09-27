@@ -32,7 +32,9 @@ Singleton {
         { matches: ["telegram", "Telegram", "org.telegram"], launch: "/usr/bin/Telegram --" },
         { matches: ["signal", "Signal"], launch: "signal-desktop" },
         { matches: ["element", "Element"], launch: "element-desktop" },
-        { matches: ["steam", "Steam"], launch: "steam" },
+        // Prefer the optional local Steam window-rescue wrapper when present;
+        // ordinary installations keep the stock Steam launcher as fallback.
+        { matches: ["steam", "Steam"], launch: "sh -c 'if command -v steam-visible >/dev/null 2>&1; then exec steam-visible; else exec steam; fi'" },
         { matches: ["skype", "Skype"], launch: "skypeforlinux" },
         { matches: ["viber", "Viber"], launch: "viber" },
         { matches: ["zoom", "Zoom"], launch: "zoom" },
